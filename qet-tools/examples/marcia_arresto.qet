@@ -1,0 +1,512 @@
+<project title="Marcia / arresto con autoritenuta" version="0.90">
+    <properties />
+    <diagram title="Circuito di comando" author="Claude" date="null" filename="" folio="%id/%total" order="1" cols="12" rows="7" colsize="60" rowsize="80" height="580" displaycols="true" displayrows="true" displayAt="bottom" version="0.90" indexrev="" plant="" locmach="" auto_page_num="" freezeNewElement="false" freezeNewConductor="false">
+        <defaultconductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" />
+        <elements>
+            <element x="80" y="100" z="10" orientation="0" type="embed://import/10_electric/10_allpole/110_network_supplies/src_1pn.elmt" uuid="{bd3e0c38-fffc-409f-9e3b-0b19947bf94e}" prefix="" freezeLabel="false">
+                <terminals>
+                    <terminal x="6" y="-10" orientation="1" id="0" name="_" number="_" nameHidden="0" />
+                    <terminal x="6" y="10" orientation="1" id="1" name="_" number="_" nameHidden="0" />
+                </terminals>
+                <inputs />
+                <elementInformations />
+                <dynamic_texts />
+                <texts_groups />
+            </element>
+            <element x="300" y="160" z="10" orientation="0" type="embed://import/10_electric/10_allpole/380_signaling_operating/20_push_buttons/poussoir_nf.elmt" uuid="{c221b44c-c1aa-47cb-b2b4-5ba15048c817}" prefix="" freezeLabel="false">
+                <terminals>
+                    <terminal x="0" y="-17" orientation="0" id="2" name="_" number="_" nameHidden="0" />
+                    <terminal x="0" y="17" orientation="2" id="3" name="_" number="_" nameHidden="0" />
+                </terminals>
+                <inputs />
+                <elementInformations>
+                    <elementInformation name="label" show="1">S0</elementInformation>
+                </elementInformations>
+                <dynamic_texts>
+                    <dynamic_elmt_text x="10" y="-12" rotation="0" uuid="{e0204e92-b1bf-4f18-b958-ff464ecca7f4}" frame="false" text_width="-1" Halignment="AlignLeft" Valignment="AlignTop" keep_visual_rotation="true" text_from="ElementInfo" font="Sans Serif,9,-1,5,50,0,0,0,0,0">
+                        <text>S0</text>
+                        <info_name>label</info_name>
+                    </dynamic_elmt_text>
+                </dynamic_texts>
+                <texts_groups />
+            </element>
+            <element x="300" y="280" z="10" orientation="0" type="embed://import/10_electric/10_allpole/380_signaling_operating/20_push_buttons/poussoir.elmt" uuid="{7bffe90c-5441-458d-a25c-2700be1a4b57}" prefix="" freezeLabel="false">
+                <terminals>
+                    <terminal x="0" y="-17" orientation="0" id="4" name="_" number="_" nameHidden="0" />
+                    <terminal x="0" y="17" orientation="2" id="5" name="_" number="_" nameHidden="0" />
+                </terminals>
+                <inputs />
+                <elementInformations>
+                    <elementInformation name="label" show="1">S1</elementInformation>
+                </elementInformations>
+                <dynamic_texts>
+                    <dynamic_elmt_text x="8" y="-12" rotation="0" uuid="{84f33eb4-2f6f-4cba-a92c-c934455c63a7}" frame="false" text_width="-1" Halignment="AlignLeft" Valignment="AlignTop" keep_visual_rotation="true" text_from="ElementInfo" font="Sans Serif,9,-1,5,50,0,0,0,0,0">
+                        <text>S1</text>
+                        <info_name>label</info_name>
+                    </dynamic_elmt_text>
+                </dynamic_texts>
+                <texts_groups />
+            </element>
+            <element x="420" y="280" z="10" orientation="0" type="embed://import/10_electric/10_allpole/310_relays_contactors_contacts/02_contacts_cross_referencing/01_auxiliary_contacts/con_simple.elmt" uuid="{b215130e-083d-4862-9081-9d9e997f4653}" prefix="" freezeLabel="false">
+                <terminals>
+                    <terminal x="0" y="-16" orientation="0" id="6" name="_" number="_" nameHidden="0" />
+                    <terminal x="0" y="16" orientation="2" id="7" name="_" number="_" nameHidden="0" />
+                </terminals>
+                <inputs />
+                <elementInformations>
+                    <elementInformation name="label" show="1">K1</elementInformation>
+                </elementInformations>
+                <dynamic_texts>
+                    <dynamic_elmt_text x="22" y="-12" rotation="0" uuid="{b1686d53-0308-4cf3-9f89-e9e87ba13dab}" frame="false" text_width="-1" Halignment="AlignLeft" Valignment="AlignTop" keep_visual_rotation="true" text_from="ElementInfo" font="Sans Serif,9,-1,5,50,0,0,0,0,0">
+                        <text>K1</text>
+                        <info_name>label</info_name>
+                    </dynamic_elmt_text>
+                </dynamic_texts>
+                <texts_groups />
+            </element>
+            <element x="300" y="420" z="10" orientation="0" type="embed://import/10_electric/10_allpole/310_relays_contactors_contacts/01_coils/bobine3.elmt" uuid="{d5741f5f-222a-409b-b44b-3c5535ff3460}" prefix="" freezeLabel="false">
+                <terminals>
+                    <terminal x="0" y="-17" orientation="0" id="8" name="_" number="_" nameHidden="0" />
+                    <terminal x="0" y="17" orientation="2" id="9" name="_" number="_" nameHidden="0" />
+                </terminals>
+                <inputs />
+                <elementInformations>
+                    <elementInformation name="label" show="1">K1</elementInformation>
+                </elementInformations>
+                <dynamic_texts>
+                    <dynamic_elmt_text x="22" y="-12" rotation="0" uuid="{5d2f8838-c52e-4a1a-bc95-8b1f83efe0ac}" frame="false" text_width="-1" Halignment="AlignLeft" Valignment="AlignTop" keep_visual_rotation="true" text_from="ElementInfo" font="Sans Serif,9,-1,5,50,0,0,0,0,0">
+                        <text>K1</text>
+                        <info_name>label</info_name>
+                    </dynamic_elmt_text>
+                </dynamic_texts>
+                <texts_groups />
+            </element>
+            <element x="520" y="420" z="10" orientation="0" type="embed://import/10_electric/10_allpole/380_signaling_operating/11_optical_signaling/lampe2.elmt" uuid="{3b9373c5-5484-46da-9305-654e8562ce38}" prefix="" freezeLabel="false">
+                <terminals>
+                    <terminal x="0" y="-17" orientation="0" id="10" name="_" number="_" nameHidden="0" />
+                    <terminal x="0" y="17" orientation="2" id="11" name="_" number="_" nameHidden="0" />
+                </terminals>
+                <inputs />
+                <elementInformations>
+                    <elementInformation name="label" show="1">H1</elementInformation>
+                </elementInformations>
+                <dynamic_texts>
+                    <dynamic_elmt_text x="17" y="-12" rotation="0" uuid="{b8108651-c386-4c8a-bae4-b45e50f4ff9c}" frame="false" text_width="-1" Halignment="AlignLeft" Valignment="AlignTop" keep_visual_rotation="true" text_from="ElementInfo" font="Sans Serif,9,-1,5,50,0,0,0,0,0">
+                        <text>H1</text>
+                        <info_name>label</info_name>
+                    </dynamic_elmt_text>
+                </dynamic_texts>
+                <texts_groups />
+            </element>
+        </elements>
+        <conductors>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="0" terminal2="2" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="3" terminal2="4" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="3" terminal2="6" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="5" terminal2="8" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="7" terminal2="8" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="8" terminal2="10" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="9" terminal2="1" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+            <conductor type="multi" num="" formula="" displaytext="1" numsize="9" condsize="1" text_color="#000000" conductor_color="" color2="#000000" bicolor="false" dash-size="1" cable="" bus="" function="" tension_protocol="" conductor_section="" onetextperfolio="0" horizrotatetext="0" vertirotatetext="0" horizontal-alignment="AlignBottom" vertical-alignment="AlignRight" x="0" y="0" terminal1="11" terminal2="9" freezeLabel="false">
+                <sequentialNumbers />
+            </conductor>
+        </conductors>
+        <inputs>
+            <input x="420" y="120" rotation="0" text="S0 = arresto, S1 = marcia" font="Sans Serif,9,-1,5,50,0,0,0,0,0" />
+        </inputs>
+    </diagram>
+    <collection>
+        <category name="import">
+            <names>
+                <name lang="en">Imported elements</name>
+                <name lang="it">Elementi importati</name>
+            </names>
+            <category name="10_electric">
+                <names>
+                    <name lang="pl">Elektrotechnika</name>
+                    <name lang="pt_br">Elétrica</name>
+                    <name lang="de">Elektrik</name>
+                    <name lang="el">Ηλεκτρικά</name>
+                    <name lang="it">Elettrica</name>
+                    <name lang="ru">Электротехника</name>
+                    <name lang="nl">Elektrotechniek</name>
+                    <name lang="cs">Elektrotechnika</name>
+                    <name lang="en">Electric</name>
+                    <name lang="fr">Electrique</name>
+                    <name lang="da">Elektrisk</name>
+                    <name lang="es">Eléctrica</name>
+                    <name lang="ja">電気</name>
+                </names>
+                <category name="10_allpole">
+                    <names>
+                        <name lang="pl">Schematy wieloliniowe</name>
+                        <name lang="pt_br">Multifilar</name>
+                        <name lang="cs">Vícežilový</name>
+                        <name lang="it">Multifilare</name>
+                        <name lang="el">Πολυγραμμικό</name>
+                        <name lang="fr">Multifilaire</name>
+                        <name lang="de">Allpolig</name>
+                        <name lang="en">All-pole</name>
+                        <name lang="nl">Veel polig</name>
+                        <name lang="ru">Многополюсные</name>
+                        <name lang="da">Flere ledere</name>
+                        <name lang="es">Multifilar</name>
+                        <name lang="ja">複線</name>
+                        <name lang="hu">Többvonalas szimbólumok</name>
+                    </names>
+                    <category name="110_network_supplies">
+                        <names>
+                            <name lang="ru">Подвод питания, сеть</name>
+                            <name lang="en">Network sources</name>
+                            <name lang="fr">Sources réseau</name>
+                            <name lang="it">Alimentazione da rete</name>
+                            <name lang="pl">Sieć elektroenergetyczna</name>
+                            <name lang="pt_br">Alimentação</name>
+                            <name lang="de">Netzquellen</name>
+                            <name lang="el">Παροχές δικτύου</name>
+                            <name lang="nl">Netvoedingen</name>
+                            <name lang="cs">Napájení</name>
+                            <name lang="es">Fuentes de red</name>
+                            <name lang="da">Netværkskilder</name>
+                            <name lang="ja">電源網</name>
+                            <name lang="hu">Hálózati források</name>
+                        </names>
+                        <element name="src_1pn.elmt">
+                            <definition width="30" link_type="simple" version="0.5" hotspot_x="15" height="40" hotspot_y="20" type="element">
+                                <uuid uuid="{457a0c01-871c-40fd-83d7-14033333fb95}" />
+                                <names>
+                                    <name lang="pt">Fonte unipolar + neutro</name>
+                                    <name lang="es">Fuente unipolo + neutro</name>
+                                    <name lang="nl">Wisselspanning L + nul N</name>
+                                    <name lang="el">Μονοφασικό + Ουδέτερος</name>
+                                    <name lang="de">Wechselstrom L + N</name>
+                                    <name lang="cs">Přípojnice 1f+N</name>
+                                    <name lang="pl">Linia jednofazowa (dwuprzewodowa)</name>
+                                    <name lang="it">Sorgente unipolare + neutro</name>
+                                    <name lang="ar">مصدر وحيد القطبية + محايد N</name>
+                                    <name lang="en">Single-pole source + neutral</name>
+                                    <name lang="fr">Source unipolaire + neutre</name>
+                                    <name lang="ru">Однополюсный + нейтраль</name>
+                                    <name lang="hu">F + N</name>
+                                </names>
+                                <informations>Author: The QElectroTech team
+License: see http://qelectrotech.org/wiki/doc/elements_license</informations>
+                                <description>
+                                    <input x="-5" y="-25.45" tagg="label" size="9" rotate="true" text="_" />
+                                    <line antialias="false" length1="1.5" x2="10" end2="none" x1="0" end1="none" y2="-10" length2="1.5" style="line-style:normal;line-weight:normal;filling:none;color:black" y1="-10" />
+                                    <line antialias="false" length1="1.5" x2="10" end2="none" x1="0" end1="none" y2="10" length2="1.5" style="line-style:normal;line-weight:normal;filling:none;color:black" y1="10" />
+                                    <text x="-12" y="13" size="5" text="N" />
+                                    <text x="-12" y="-7" size="5" text="L" />
+                                    <terminal x="10" y="-10" orientation="e" />
+                                    <terminal x="10" y="10" orientation="e" />
+                                </description>
+                            </definition>
+                        </element>
+                    </category>
+                    <category name="310_relays_contactors_contacts">
+                        <names>
+                            <name lang="ru">Реле, пускатели и контакты</name>
+                            <name lang="en">Relays, contactors and contacts</name>
+                            <name lang="es">Relevadores, contactores y contactos</name>
+                            <name lang="fr">Relais, contacteurs et contacts</name>
+                            <name lang="it">Relè, contattori e contatti</name>
+                            <name lang="pl">Przekaźniki i styczniki</name>
+                            <name lang="pt_br">Relés, contatores e contatos</name>
+                            <name lang="de">Relais, Schütze und Kontakte</name>
+                            <name lang="nl">Relais, contactoren en contacten</name>
+                            <name lang="el">Ηλεκτρονόμοι και επαφές</name>
+                            <name lang="cs">Relé, stykače a kontakty</name>
+                            <name lang="da">Relæer, kontaktorer og kontakter</name>
+                            <name lang="ja">継電器、接触器、接点</name>
+                            <name lang="hu">Relék, kontaktorok és érintkezők</name>
+                        </names>
+                        <category name="01_coils">
+                            <names>
+                                <name lang="ar">لفه</name>
+                                <name lang="ca">bobina</name>
+                                <name lang="cs">cívka</name>
+                                <name lang="da">spole</name>
+                                <name lang="de">Spule</name>
+                                <name lang="el">σπείρα</name>
+                                <name lang="en">coil</name>
+                                <name lang="es">bobina</name>
+                                <name lang="fr">bobine</name>
+                                <name lang="hr">zavojnica</name>
+                                <name lang="hu">tekercs</name>
+                                <name lang="it">bobina</name>
+                                <name lang="ja">コイル</name>
+                                <name lang="mn">ороомог</name>
+                                <name lang="nb">Spole</name>
+                                <name lang="nl">spoel</name>
+                                <name lang="pl">cewka</name>
+                                <name lang="pt">bobina</name>
+                                <name lang="pt_br">bobina</name>
+                                <name lang="ro">bobina</name>
+                                <name lang="ru">катушка</name>
+                                <name lang="sl">tuljava</name>
+                                <name lang="sr">калем</name>
+                                <name lang="tr">bobin</name>
+                            </names>
+                            <element name="bobine3.elmt">
+                                <definition width="40" version="0.3" hotspot_x="20" hotspot_y="20" height="40" type="element" link_type="master">
+                                    <uuid uuid="{9FEAFB37-47DA-4759-ADE0-CF4487890487}" />
+                                    <names>
+                                        <name lang="ar">ملف</name>
+                                        <name lang="de">Spule</name>
+                                        <name lang="ru">Обмотка</name>
+                                        <name lang="el">Πηνίο</name>
+                                        <name lang="en">Coil</name>
+                                        <name lang="it">Bobina</name>
+                                        <name lang="fr">Bobine</name>
+                                        <name lang="pl">Cewka</name>
+                                        <name lang="es">Bobina</name>
+                                        <name lang="cs">Cívka relé</name>
+                                        <name lang="nl">Spoel</name>
+                                        <name lang="hu">Tekercs</name>
+                                        <name lang="be">Relais spoel (algemeen)</name>
+                                    </names>
+                                    <kindInformations>
+                                        <kindInformation name="type" show="1">coil</kindInformation>
+                                    </kindInformations>
+                                    <informations>Author: The QElectroTech team
+License: see http://qelectrotech.org/wiki/doc/elements_license</informations>
+                                    <description>
+                                        <rect width="28" x="-14" y="-8" antialias="false" height="16" style="line-style:normal;line-weight:normal;filling:none;color:black" />
+                                        <line length1="1.5" length2="1.5" antialias="false" end1="none" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" y1="-20" x1="0" y2="-8" x2="0" />
+                                        <input x="2" y="19.3333" size="4" rotate="true" text="A2" />
+                                        <input x="2" y="-16.6667" size="4" rotate="true" text="A1" />
+                                        <line length1="1.5" length2="1.5" antialias="false" end1="none" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" y1="8" x1="0" y2="20" x2="0" />
+                                        <input x="25" y="3.3333" size="9" text="_" tagg="label" />
+                                        <terminal x="0" y="-21" orientation="n" />
+                                        <terminal x="0" y="21" orientation="s" />
+                                    </description>
+                                </definition>
+                            </element>
+                        </category>
+                        <category name="02_contacts_cross_referencing">
+                            <names>
+                                <name lang="ru">Контакты с перекрестными ссылками</name>
+                                <name lang="de">Kontakte mit Querverweis</name>
+                                <name lang="en">Contacts with cross referencing</name>
+                                <name lang="es">Contactos con referencia cruzada</name>
+                                <name lang="fr">Contacts avec référence croisée</name>
+                                <name lang="it">Contatti con riferimenti incrociati</name>
+                                <name lang="pl">Zestyki (automatyczne oznaczenia)</name>
+                                <name lang="el">Επαφές με παραπομπές</name>
+                                <name lang="nl">Contacten met kruisreferentie</name>
+                                <name lang="cs">Kontakty s křížovými odkazy</name>
+                                <name lang="da">Kontaker med krydsreference</name>
+                            </names>
+                            <category name="01_auxiliary_contacts">
+                                <names>
+                                    <name lang="ru">Внешние</name>
+                                    <name lang="de">Hilfsglieder</name>
+                                    <name lang="el">Βοηθητικές επαφές</name>
+                                    <name lang="en">Auxiliary</name>
+                                    <name lang="it">Contatti ausiliari</name>
+                                    <name lang="fr">Auxilliaires</name>
+                                    <name lang="pl">Zestyki pomocnicze</name>
+                                    <name lang="es">Contactos auxiliares</name>
+                                    <name lang="cs">Pomocné kontakty</name>
+                                    <name lang="nl">Hulpcontacten</name>
+                                    <name lang="da">Hjælpe kontakter</name>
+                                </names>
+                                <element name="con_simple.elmt">
+                                    <definition width="30" version="0.3" hotspot_x="10" hotspot_y="25" height="50" type="element" link_type="slave">
+                                        <uuid uuid="{BD8DBFF3-BB8A-4A03-B5D6-392061A318CD}" />
+                                        <names>
+                                            <name lang="ar">مُلامس بسيط (NO)</name>
+                                            <name lang="de">Schliesser</name>
+                                            <name lang="ru">Проктой контакт (НР)</name>
+                                            <name lang="pt">Contacto simples (NO)</name>
+                                            <name lang="el">Απλή επαφή, ανοικτή</name>
+                                            <name lang="en">Simple contact</name>
+                                            <name lang="it">Contatto semplice (NO)</name>
+                                            <name lang="fr">Contact simple</name>
+                                            <name lang="pl">Zestyk zwierny</name>
+                                            <name lang="es">Contactor simple</name>
+                                            <name lang="cs">Spínací kontakt</name>
+                                            <name lang="nl">contact enkel</name>
+                                        </names>
+                                        <informations>Author: The QElectroTech team
+License: see http://qelectrotech.org/wiki/doc/elements_license</informations>
+                                        <kindInformations>
+                                            <kindInformation name="state" show="1">NO</kindInformation>
+                                            <kindInformation name="number" show="1">1</kindInformation>
+                                            <kindInformation name="type" show="1">simple</kindInformation>
+                                            <kindInformation name="tempoType" show="0" />
+                                        </kindInformations>
+                                        <description>
+                                            <polygon antialias="true" style="line-style:normal;line-weight:normal;filling:none;color:black" closed="false" y1="-10" x1="-5" y2="10" x2="0" y3="20" x3="0" />
+                                            <input x="2.75" y="3" size="9" text="_" tagg="label" />
+                                            <line length1="1.5" length2="1.5" antialias="false" end1="none" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" y1="-20" x1="0" y2="-10" x2="0" />
+                                            <terminal x="0" y="-20" orientation="n" />
+                                            <terminal x="0" y="20" orientation="s" />
+                                        </description>
+                                    </definition>
+                                </element>
+                            </category>
+                        </category>
+                    </category>
+                    <category name="380_signaling_operating">
+                        <names>
+                            <name lang="ru">Сигнализация и управление</name>
+                            <name lang="en">Signaling and operating</name>
+                            <name lang="es">Señalización y comando</name>
+                            <name lang="fr">Signalétique et commande</name>
+                            <name lang="it">Segnalazione e comando</name>
+                            <name lang="pl">Obwody sterownicze</name>
+                            <name lang="pt_br">Sinalização e comando</name>
+                            <name lang="de">Melde- und Bedieneinrichtungen</name>
+                            <name lang="nl">Signalering en bediening</name>
+                            <name lang="el">Σήμανση και χειρισμός</name>
+                            <name lang="cs">Značení a příkazy</name>
+                            <name lang="ja">信号と操作</name>
+                        </names>
+                        <category name="11_optical_signaling">
+                            <names>
+                                <name lang="ru">Оптическая сигнализация</name>
+                                <name lang="de">Optische Meldeeinrichtungen</name>
+                                <name lang="en">Optical signaling devices</name>
+                                <name lang="es">Dispositivos de señalamiento óptico</name>
+                                <name lang="pl">Wskaźniki świetlne</name>
+                                <name lang="fr">Signalements optiques</name>
+                                <name lang="it">Segnalazione ottica</name>
+                                <name lang="el">Συσκευές οπτικής σήμανσης</name>
+                                <name lang="cs">Světelná signalizace</name>
+                            </names>
+                            <element name="lampe2.elmt">
+                                <definition height="60" link_type="simple" type="element" hotspot_y="29" version="0.5" hotspot_x="15" width="30">
+                                    <uuid uuid="{c8f5ab5f-4534-4307-90b4-c6601cc77abb}" />
+                                    <names>
+                                        <name lang="fr">Lampe</name>
+                                        <name lang="de">Meldeleuchte</name>
+                                        <name lang="it">Luce</name>
+                                        <name lang="es">Lámpara</name>
+                                        <name lang="ar">مصباح</name>
+                                        <name lang="ru">Лампа</name>
+                                        <name lang="el">Λυχνία</name>
+                                        <name lang="pt">Lâmpada</name>
+                                        <name lang="cs">Kontrolka</name>
+                                        <name lang="pl">Lampa</name>
+                                        <name lang="nl">Lamp</name>
+                                        <name lang="en">Light</name>
+                                    </names>
+                                    <informations>Author: The QElectroTech team
+License: see http://qelectrotech.org/wiki/doc/elements_license</informations>
+                                    <description>
+                                        <circle y="-10" x="-10" antialias="true" diameter="20" style="line-style:normal;line-weight:normal;filling:none;color:black" />
+                                        <line end1="none" y2="7.03" antialias="false" x1="7.03" y1="-7.03" length2="1.5" length1="1.5" x2="-7.03" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" />
+                                        <line end1="none" y2="7.03" antialias="false" x1="-7.03" y1="-7.03" length2="1.5" length1="1.5" x2="7.03" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" />
+                                        <line end1="none" y2="-10" antialias="false" x1="0" y1="-20" length2="1.5" length1="1.5" x2="0" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" />
+                                        <line end1="none" y2="20" antialias="false" x1="0" y1="10" length2="1.5" length1="1.5" x2="0" end2="none" style="line-style:normal;line-weight:normal;filling:none;color:black" />
+                                        <input y="3" text="H_" x="15" size="9" tagg="label" />
+                                        <terminal y="-21" x="0" orientation="n" />
+                                        <terminal y="21" x="0" orientation="s" />
+                                    </description>
+                                </definition>
+                            </element>
+                        </category>
+                        <category name="20_push_buttons">
+                            <names>
+                                <name lang="ru">Кнопки</name>
+                                <name lang="de">Drucktaster</name>
+                                <name lang="ar">مفاتيح ضاغطة</name>
+                                <name lang="pt">Botões de pressão</name>
+                                <name lang="en">Push-buttons</name>
+                                <name lang="it">Pulsanti</name>
+                                <name lang="fr">Boutons-poussoirs</name>
+                                <name lang="pl">Przyciski</name>
+                                <name lang="es">Pulsadores</name>
+                                <name lang="cs">Tlačítka</name>
+                                <name lang="el">Μπουτόν</name>
+                                <name lang="nl">Knop druk</name>
+                            </names>
+                            <element name="poussoir.elmt">
+                                <definition link_type="master" height="60" hotspot_y="29" version="0.5" type="element" hotspot_x="14" width="20">
+                                    <uuid uuid="{B7E19699-CDD6-471B-B99D-8F31818E7C9A}" />
+                                    <names>
+                                        <name lang="ar">زرّ ضاغط</name>
+                                        <name lang="pt">Botão de pressão (NA)</name>
+                                        <name lang="fr">Bouton poussoir</name>
+                                        <name lang="de">Drucktaster Schliesser</name>
+                                        <name lang="en">Push-button</name>
+                                        <name lang="it">Pulsante (NA)</name>
+                                        <name lang="ru">Кнопка (НР)</name>
+                                        <name lang="nl">Drukknop (NO)</name>
+                                        <name lang="pl">Łącznik przyciskowy z powrotem samoczynnym</name>
+                                        <name lang="es">Pulsador</name>
+                                        <name lang="cs">Tlačítko</name>
+                                        <name lang="el">Μπουτόν, ανοικτή επαφή</name>
+                                    </names>
+                                    <kindInformations>
+                                        <kindInformation show="1" name="type">commutator</kindInformation>
+                                    </kindInformations>
+                                    <informations>Author: The QElectroTech team
+License: see http://qelectrotech.org/wiki/doc/elements_license</informations>
+                                    <description>
+                                        <polygon x2="0" closed="false" x1="-5" x3="0" style="line-style:normal;line-weight:normal;filling:none;color:black" y2="10" y3="20" y1="-10" antialias="true" />
+                                        <line x2="0" x1="0" end2="none" length1="1.5" end1="none" style="line-style:normal;line-weight:normal;filling:none;color:black" length2="1.5" y2="-10" y1="-20" antialias="false" />
+                                        <input x="2.75" tagg="label" y="3" text="_" size="9" />
+                                        <line x2="-3" x1="-10" end2="none" length1="1.5" end1="none" style="line-style:dashed;line-weight:thin;filling:none;color:black" length2="1.5" y2="0" y1="0" antialias="false" />
+                                        <polygon x2="-10" y4="5" closed="false" x1="-7" x3="-10" style="line-style:normal;line-weight:thin;filling:none;color:black" y2="-5" y3="5" x4="-7" y1="-5" antialias="false" />
+                                        <terminal x="0" y="-21" orientation="n" />
+                                        <terminal x="0" y="21" orientation="s" />
+                                    </description>
+                                </definition>
+                            </element>
+                            <element name="poussoir_nf.elmt">
+                                <definition width="20" height="60" hotspot_y="29" type="element" link_type="master" version="0.5" hotspot_x="12">
+                                    <uuid uuid="{BC493768-9109-4014-955A-EB2E261B530B}" />
+                                    <names>
+                                        <name lang="it">Pulsante (NC)</name>
+                                        <name lang="pl">Łącznik przyciskowy z powrotem samoczynnym</name>
+                                        <name lang="cs">Tlačítko (NC)</name>
+                                        <name lang="ar">زرّ ضاغط (NC)</name>
+                                        <name lang="de">Drucktaster Öffner</name>
+                                        <name lang="ru">Кнопка (НЗ)</name>
+                                        <name lang="es">Pulsador (NC)</name>
+                                        <name lang="nl">Drukknop (NC)</name>
+                                        <name lang="fr">Bouton poussoir (NF)</name>
+                                        <name lang="el">Μπουτόν, κλειστή επαφή</name>
+                                        <name lang="en">Push-button (NC)</name>
+                                        <name lang="pt">Botão de pressão (NC)</name>
+                                    </names>
+                                    <kindInformations>
+                                        <kindInformation show="1" name="type">commutator</kindInformation>
+                                    </kindInformations>
+                                    <informations>Author: The QElectroTech team
+License: see http://qelectrotech.org/wiki/doc/elements_license</informations>
+                                    <description>
+                                        <polygon x2="0" antialias="true" style="line-style:normal;line-weight:normal;filling:none;color:black" y3="20" y2="10" x1="5" y1="-10" x3="0" closed="false" />
+                                        <line end2="none" end1="none" length2="1.5" x2="6" antialias="false" style="line-style:normal;line-weight:normal;filling:none;color:black" y2="-9" length1="1.5" x1="0" y1="-9" />
+                                        <line end2="none" end1="none" length2="1.5" x2="0" antialias="false" style="line-style:normal;line-weight:normal;filling:none;color:black" y2="-9" length1="1.5" x1="0" y1="-20" />
+                                        <input y="3" text="_" size="9" tagg="label" x="5.75" />
+                                        <line end2="none" end1="none" length2="1.5" x2="3" antialias="false" style="line-style:dashed;line-weight:thin;filling:none;color:black" y2="0" length1="1.5" x1="-10" y1="0" />
+                                        <polygon x4="-7" x2="-10" antialias="false" style="line-style:normal;line-weight:thin;filling:none;color:black" y3="5" y4="5" y2="-5" x1="-7" y1="-5" x3="-10" closed="false" />
+                                        <terminal y="-21" orientation="n" x="0" />
+                                        <terminal y="21" orientation="s" x="0" />
+                                    </description>
+                                </definition>
+                            </element>
+                        </category>
+                    </category>
+                </category>
+            </category>
+        </category>
+    </collection>
+</project>
