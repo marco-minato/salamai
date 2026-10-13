@@ -13,7 +13,7 @@ from qetlib import ORIENT, Project, make_box  # noqa: E402
 
 # ----------------------------------------------------------------------------- dati di progetto
 PROGETTO = "Camera salumi — controllo ESP32"
-REVISIONE = "A"
+REVISIONE = "B"
 AUTORE = ""  # da compilare
 OGGI = datetime.date.today()
 
@@ -37,19 +37,19 @@ SYM = {
 # Colori dei conduttori (convenzione del disegno, riportata in legenda sul folio 1)
 C = {
     "L": "#8b4513", "L2": "#000000", "L3": "#808080", "N": "#0000ff", "PE": "#00aa00", "PE2": "#ffff00",
-    "12V": "#ff0000", "5V": "#ff8800", "0V": "#000000", "SEG": "#aa00aa", "A": "#008080", "B": "#6b8e23",
+    "12V": "#ff0000", "5V": "#ff8800", "0V": "#000000", "SEG": "#aa00aa", "A": "#008080", "B": "#6b8e23", "CMD": "#ff66cc",
 }
 
 # Distinta: sigla -> (componente, note, costruttore, riferimento). Alimenta la nomenclatura del folio 8.
 DISTINTA = {
-    "-A1": ("Scheda ESP32-S3-Relay-6CH", "6 relè 10 A 250 VAC (COM/NA/NC), RS485 isolato (A/B/Earth), 7–36 V DC, connettori H1/H2, guida DIN", "Waveshare", "Amazon B0CXPG4XGZ"),
+    "-A1": ("Scheda ESP32-S3-Relay-6CH", "6 relè HLS8L 10 A 250 VAC (rev. B: commutano solo le bobine 12 V), RS485 isolato (A+/B−/G), 7–36 V DC, H1/H2, guida DIN", "Waveshare", "Amazon B0CXPG4XGZ"),
     "-A2": ("Modulo MOSFET dual D4184", "PWM ventole, low-side, ingresso logico 3,3 V", "", "Amazon B0GL1NWZQH"),
-    "-A3": ("Misuratore di energia PZEM-016 con TA apribile", "RS485 Modbus 9600 8N1, indirizzo da cambiare in 2", "Peacefair", "Amazon B0D5NDPP4L"),
+    "-A3": ("Misuratore di energia PZEM-016 con TA apribile", "RS485 Modbus 9600 8N1 (optoisolata secondo il manuale, +5V in uscita), indirizzo da cambiare in 2", "Peacefair", "Amazon B0D5NDPP4L"),
     "-A4": ("Modulo HX711", "In scatolina IP65 dentro la camera", "", "scatola: Amazon B0F8NW1YZ2"),
     "-A5": ("Modulo RTC DS3231 (opzionale)", "I²C, mantiene l'ora senza rete", "", "Amazon B0FPPTHKBX"),
-    "-B1": ("Sonda temperatura/umidità S-TH-01", "RS485 Modbus, indirizzo 1, 9600 baud; 3,6–30 V DC (4 mA @ 24 V), alimentata a 12 V da -T1", "Seeed", "101990881"),
+    "-B1": ("Sonda temperatura/umidità S-TH-01", "RS485 Modbus, indirizzo 1 o 42, 9600 baud; 3,6–30 V DC, IP54; fili rosso V+, nero GND, giallo A, bianco B", "Seeed", "101990881"),
     "-B2": ("Cella di carico", "4 fili E+, E−, A+, A−", "", ""),
-    "-B3": ("Termostato di sicurezza PP1461", "Elettromeccanico 5–30 °C, a parete in camera, apre sopra soglia (28–30 °C)", "Poly Pool", "Amazon B00L49ZA6K"),
+    "-B3": ("Termostato di sicurezza PP1461", "Elettromeccanico 5–30 °C, contatti 10(2,5) A 250 V; a parete in camera, apre sopra soglia (28–30 °C)", "Poly Pool", "Amazon B00L49ZA6K"),
     "-E1": ("Stufa a 3 lampade IR, 1200 W", "Cavallotto S1–S4 rimosso; rotazione non usata", "", ""),
     "-E1.1": ("Lampada IR 1", "~400 W, 230 V", "", ""),
     "-E1.2": ("Lampada IR 2", "~400 W, 230 V", "", ""),
@@ -65,7 +65,7 @@ DISTINTA = {
     "-S3": ("Interruttore lampada 3", "Interno stufa, lasciato su acceso", "", ""),
     "-S4": ("Interruttore rotazione", "Non usato, non alimentato", "", ""),
     "-S5": ("Antiribaltamento a pulsante", "Sotto la base della stufa, in serie al neutro comune", "", ""),
-    "-T1": ("Alimentatore HDR-30-12", "230 VAC → 12 V DC 2 A, guida DIN 2 moduli", "Mean Well", "Amazon B071KXJPYB"),
+    "-T1": ("Alimentatore HDR-30-12 (rev. B: HDR-60-12)", "230 VAC → 12 V DC 2 A, classe II senza PE, guida DIN 2 moduli", "Mean Well", "Amazon B071KXJPYB"),
     "-T2": ("Convertitore DC-DC 12 → 5 V 3 A resinato", "Alimenta le ventole", "", "Amazon B09B818N5F"),
     "-X0:L": ("Morsetti ingresso linea L / N / PE", "Linea da quadro generale, protetta 16 A + Id 30 mA", "", ""),
     "-XS1": ("Presa Schuko (scatola -X1)", "Umidificatore 1", "", ""),
@@ -74,13 +74,28 @@ DISTINTA = {
 }
 CAVI = [
     ("-W1", "Cavo 5G1,5 quadro → stufa", "L1 marrone, L2 nero, L3 grigio, N blu, PE giallo-verde"),
-    ("-W2", "Cavo 2×1,5 (o 3G1,5) quadro → termostato -B3", "Andata e ritorno della fase lampade"),
-    ("-W3", "Cavo 4 poli quadro → sonda -B1", "+12 V, GND, A, B"),
+    ("-W2", "Cavo 2×1,5 (o 3G1,5) quadro → termostato -B3", "Rev. A: fase lampade. Rev. B: 12 V della bobina di -Q7 (cavo 2×0,75)"),
+    ("-W3", "Cavo 4 poli quadro → sonda -B1", "+12 V, GND, A, B (A e B sullo stesso doppino)"),
     ("-W4", "Cavo di rete (doppini) quadro → -A4", "3,3 V, GND, DOUT, SCK (DOUT e SCK accoppiati a GND)"),
     ("-X1", "Scatola da esterno con 3 prese Schuko", "XS1, XS2, XS3 — accanto al quadro"),
     ("-X2…", "Morsetti Wago 221 / morsettiere", "Distribuzione N, PE e bassa tensione (nodi dello schema)"),
     ("—", "Filo silicone 18 AWG (B07TT68455)", "Collegamenti interni alla stufa, in guaina di vetro"),
     ("—", "Quadro IP65 24 moduli 2 file (B0DPXCLZPR)", "Clip DIN per PCB (B0FCM3N3P9), pressacavi M20 (B0GYRDCC9Z)"),
+]
+MODIFICHE = [
+    ("+", "-Q0", "Sezionatore modulare 2P, 25 A o più", "Sezionamento locale: l'interruttore a monte è nel quadro generale"),
+    ("+", "-F1", "Interruttore magnetotermico 1P+N C10", "Ramo stufa (5,2 A); protegge anche il cavo -W1"),
+    ("+", "-F2", "Interruttore magnetotermico 1P+N C6", "Ramo prese: umidificatori ed estrattore"),
+    ("+", "-F3", "Interruttore magnetotermico 1P+N C6", "Ausiliari: -T1 e misura di tensione di -A3"),
+    ("+", "-Q1…-Q7", "7 contattori modulari 2 NA 25 A, bobina 12 V AC/DC, contatti AgSnO2 (es. Finder 22.32.0.012.4340)",
+     "Isolamento rinforzato bobina/contatti, 2000 W di lampade alogene; -Q7 senza forzatura manuale"),
+    ("↔", "-T1", "Mean Well HDR-60-12 (54 W, 3 moduli) al posto di HDR-30-12 (24 W)", "7 bobine da 2,2 W + scheda + ventole ≈ 25 W"),
+    ("↔", "—", "Cassetta IP65 ~400 × 600 × 200 con piastra di fondo al posto del centralino da 24 moduli", "4 guide DIN, canalina asolata 25 × 40 (~2,5 m)"),
+    ("↔", "-X0, -X2, -XPE, -X3", "Morsetti su guida (3 + 10 + terra da 2,5 mm²; 14 piccoli), fermi, setto separatore, ponticelli",
+     "Al posto dei Wago 221 usati come nodi"),
+    ("↔", "-W2", "Cavo 2 × 0,75 al posto di 2 × 1,5", "Il termostato lavora a 12 V sulla bobina di -Q7"),
+    ("+", "—", "Filo H07V-K 1,5 mm² (230 V) e H05V-K 0,75 mm² (comandi), puntalini, pressacavi M20 e M12", "Colori: fase marrone/nero/grigio, neutro blu, terra giallo-verde"),
+    ("?", "—", "Isolatore RS485 per -A3", "Solo se la prova di isolamento del PZEM non è soddisfacente"),
 ]
 # Connettori a 20 pin della scheda -A1 (dallo schema Waveshare) e pin impegnati dal progetto
 H1 = ["5V", "VSYS", "GND", "3V3", "3V3", "GPIO10", "GPIO9", "GND", "GPIO8", "GPIO7", "3V3", "GPIO6", "GND",
@@ -93,8 +108,8 @@ USO_H1 = {3: "GND HX711", 4: "3,3 V HX711", 5: "3,3 V RTC", 7: "RTC SCL (opz.)",
 FOLII = [
     ("1", "Copertina e legenda"), ("2", "Alimentazione 230 V"), ("3", "Stufa (3 lampade IR)"),
     ("4", "Prese di servizio"), ("5", "Bassa tensione 12 V / 5 V"), ("6", "Bus RS485 e sensori"),
-    ("7", "Fronte / disposizione quadro"), ("8", "Distinta componenti"),
-    ("9", "Cablaggio del quadro (vista d'insieme)"),
+    ("7", "Disposizione su piastra — rev B"), ("8", "Distinta componenti"),
+    ("9", "Cablaggio del quadro (vista d'insieme) — rev B"),
 ]
 
 # ----------------------------------------------------------------------------- utilità
@@ -121,8 +136,8 @@ CARTIGLIO = p.titleblock(
     + "</grid></titleblocktemplate>")
 
 
-def folio(titolo, rows=10):
-    d = p.diagram(titolo, cols=24, rows=rows)
+def folio(titolo, rows=10, cols=24):
+    d = p.diagram(titolo, cols=cols, rows=rows)
     d.template = CARTIGLIO
     d.properties = {"progetto": PROGETTO, "revisione": REVISIONE, "data": OGGI.strftime("%d/%m/%Y")}
     return d
@@ -175,14 +190,19 @@ def box(nome, w, h, pins, lines=(), **kw):
 
 
 d1 = folio("Copertina e legenda", rows=12)
-d2 = folio("Alimentazione 230 V")
-d3 = folio("Stufa (3 lampade IR)")
-d4 = folio("Prese di servizio")
-d5 = folio("Bassa tensione 12 V / 5 V")
+d2 = folio("Alimentazione 230 V", rows=11)
+d3 = folio("Stufa (3 lampade IR)", rows=11)
+d4 = folio("Prese di servizio", rows=11)
+d5 = folio("Bassa tensione 12 V / 5 V", rows=11)
 d6 = folio("Bus RS485 e sensori", rows=12)
-d7 = folio("Fronte / disposizione quadro", rows=11)
-d8 = folio("Distinta componenti", rows=13)
-d9 = folio("Cablaggio del quadro (vista d'insieme)", rows=13)
+d7 = folio("Disposizione su piastra — rev B", rows=17, cols=26)
+d8 = folio("Distinta componenti", rows=18)
+d9 = folio("Cablaggio del quadro (vista d'insieme) — rev B", rows=18, cols=32)
+
+AVVISO = ('<span style="color:#c00000"><b>Rev. B — folio non ancora aggiornato:</b> mancano sezionatore -Q0, interruttori -F1…-F3 e contattori '
+          '-Q1…-Q7; il termostato -B3 passa sulla bobina di -Q7. Fa fede il folio 9.</span>')
+for dd in (d2, d3, d4, d5):
+    dd.text(AVVISO, 60, 820, size=8)
 
 # ----------------------------------------------------------------------------- folio 1: copertina
 d = d1
@@ -208,18 +228,21 @@ d.text("<b>Colori dei conduttori (convenzione del disegno)</b>" + tabella(
      ("Segnali logici (PWM, HX711, I²C)", '<span style="color:#aa00aa">■</span> viola'),
      ("RS485 A", '<span style="color:#008080">■</span> verde acqua'),
      ("RS485 B", '<span style="color:#6b8e23">■</span> verde oliva'),
+     ("Comando bobine 12 V (folio 9)", '<span style="color:#ff66cc">■</span> rosa'),
      ("Tratteggiato", "opzionale / non collegato")]), 60, 520, size=9)
 d.text("<b>Legenda sigle (IEC 81346)</b>" + tabella(
     ["Sigla", "Significato", "In questo progetto"],
     [("-A", "Assieme / scheda elettronica", "A1 scheda relè, A2 MOSFET, A3 PZEM-016, A4 HX711, A5 RTC"),
      ("-B", "Sensore / trasduttore", "B1 sonda T/UR, B2 cella di carico, B3 termostato di sicurezza"),
      ("-E", "Riscaldamento / illuminazione", "E1 stufa, E1.1–E1.3 lampade IR"),
+     ("-F", "Protezione", "F1 stufa, F2 prese, F3 ausiliari (rev. B)"),
      ("-K", "Relè (a bordo di -A1)", "K1–K3 lampade, K4–K5 umidificatori, K6 estrattore"),
+     ("-Q", "Sezionatore / contattore", "Q0 sezionatore, Q1–Q6 contattori dei carichi, Q7 sicurezza lampade (rev. B)"),
      ("-M", "Motore / utilizzatore", "M1 rotazione (scollegato), M2–M3 umidificatori, M4 estrattore, M5–M6 ventole"),
      ("-S", "Comando manuale / contatto", "S1–S4 interruttori stufa, S5 antiribaltamento"),
      ("-T", "Alimentatore / convertitore", "T1 230 VAC → 12 V DC, T2 12 → 5 V DC"),
      ("-W", "Cavo", "W1 stufa, W2 termostato, W3 sonda, W4 HX711"),
-     ("-X", "Morsetti / prese", "X0 ingresso linea, X1 scatola prese (XS1–XS3), X2… Wago"),
+     ("-X", "Morsetti / prese", "X0 ingresso linea, X1 scatola prese (XS1–XS3), X2 uscite 230 V, X3 morsetti SELV, XPE terra"),
      ]), 520, 230, size=9)
 d.text(html([
     "<b>Convenzioni</b>",
@@ -228,13 +251,15 @@ d.text(html([
     "• Le frecce ai bordi sono rimandi tra folii: accanto è indicato folio e posizione di arrivo/partenza.",
     "• I riquadri tratteggiati indicano dove si trova fisicamente l'apparecchio (in camera, scatola prese…).",
     "• GPIO e pin dei connettori H1 / H2 della scheda -A1: assegnazione e piedinatura completa sul folio 6.",
-    "• I nodi (punti neri) di N, PE e bassa tensione sono realizzati con morsetti Wago 221 / morsettiere (-X2…).",
+    "• I nodi (punti neri) sono ponticelli sulle morsettiere (-X0, -X2, -XPE, -X3) o derivazioni a pettine.",
+    "• <b>Rev. B</b>: i folii 7, 8 e 9 riportano la proposta con sezionatore -Q0, protezioni -F1…-F3 e contattori -Q1…-Q7;",
+    "&nbsp;&nbsp;i folii 2–5 sono ancora alla rev. A e portano un avviso in basso.",
 ]), 520, 560, size=9)
 
 # ----------------------------------------------------------------------------- folio 2: 230 V
 d = d2
 T1 = box("alimentatore_hdr_30_12", 120, 120,
-         [("n", 40, "L"), ("s", 40, "N"), ("s", 80, "PE"), ("e", 40, "+V", "+12 V"), ("e", 80, "-V", "0 V")],
+         [("n", 40, "L"), ("s", 40, "N"), ("e", 40, "+V", "+12 V"), ("e", 80, "-V", "0 V")],
          [(14, 52, "Mean Well"), (14, 62, "HDR-30-12"), (14, 76, "230 V~ / 12 V= 2 A", 5)])
 A3_MIS = box("pzem016_misura", 140, 200,
              [("n", 40, "L"), ("s", 40, "N"), ("e", 80, "TA1", "TA"), ("e", 120, "TA2", "TA")],
@@ -273,9 +298,8 @@ d.wire(n3, esce(d, "N-prese", 1040, 600, "N → prese"), color=C["N"])
 d.wire(t1.pin["N"], n1, color=C["N"])
 d.wire(a3.pin["N"], n2, color=C["N"])
 # protezione
-g1, g0, g2 = d.node(560, 700), d.node(700, 700), d.node(960, 700)
+g1, g0, g2 = d.node(560, 700, dot=False), d.node(700, 700), d.node(960, 700)
 pe(d, side(x0pe, "s"), g1, num="PE")
-pe(d, t1.pin["PE"], g1)
 pe(d, g1, g0)
 pe(d, g0, g2)
 pe(d, g2, esce(d, "PE-stufa", 1040, 700, "PE → stufa"))
@@ -292,7 +316,8 @@ d.text(html([
     "<b>Note</b>",
     "• -B3 è in serie alle sole lampade ed è indipendente dal software.",
     "• N e PE sono distribuiti a tutti gli utilizzatori con morsetti (-X2…).",
-    "• -A3: impostare l'indirizzo Modbus 2 (la sonda -B1 usa 1).",
+    "• -A3: impostare l'indirizzo Modbus 2 (la sonda -B1 usa 1 o 42).",
+    "• -T1 è in classe II: non ha morsetto di terra.",
 ]), 640, 50, size=8)
 
 # ----------------------------------------------------------------------------- folio 3: stufa
@@ -490,17 +515,17 @@ d.text(html(["<b>In camera</b>", "cavo -W3", "(4 poli)"]), 750, 380, size=7)
 d.rect(860, 440, 1350, 660, dashed=True)
 d.text("<b>In camera</b> — -A4 in scatolina IP65 vicino alla cella; cavo di rete -W4", 870, 442, size=7)
 d.text(html(["-W4: DOUT accoppiato", "a GND, SCK accoppiato", "a GND (doppini)"]), 740, 630, size=7)
-d.text(html(["5 V / GND dell'interfaccia", "RS485 di -A3: <b>da verificare</b>", "(vedi note)"]), 1160, 240, size=7)
+d.text(html(["+5V di -A3 è un'uscita:", "<b>non collegare</b>.", "GND: vedi note"]), 1160, 240, size=7)
 d.text(html([
     "<b>Note</b>",
     "• Bus RS485: -A1 → -B1 e -A3 in parallelo (A con A, B con B).",
-    "• RS485 di -A1 isolato galvanicamente (morsettiera A / B / Earth): Earth → PE, scarica le protezioni.",
+    "• RS485 di -A1 isolato; il terzo morsetto (G) è il ritorno degli scaricatori, non la massa del bus: G → PE.",
     "• Terminazione 120 Ω: ponticello H3 sulla scheda -A1 abilitato.",
-    "• Indirizzi Modbus: -B1 = 1, -A3 = 2 (da cambiare sul PZEM).",
-    "• -B1: alimentazione 3,6–30 V DC (4 mA @ 24 V), qui a 12 V da -T1.",
+    "• Indirizzi Modbus: -B1 = 1 (o 42: leggerlo), -A3 = 2 (da cambiare sul PZEM, da solo sul bus).",
+    "• -B1: 3,6–30 V DC, qui a 12 V da -T1; fili rosso V+, nero GND, giallo A, bianco B.",
     "• -A5 RTC opzionale (tratteggiato): I²C, VCC 3,3 V, GND.",
-    "• PZEM-016: l'interfaccia RS485 è normalmente passiva e richiede 5 V esterni",
-    "&nbsp;&nbsp;sui morsetti 5V/GND; non è nella netlist: verificare sul modulo.",
+    "• PZEM-016: RS485 alimentata dall'interno e optoisolata secondo il manuale, che però non dichiara",
+    "&nbsp;&nbsp;la tensione di isolamento: provarla prima di collegare. GND → 0 V solo a prova superata (folio 9).",
 ]), 700, 30, size=8)
 
 
@@ -515,55 +540,132 @@ d.text(tabella(["Pin", "H1", "H2"], meta(1, 8)), 60, 795, size=7)
 d.text(tabella(["Pin", "H1", "H2"], meta(8, 15)), 500, 795, size=7)
 d.text(tabella(["Pin", "H1", "H2"], meta(15, 21)), 960, 795, size=7)
 
-# ----------------------------------------------------------------------------- folio 7: quadro
+# ----------------------------------------------------------------------------- folio 7: piastra
+# Disposizione fisica preliminare (rev. B): piastra di fondo con 4 guide DIN e canaline, in scala 2 px = 1 mm.
+# Ipotesi: cassetta ~400 × 600 × 200 mm con piastra utile 350 × 550 mm (da confermare all'acquisto).
 d = d7
-MOD = 60  # px per modulo DIN (17,5 mm)
-X0, Y1, Y2, HR = 140, 110, 440, 270
-d.text("<b>Quadro IP65 — 24 moduli su 2 file</b> (1 modulo = 17,5 mm; vista frontale, non in scala esatta)", 100, 30, size=9)
-d.rect(100, 70, 900, 760, width=2)
-for y, nome in ((Y1, "Fila superiore — 230 V"), (Y2, "Fila inferiore — bassa tensione")):
-    d.rect(X0, y, X0 + 12 * MOD, y + HR, dashed=True, color="#808080")
-    d.text(nome, X0, y - 28, size=8)
-    for m in range(13):
-        d.line(X0 + m * MOD, y + HR, X0 + m * MOD, y + HR + 8, color="#808080")
+MM, PX0, PY0 = 2, 150, 120
+Z230, ZSELV, C230, CSELV, PONTE, APP = "#ffece8", "#e6efff", "#ffb9a8", "#a9c7ff", "#fff2b0", "#f2f2f2"
 
 
-def ingombro(x_mod, larg_mod, y, righe, fill="#f2f2f2", dashed=False):
-    x1, x2 = X0 + x_mod * MOD, X0 + (x_mod + larg_mod) * MOD
-    d.rect(round(x1), y + 10, round(x2), y + HR - 10, fill=None if dashed else fill, dashed=dashed)
-    d.text(html(righe), round(x1) + 4, y + 90, size=7)
+def mm(x, y):
+    return PX0 + x * MM, PY0 + y * MM
 
 
-ingombro(0, 1, Y1, ["<b>-X0</b>", "L N PE"])
-ingombro(1, 2, Y1, ["<b>-T1</b>", "Mean Well", "HDR-30-12", "2 mod"])
-ingombro(3, 4, Y1, ["<b>-A3</b> PZEM-016", "su clip DIN", "~4 mod"])
-ingombro(7, 2, Y1, ["<b>-X2…</b>", "morsetti", "N / PE"])
-ingombro(9, 3, Y1, ["spazio libero", "3 mod"], dashed=True)
-A1_MOD = 145 / 17.5
-ingombro(0, A1_MOD, Y2, ["<b>-A1</b> Waveshare ESP32-S3-Relay-6CH", "145 × 90 mm (~9 mod)", "frontale alto 90 mm: mostrina rimossa"])
-ingombro(A1_MOD, 3, Y2, ["<b>-A2</b> MOSFET", "<b>-T2</b> DC-DC", "su clip DIN", "~3 mod"])
-ingombro(A1_MOD + 3, 12 - A1_MOD - 3, Y2, ["<b>X</b>"], fill="#ffe0e0")
+def area(x1, y1, x2, y2, fill, **kw):
+    d.rect(*mm(x1, y1), *mm(x2, y2), fill=fill, **kw)
+
+
+def canalina(x1, y1, x2, y2, fill, nome, vert=False):
+    area(x1, y1, x2, y2, fill)
+    px, py = mm(x1, y1)
+    if vert:
+        d.text(nome, px + 2, py + (y2 - y1) * MM / 2 + 150, size=6, rotation=270)
+    else:
+        d.text(nome, px + 6, py + 12, size=6)
+
+
+def app(x, y, w, h, righe, fill=APP, vert=False):
+    area(x, y, x + w, y + h, fill)
+    px, py = mm(x, y)
+    if vert:
+        d.text(" ".join(righe), px + 2, py + h * MM - 6, size=6, rotation=270)
+    else:
+        d.text(html(righe), px + 3, py + 4, size=6)
+
+
+d.text("<b>Disposizione su piastra — proposta preliminare rev. B</b> (vista frontale, scala 2 px = 1 mm; quote in mm)", 60, 30, size=9)
+d.rect(*mm(-25, -25), *mm(375, 590), width=2)
+d.text("cassetta ~400 × 600 × 200 mm (ipotesi)", *mm(-22, -24), size=6)
+area(0, 0, 350, 550, Z230)
+d.text("piastra di fondo 350 × 550", PX0 + 240, PY0 + 2, size=6)
+# zone SELV: colonna destra, guida C, canalina C3 e parte destra della guida D
+area(320, 0, 350, 550, ZSELV, color=ZSELV)
+area(160, 303, 350, 407, ZSELV, color=ZSELV)
+area(145, 407, 350, 550, ZSELV, color=ZSELV)
+# guide DIN
+for yc, nome in ((85, "A"), (220, "B"), (355, "C"), (485, "D")):
+    area(30, yc - 4, 320, yc + 4, "#c8c8c8", color="#909090")
+    d.text(f"<b>{nome}</b>", PX0 - 22, PY0 + yc * MM - 12, size=9)
+# canaline
+canalina(0, 10, 25, 435, C230, "CV1 — 230 V", vert=True)
+canalina(325, 10, 350, 540, CSELV, "CV2 — SELV (12 / 5 / 3,3 V e segnali)", vert=True)
+canalina(25, 10, 215, 35, C230, "C0 — 230 V")
+canalina(25, 140, 318, 165, C230, "C1 — 230 V")
+canalina(25, 275, 318, 300, C230, "C2 — 230 V + comandi bobine 12 V (filo isolato 450/750 V)")
+canalina(25, 410, 135, 435, C230, "C3a — 230 V")
+canalina(150, 410, 325, 435, CSELV, "C3b — SELV")
+for x, y in ((318, 140), (318, 275)):  # tappi: C1 e C2 non comunicano con CV2
+    d.line(*mm(x, y), *mm(x, y + 25), width=3)
+d.line(*mm(142, 405), *mm(142, 540), width=3)  # setto separatore tra morsettiere 230 V e SELV
+# guida A
+app(35, 40, 35, 90, ["<b>-Q0</b>", "sez.", "2P"])
+for i, (n, t) in enumerate((("-F1", "C10"), ("-F2", "C6"), ("-F3", "C6"))):
+    app(72 + i * 18, 40, 17.5, 90, [f"<b>{n}</b> {t}"], vert=True)
+area(130, 40, 262, 130, None, dashed=True, color="#909090")
+d.text("riserva", *mm(180, 78), size=6)
+app(265, 40, 52.5, 90, ["<b>-T1</b>", "HDR-60-12", "uscita 12 V", "↑ in alto", "", "", "", "", "", "ingresso", "230 V ↓"], fill=PONTE)
+# guida B
+app(35, 175, 17.5, 90, ["<b>-Q7</b> sicurezza"], vert=True)
+for i in range(6):
+    app(57 + i * 18, 175, 17.5, 90, [f"<b>-Q{i + 1}</b>"], vert=True)
+area(167, 175, 222, 265, None, dashed=True, color="#909090")
+d.text("riserva", *mm(180, 213), size=6)
+app(225, 190, 90, 60, ["<b>-A3</b> PZEM-016", "", "← L N TA"], fill=PONTE)
+d.text("RS485 →", *mm(288, 232), size=6)
+# guida C
+area(35, 310, 162, 400, None, dashed=True, color="#909090")
+d.text("riserva", *mm(85, 348), size=6)
+app(170, 310, 145, 90, ["↑ morsettiera relè: solo comandi bobine 12 V", "", "<b>-A1</b> Waveshare ESP32-S3-Relay-6CH", "145 × 90 × 40", "", "", "", "↓ alimentazione 12 V, RS485, H1"])
+# guida D
+app(35, 450, 100, 70, ["<b>-X0</b> linea L N PE", "<b>-X2</b> uscite stufa, prese", "<b>-XPE</b> terra"])
+app(160, 450, 35, 70, ["<b>-T2</b>", "DC-DC"])
+app(197, 450, 35, 70, ["<b>-A2</b>", "MOSFET"])
+app(238, 450, 80, 70, ["<b>-X3</b> SELV", "sonda, HX711,", "ventole,", "termostato"])
+# pressacavi sul fondo della cassetta
+for x, nome in ((35, "linea"), (75, "-W1"), (115, "prese"), (170, "-W3"), (205, "-W4"), (240, "M5"), (275, "M6"), (310, "-W2")):
+    px, py = mm(x, 568)
+    d.ellipse(px - 16, py - 16, px + 16, py + 16, fill="#ffffff")
+    d.text(nome, px - 14, py + 48, size=6)
+d.text("pressacavi 230 V", *mm(30, 606), size=7)
+d.text("pressacavi SELV", *mm(200, 606), size=7)
+d.rect(*mm(0, 0), *mm(350, 550))
+
+d.text("<b>Zone e canaline</b>" + tabella(["", "Zona", "Contenuto"], [
+    (f'<span style="color:{C230}">■■</span>', "230 V", "linea, protezioni, contatti dei contattori, uscite verso stufa e prese"),
+    (f'<span style="color:{CSELV}">■■</span>', "SELV", "12 V, 5 V, 3,3 V, RS485, HX711, PWM, termostato -B3"),
+    (f'<span style="color:#e0c000">■■</span>', "a cavallo", "-T1 e -A3: isolamento interno tra i due lati (vedi criticità)"),
+    ("▌", "barriera", "tappi di C1 e C2 verso CV2; setto tra -X2 e -T2 sulla guida D"),
+]), 960, 100, size=7)
 d.text(html([
-    "<b>Morsetti bassa tensione</b> (12 V / 5 V / RS485 / cavo HX711):",
-    "con -A1 (~9 mod) e clip -A2/-T2 (~3 mod) la fila è piena: restano ~12 mm (riquadro X).",
-    "Da verificare: morsetti BT su un secondo livello o nello spazio libero della fila superiore, separati dal 230 V.",
-]), 140, 716, size=7)
-for i, (x, nome) in enumerate([(180, "linea"), (250, "-W1"), (320, "-W2"), (390, "-X1 prese"), (620, "-W3"), (690, "-W4"), (760, "ventole")]):
-    d.ellipse(x - 14, 772, x + 14, 800)
-    d.text(nome, x - 20, 800, size=7)
-d.text("pressacavi 230 V", 240, 826, size=7)
-d.text("pressacavi bassa tensione", 630, 826, size=7)
-d.rect(960, 110, 1390, 190)
-d.text(html(["<b>Accanto al quadro</b>", "-X1 scatola da esterno, 3 prese Schuko: XS1 umidificatore 1, XS2 umidificatore 2, XS3 estrattore"]), 968, 116, size=7)
-d.rect(960, 240, 1390, 700, dashed=True)
-d.text("<b>Dentro la camera</b>", 968, 244, size=8)
-for i, (sig, desc) in enumerate([
-        ("-E1", "stufa a 3 lampade IR (cavo -W1)"), ("-B3", "termostato di sicurezza a parete (cavo -W2)"),
-        ("-B1", "sonda T/UR S-TH-01 (cavo -W3)"), ("-A4 / -B2", "HX711 in scatolina IP65 + cella di carico (cavo -W4)"),
-        ("-M2, -M3", "umidificatori a ultrasuoni (prese XS1, XS2)"), ("-M4", "estrattore, lato opposto alle ventole (presa XS3)"),
-        ("-M5, -M6", "ventole USB 5 V, lungo il muro")]):
-    d.rect(980, 290 + i * 56, 1370, 290 + i * 56 + 44, fill="#f2f2f2")
-    d.text(f"<b>{sig}</b> — {desc}", 988, 298 + i * 56, size=7)
+    "<b>Percorsi</b>",
+    "• <b>230 V</b>: linea e cavi di stufa e prese entrano in basso a sinistra, si attestano su -X0 / -X2 e salgono in CV1.",
+    "&nbsp;&nbsp;C0 alimenta -Q0 e -F1…-F3 dall'alto; C1 porta le uscite degli interruttori ai contattori, a -A3 e a -T1;",
+    "&nbsp;&nbsp;C2 raccoglie le uscite dei contattori e le riporta a -X2 passando da CV1.",
+    "• <b>Comandi bobine</b> (12 V): dalla morsettiera relè di -A1 (bordo alto) salgono in C2 fino ad A1/A2 dei contattori.",
+    "&nbsp;&nbsp;Stanno nella canalina di potenza, quindi vanno fatti con filo isolato per 230 V (H05V-K / H07V-K).",
+    "• <b>SELV</b>: dal bordo basso di -A1 (alimentazione, RS485, H1) in C3b e CV2; i cavi dei sensori entrano in basso a destra",
+    "&nbsp;&nbsp;e si attestano su -X3. L'uscita 12 V di -T1 e il lato RS485 di -A3 entrano direttamente in CV2.",
+    "• Nessun conduttore SELV in CV1, C0, C1; nessun conduttore 230 V in CV2, C3b. C1 e C2 sono tappate verso CV2.",
+    "",
+    "<b>Separazione per sicurezza</b> (obbligatoria)",
+    "• Circuiti SELV e 230 V nella stessa canalina solo se <i>ogni</i> conduttore è isolato per la tensione più alta",
+    "&nbsp;&nbsp;(regola CEI 64-8 art. 528.1): vale per i comandi bobine, non per i cavetti di sensori e RS485.",
+    "• Sulla scheda -A1 non arriva più il 230 V: i contatti dei relè di bordo commutano solo i 12 V delle bobine.",
+    "• Morsetti 230 V e SELV sulla guida D separati da fermi, setto e almeno 30 mm.",
+    "",
+    "<b>Separazione per i disturbi</b> (consigliata)",
+    "• RS485 e cavo HX711 su doppini intrecciati, lontani da C2 e dai contattori; incroci a 90°.",
+    "• Andata e ritorno delle ventole (corrente PWM) intrecciati tra loro e non affiancati a DOUT / SCK dell'HX711.",
+    "• In CV2 tenere su un lato le alimentazioni e sull'altro i segnali; fili di segnale non più lunghi del necessario.",
+    "",
+    "<b>Ipotesi da confermare</b>",
+    "• Dimensioni di cassetta e piastra; il centralino da 24 moduli (37 × 28 × 11,5 cm) non contiene questa disposizione.",
+    "• -T1: montaggio verticale con ingresso in basso e uscita in alto, 40 mm liberi sopra e 20 sotto (manuale Mean Well).",
+    "• -A3 non ha attacco DIN dichiarato: su clip o a vite sulla piastra, lato rete a sinistra.",
+    "• Connettore H1 di -A1 interno al contenitore: verificare da dove far uscire i fili (PWM, HX711).",
+    "• Piastra metallica: va collegata a -XPE. Pressacavi adatti al diametro di ogni cavo (M20 per i 230 V, M12 per i sensori).",
+]), 960, 230, size=7)
 
 # ----------------------------------------------------------------------------- folio 8: distinta
 d = d8
@@ -573,10 +675,11 @@ d.table(50, 90, 1330, 620,
         "FROM element_nomenclature_view WHERE description <> '' ORDER BY label",
         ["Sigla", "Componente", "Note", "Costruttore", "Riferimento", "Folio"], rows=len(DISTINTA) + 1, font=7)
 d.text("<b>Cavi, morsetti e meccanica</b> (non rappresentati come elementi)" + tabella(["Sigla", "Descrizione", "Note"], CAVI), 50, 800, size=7)
+d.text("<b>Modifiche ai materiali — rev. B</b> (proposta, vedi folii 7 e 9)" + tabella(["", "Sigla", "Materiale", "Motivo / note"], MODIFICHE), 50, 1040, size=7)
 
 # ----------------------------------------------------------------------------- folio 9: cablaggio
-# Vista d'insieme: apparecchi nella posizione fisica (come nel folio 7) e ogni filo tracciato da morsetto
-# a morsetto. I percorsi sono espliciti: ogni filo ha la sua "pista" orizzontale e la sua "corsia" verticale.
+# Vista d'insieme rev. B: apparecchi sulle quattro guide della piastra (folio 7) e ogni filo tracciato da
+# morsetto a morsetto. I percorsi sono espliciti: ogni filo ha la sua "pista" orizzontale e la sua "corsia".
 d = d9
 
 
@@ -584,188 +687,257 @@ def qbox(nome, w, h, pins, lines=()):
     return p.define("q_" + nome, make_box(nome, w, h, pins, lines, font=5, label_at=(6, h / 2 - 18)))
 
 
+def xy(t):
+    return (t.x, t.y) if hasattr(t, "is_node") else t.pos
+
+
 def posa(a, punti, b, **kw):
     """Filo da a a b passando per gli angoli indicati (tratti solo orizzontali o verticali)."""
     tappe = [a] + [d.node(x, y, dot=False) for x, y in punti] + [b]
     for u, v in zip(tappe, tappe[1:]):
-        pu, pv = ((t.x, t.y) if hasattr(t, "is_node") else t.pos for t in (u, v))
+        pu, pv = xy(u), xy(v)
         assert abs(pu[0] - pv[0]) < 0.5 or abs(pu[1] - pv[1]) < 0.5, f"tratto obliquo {pu} -> {pv}"
         d.wire(u, v, **kw)
         kw = dict(kw, num="")
+
+
+def barra(y, prese, da=None, via=(), **kw):
+    """Pista orizzontale a quota y con una derivazione verticale per ogni morsetto di `prese`.
+
+    `da` è il morsetto (o nodo) che alimenta la pista passando per gli angoli `via`: arriva su un'estremità.
+    """
+    num = kw.pop("num", "")
+    per_x = {}
+    for t in prese:
+        per_x.setdefault(round(t.pos[0]), []).append(t)
+    xs = sorted(per_x)
+    capo = None
+    if da is not None:
+        fx = via[-1][0] if via else xy(da)[0]
+        capo = xs[0] if fx < xs[0] else xs[-1]
+        assert fx < xs[0] or fx > xs[-1], f"alimentazione della pista y={y} non a un'estremità"
+    nodi = {}
+    for i, x in enumerate(xs):
+        rami = len(per_x[x]) + (i > 0) + (i < len(xs) - 1) + (x == capo)
+        nodi[x] = d.node(x, y, dot=rami >= 3)
+        for t in per_x[x]:
+            d.wire(t, nodi[x], **kw)
+    for u, v in zip(xs, xs[1:]):
+        d.wire(nodi[u], nodi[v], **kw)
+    if da is not None:
+        posa(da, list(via), nodi[capo], num=num, **kw)
+    return nodi
 
 
 def pins(side, items):
     return [(side, off, name, shown) for off, name, shown in items]
 
 
+def serie(side, nomi, passo, primo, pref=""):
+    """Morsetti equidistanti: nome interno con prefisso, testo mostrato senza."""
+    return [(side, primo + i * passo, pref + n, "" if pref.endswith("^") else n.split("/")[-1])
+            for i, n in enumerate(nomi)]
+
+
+X1_M = ["W1/L1", "W1/L2", "W1/L3", "W1/N", "W1/PE", "P/XS1", "P/XS2", "P/XS3", "P/N", "P/PE"]
+X3_M = ["W3/+12", "W3/0V", "W3/A", "W3/B", "W4/3V3", "W4/GND", "W4/DT", "W4/SCK", "M5/+", "M5/−", "M6/+", "M6/−",
+        "W2/1", "W2/2"]
 rele = []
 for i in range(6):
-    rele += [(40 + i * 50 + 5, f"COM{i + 1}", "C"), (60 + i * 50 + 5, f"NA{i + 1}", "NA")]
+    rele += [(25 + i * 70, f"NA{i + 1}", "NA"), (45 + i * 70, f"COM{i + 1}", "C")]
+CONT = pins("n", [(20, "1", "1")]) + pins("s", [(20, "2", "2"), (50, "A1", "A1"), (70, "A2", "A2")])
+INT = pins("n", [(20, "Li", "L"), (60, "Ni", "N")]) + pins("s", [(20, "L", "L"), (60, "N", "N")])
 Q = {
-    "linea": qbox("linea_230v", 100, 40, pins("s", [(20, "L", "L"), (50, "N", "N"), (80, "PE", "PE")]),
-                  [(6, 12, "da quadro generale", 5), (6, 21, "16 A + Id 30 mA", 5)]),
-    "x0": qbox("morsetti_x0", 100, 100, pins("n", [(20, "Li", ""), (50, "Ni", ""), (80, "PEi", "")])
-               + pins("s", [(20, "L", "L"), (50, "N", "N"), (80, "PE", "PE")]), [(30, 62, "ingresso linea", 5)]),
-    "t1": qbox("hdr_30_12", 140, 100, pins("s", [(20, "L", "L"), (40, "N", "N"), (60, "PE", "PE"),
-                                                 (100, "+V", "+12"), (120, "-V", "0V")]),
-               [(34, 46, "Mean Well HDR-30-12", 5)]),
-    "a3": qbox("pzem016", 140, 100, pins("s", [(20, "L", "L"), (40, "N", "N"), (70, "TA1", "TA"), (90, "TA2", "TA"),
-                                               (110, "A", "A"), (130, "B", "B")]),
-               [(34, 46, "PZEM-016 (Modbus ind. 2)", 5)]),
-    "xn": qbox("morsettiera_n", 100, 100, pins("s", [(10 + 20 * i, f"N{i + 1}", "N") for i in range(5)]),
-               [(40, 46, "neutro (Wago)", 5)]),
-    "xpe": qbox("morsettiera_pe", 100, 100, pins("s", [(10 + 20 * i, f"PE{i + 1}", "PE") for i in range(5)]),
-                [(40, 46, "terra (Wago)", 5)]),
-    "a1": qbox("waveshare_6ch", 480, 140,
-               pins("n", rele + [(355, "VIN+", "VIN"), (375, "GND", "GND"), (410, "A", "A"), (430, "B", "B"),
-                                 (465, "Earth", "Earth")])
-               + pins("s", [(40, "3V3", "3V3"), (70, "GNDh", "GND"), (100, "GPIO5", "IO5"), (130, "GPIO6", "IO6"),
-                            (440, "GNDp", "GND"), (460, "GPIO4", "IO4")]),
-               [(40, 68, "Waveshare ESP32-S3-Relay-6CH", 7)]
-               + [(46 + i * 50, 22, f"K{i + 1}", 5) for i in range(6)]
-               + [(346, 22, "7–36 V", 5), (406, 22, "RS485", 5), (36, 124, "connettore H1 (HX711)", 5),
-                  (396, 124, "H1 (PWM)", 5)]),
-    "t2": qbox("dcdc_5v", 100, 100, pins("n", [(20, "IN+", "IN+"), (40, "IN-", "IN−"), (65, "+5V", "+5"), (85, "0V", "0V")]),
-               [(34, 60, "DC-DC 12 → 5 V", 5)]),
-    "a2": qbox("mosfet", 100, 100, pins("n", [(20, "VIN-", "VIN−"), (60, "OUT-", "OUT−")])
-               + pins("s", [(30, "GND", "GND"), (70, "PWM", "PWM")]), [(34, 60, "MOSFET D4184", 5)]),
+    "linea": qbox("linea_230v", 80, 50, pins("n", [(15, "L", "L"), (40, "N", "N"), (65, "PE", "PE")]),
+                  [(4, 30, "da quadro generale", 5), (4, 40, "16 A + Id 30 mA", 5)]),
+    "x0": qbox("morsetti_x0", 80, 80, serie("n", ["L", "N", "PE"], 25, 15, "^") + serie("s", ["L", "N", "PE"], 25, 15),
+               [(30, 56, "linea", 5)]),
+    "x1": qbox("morsetti_x1", 268, 80, serie("n", X1_M, 26, 20, "^") + serie("s", X1_M, 26, 20),
+               [(60, 56, "uscite 230 V: stufa (-W1) e prese", 5)]),
+    "q0": qbox("sezionatore", 80, 80, pins("n", [(20, "1", "1"), (60, "3", "3")]) + pins("s", [(20, "2", "2"), (60, "4", "4")]),
+               [(30, 48, "sezionatore 2P", 5)]),
+    "f1": qbox("int_f1", 80, 80, INT, [(30, 40, "C10 1P+N", 5), (30, 50, "stufa", 5)]),
+    "f2": qbox("int_f2", 80, 80, INT, [(30, 40, "C6 1P+N", 5), (30, 50, "prese", 5)]),
+    "f3": qbox("int_f3", 80, 80, INT, [(30, 40, "C6 1P+N", 5), (30, 50, "ausiliari", 5)]),
+    "t1": qbox("hdr_60_12", 120, 80, pins("s", [(30, "L", "L"), (60, "N", "N")]) + pins("n", [(70, "+V", "+12"), (100, "-V", "0V")]),
+               [(34, 40, "Mean Well HDR-60-12", 5), (34, 50, "classe II: senza PE", 5)]),
     "ta": qbox("ta_apribile", 40, 20, pins("w", [(10, "P1", "")]) + pins("e", [(10, "P2", "")])
                + pins("n", [(10, "S1", ""), (30, "S2", "")]), [(13, 14, "TA", 5)]),
-    "e1": qbox("stufa", 120, 100, pins("n", [(20, "L3", "L3"), (40, "L2", "L2"), (60, "L1", "L1"), (80, "N", "N"),
-                                             (100, "PE", "PE")]), [(34, 60, "stufa 3 lampade IR", 5)]),
-    "b3": qbox("termostato", 60, 100, pins("n", [(15, "1", "1"), (45, "2", "2")]), [(6, 76, "termostato", 5)]),
-    "a4": qbox("hx711_q", 130, 100, pins("n", [(20, "3V3", "VCC"), (50, "GND", "GND"), (80, "DOUT", "DT"), (110, "SCK", "SCK")])
-               + pins("e", [(15, "E+", "E+"), (40, "E-", "E−"), (65, "A+", "A+"), (90, "A-", "A−")]),
-               [(34, 60, "HX711", 5)]),
-    "b2": qbox("cella_q", 100, 100, pins("w", [(15, "E+", "E+"), (40, "E-", "E−"), (65, "A+", "A+"), (90, "A-", "A−")]),
-               [(40, 60, "cella di carico", 5)]),
-    "x1": qbox("scatola_prese", 120, 100, pins("n", [(20, "XS3", "XS3"), (40, "XS2", "XS2"), (60, "XS1", "XS1"),
-                                                     (80, "N", "N"), (100, "PE", "PE")]),
-               [(34, 56, "3 prese Schuko:", 5), (34, 66, "umidif. 1, 2, estrattore", 5)]),
-    "b1": qbox("sonda_q", 100, 100, pins("n", [(20, "V+", "V+"), (40, "GND", "GND"), (60, "A", "A"), (80, "B", "B")]),
-               [(34, 60, "sonda S-TH-01", 5)]),
-    "fan": qbox("ventola_usb", 120, 80, pins("w", [(20, "+", "+ 5 V"), (60, "-", "−")]), [(50, 44, "ventola USB", 5)]),
+    "q7": qbox("contattore_sicurezza", 80, 90, CONT, [(30, 44, "sicurezza", 5), (30, 54, "lampade", 5)]),
+    "q": qbox("contattore", 80, 90, CONT, [(30, 50, "25 A", 5)]),
+    "a3": qbox("pzem016", 140, 90, pins("w", [(15, "L", "L"), (35, "N", "N"), (55, "TA1", "TA"), (75, "TA2", "TA")])
+               + pins("e", [(15, "5V", "+5V"), (35, "B", "B"), (55, "A", "A"), (75, "GND", "GND")]),
+               [(44, 54, "PZEM-016", 5), (44, 64, "(Modbus ind. 2)", 5)]),
+    "a1": qbox("waveshare_6ch", 500, 120,
+               pins("n", rele)
+               + pins("s", [(110, "3V3", "3V3"), (130, "GNDh", "GND"), (150, "GPIO5", "IO5"), (170, "GPIO6", "IO6"),
+                            (210, "GPIO4", "IO4"), (230, "GNDp", "GND"), (335, "VIN+", "+"), (365, "GND", "−"),
+                            (395, "A", "A+"), (425, "B", "B−"), (470, "G", "G")]),
+               [(40, 60, "Waveshare ESP32-S3-Relay-6CH", 7)]
+               + [(28 + i * 70, 22, f"K{i + 1}", 5) for i in range(6)]
+               + [(100, 104, "connettore H1 (interno)", 5), (326, 104, "7–36 V", 5), (392, 104, "RS485", 5)]),
+    "t2": qbox("dcdc_5v", 80, 80, pins("n", [(10, "IN+", "IN+"), (30, "IN-", "IN−"), (50, "+5V", "+5"), (70, "0V", "0V")]),
+               [(30, 56, "DC-DC 5 V", 5)]),
+    "a2": qbox("mosfet", 90, 80, pins("n", [(15, "PWM", "PWM"), (35, "GND", "GND"), (55, "VIN-", "VIN−"), (75, "OUT-", "OUT−")]),
+               [(30, 56, "MOSFET D4184", 5)]),
+    "x3": qbox("morsetti_x3", 420, 80, serie("n", X3_M, 30, 15, "^") + serie("s", X3_M, 30, 15),
+               [(60, 56, "morsetti SELV: sonda (-W3), HX711 (-W4), ventole, termostato (-W2)", 5)]),
+    "e1": qbox("stufa", 128, 70, serie("n", ["L1", "L2", "L3", "N", "PE"], 26, 12), [(40, 50, "stufa 3 lampade IR", 5)]),
+    "pr": qbox("scatola_prese", 128, 70, serie("n", ["XS1", "XS2", "XS3", "N", "PE"], 26, 12),
+               [(34, 44, "3 prese Schuko:", 5), (34, 54, "umidif. 1, 2, estrattore", 5)]),
+    "b1": qbox("sonda_q", 114, 70, serie("n", ["V+", "GND", "A", "B"], 30, 12),
+               [(34, 44, "sonda S-TH-01", 5), (6, 62, "rosso, nero, giallo, bianco", 5)]),
+    "a4": qbox("hx711_q", 114, 70, serie("n", ["VCC", "GND", "DT", "SCK"], 30, 12)
+               + serie("s", ["E+", "E−", "A+", "A−"], 30, 12), [(40, 40, "HX711", 5)]),
+    "b2": qbox("cella_q", 114, 50, serie("n", ["E+", "E−", "A+", "A−"], 30, 12), [(40, 38, "cella di carico", 5)]),
+    "fan": qbox("ventola_usb", 54, 70, serie("n", ["+", "−"], 30, 12), [(6, 56, "ventola USB", 5)]),
+    "b3": qbox("termostato", 54, 70, serie("n", ["1", "2"], 30, 12), [(4, 50, "termostato", 5), (4, 59, "di sicurezza", 5)]),
 }
-ql = d.add(Q["linea"], 310, 20)
-x0 = d.add(Q["x0"], 310, 110, "-X0")
-t1 = d.add(Q["t1"], 430, 110, "-T1")
-a3 = d.add(Q["a3"], 600, 110, "-A3")
-xn = d.add(Q["xn"], 770, 110, "-X2:N")
-xp = d.add(Q["xpe"], 920, 110, "-X2:PE")
-a1 = d.add(Q["a1"], 300, 510, "-A1")
-t2 = d.add(Q["t2"], 900, 510, "-T2")
-a2 = d.add(Q["a2"], 1020, 510, "-A2")
-ta = d.add(Q["ta"], 280, 250, "-A3:TA", label_pos=(-52, 14))
-e1 = d.add(Q["e1"], 100, 850, "-E1")
-b3 = d.add(Q["b3"], 225, 850, "-B3")
-a4 = d.add(Q["a4"], 320, 850, "-A4")
-b2 = d.add(Q["b2"], 520, 850, "-B2")
-x1 = d.add(Q["x1"], 780, 850, "-X1")
-b1 = d.add(Q["b1"], 1120, 850, "-B1")
-m5 = d.add(Q["fan"], 1290, 400, "-M5")
-m6 = d.add(Q["fan"], 1290, 520, "-M6")
+YA, YB, YC, YD, YF = 110, 380, 660, 950, 1180  # guide A–D e apparecchi esterni
+q0 = d.add(Q["q0"], 150, YA, "-Q0")
+f1 = d.add(Q["f1"], 290, YA, "-F1")
+f2 = d.add(Q["f2"], 430, YA, "-F2")
+f3 = d.add(Q["f3"], 570, YA, "-F3")
+t1 = d.add(Q["t1"], 1120, YA, "-T1")
+ta = d.add(Q["ta"], 220, 290, "-A3:TA", label_pos=(-10, 22))
+q7 = d.add(Q["q7"], 150, YB, "-Q7")
+qk = [d.add(Q["q"], 270 + i * 100, YB, f"-Q{i + 1}") for i in range(6)]
+a3 = d.add(Q["a3"], 950, YB, "-A3")
+a1 = d.add(Q["a1"], 840, YC, "-A1")
+x0 = d.add(Q["x0"], 150, YD, "-X0")
+x1 = d.add(Q["x1"], 270, YD, "-X2")
+t2 = d.add(Q["t2"], 850, YD, "-T2")
+a2 = d.add(Q["a2"], 1035, YD, "-A2")
+x3 = d.add(Q["x3"], 1160, YD, "-X3")
+ql = d.add(Q["linea"], 150, YF)
+e1 = d.add(Q["e1"], 278, YF, "-E1")
+pr = d.add(Q["pr"], 408, YF, "-X1")
+b1 = d.add(Q["b1"], 1163, YF, "-B1")
+a4 = d.add(Q["a4"], 1283, YF, "-A4")
+b2 = d.add(Q["b2"], 1283, YF + 100, "-B2")
+m5 = d.add(Q["fan"], 1403, YF, "-M5")
+m6 = d.add(Q["fan"], 1463, YF, "-M6")
+b3 = d.add(Q["b3"], 1523, YF, "-B3")
 
 L, N = dict(color=C["L"]), dict(color=C["N"])
 PE = dict(color=C["PE"], color2=C["PE2"])
-# linea in ingresso
-posa(ql.pin["L"], [], x0.pin["Li"], **L)
-posa(ql.pin["N"], [], x0.pin["Ni"], **N)
-posa(ql.pin["PE"], [], x0.pin["PEi"], **PE)
-# fase: pista y=240 (da -X0 a -T1, -A3, COM K4–K6 e al termostato con -W2)
-f = {x: d.node(x, 240) for x in (330, 450, 495, 545, 595)}
-posa(x0.pin["L"], [], f[330], **L)
-posa(b3.pin["1"], [(240, 240)], f[330], num="W2-1", **L)
-for u, v in zip((330, 450, 495, 545), (450, 495, 545, 595)):
-    d.wire(f[u], f[v], **L)
-posa(f[595], [(620, 240)], a3.pin["L"], **L)
-d.wire(f[450], t1.pin["L"], **L)
-for x, k in ((495, 4), (545, 5), (595, 6)):
-    d.wire(f[x], a1.pin[f"COM{k}"], **L)
-# L-lampade: pista y=260 (ritorno dal termostato, attraverso il TA, ai COM K1–K3)
-g = {x: d.node(x, 260) for x in (345, 395)}
-posa(b3.pin["2"], [(270, 260)], ta.pin["P1"], num="W2-2", **L)
-d.wire(ta.pin["P2"], g[345], **L)
-d.wire(g[345], g[395], **L)
-posa(g[395], [(445, 260)], a1.pin["COM3"], **L)
-d.wire(g[345], a1.pin["COM1"], **L)
-d.wire(g[395], a1.pin["COM2"], **L)
-posa(a3.pin["TA1"], [(670, 220), (290, 220)], ta.pin["S1"], color=C["SEG"])
-posa(a3.pin["TA2"], [(690, 230), (310, 230)], ta.pin["S2"], color=C["SEG"])
-# neutro: piste y=270…300
-posa(x0.pin["N"], [(360, 270), (780, 270)], xn.pin["N1"], **N)
-posa(t1.pin["N"], [(470, 280), (800, 280)], xn.pin["N2"], **N)
-posa(a3.pin["N"], [(640, 290), (820, 290)], xn.pin["N3"], **N)
-posa(xn.pin["N4"], [(840, 300), (180, 300)], e1.pin["N"], num="W1-N", **N)
-posa(xn.pin["N5"], [], x1.pin["N"], **N)
-# protezione: piste y=310…350
-posa(x0.pin["PE"], [(390, 310), (930, 310)], xp.pin["PE1"], **PE)
-posa(t1.pin["PE"], [(490, 320), (950, 320)], xp.pin["PE2"], **PE)
-posa(xp.pin["PE3"], [(970, 330), (200, 330)], e1.pin["PE"], num="W1-PE", **PE)
-posa(xp.pin["PE4"], [(990, 340), (765, 340)], a1.pin["Earth"], **PE)
-posa(xp.pin["PE5"], [(1010, 350), (880, 350)], x1.pin["PE"], **PE)
-# uscite relè: verso stufa (-W1) e prese (-X1)
-for k, y, corsia, col in ((1, 480, 160, C["L"]), (2, 470, 140, C["L2"]), (3, 460, 120, C["L3"])):
-    px = a1.pin[f"NA{k}"].pos[0]
-    posa(a1.pin[f"NA{k}"], [(px, y), (corsia, y)], e1.pin[f"L{k}"], num=f"W1-L{k}", color=col)
-for k, y, corsia in ((6, 480, 800), (5, 470, 820), (4, 460, 840)):
-    px = a1.pin[f"NA{k}"].pos[0]
-    posa(a1.pin[f"NA{k}"], [(px, y), (corsia, y)], x1.pin[f"XS{k - 3}"], **L)
-# 12 V: pista y=370; 0 V: pista y=380
-v = {x: d.node(x, 370) for x in (655, 920)}
-posa(t1.pin["+V"], [(530, 370)], v[655], color=C["12V"])
-d.wire(v[655], v[920], color=C["12V"])
-posa(v[920], [(1140, 370)], b1.pin["V+"], num="W3 +12 V", color=C["12V"])
-d.wire(v[655], a1.pin["VIN+"], color=C["12V"])
-d.wire(v[920], t2.pin["IN+"], color=C["12V"])
-z = {x: d.node(x, 380) for x in (675, 940, 985, 1040)}
-posa(t1.pin["-V"], [(550, 380)], z[675], color=C["0V"])
-for u, w in zip((675, 940, 985), (940, 985, 1040)):
-    d.wire(z[u], z[w], color=C["0V"])
-posa(z[1040], [(1160, 380)], b1.pin["GND"], num="W3 GND", color=C["0V"])
-for x, t in ((675, a1.pin["GND"]), (940, t2.pin["IN-"]), (985, t2.pin["0V"]), (1040, a2.pin["VIN-"])):
-    d.wire(z[x], t, color=C["0V"])
-# RS485: A e B scendono dritti da -A3 a -A1, con derivazione verso la sonda (-W3)
-ra, rb = d.node(710, 400), d.node(730, 410)
-d.wire(a3.pin["A"], ra, color=C["A"])
-d.wire(ra, a1.pin["A"], color=C["A"])
-posa(ra, [(1180, 400)], b1.pin["A"], num="W3-A", color=C["A"])
-d.wire(a3.pin["B"], rb, color=C["B"])
-d.wire(rb, a1.pin["B"], color=C["B"])
-posa(rb, [(1200, 410)], b1.pin["B"], num="W3-B", color=C["B"])
-# 5 V e ventole
-p5, pm = d.node(1250, 420), d.node(1270, 460)
-posa(t2.pin["+5V"], [(965, 420)], p5, color=C["5V"])
-d.wire(p5, m5.pin["+"], color=C["5V"])
-posa(p5, [(1250, 540)], m6.pin["+"], color=C["5V"])
-posa(a2.pin["OUT-"], [(1080, 460)], pm, color=C["0V"])
-d.wire(pm, m5.pin["-"], color=C["0V"])
-posa(m6.pin["-"], [(1270, 580)], pm, color=C["0V"])
-# connettore H1: PWM verso -A2, HX711 con -W4
-posa(a1.pin["GNDp"], [(740, 680), (1050, 680)], a2.pin["GND"], color=C["0V"])
-posa(a1.pin["GPIO4"], [(760, 700), (1090, 700)], a2.pin["PWM"], num="PWM", color=C["SEG"])
-posa(a1.pin["3V3"], [], a4.pin["3V3"], num="W4 3,3 V", color=C["12V"])
-posa(a1.pin["GNDh"], [], a4.pin["GND"], color=C["0V"])
-posa(a1.pin["GPIO5"], [], a4.pin["DOUT"], color=C["SEG"])
-posa(a1.pin["GPIO6"], [], a4.pin["SCK"], color=C["SEG"])
-for pin in ("E+", "E-", "A+", "A-"):
-    d.wire(a4.pin[pin], b2.pin[pin], color=C["SEG"])
+V12, V0, V5, SEG, CMD = (dict(color=C[k]) for k in ("12V", "0V", "5V", "SEG", "CMD"))
+# ---- cavi esterni: dritti dai morsetti agli apparecchi
+for n in ("L", "N", "PE"):
+    posa(x0.pin[n], [], ql.pin[n], **{"L": L, "N": N, "PE": PE}[n])
+for n, col in (("L1", L), ("L2", dict(color=C["L2"])), ("L3", dict(color=C["L3"])), ("N", N), ("PE", PE)):
+    posa(x1.pin["W1/" + n], [], e1.pin[n], **col)
+for n, col in (("XS1", L), ("XS2", L), ("XS3", L), ("N", N), ("PE", PE)):
+    posa(x1.pin["P/" + n], [], pr.pin[n], **col)
+for (m, n), col in zip((("W3/+12", "V+"), ("W3/0V", "GND"), ("W3/A", "A"), ("W3/B", "B")),
+                       (V12, V0, dict(color=C["A"]), dict(color=C["B"]))):
+    posa(x3.pin[m], [], b1.pin[n], **col)
+for (m, n), col in zip((("W4/3V3", "VCC"), ("W4/GND", "GND"), ("W4/DT", "DT"), ("W4/SCK", "SCK")), (V12, V0, SEG, SEG)):
+    posa(x3.pin[m], [], a4.pin[n], **col)
+for n in ("E+", "E−", "A+", "A−"):
+    posa(a4.pin[n], [], b2.pin[n], **SEG)
+for m, el in (("M5", m5), ("M6", m6)):
+    posa(x3.pin[m + "/+"], [], el.pin["+"], **V5)
+    posa(x3.pin[m + "/−"], [], el.pin["−"], **V0)
+posa(x3.pin["W2/1"], [], b3.pin["1"], **V12)
+posa(x3.pin["W2/2"], [], b3.pin["2"], **CMD)
+# ---- 230 V: linea -> sezionatore -> interruttori
+posa(x0.pin["^L"], [(165, 900), (90, 900), (90, 40), (170, 40)], q0.pin["1"], **L)
+posa(x0.pin["^N"], [(190, 890), (100, 890), (100, 30), (210, 30)], q0.pin["3"], **N)
+barra(70, [f.pin["Li"] for f in (f1, f2, f3)], da=q0.pin["2"], via=[(170, 220), (120, 220), (120, 70)], **L)
+barra(60, [f.pin["Ni"] for f in (f1, f2, f3)], da=q0.pin["4"], via=[(210, 230), (130, 230), (130, 60)], **N)
+# ---- ramo stufa: -F1 -> TA -> -Q7 (sicurezza) -> -Q1…-Q3 -> -X1
+posa(f1.pin["L"], [(310, 300)], ta.pin["P2"], **L)
+posa(ta.pin["P1"], [(170, 300)], q7.pin["1"], **L)
+barra(330, [q.pin["1"] for q in qk[:3]], da=q7.pin["2"], via=[(170, 500), (250, 500), (250, 330)], **L)
+posa(qk[0].pin["2"], [], x1.pin["^W1/L1"], **L)
+posa(qk[1].pin["2"], [(390, 800), (316, 800)], x1.pin["^W1/L2"], color=C["L2"])
+posa(qk[2].pin["2"], [(490, 810), (342, 810)], x1.pin["^W1/L3"], color=C["L3"])
+posa(f1.pin["N"], [(350, 250), (140, 250), (140, 910), (368, 910)], x1.pin["^W1/N"], **N)
+posa(ta.pin["S1"], [(230, 220), (900, 220), (900, 435)], a3.pin["TA1"], **SEG)
+posa(ta.pin["S2"], [(250, 230), (910, 230), (910, 455)], a3.pin["TA2"], **SEG)
+# ---- ramo prese: -F2 -> -Q4…-Q6 -> -X1
+barra(350, [q.pin["1"] for q in qk[3:]], da=f2.pin["L"], via=[(450, 350)], **L)
+for i, y in ((3, 820), (4, 830), (5, 840)):
+    sx, tx = qk[i].pin["2"].pos[0], x1.pin[f"^P/XS{i - 2}"].pos[0]
+    posa(qk[i].pin["2"], [(sx, y), (tx, y)], x1.pin[f"^P/XS{i - 2}"], **L)
+posa(f2.pin["N"], [(490, 260), (130, 260), (130, 880), (498, 880)], x1.pin["^P/N"], **N)
+# ---- ausiliari: -F3 -> -T1 e misura di tensione di -A3
+nl, nn = d.node(880, 270), d.node(890, 280)
+posa(f3.pin["L"], [(590, 270)], nl, **L)
+posa(nl, [(880, 395)], a3.pin["L"], **L)
+posa(nl, [(1150, 270)], t1.pin["L"], **L)
+posa(f3.pin["N"], [(630, 280)], nn, **N)
+posa(nn, [(890, 415)], a3.pin["N"], **N)
+posa(nn, [(1180, 280)], t1.pin["N"], **N)
+# ---- protezione: -X0:PE -> PE dei cavi e morsetto G (scaricatori RS485) di -A1
+gp = barra(870, [x1.pin["^W1/PE"], x1.pin["^P/PE"]], da=x0.pin["^PE"], via=[(215, 870)], **PE)
+posa(gp[max(gp)], [(1310, 870)], a1.pin["G"], **PE)
+# ---- +12 V: corsia x=1600; 0 V: corsia x=1610
+n12 = d.node(1600, 620)
+posa(t1.pin["+V"], [(1190, 60), (1600, 60)], n12, num="+12 V", **V12)
+barra(620, [a1.pin[f"COM{k}"] for k in range(1, 7)], da=n12, **V12)
+barra(810, [a1.pin["VIN+"], x3.pin["^W3/+12"], x3.pin["^W2/1"], t2.pin["IN+"]], da=n12, via=[(1600, 810)], **V12)
+n0a, n0b = d.node(1610, 455), d.node(1610, 510)
+posa(t1.pin["-V"], [(1220, 50), (1610, 50)], n0a, num="0 V", **V0)
+d.wire(n0a, n0b, **V0)
+barra(510, [q.pin["A2"] for q in [q7] + qk], da=n0b, **V0)
+barra(820, [a1.pin["GND"], x3.pin["^W3/0V"], a2.pin["VIN-"], t2.pin["0V"], t2.pin["IN-"]], da=n0b, via=[(1610, 820)], **V0)
+posa(a3.pin["GND"], [], n0a, dashed=True, **V0)
+# ---- comandi bobine: NA dei relè di -A1 -> A1 dei contattori; catena di sicurezza del termostato -> -Q7
+for k in range(6):
+    sx, tx, y = qk[k].pin["A1"].pos[0], a1.pin[f"NA{k + 1}"].pos[0], 600 - 10 * k
+    posa(qk[k].pin["A1"], [(sx, y), (tx, y)], a1.pin[f"NA{k + 1}"], **CMD)
+posa(x3.pin["^W2/2"], [(1565, 890), (1640, 890), (1640, 530), (200, 530)], q7.pin["A1"], num="W2-2", **CMD)
+# ---- 5 V e ventole
+barra(850, [x3.pin["^M5/+"], x3.pin["^M6/+"]], da=t2.pin["+5V"], via=[(900, 850)], **V5)
+barra(860, [x3.pin["^M5/−"], x3.pin["^M6/−"]], da=a2.pin["OUT-"], via=[(1110, 860)], **V0)
+posa(a1.pin["GPIO4"], [], a2.pin["PWM"], num="PWM", **SEG)
+posa(a1.pin["GNDp"], [], a2.pin["GND"], **V0)
+# ---- HX711 (-W4)
+for n, m, y, col in (("3V3", "3V3", 910, V12), ("GNDh", "GND", 900, V0), ("GPIO5", "DT", 890, SEG), ("GPIO6", "SCK", 880, SEG)):
+    sx, tx = a1.pin[n].pos[0], x3.pin["^W4/" + m].pos[0]
+    posa(a1.pin[n], [(sx, y), (tx, y)], x3.pin["^W4/" + m], **col)
+# ---- RS485: -A1 -> -X3 (sonda) con derivazione verso -A3
+ra, rb = d.node(1235, 830), d.node(1265, 840)
+for n, nodo, corsia, col in (("A", ra, 1620, C["A"]), ("B", rb, 1630, C["B"])):
+    d.wire(a1.pin[n], nodo, color=col)
+    d.wire(nodo, x3.pin["^W3/" + n], color=col)
+    y = a3.pin[n].pos[1]
+    posa(a3.pin[n], [(corsia, y), (corsia, xy(nodo)[1])], nodo, color=col)
 
-d.rect(90, 80, 1230, 790, width=2)
-d.text("<b>Quadro IP65</b> (in cantina)", 100, 86, size=8)
-d.text(html(["fila superiore:", "230 V"]), 100, 130, size=7)
-d.text("fila inferiore: bassa tensione", 900, 618, size=7)
-for x1_, x2_, nome in ((110, 210, "-W1"), (230, 280, "-W2"), (330, 440, "-W4"), (790, 890, "prese"), (1130, 1210, "-W3")):
-    d.ellipse(x1_, 782, x2_, 798, color="#808080")
-    d.text(nome, x2_ + 2, 795, size=7)
-d.ellipse(320, 72, 400, 88, color="#808080")
-d.ellipse(1222, 410, 1238, 590, color="#808080")
-d.rect(90, 830, 1230, 960, dashed=True, color="#808080")
-d.text("<b>Fuori dal quadro</b> — in camera: -E1, -B3, -A4/-B2, -B1, ventole; accanto al quadro: -X1", 640, 962, size=7)
+d.rect(60, 14, 1670, 1090, width=2)
+d.text("<b>Cassetta con piastra</b> (in cantina) — disposizione fisica: folio 7", 660, 130, size=8)
+for y, nome in ((YA, "A"), (YB, "B"), (YC, "C"), (YD, "D")):
+    d.text(f'<span style="font-size:14pt"><b>{nome}</b></span>', 62, y + 20)
+for x1_, x2_, nome in ((155, 225, "linea"), (282, 402, "-W1"), (412, 532, "prese"), (1167, 1273, "-W3"), (1287, 1393, "-W4"),
+                       (1407, 1513, "ventole"), (1527, 1573, "-W2")):
+    d.ellipse(x1_, 1082, x2_, 1098, color="#808080")
+    d.text(nome, x1_ + 2, 1100, size=7)
+d.text(html(["+5V di -A3: uscita,", "<b>non collegare</b>"]), 1100, 350, size=6)
+d.text(html(["GND di -A3 → 0 V: solo dopo", "la prova di isolamento"]), 1100, 464, size=6)
+d.text("L-lampade", 298, 334, size=6)
+d.text("PE → piastra di fondo (se metallica)", 560, 852, size=6)
 d.text(html([
-    "<b>Vista d'insieme del cablaggio</b>: apparecchi disposti come nel quadro (folio 7), ogni filo tracciato da morsetto a morsetto con i colori della legenda (folio 1).",
-    "La posizione dei morsetti sui singoli apparecchi è indicativa. Non rappresentati: -A5 RTC opzionale (folio 6), 5 V / GND dell'interfaccia RS485 di -A3 (da verificare),",
-    "interruttori e lampade interni alla stufa (folio 3). NC dei relè non usato.",
-]), 100, 985, size=7)
+    "<b>Vista d'insieme del cablaggio — rev. B</b>",
+    "• Sulla scheda -A1 non arriva il 230 V: i relè di bordo K1…K6 commutano i 12 V delle bobine dei contattori -Q1…-Q6",
+    "&nbsp;&nbsp;(isolamento rinforzato bobina/contatti). -Q1…-Q3 lampade, -Q4…-Q5 umidificatori, -Q6 estrattore.",
+    "• Termostato di sicurezza -B3 sulla bobina di -Q7, a 12 V: -Q7 toglie la fase a tutte le lampade senza passare",
+    "&nbsp;&nbsp;dalla scheda e dal software. In camera non c'è più il 230 V sul termostato.",
+    "• Neutri separati per ramo: stufa da -F1, prese da -F2, ausiliari da -F3. Non unire i neutri a valle degli interruttori.",
+    "• -T1 è in classe II: nessun morsetto di terra. 0 V e PE non sono collegati tra loro.",
+    "• Morsetto G di -A1: ritorno degli scaricatori della RS485, non è la massa del bus.",
+    "• I punti neri sono ponticelli sulle morsettiere o derivazioni a pettine. Posizione dei morsetti sugli apparecchi indicativa.",
+    "• Non rappresentati: -A5 RTC opzionale (folio 6), interno della stufa (folio 3), NC dei relè, secondo polo dei contattori.",
+    "• Guide: A sezionamento, protezioni, alimentatore — B contattori e misura — C scheda di controllo (solo 12 V e segnali) — D morsettiere.",
+]), 560, 1160, size=7)
+
+# tutto il folio 40 px più in basso, per lasciare libera l'intestazione delle colonne
+DY = 40
+for el in d.elements:
+    el.y += DY
+d.shapes = [(k, xa, ya + DY, xb, yb + DY, *r) for k, xa, ya, xb, yb, *r in d.shapes]
+d.texts = [(t, x, y + DY, *r) for t, x, y, *r in d.texts]
 
 # ----------------------------------------------------------------------------- rimandi tra folii
 for nome, coppia in rimandi.items():

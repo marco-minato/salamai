@@ -537,7 +537,7 @@ font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="993" y="17" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
- > Rev. : A</text>
+ > Rev. : B</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,738.75)"
@@ -1511,28 +1511,28 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="14" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >5 V / GND dell'interfaccia</text>
+ >+5V di -A3 è un'uscita:</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,870,180)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="26" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >RS485 di -A3: </text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="26" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
+ >non collegare</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,870,180)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="60.9688" y="26" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
- >da verificare</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="64.9844" y="26" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >.</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,870,180)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >(vedi note)</text>
+ >GND: vedi note</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,870,180)"
@@ -1582,21 +1582,21 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="47" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
- >• RS485 di -A1 isolato galvanicamente (morsettiera A / B / Earth): Earth </text>
+ >• RS485 di -A1 isolato; il terzo morsetto (G) è il ritorno degli scaricatori, non la massa del bus: G </text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="367.031" y="47" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="492.344" y="47" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
  >→</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="375.75" y="47" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
- > PE, scarica le protezioni.</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="501.063" y="47" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
+ > PE.</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
@@ -1624,14 +1624,14 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="78" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
- >• Indirizzi Modbus: -B1 = 1, -A3 = 2 (da cambiare sul PZEM).</text>
+ >• Indirizzi Modbus: -B1 = 1 (o 42: leggerlo), -A3 = 2 (da cambiare sul PZEM, da solo sul bus).</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="93" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
- >• -B1: alimentazione 3,6–30 V DC (4 mA @ 24 V), qui a 12 V da -T1.</text>
+ >• -B1: 3,6–30 V DC, qui a 12 V da -T1; fili rosso V+, nero GND, giallo A, bianco B.</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
@@ -1645,14 +1645,28 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="123" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
- >• PZEM-016: l'interfaccia RS485 è normalmente passiva e richiede 5 V esterni</text>
+ >• PZEM-016: RS485 alimentata dall'interno e optoisolata secondo il manuale, che però non dichiara</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="138" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
- >  sui morsetti 5V/GND; non è nella netlist: verificare sul modulo.</text>
+ >  la tensione di isolamento: provarla prima di collegare. GND </text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="316.625" y="138" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
+ >→</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="325.344" y="138" font-family="Noto Sans" font-size="8" font-weight="400" font-style="normal" 
+ > 0 V solo a prova superata (folio 9).</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,525,22.5)"

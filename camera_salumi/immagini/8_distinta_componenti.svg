@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="518.583mm" height="395.111mm" viewBox="0 0 1470 1120"
+<svg width="518.583mm" height="536.222mm" viewBox="0 0 1470 1520"
  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny">
 <title>Qt SVG Document</title>
 <desc>Generated with Qt</desc>
@@ -15,13 +15,13 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#ffffff" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,0,0)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M0,0 L1470,0 L1470,1120 L0,1120 L0,0"/>
+<path vector-effect="none" fill-rule="evenodd" d="M0,0 L1470,0 L1470,1520 L0,1520 L0,0"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M5,5 L1465,5 L1465,1065 L5,1065 L5,5"/>
+<path vector-effect="none" fill-rule="evenodd" d="M5,5 L1465,5 L1465,1465 L5,1465 L5,5"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
@@ -506,124 +506,189 @@ font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal"
  >M</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,1065 L25,1065 L25,1145 L5,1145 L5,1065"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="10.4375" y="1109.5" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+ >N</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,1145 L25,1145 L25,1225 L5,1225 L5,1145"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="10.3125" y="1189.5" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+ >O</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,1225 L25,1225 L25,1305 L5,1305 L5,1225"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="11.375" y="1269.5" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+ >P</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,1305 L25,1305 L25,1385 L5,1385 L5,1305"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="10.3125" y="1349.5" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+ >Q</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,1385 L25,1385 L25,1465 L5,1465 L5,1385"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="11.2656" y="1429.5" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
+ >R</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M0,0 L1460,0 L1460,50 L0,50 L0,0"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M0,0 L292,0 L292,25 L0,25 L0,0"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="17" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
  > Autore : </text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M0,0 L292,0 L292,25 L0,25 L0,0"/>
 <path vector-effect="none" fill-rule="evenodd" d="M292,0 L993,0 L993,25 L292,25 L292,0"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="11" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="521.938" y="18.5" font-family="Noto Sans" font-size="11" font-weight="400" font-style="normal" 
  > Camera salumi — controllo ESP32</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M292,0 L993,0 L993,25 L292,25 L292,0"/>
 <path vector-effect="none" fill-rule="evenodd" d="M993,0 L1168,0 L1168,25 L993,25 L993,0"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="993" y="17" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
- > Rev. : A</text>
+ > Rev. : B</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M993,0 L1168,0 L1168,25 L993,25 L993,0"/>
 <path vector-effect="none" fill-rule="evenodd" d="M1168,0 L1460,0 L1460,25 L1168,25 L1168,0"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1168" y="17" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
  > File : camera_salumi</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M1168,0 L1460,0 L1460,25 L1168,25 L1168,0"/>
 <path vector-effect="none" fill-rule="evenodd" d="M0,25 L292,25 L292,50 L0,50 L0,25"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="42" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
  > Data : 13/10/2026</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M0,25 L292,25 L292,50 L0,50 L0,25"/>
 <path vector-effect="none" fill-rule="evenodd" d="M292,25 L993,25 L993,50 L292,50 L292,25"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="583.734" y="42" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
  > Distinta componenti</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M292,25 L993,25 L993,50 L292,50 L292,25"/>
 <path vector-effect="none" fill-rule="evenodd" d="M993,25 L1168,25 L1168,50 L993,50 L993,25"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="993" y="42" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
  > Folio : 8/9</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M993,25 L1168,25 L1168,50 L993,50 L993,25"/>
 <path vector-effect="none" fill-rule="evenodd" d="M1168,25 L1460,25 L1460,50 L1168,50 L1168,25"/>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1168" y="42" font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
  > Simboli : IEC 60617 / IEC 81346</text>
 </g>
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,798.75)"
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(0.75,0,0,0.75,3.75,1098.75)"
 font-family="Noto Sans" font-size="9" font-weight="400" font-style="normal" 
 >
 <path vector-effect="none" fill-rule="evenodd" d="M1168,25 L1460,25 L1460,50 L1168,50 L1168,25"/>
@@ -638,11 +703,11 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<polyline fill="none" vector-effect="none" points="104,0 104,667 " />
-<polyline fill="none" vector-effect="none" points="386,0 386,667 " />
-<polyline fill="none" vector-effect="none" points="886,0 886,667 " />
-<polyline fill="none" vector-effect="none" points="1018,0 1018,667 " />
-<polyline fill="none" vector-effect="none" points="1226,0 1226,667 " />
+<polyline fill="none" vector-effect="none" points="90,0 90,667 " />
+<polyline fill="none" vector-effect="none" points="358,0 358,667 " />
+<polyline fill="none" vector-effect="none" points="925,0 925,667 " />
+<polyline fill="none" vector-effect="none" points="1043,0 1043,667 " />
+<polyline fill="none" vector-effect="none" points="1237,0 1237,667 " />
 <polyline fill="none" vector-effect="none" points="1330,0 1330,667 " />
 <polyline fill="none" vector-effect="none" points="0,23 1329,23 " />
 <polyline fill="none" vector-effect="none" points="0,46 1329,46 " />
@@ -675,86 +740,110 @@ font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal"
 <polyline fill="none" vector-effect="none" points="0,667 1329,667 " />
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-A1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Scheda ESP32-S3-Relay-6CH</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >6 relè 10 A 250 VAC (COM/NA/NC), RS485 isolato (A/B/Earth), 7–36 V DC, connettori H1/H2, guida DIN</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
+font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="14.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >6 relè HLS8L 10 A 250 VAC (rev. B: commutano solo le bobine 12 V), RS485 isolato (A+/B</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="726.703" y="14.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >−</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="732.016" y="14.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >/G), 7–36 V DC, H1/H2, guida DIN</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
+font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
+font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Waveshare</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B0CXPG4XGZ</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >5</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-A2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Modulo MOSFET dual D4184</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >PWM ventole, low-side, ingresso logico 3,3 V</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B0GL1NWZQH</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="38" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >5</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-A3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Misuratore di energia PZEM-016 con TA apribile</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >RS485 Modbus 9600 8N1, indirizzo da cambiare in 2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >RS485 Modbus 9600 8N1 (optoisolata secondo il manuale, +5V in uscita), indirizzo da cambiare in 2</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Peacefair</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B0D5NDPP4L</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="61" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >2</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-A4</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Modulo HX711</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >In scatolina IP65 dentro la camera</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >scatola: Amazon B0F8NW1YZ2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="84" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >6</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-A5</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Modulo RTC DS3231 (opzionale)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >I²C, mantiene l'ora senza rete</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B0FPPTHKBX</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="107" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >6</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-B1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Sonda temperatura/umidità S-TH-01</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >RS485 Modbus, indirizzo 1, 9600 baud; 3,6–30 V DC (4 mA @ 24 V), alimentata a 12 V da -T1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >RS485 Modbus, indirizzo 1 o 42, 9600 baud; 3,6–30 V DC, IP54; fili rosso V+, nero GND, giallo A, bianco B</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Seeed</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >101990881</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="130" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >6</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="153" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-B2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="153" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="153" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Cella di carico</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4 fili E+, E</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="430.703" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="402.703" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >−</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="436.016" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="408.016" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >, A+, A</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="462.125" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="434.125" y="152.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >−</text>
 </g>
 
@@ -771,163 +860,163 @@ font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal"
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="153" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="153" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >6</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-B3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Termostato di sicurezza PP1461</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >Elettromeccanico 5–30 °C, a parete in camera, apre sopra soglia (28–30 °C)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Elettromeccanico 5–30 °C, contatti 10(2,5) A 250 V; a parete in camera, apre sopra soglia (28–30 °C)</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Poly Pool</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B00L49ZA6K</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="176" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >2</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-E1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Stufa a 3 lampade IR, 1200 W</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Cavallotto S1–S4 rimosso; rotazione non usata</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="199" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-E1.1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Lampada IR 1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >~400 W, 230 V</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="222" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-E1.2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Lampada IR 2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >~400 W, 230 V</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="245" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-E1.3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Lampada IR 3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >~400 W, 230 V</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="268" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-M1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Motorino rotazione stufa</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Scollegato</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="291" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-M2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Umidificatore a ultrasuoni 1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >A spina, su presa XS1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="314" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-M3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Umidificatore a ultrasuoni 2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >A spina, su presa XS2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="337" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-M4</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Estrattore</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >A spina, su presa XS3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="360" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-M5</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Ventola USB 5 V doppia 120 mm</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Selettore su «alta»; adattatore USB-A femmina a morsetti (B09MH69W3N)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >ELUTENG</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B0B38KFVZX</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="383" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >5</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-M6</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Ventola USB 5 V doppia 120 mm</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Selettore su «alta»; adattatore USB-A femmina a morsetti (B09MH69W3N)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >ELUTENG</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B0B38KFVZX</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="406" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >5</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-S1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interruttore lampada 1 (rosso, luminoso)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interno stufa, lasciato su acceso</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="429" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-S2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interruttore lampada 2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interno stufa, lasciato su acceso</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="452" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-S3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interruttore lampada 3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interno stufa, lasciato su acceso</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="475" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-S4</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Interruttore rotazione</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Non usato, non alimentato</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="498" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-S5</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Antiribaltamento a pulsante</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Sotto la base della stufa, in serie al neutro comune</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="521" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >3</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-T1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >Alimentatore HDR-30-12</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Alimentatore HDR-30-12 (rev. B: HDR-60-12)</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="543.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="543.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >230 VAC </text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="427.359" y="543.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="399.359" y="543.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >→</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="434.5" y="543.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- > 12 V DC 2 A, guida DIN 2 moduli</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="406.5" y="543.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ > 12 V DC 2 A, classe II senza PE, guida DIN 2 moduli</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
@@ -943,11 +1032,11 @@ font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal"
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Mean Well</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B071KXJPYB</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="544" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >2</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-T2</text>
@@ -956,11 +1045,11 @@ font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal"
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="566.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="566.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Convertitore DC-DC 12 </text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="206.453" y="566.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="192.453" y="566.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >→</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="213.594" y="566.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="199.594" y="566.5" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  > 5 V 3 A resinato</text>
 </g>
 
@@ -977,43 +1066,43 @@ font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal"
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,67.5)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Alimenta le ventole</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Amazon B09B818N5F</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="567" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >5</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-X0:L</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Morsetti ingresso linea L / N / PE</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Linea da quadro generale, protetta 16 A + Id 30 mA</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="590" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >2</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-XS1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Presa Schuko (scatola -X1)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Umidificatore 1</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="613" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-XS2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Presa Schuko (scatola -X1)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Umidificatore 2</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="636" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4</text>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >-XS3</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Presa Schuko (scatola -X1)</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Estrattore</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="659" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >4</text>
 </g>
 
@@ -1026,23 +1115,23 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#c0c0c0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="0.7" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,50.25)"
 font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
 >
-<polyline fill="none" vector-effect="none" points="104,0 104,22 " />
-<polyline fill="none" vector-effect="none" points="386,0 386,22 " />
-<polyline fill="none" vector-effect="none" points="886,0 886,22 " />
-<polyline fill="none" vector-effect="none" points="1018,0 1018,22 " />
-<polyline fill="none" vector-effect="none" points="1226,0 1226,22 " />
+<polyline fill="none" vector-effect="none" points="90,0 90,22 " />
+<polyline fill="none" vector-effect="none" points="358,0 358,22 " />
+<polyline fill="none" vector-effect="none" points="925,0 925,22 " />
+<polyline fill="none" vector-effect="none" points="1043,0 1043,22 " />
+<polyline fill="none" vector-effect="none" points="1237,0 1237,22 " />
 <polyline fill="none" vector-effect="none" points="1330,0 1330,22 " />
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Sigla</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="109" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="95" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Componente</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="391" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="363" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Note</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="891" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="930" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Costruttore</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1023" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1048" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Riferimento</text>
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1231" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="1242" y="15" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
  >Folio</text>
 </g>
 
@@ -1103,19 +1192,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M5,17 L515,17 L515,18 L5,18 L5,17"/>
+<path vector-effect="none" fill-rule="evenodd" d="M5,17 L525,17 L525,18 L5,18 L5,17"/>
 </g>
 
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M514,18 L515,18 L515,211 L514,211 L514,18"/>
+<path vector-effect="none" fill-rule="evenodd" d="M524,18 L525,18 L525,211 L524,211 L524,18"/>
 </g>
 
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M5,211 L515,211 L515,212 L5,212 L5,211"/>
+<path vector-effect="none" fill-rule="evenodd" d="M5,211 L525,211 L525,212 L5,212 L5,211"/>
 </g>
 
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1189,25 +1278,25 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,18 L514,18 L514,19 L238,19 L238,18"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,18 L524,18 L524,19 L238,19 L238,18"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,19 L514,19 L514,38 L513,38 L513,19"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,19 L524,19 L524,38 L523,38 L523,19"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,38 L514,38 L514,39 L238,39 L238,38"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,38 L524,38 L524,39 L238,39 L238,38"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="364.453" y="32" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="369.453" y="32" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
  >Note</text>
 </g>
 
@@ -1296,19 +1385,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,39 L514,39 L514,40 L238,40 L238,39"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,39 L524,39 L524,40 L238,40 L238,39"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,40 L514,40 L514,60 L513,60 L513,40"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,40 L524,40 L524,60 L523,60 L523,40"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,60 L514,60 L514,61 L238,61 L238,60"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,60 L524,60 L524,61 L238,61 L238,60"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1403,26 +1492,26 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,61 L514,61 L514,62 L238,62 L238,61"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,61 L524,61 L524,62 L238,62 L238,61"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,62 L514,62 L514,82 L513,82 L513,62"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,62 L524,62 L524,82 L523,82 L523,62"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,82 L514,82 L514,83 L238,83 L238,82"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,82 L524,82 L524,83 L238,83 L238,82"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="241" y="75" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >Andata e ritorno della fase lampade</text>
+ >Rev. A: fase lampade. Rev. B: 12 V della bobina di -Q7 (cavo 2×0,75)</text>
 </g>
 
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1510,26 +1599,26 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,83 L514,83 L514,84 L238,84 L238,83"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,83 L524,83 L524,84 L238,84 L238,83"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,84 L514,84 L514,104 L513,104 L513,84"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,84 L524,84 L524,104 L523,104 L523,84"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,104 L514,104 L514,105 L238,105 L238,104"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,104 L524,104 L524,105 L238,105 L238,104"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="241" y="97" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
- >+12 V, GND, A, B</text>
+ >+12 V, GND, A, B (A e B sullo stesso doppino)</text>
 </g>
 
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1617,19 +1706,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,105 L514,105 L514,106 L238,106 L238,105"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,105 L524,105 L524,106 L238,106 L238,105"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,106 L514,106 L514,126 L513,126 L513,106"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,106 L524,106 L524,126 L523,126 L523,106"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,126 L514,126 L514,127 L238,127 L238,126"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,126 L524,126 L524,127 L238,127 L238,126"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1710,19 +1799,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,127 L514,127 L514,128 L238,128 L238,127"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,127 L524,127 L524,128 L238,128 L238,127"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,128 L514,128 L514,147 L513,147 L513,128"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,128 L524,128 L524,147 L523,147 L523,128"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,147 L514,147 L514,148 L238,148 L238,147"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,147 L524,147 L524,148 L238,148 L238,147"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1803,19 +1892,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,148 L514,148 L514,149 L238,149 L238,148"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,148 L524,148 L524,149 L238,149 L238,148"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,149 L514,149 L514,168 L513,168 L513,149"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,149 L524,149 L524,168 L523,168 L523,149"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,168 L514,168 L514,169 L238,169 L238,168"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,168 L524,168 L524,169 L238,169 L238,168"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1896,19 +1985,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,169 L514,169 L514,170 L238,170 L238,169"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,169 L524,169 L524,170 L238,170 L238,169"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,170 L514,170 L514,189 L513,189 L513,170"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,170 L524,170 L524,189 L523,189 L523,170"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,189 L514,189 L514,190 L238,190 L238,189"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,189 L524,189 L524,190 L238,190 L238,189"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -1989,19 +2078,19 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 <g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,190 L514,190 L514,191 L238,191 L238,190"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,190 L524,190 L524,191 L238,191 L238,190"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M513,191 L514,191 L514,210 L513,210 L513,191"/>
+<path vector-effect="none" fill-rule="evenodd" d="M523,191 L524,191 L524,210 L523,210 L523,191"/>
 </g>
 
 <g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,600)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
-<path vector-effect="none" fill-rule="evenodd" d="M238,210 L514,210 L514,211 L238,211 L238,210"/>
+<path vector-effect="none" fill-rule="evenodd" d="M238,210 L524,210 L524,211 L238,211 L238,210"/>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
@@ -2012,6 +2101,1554 @@ font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal"
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,600)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,0,0)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4" y="14" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
+ >Modifiche ai materiali — rev. B</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="140.859" y="14" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ > (proposta, vedi folii 7 e 9)</text>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M4,17 L5,17 L5,275 L4,275 L4,17"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,17 L939,17 L939,18 L5,18 L5,17"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M938,18 L939,18 L939,274 L938,274 L938,18"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,274 L939,274 L939,275 L5,275 L5,274"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,18 L6,18 L6,39 L5,39 L5,18"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,18 L21,18 L21,19 L6,19 L6,18"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,19 L21,19 L21,38 L20,38 L20,19"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,38 L21,38 L21,39 L6,39 L6,38"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,18 L22,18 L22,39 L21,39 L21,18"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,18 L102,18 L102,19 L22,19 L22,18"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,19 L102,19 L102,38 L101,38 L101,19"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,38 L102,38 L102,39 L22,39 L22,38"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="50.7344" y="32" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
+ >Sigla</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,18 L103,18 L103,39 L102,39 L102,18"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,18 L522,18 L522,19 L103,19 L103,18"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,19 L522,19 L522,38 L521,38 L521,19"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,38 L522,38 L522,39 L103,39 L103,38"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="290.297" y="32" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
+ >Materiale</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,18 L523,18 L523,39 L522,39 L522,18"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,18 L938,18 L938,19 L523,19 L523,18"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,19 L938,19 L938,38 L937,38 L937,19"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,38 L938,38 L938,39 L523,39 L523,38"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="699.813" y="32" font-family="Noto Sans" font-size="7" font-weight="700" font-style="normal" 
+ >Motivo / note</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,39 L6,39 L6,60 L5,60 L5,39"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,39 L21,39 L21,40 L6,40 L6,39"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,40 L21,40 L21,59 L20,59 L20,40"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,59 L21,59 L21,60 L6,60 L6,59"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="53" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >+</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,39 L22,39 L22,60 L21,60 L21,39"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,39 L102,39 L102,40 L22,40 L22,39"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,40 L102,40 L102,59 L101,59 L101,40"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,59 L102,59 L102,60 L22,60 L22,59"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="53" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-Q0</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,39 L103,39 L103,60 L102,60 L102,39"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,39 L522,39 L522,40 L103,40 L103,39"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,40 L522,40 L522,59 L521,59 L521,40"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,59 L522,59 L522,60 L103,60 L103,59"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="53" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Sezionatore modulare 2P, 25 A o più</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,39 L523,39 L523,60 L522,60 L522,39"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,39 L938,39 L938,40 L523,40 L523,39"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,40 L938,40 L938,59 L937,59 L937,40"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,59 L938,59 L938,60 L523,60 L523,59"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="53" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Sezionamento locale: l'interruttore a monte è nel quadro generale</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,60 L6,60 L6,81 L5,81 L5,60"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,60 L21,60 L21,61 L6,61 L6,60"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,61 L21,61 L21,80 L20,80 L20,61"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,80 L21,80 L21,81 L6,81 L6,80"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="74" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >+</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,60 L22,60 L22,81 L21,81 L21,60"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,60 L102,60 L102,61 L22,61 L22,60"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,61 L102,61 L102,80 L101,80 L101,61"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,80 L102,80 L102,81 L22,81 L22,80"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="74" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-F1</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,60 L103,60 L103,81 L102,81 L102,60"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,60 L522,60 L522,61 L103,61 L103,60"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,61 L522,61 L522,80 L521,80 L521,61"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,80 L522,80 L522,81 L103,81 L103,80"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="74" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Interruttore magnetotermico 1P+N C10</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,60 L523,60 L523,81 L522,81 L522,60"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,60 L938,60 L938,61 L523,61 L523,60"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,61 L938,61 L938,80 L937,80 L937,61"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,80 L938,80 L938,81 L523,81 L523,80"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="74" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Ramo stufa (5,2 A); protegge anche il cavo -W1</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,81 L6,81 L6,102 L5,102 L5,81"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,81 L21,81 L21,82 L6,82 L6,81"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,82 L21,82 L21,101 L20,101 L20,82"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,101 L21,101 L21,102 L6,102 L6,101"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="95" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >+</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,81 L22,81 L22,102 L21,102 L21,81"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,81 L102,81 L102,82 L22,82 L22,81"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,82 L102,82 L102,101 L101,101 L101,82"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,101 L102,101 L102,102 L22,102 L22,101"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="95" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-F2</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,81 L103,81 L103,102 L102,102 L102,81"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,81 L522,81 L522,82 L103,82 L103,81"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,82 L522,82 L522,101 L521,101 L521,82"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,101 L522,101 L522,102 L103,102 L103,101"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="95" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Interruttore magnetotermico 1P+N C6</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,81 L523,81 L523,102 L522,102 L522,81"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,81 L938,81 L938,82 L523,82 L523,81"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,82 L938,82 L938,101 L937,101 L937,82"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,101 L938,101 L938,102 L523,102 L523,101"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="95" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Ramo prese: umidificatori ed estrattore</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,102 L6,102 L6,123 L5,123 L5,102"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,102 L21,102 L21,103 L6,103 L6,102"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,103 L21,103 L21,122 L20,122 L20,103"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,122 L21,122 L21,123 L6,123 L6,122"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="116" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >+</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,102 L22,102 L22,123 L21,123 L21,102"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,102 L102,102 L102,103 L22,103 L22,102"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,103 L102,103 L102,122 L101,122 L101,103"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,122 L102,122 L102,123 L22,123 L22,122"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="116" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-F3</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,102 L103,102 L103,123 L102,123 L102,102"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,102 L522,102 L522,103 L103,103 L103,102"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,103 L522,103 L522,122 L521,122 L521,103"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,122 L522,122 L522,123 L103,123 L103,122"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="116" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Interruttore magnetotermico 1P+N C6</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,102 L523,102 L523,123 L522,123 L522,102"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,102 L938,102 L938,103 L523,103 L523,102"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,103 L938,103 L938,122 L937,122 L937,103"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,122 L938,122 L938,123 L523,123 L523,122"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="116" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Ausiliari: -T1 e misura di tensione di -A3</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,123 L6,123 L6,144 L5,144 L5,123"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,123 L21,123 L21,124 L6,124 L6,123"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,124 L21,124 L21,143 L20,143 L20,124"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,143 L21,143 L21,144 L6,144 L6,143"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="137" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >+</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,123 L22,123 L22,144 L21,144 L21,123"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,123 L102,123 L102,124 L22,124 L22,123"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,124 L102,124 L102,143 L101,143 L101,124"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,143 L102,143 L102,144 L22,144 L22,143"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="137" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-Q1…-Q7</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,123 L103,123 L103,144 L102,144 L102,123"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,123 L522,123 L522,124 L103,124 L103,123"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,124 L522,124 L522,143 L521,143 L521,124"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,143 L522,143 L522,144 L103,144 L103,143"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="137" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >7 contattori modulari 2 NA 25 A, bobina 12 V AC/DC, contatti AgSnO2 (es. Finder 22.32.0.012.4340)</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,123 L523,123 L523,144 L522,144 L522,123"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,123 L938,123 L938,124 L523,124 L523,123"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,124 L938,124 L938,143 L937,143 L937,124"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,143 L938,143 L938,144 L523,144 L523,143"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="137" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Isolamento rinforzato bobina/contatti, 2000 W di lampade alogene; -Q7 senza forzatura manuale</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,144 L6,144 L6,166 L5,166 L5,144"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,144 L21,144 L21,145 L6,145 L6,144"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,145 L21,145 L21,165 L20,165 L20,145"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,165 L21,165 L21,166 L6,166 L6,165"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="158" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >↔</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,144 L22,144 L22,166 L21,166 L21,144"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,144 L102,144 L102,145 L22,145 L22,144"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,145 L102,145 L102,165 L101,165 L101,145"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,165 L102,165 L102,166 L22,166 L22,165"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="158" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-T1</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,144 L103,144 L103,166 L102,166 L102,144"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,144 L522,144 L522,145 L103,145 L103,144"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,145 L522,145 L522,165 L521,165 L521,145"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,165 L522,165 L522,166 L103,166 L103,165"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="158" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Mean Well HDR-60-12 (54 W, 3 moduli) al posto di HDR-30-12 (24 W)</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,144 L523,144 L523,166 L522,166 L522,144"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,144 L938,144 L938,145 L523,145 L523,144"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,145 L938,145 L938,165 L937,165 L937,145"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,165 L938,165 L938,166 L523,166 L523,165"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="158" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >7 bobine da 2,2 W + scheda + ventole </text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="684.438" y="158" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >≈</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="689.578" y="158" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ > 25 W</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,166 L6,166 L6,188 L5,188 L5,166"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,166 L21,166 L21,167 L6,167 L6,166"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,167 L21,167 L21,187 L20,187 L20,167"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,187 L21,187 L21,188 L6,188 L6,187"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="180" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >↔</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,166 L22,166 L22,188 L21,188 L21,166"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,166 L102,166 L102,167 L22,167 L22,166"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,167 L102,167 L102,187 L101,187 L101,167"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,187 L102,187 L102,188 L22,188 L22,187"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="180" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >—</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,166 L103,166 L103,188 L102,188 L102,166"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,166 L522,166 L522,167 L103,167 L103,166"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,167 L522,167 L522,187 L521,187 L521,167"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,187 L522,187 L522,188 L103,188 L103,187"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="180" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Cassetta IP65 ~400 × 600 × 200 con piastra di fondo al posto del centralino da 24 moduli</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,166 L523,166 L523,188 L522,188 L522,166"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,166 L938,166 L938,167 L523,167 L523,166"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,167 L938,167 L938,187 L937,187 L937,167"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,187 L938,187 L938,188 L523,188 L523,187"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="180" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >4 guide DIN, canalina asolata 25 × 40 (~2,5 m)</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,188 L6,188 L6,210 L5,210 L5,188"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,188 L21,188 L21,189 L6,189 L6,188"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,189 L21,189 L21,209 L20,209 L20,189"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,209 L21,209 L21,210 L6,210 L6,209"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="202" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >↔</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,188 L22,188 L22,210 L21,210 L21,188"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,188 L102,188 L102,189 L22,189 L22,188"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,189 L102,189 L102,209 L101,209 L101,189"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,209 L102,209 L102,210 L22,210 L22,209"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="202" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-X0, -X2, -XPE, -X3</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,188 L103,188 L103,210 L102,210 L102,188"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,188 L522,188 L522,189 L103,189 L103,188"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,189 L522,189 L522,209 L521,209 L521,189"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,209 L522,209 L522,210 L103,210 L103,209"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="202" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Morsetti su guida (3 + 10 + terra da 2,5 mm²; 14 piccoli), fermi, setto separatore, ponticelli</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,188 L523,188 L523,210 L522,210 L522,188"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,188 L938,188 L938,189 L523,189 L523,188"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,189 L938,189 L938,209 L937,209 L937,189"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,209 L938,209 L938,210 L523,210 L523,209"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="202" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Al posto dei Wago 221 usati come nodi</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,210 L6,210 L6,232 L5,232 L5,210"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,210 L21,210 L21,211 L6,211 L6,210"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,211 L21,211 L21,231 L20,231 L20,211"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,231 L21,231 L21,232 L6,232 L6,231"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="224" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >↔</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,210 L22,210 L22,232 L21,232 L21,210"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,210 L102,210 L102,211 L22,211 L22,210"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,211 L102,211 L102,231 L101,231 L101,211"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,231 L102,231 L102,232 L22,232 L22,231"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="224" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >-W2</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,210 L103,210 L103,232 L102,232 L102,210"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,210 L522,210 L522,211 L103,211 L103,210"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,211 L522,211 L522,231 L521,231 L521,211"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,231 L522,231 L522,232 L103,232 L103,231"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="224" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Cavo 2 × 0,75 al posto di 2 × 1,5</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,210 L523,210 L523,232 L522,232 L522,210"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,210 L938,210 L938,211 L523,211 L523,210"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,211 L938,211 L938,231 L937,231 L937,211"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,231 L938,231 L938,232 L523,232 L523,231"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="224" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Il termostato lavora a 12 V sulla bobina di -Q7</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,232 L6,232 L6,253 L5,253 L5,232"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,232 L21,232 L21,233 L6,233 L6,232"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,233 L21,233 L21,252 L20,252 L20,233"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,252 L21,252 L21,253 L6,253 L6,252"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="246" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >+</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,232 L22,232 L22,253 L21,253 L21,232"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,232 L102,232 L102,233 L22,233 L22,232"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,233 L102,233 L102,252 L101,252 L101,233"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,252 L102,252 L102,253 L22,253 L22,252"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="246" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >—</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,232 L103,232 L103,253 L102,253 L102,232"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,232 L522,232 L522,233 L103,233 L103,232"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,233 L522,233 L522,252 L521,252 L521,233"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,252 L522,252 L522,253 L103,253 L103,252"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="246" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Filo H07V-K 1,5 mm² (230 V) e H05V-K 0,75 mm² (comandi), puntalini, pressacavi M20 e M12</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,232 L523,232 L523,253 L522,253 L522,232"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,232 L938,232 L938,233 L523,233 L523,232"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,233 L938,233 L938,252 L937,252 L937,233"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,252 L938,252 L938,253 L523,253 L523,252"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="246" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Colori: fase marrone/nero/grigio, neutro blu, terra giallo-verde</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M5,253 L6,253 L6,274 L5,274 L5,253"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,253 L21,253 L21,254 L6,254 L6,253"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M20,254 L21,254 L21,273 L20,273 L20,254"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M6,273 L21,273 L21,274 L6,274 L6,273"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="9" y="267" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >?</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M21,253 L22,253 L22,274 L21,274 L21,253"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,253 L102,253 L102,254 L22,254 L22,253"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M101,254 L102,254 L102,273 L101,273 L101,254"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M22,273 L102,273 L102,274 L22,274 L22,273"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="25" y="267" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >—</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M102,253 L103,253 L103,274 L102,274 L102,253"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,253 L522,253 L522,254 L103,254 L103,253"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M521,254 L522,254 L522,273 L521,273 L521,254"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M103,273 L522,273 L522,274 L103,274 L103,273"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="106" y="267" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Isolatore RS485 per -A3</text>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M522,253 L523,253 L523,274 L522,274 L522,253"/>
+</g>
+
+<g fill="#808080" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,253 L938,253 L938,254 L523,254 L523,253"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M937,254 L938,254 L938,273 L937,273 L937,254"/>
+</g>
+
+<g fill="#c0c0c0" fill-opacity="1" stroke="none" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M523,273 L938,273 L938,274 L523,274 L523,273"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="526" y="267" font-family="Noto Sans" font-size="7" font-weight="400" font-style="normal" 
+ >Solo se la prova di isolamento del PZEM non è soddisfacente</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.75,0,0,0.75,37.5,780)"
 font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
 >
 </g>
