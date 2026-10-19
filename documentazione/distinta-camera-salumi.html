@@ -1,0 +1,184 @@
+<title>Distinta camera salumi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: una colonna da lista d'ordine, gruppi come fogli dello schema, righe con sigla in stile targhetta */
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --fg:#1d2420; --muted:#5f6b64; --line:#d9ddd7;
+  --accent:#2f6b4f; --accent-soft:#e3efe8; --warn:#9a5b12; --warn-soft:#f6ecdc; --own:#576a86; --own-soft:#e6ebf3;
+  --f-display:"Archivo",system-ui,sans-serif; --f-body:"Source Sans 3",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#151a17; --surface:#1d2420; --fg:#e7ece8; --muted:#9aa69f; --line:#323c36;
+  --accent:#7cc39e; --accent-soft:#22362b; --warn:#e2b06a; --warn-soft:#3a2f1e; --own:#a6b8d6; --own-soft:#262f3d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151a17; --surface:#1d2420; --fg:#e7ece8; --muted:#9aa69f; --line:#323c36;
+  --accent:#7cc39e; --accent-soft:#22362b; --warn:#e2b06a; --warn-soft:#3a2f1e; --own:#a6b8d6; --own-soft:#262f3d; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body)}
+.wrap{max-width:960px;margin:0 auto;padding:28px 16px 56px;display:flex;flex-direction:column;gap:28px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.15rem;font-weight:700;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+h2 small{font:600 .95rem var(--f-body);color:var(--muted);font-variant-numeric:tabular-nums}
+header{display:flex;flex-direction:column;gap:8px}
+header p{margin:0;color:var(--muted);max-width:65ch}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.tile b{font:800 1.5rem var(--f-display);font-variant-numeric:tabular-nums}
+.tile span{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);align-items:center}
+section{display:flex;flex-direction:column;gap:10px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.row{display:grid;grid-template-columns:28px 92px 1fr auto;gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row.done{opacity:.55}
+.row.done .name{text-decoration:line-through}
+.row input{width:18px;height:18px;margin-top:3px;accent-color:var(--accent)}
+.row input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tag{font:500 .8rem var(--f-mono);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:2px 6px;justify-self:start;white-space:nowrap}
+.body{min-width:0;display:flex;flex-direction:column;gap:3px}
+.name{font-weight:600}
+.note{color:var(--muted);font-size:.92rem}
+.body a{color:var(--accent);font:500 .85rem var(--f-mono);text-underline-offset:3px;word-break:break-all}
+.right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.price{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{font-size:.75rem;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+.p-C{background:var(--accent-soft);color:var(--accent)}
+.p-P{background:var(--own-soft);color:var(--own)}
+.p-A{background:var(--warn-soft);color:var(--warn)}
+.p-F{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+ul.plain{margin:0;padding:12px 14px 12px 32px;background:var(--surface);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;gap:4px}
+.reset{align-self:flex-start;font:600 .9rem var(--f-body);background:none;border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:6px 12px;cursor:pointer}
+.reset:focus-visible{outline:2px solid var(--accent)}
+footer{color:var(--muted);font-size:.9rem}
+@media (max-width:560px){
+  .row{grid-template-columns:24px 1fr;}
+  .row .tag{grid-column:2}
+  .row .body{grid-column:2}
+  .row .right{grid-column:2;flex-direction:row;align-items:center;justify-content:space-between}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Distinta camera salumi</h1>
+    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH. Sigle come nello schema QElectroTech. Prezzi Amazon.it del 17–18/10/2026, indicativi. Spunta le righe man mano che ordini: le spunte restano solo in questo browser.</p>
+  </header>
+
+  <div class="summary" id="summary"></div>
+  <div class="legend">
+    <span class="pill p-C">da comprare</span><span class="pill p-P">già in possesso</span><span class="pill p-A">alternativa</span><span class="pill p-F">negozio</span>
+  </div>
+
+  <div id="groups"></div>
+
+  <section>
+    <h2>Ferramenta e negozio</h2>
+    <ul class="plain">
+      <li>Spina Schuko per il Vents TT-100</li>
+      <li>Due resistenze da 10 kΩ per i giri delle ventole, solo se servono: si serrano nei morsetti, senza saldare</li>
+      <li>Pannello per la botola (multistrato 10 mm o PVC espanso) con foro Ø 100 e fori per i pressacavi</li>
+      <li>Foro Ø 100 in basso nella porta della camera, per la griglia d'ingresso</li>
+      <li>Apertura fissa in alto sulla porta esterna della cantina (griglia o feritoia)</li>
+      <li>Clip fermacavo, fascette, puntalini</li>
+      <li>Silicone neutro o nastro di alluminio per fissare le DS18B20 alle piastrelle</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Da verificare all'arrivo</h2>
+    <ul class="plain">
+      <li>Contattori: soppressione interna della bobina (se c'è, niente diodi) e larghezza in moduli</li>
+      <li>Waveshare: profondità e posizione sulla fila 3</li>
+      <li>Vents TT-100: morsettiera e collegamento alla velocità bassa</li>
+      <li>Contatore SDM120 a indirizzo 2 e 9600 baud (tasti frontali), sonda B5 a indirizzo 3, uno alla volta da soli sul bus</li>
+      <li>Che il coperchio della scheda chiuda con il modulo RTC e i cavetti innestati</li>
+      <li>B5 alimentata a 12 V (range 3,6–30 V)</li>
+    </ul>
+  </section>
+
+  <button class="reset" id="reset" type="button">Togli tutte le spunte</button>
+  <footer>Esclusi per scelta: termostato meccanico, salvavita nel quadro, contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN).</footer>
+</div>
+
+<script>
+const G=[
+ {t:"Quadro e logica",i:[
+  ["A1","-A1",1,"Waveshare ESP32-S3-Relay-6CH","","B0CXPG4XGZ",43.99,"C"],
+  ["T1","-T1",1,"Alimentatore Mean Well HDR-60-12","12 V, 4,5 A, guida DIN","B072DXXRW3",20.73,"C"],
+  ["KM","-KM1…6",6,"Contattore HCH8s-25Z, bobina 12 V DC, 25 A 2NA","6 × 12,00 €","B0BKWQ2P32",72.00,"C"],
+  ["V","-V1…6",6,"Diodi 1N4007 (confezione da 100)","Solo se il contattore non ha soppressione interna","B01F4SQ6KU",9.99,"C"],
+  ["A3","-A3",1,"Contatore Eastron SDM120 Modbus, 1 modulo DIN","Consumi degli attuatori, inserzione diretta 45 A. Da impostare a indirizzo 2 e 9600 baud","B08X8SD1FD",40.80,"C"],
+  ["A5","-A5",1,"Waveshare Pico-RTC-DS3231","Si innesta sul connettore Pico, nessun filo","B0915KRWNZ",19.99,"C"],
+  ["A2","-A2",1,"Modulo MOSFET dual a morsetti (10 pezzi)","Sul filo PWM delle ventole, protegge la scheda","B0GL1NWZQH",8.99,"C"],
+  ["X5","-X5",1,"Basetta a morsetti Freenove per Raspberry Pi Pico","Su guida DIN con le clip; un morsetto etichettato per ogni pin","B0BFB53Y2N",14.95,"C"],
+  ["dup","—",1,"Cavetti Dupont (kit 120 pezzi)","Maschio-maschio, dalle prese sopra l'RTC alla basetta X5","B01N40EK6M",9.99,"C"],
+  ["Q","quadro",1,"Quadro IP65 Intratec 48 moduli, 4 file","Sportello trasparente","B08614GVLN",69.69,"C"],
+  ["clip","—",1,"Clip DIN per circuiti stampati (20 pezzi)","Per il modulo MOSFET e la basetta X5","B0FCM3N3P9",8.99,"C"],
+  ["pm20","—",1,"Pressacavi M20 IP68 (26 pezzi)","","B0GYRDCC9Z",7.99,"C"],
+  ["wago","-X2…",1,"Morsetti Wago 221 assortiti (40 pezzi)","Anche in negozio","B06XRJHTS3",21.96,"C"],
+  ["R","—",1,"Resistenza 4,7 kΩ","Pull-up del bus 1-Wire; anche in negozio","B0FPX6T6SC",9.99,"C"]]},
+ {t:"Sensori",i:[
+  ["B1","-B1",1,"Sonda Seeed S-TH-01, camera","Indirizzo 1, oggi sulla XIAO","",null,"P"],
+  ["B5","-B5",1,"Sonda Seeed S-TH-01, cantina","Indirizzo 3. Stesso canale d'acquisto della prima, prezzo da verificare","",null,"C"],
+  ["DS","-B3 -B4",2,"DS18B20 impermeabile, cavo 3 m (2 pezzi)","Parete e pavimento","B07CZ1G29V",18.26,"C"],
+  ["hx","-A4 -B2",1,"HX711 e cella di carico 2 kg","Oggi sulla XIAO, da calibrare","",null,"P"],
+  ["box","—",1,"Scatolina IP65 per HX711","Anche derivazione delle DS18B20","B0F8NW1YZ2",8.59,"C"],
+  ["IR","—",1,"Termometro a infrarossi TempPro TP30","Per il test di preriscaldo delle pareti","B0BGGJH3G2",16.27,"C"]]},
+ {t:"Attuatori e circuito dell'aria",i:[
+  ["E1","-E1",1,"Stufa 3 lampade IR, 1200 W","","",null,"P"],
+  ["M23","-M2 -M3",2,"Umidificatori a ultrasuoni","","",null,"P"],
+  ["M56","-M5 -M6",3,"Ventole ARCTIC P12 Slim PWM PST 12 V (confezione da 3)","4 fili, 200–2100 giri/min. PWM dalla scheda tramite il transistor Q1, giri letti dalla scheda. Una di scorta","B09RWTCXRR",19.22,"C"],
+  ["ext","—",1,"Prolunghe 4 pin PWM (6 pezzi)","Da tagliare per collegare le ventole in X4 senza toccarle","B09SKYRB3V",6.99,"C"],
+  ["M4","-M4",1,"Estrattore Vents TT-100 (consigliato)","Flusso misto 145/187 m³/h, 21/33 W, velocità bassa. Senza spina","B01LZQA9U9",40.55,"C"],
+  ["M4b","-M4 alt.",1,"Estrattore Airope assiale","107 m³/h a bocca libera, 14 W, con spina. Al posto del Vents","B08QFYMFJL",22.90,"A"],
+  ["Y1","-Y1",1,"Valvola antiritorno a molla Ø 100 neverest RKI","Uscita, lato cantina","B08LNS7TCV",15.99,"C"],
+  ["tubo","—",1,"Tubo flessibile alluminio Ø 100, 3 m, 2 fascette","Fino all'angolo opposto alla porta","B0FB3BBDSW",12.06,"C"],
+  ["Y2","-Y2",1,"Griglia d'ingresso Ø 100 inox con valvola magnetica","In basso sulla porta, si apre verso la camera","B0F52BLHQ4",28.44,"C"]]},
+ {t:"Cavi, prese e scatole",i:[
+  ["W1","-W1",1,"FROR 5G1,5, 10 m","Quadro → presa CEE stufa","B01FSZYO08",28.59,"C"],
+  ["W2","-W2",1,"FROR 4G1,5, 10 m","Quadro → prese umidificatori","B01FSZYK4I",24.01,"C"],
+  ["W345","-W3 -W4 -W5",1,"Cat6 FTP schermato, 30 m","W3 sonda B1, W4 HX711 + B3 + B4, W5 ventole (12 V, PWM, giri), avanzo per B5","B0CGDQT3P4",27.99,"C"],
+  ["X1","-X1",1,"Presa doppia IP55 con coperchio","Umidificatori","B0HJD4BD28",16.99,"C"],
+  ["XS3","-XS3",1,"Contenitore Electraline FIXA con presa","Estrattore, fuori dalla camera","B0G71348W7",4.90,"C"],
+  ["XS4","-XS4",1,"Presa CEE da parete 16 A 5 poli IP44","Stufa","B001BAVXZO",22.45,"C"],
+  ["XP4","-XP4",1,"Spina CEE 16 A 5 poli","Cavo stufa","B0002YZJDW",16.95,"C"],
+  ["X4","-X4",1,"Scatola IP65 150×110×70 con pressacavi","Derivazione ventole","B0F6YGYR7K",13.49,"C"],
+  ["qw","—",1,"Kit 32 pressacavi M12–M25","Pannello botola e scatole","B0BFL3VQYQ",10.24,"C"],
+  ["corr","—",1,"Tubo corrugato Ø 25, 10 m","Due tratti: 230 V e bassa tensione","B0FNKPP8DK",15.90,"C"],
+  ["sil","—",1,"Filo in silicone 18 AWG","Collegamenti interni alla stufa, prezzo da verificare","B07TT68455",null,"C"]]}
+];
+const LBL={C:"da comprare",P:"in possesso",A:"alternativa",F:"negozio"};
+const eur=v=>v.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
+let done={};try{done=JSON.parse(localStorage.getItem("distinta-salumi")||"{}")}catch(e){done={}}
+const save=()=>{try{localStorage.setItem("distinta-salumi",JSON.stringify(done))}catch(e){}};
+function render(){
+  const root=document.getElementById("groups");root.innerHTML="";
+  let tot=0,rest=0,n=0,nd=0;
+  for(const g of G){
+    let sub=0;
+    const sec=document.createElement("section");
+    const list=document.createElement("div");list.className="list";
+    for(const [id,tag,q,name,note,asin,price,st] of g.i){
+      if(st==="C"&&price!=null){sub+=price;tot+=price;if(!done[id])rest+=price}
+      if(st==="C"){n++;if(done[id])nd++}
+      const r=document.createElement("div");r.className="row"+(done[id]?" done":"");
+      const cb=st==="C"||st==="A"?`<input type="checkbox" id="cb-${id}" aria-label="Ordinato: ${name}" ${done[id]?"checked":""}>`:"<span></span>";
+      r.innerHTML=`${cb}<span class="tag">${tag}</span>
+        <div class="body"><span class="name">${q>1?q+" × ":""}${name}</span>${note?`<span class="note">${note}</span>`:""}${asin?`<a href="https://www.amazon.it/dp/${asin}" target="_blank" rel="noopener">amazon.it/dp/${asin}</a>`:""}</div>
+        <div class="right"><span class="price">${price!=null?eur(price):"—"}</span><span class="pill p-${st}">${LBL[st]}</span></div>`;
+      const c=r.querySelector("input");
+      if(c)c.addEventListener("change",()=>{done[id]=c.checked;if(!c.checked)delete done[id];save();render()});
+      list.appendChild(r);
+    }
+    sec.innerHTML=`<h2>${g.t}<small>${eur(sub)}</small></h2>`;
+    sec.appendChild(list);root.appendChild(sec);
+  }
+  document.getElementById("summary").innerHTML=
+   `<div class="tile"><b>${eur(tot)}</b><span>Totale Amazon</span></div>
+    <div class="tile"><b>${eur(rest)}</b><span>Ancora da ordinare</span></div>
+    <div class="tile"><b>${nd} / ${n}</b><span>Righe ordinate</span></div>`;
+}
+document.getElementById("reset").addEventListener("click",()=>{done={};save();render()});
+render();
+</script>

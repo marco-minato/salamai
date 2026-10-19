@@ -1,0 +1,469 @@
+# Camera salumi — Waveshare ESP32-S3-Relay-6CH
+#
+# FIRMWARE DI PROVA (banco e test di preriscaldo a camera vuota).
+# Comandi manuali da HA + termostato semplice + sicurezze di base.
+# La logica del ciclo (fasi, ricambi, umidità) arriva dopo i test:
+# vedi /homeassistant/salumi/specifiche_firmware.md.
+#
+# Pin (specifiche_firmware.md §2):
+#   relè CH1–CH3 lampade GPIO1/2/41, CH4–CH5 umidificatori GPIO42/45,
+#   CH6 estrattore GPIO46 · RS485 GPIO17/18 · ventole PWM GPIO39 (via A2,
+#   invertito), giri GPIO12/11 · HX711 DOUT GPIO40 SCK GPIO6 ·
+#   1-Wire GPIO7 · RTC SDA GPIO4 SCL GPIO5
+#
+# Sicurezze:
+#   - all'avvio tutti i relè spenti (CH5/CH6 sono pin di strapping);
+#   - sonda camera senza letture per 5 min → lampade e umidificatori spenti;
+#   - camera oltre 30 °C → termostato e lampade spenti;
+#   - estrattore e umidificatori mai insieme.
+
+substitutions:
+  t_massima: "30"
+
+esphome:
+  name: salumi-camera
+  friendly_name: Camera salumi
+  on_boot:
+    - priority: 800
+      then:
+        - switch.turn_off: lampada_1
+        - switch.turn_off: lampada_2
+        - switch.turn_off: lampada_3
+        - switch.turn_off: umidificatore_1
+        - switch.turn_off: umidificatore_2
+        - switch.turn_off: estrattore
+    # ora dal DS3231 finché HA non è collegato
+    - priority: 600
+      then:
+        - ds1307.read_time: rtc
+
+esp32:
+  board: esp32-s3-devkitc-1
+  flash_size: 8MB
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+  encryption:
+    key: !secret salumi_api_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none
+  ap:
+    ssid: "Salumi-Camera Fallback"
+    password: !secret ap_password
+
+captive_portal:
+
+debug:
+  update_interval: 5min
+
+globals:
+  # ultimo istante (millis) con una lettura valida della sonda camera
+  - id: ultima_lettura
+    type: uint32_t
+    initial_value: "0"
+
+# --- Ora: HA, con il DS3231 di riserva --------------------------------------
+i2c:
+  sda: GPIO4
+  scl: GPIO5
+
+time:
+  - platform: homeassistant
+    id: ora_ha
+    on_time_sync:
+      then:
+        - ds1307.write_time: rtc
+  - platform: ds1307
+    id: rtc
+    update_interval: never
+
+# --- Relè ------------------------------------------------------------------
+switch:
+  - platform: gpio
+    id: lampada_1
+    name: "Lampada 1"
+    pin: GPIO1
+    restore_mode: ALWAYS_OFF
+    icon: mdi:heat-wave
+  - platform: gpio
+    id: lampada_2
+    name: "Lampada 2"
+    pin: GPIO2
+    restore_mode: ALWAYS_OFF
+    icon: mdi:heat-wave
+  - platform: gpio
+    id: lampada_3
+    name: "Lampada 3"
+    pin: GPIO41
+    restore_mode: ALWAYS_OFF
+    icon: mdi:heat-wave
+  - platform: gpio
+    id: umidificatore_1
+    name: "Umidificatore 1"
+    pin: GPIO42
+    restore_mode: ALWAYS_OFF
+    icon: mdi:air-humidifier
+    on_turn_on:
+      - switch.turn_off: estrattore
+  - platform: gpio
+    id: umidificatore_2
+    name: "Umidificatore 2"
+    pin:
+      number: GPIO45
+      ignore_strapping_warning: true
+    restore_mode: ALWAYS_OFF
+    icon: mdi:air-humidifier
+    on_turn_on:
+      - switch.turn_off: estrattore
+  - platform: gpio
+    id: estrattore
+    name: "Estrattore"
+    pin:
+      number: GPIO46
+      ignore_strapping_warning: true
+    restore_mode: ALWAYS_OFF
+    icon: mdi:fan-chevron-up
+    on_turn_on:
+      - switch.turn_off: umidificatore_1
+      - switch.turn_off: umidificatore_2
+
+# --- Termostato (preriscaldo e prove) -------------------------------------------
+number:
+  - platform: template
+    id: n_lampade
+    name: "Lampade del termostato"
+    icon: mdi:numeric
+    optimistic: true
+    min_value: 1
+    max_value: 3
+    step: 1
+    initial_value: 3
+    restore_value: true
+    on_value:
+      - if:
+          condition:
+            lambda: return id(stufa).action == climate::CLIMATE_ACTION_HEATING;
+          then:
+            - script.execute: lampade_accendi
+
+script:
+  # accende quante lampade dice "Lampade del termostato", 2 s l'una dall'altra
+  - id: lampade_accendi
+    mode: restart
+    then:
+      - switch.turn_on: lampada_1
+      - if:
+          condition:
+            lambda: return id(n_lampade).state >= 2;
+          then:
+            - delay: 2s
+            - switch.turn_on: lampada_2
+          else:
+            - switch.turn_off: lampada_2
+      - if:
+          condition:
+            lambda: return id(n_lampade).state >= 3;
+          then:
+            - delay: 2s
+            - switch.turn_on: lampada_3
+          else:
+            - switch.turn_off: lampada_3
+  - id: lampade_spegni
+    mode: restart
+    then:
+      - script.stop: lampade_accendi
+      - switch.turn_off: lampada_1
+      - switch.turn_off: lampada_2
+      - switch.turn_off: lampada_3
+
+climate:
+  - platform: thermostat
+    id: stufa
+    name: "Stufa"
+    sensor: t_camera
+    min_heating_off_time: 60s
+    min_heating_run_time: 60s
+    min_idle_time: 30s
+    heat_deadband: 0.3
+    heat_overrun: 0.3
+    heat_action:
+      - script.execute: lampade_accendi
+    idle_action:
+      - script.execute: lampade_spegni
+    default_preset: Preriscaldo
+    preset:
+      - name: Preriscaldo
+        default_target_temperature_low: 22
+    visual:
+      min_temperature: 5
+      max_temperature: 28
+      temperature_step: 0.5
+
+interval:
+  # sonda camera ferma da 5 min → niente calore e niente acqua
+  - interval: 30s
+    then:
+      - if:
+          condition:
+            lambda: return millis() - id(ultima_lettura) > 300000;
+          then:
+            - if:
+                condition:
+                  lambda: return id(stufa).mode != climate::CLIMATE_MODE_OFF;
+                then:
+                  - logger.log:
+                      level: WARN
+                      format: "Sonda camera ferma da 5 min: stufa spenta"
+                  - climate.control:
+                      id: stufa
+                      mode: "OFF"
+            - script.execute: lampade_spegni
+            - switch.turn_off: umidificatore_1
+            - switch.turn_off: umidificatore_2
+
+# --- Ventole di ricircolo -----------------------------------------------------
+# GPIO39 comanda il modulo MOSFET A2, che porta a massa il filo PWM delle
+# ventole: uscita invertita. Scheda spenta o in avvio = ventole al massimo.
+output:
+  - platform: ledc
+    id: pwm_ventole
+    pin: GPIO39
+    frequency: 20000Hz
+    inverted: true
+
+fan:
+  - platform: speed
+    id: ventole
+    name: "Ventole ricircolo"
+    output: pwm_ventole
+    restore_mode: RESTORE_DEFAULT_OFF
+
+# --- RS485: sonda camera, contatore, sonda cantina ----------------------------
+# Il contatore SDM120 esce di fabbrica con indirizzo 1 e 2400 baud: va portato
+# a indirizzo 2 e 9600 baud dai tasti frontali PRIMA di collegarlo al bus,
+# altrimenti si scontra con la sonda camera (indirizzo 1).
+uart:
+  id: bus485
+  tx_pin: GPIO17
+  rx_pin: GPIO18
+  baud_rate: 9600
+
+modbus:
+  id: modbus485
+  uart_id: bus485
+
+modbus_controller:
+  - id: sth_camera
+    modbus_id: modbus485
+    address: 0x1
+    update_interval: 30s
+  # Seconda S-TH-01 in cantina: togliere il commento quando ha indirizzo 3.
+  # - id: sth_cantina
+  #   modbus_id: modbus485
+  #   address: 0x3
+  #   update_interval: 60s
+
+one_wire:
+  - platform: gpio
+    pin: GPIO7
+
+sensor:
+  # Camera (S-TH-01, indirizzo 1)
+  - platform: modbus_controller
+    modbus_controller_id: sth_camera
+    id: t_camera
+    name: "Temperatura camera"
+    force_update: true
+    register_type: holding
+    address: 0x0000
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
+    on_value:
+      - lambda: id(ultima_lettura) = millis();
+      - if:
+          condition:
+            lambda: return x > ${t_massima};
+          then:
+            - logger.log:
+                level: ERROR
+                format: "Camera oltre ${t_massima} °C: stufa spenta"
+            - climate.control:
+                id: stufa
+                mode: "OFF"
+            - script.execute: lampade_spegni
+  - platform: modbus_controller
+    modbus_controller_id: sth_camera
+    id: ur_camera
+    name: "Umidità camera"
+    force_update: true
+    register_type: holding
+    address: 0x0001
+    value_type: U_WORD
+    unit_of_measurement: "%"
+    device_class: humidity
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: sth_camera
+    id: rugiada_camera
+    name: "Punto di rugiada camera"
+    register_type: holding
+    address: 0x0002
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
+  - platform: template
+    name: "Umidità assoluta camera"
+    unit_of_measurement: "g/m³"
+    state_class: measurement
+    accuracy_decimals: 2
+    update_interval: 60s
+    lambda: |-
+      float t = id(t_camera).state, ur = id(ur_camera).state;
+      if (isnan(t) || isnan(ur)) return NAN;
+      return 6.112f * expf(17.67f * t / (t + 243.5f)) * ur * 2.1674f / (273.15f + t);
+
+  # Contatore SDM120 (indirizzo 2): consumo delle lampade e degli attuatori
+  - platform: sdm_meter
+    modbus_id: modbus485
+    address: 2
+    update_interval: 30s
+    phase_a:
+      voltage:
+        name: "Tensione"
+      current:
+        name: "Corrente attuatori"
+      active_power:
+        name: "Potenza attuatori"
+      power_factor:
+        name: "Fattore di potenza"
+    total_power:
+      name: "Potenza totale"
+    import_active_energy:
+      name: "Energia attuatori"
+
+  # Superfici (DS18B20 su GPIO7). Al primo avvio il log elenca gli indirizzi
+  # trovati sul bus ("Found sensors: 0x..."): scaldare una sonda in mano per
+  # capire quale è quale, metterli qui sotto e togliere il commento, anche alle
+  # due template "Superficie più fredda" e "Margine di condensa".
+  # - platform: dallas_temp
+  #   id: t_parete
+  #   name: "Temperatura parete"
+  #   address: 0x0000000000000000
+  #   update_interval: 30s
+  # - platform: dallas_temp
+  #   id: t_pavimento
+  #   name: "Temperatura pavimento"
+  #   address: 0x0000000000000000
+  #   update_interval: 30s
+  # - platform: template
+  #   id: t_fredda
+  #   name: "Superficie più fredda"
+  #   unit_of_measurement: "°C"
+  #   device_class: temperature
+  #   state_class: measurement
+  #   accuracy_decimals: 1
+  #   update_interval: 30s
+  #   lambda: |-
+  #     float a = id(t_parete).state, b = id(t_pavimento).state;
+  #     if (isnan(a)) return b;
+  #     if (isnan(b)) return a;
+  #     return std::min(a, b);
+  # - platform: template
+  #   name: "Margine di condensa"
+  #   unit_of_measurement: "°C"
+  #   state_class: measurement
+  #   accuracy_decimals: 1
+  #   update_interval: 30s
+  #   lambda: |-
+  #     return id(t_fredda).state - id(rugiada_camera).state;
+
+  # Giri ventole (2 impulsi a giro: impulsi al minuto × 0,5 = giri/min)
+  - platform: pulse_counter
+    name: "Giri ventola 1"
+    pin:
+      number: GPIO12
+      mode:
+        input: true
+        pullup: true
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+    update_interval: 10s
+    filters:
+      - multiply: 0.5
+  - platform: pulse_counter
+    name: "Giri ventola 2"
+    pin:
+      number: GPIO11
+      mode:
+        input: true
+        pullup: true
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+    update_interval: 10s
+    filters:
+      - multiply: 0.5
+
+  # Bilancia HX711. "Peso grezzo" serve a calibrare: leggerlo a vuoto (gancio
+  # compreso) e con un peso noto, poi mettere i due valori in "Peso".
+  - platform: hx711
+    id: peso_grezzo
+    name: "Peso grezzo"
+    dout_pin: GPIO40
+    clk_pin: GPIO6
+    gain: 128
+    update_interval: 10s
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 6
+          send_every: 6
+  - platform: copy
+    source_id: peso_grezzo
+    name: "Peso"
+    unit_of_measurement: g
+    device_class: weight
+    state_class: measurement
+    accuracy_decimals: 0
+    filters:
+      - calibrate_linear:
+          # DA CALIBRARE: lettura grezza -> grammi
+          - 0 -> 0
+          - 100000 -> 1000
+
+  - platform: wifi_signal
+    name: "Segnale WiFi"
+    update_interval: 60s
+  - platform: uptime
+    name: "Tempo acceso"
+    update_interval: 60s
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Indirizzo IP"
+  - platform: debug
+    reset_reason:
+      name: "Motivo ultimo riavvio"

@@ -1,0 +1,712 @@
+{
+ "title": "Stagionatura",
+ "views": [
+  {
+   "title": "Camera salumi",
+   "path": "salumi",
+   "icon": "mdi:sausage",
+   "type": "sections",
+   "max_columns": 3,
+   "sections": [
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Ciclo",
+       "icon": "mdi:sausage"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_fase",
+       "name": "Fase attuale",
+       "grid_options": {
+        "columns": 12
+       }
+      },
+      {
+       "type": "entities",
+       "entities": [
+        {
+         "type": "attribute",
+         "entity": "sensor.salumi_fase",
+         "attribute": "temp_target",
+         "name": "Temperatura obiettivo",
+         "suffix": "°C",
+         "icon": "mdi:thermometer"
+        },
+        {
+         "type": "attribute",
+         "entity": "sensor.salumi_fase",
+         "attribute": "ur_target",
+         "name": "Umidità obiettivo",
+         "suffix": "%",
+         "icon": "mdi:water-percent"
+        },
+        {
+         "type": "attribute",
+         "entity": "sensor.salumi_fase",
+         "attribute": "fine_fase",
+         "name": "Fine fase",
+         "format": "datetime",
+         "icon": "mdi:timer-sand"
+        },
+        {
+         "type": "attribute",
+         "entity": "sensor.salumi_fase",
+         "attribute": "ore_trascorse",
+         "name": "Ore dall'inizio",
+         "suffix": "h",
+         "icon": "mdi:clock-outline"
+        },
+        {
+         "entity": "input_datetime.salumi_inizio_ciclo",
+         "name": "Inizio ciclo",
+         "type": "simple-entity",
+         "tap_action": {
+          "action": "none"
+         }
+        },
+        {
+         "entity": "input_boolean.salumi_ciclo_attivo",
+         "name": "Ciclo attivo",
+         "type": "simple-entity",
+         "tap_action": {
+          "action": "none"
+         }
+        },
+        {
+         "entity": "input_boolean.salumi_preparazione",
+         "name": "Preparazione cella",
+         "type": "simple-entity",
+         "tap_action": {
+          "action": "none"
+         }
+        },
+        {
+         "entity": "input_boolean.salumi_cella_pronta",
+         "name": "Cella pronta",
+         "type": "simple-entity",
+         "tap_action": {
+          "action": "none"
+         }
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "script.salumi_prepara_cella",
+       "name": "Prepara cella",
+       "icon": "mdi:radiator",
+       "color": "orange",
+       "hide_state": true,
+       "vertical": true,
+       "grid_options": {
+        "columns": 3
+       },
+       "tap_action": {
+        "action": "perform-action",
+        "perform_action": "script.salumi_prepara_cella",
+        "confirmation": {
+         "text": "Accendere la stufa per portare la cella a 22 °C? Ti avviso quando è pronta per inserire i salumi."
+        }
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "script.salumi_avvia_ciclo",
+       "name": "Partenza ciclo",
+       "icon": "mdi:play",
+       "color": "green",
+       "hide_state": true,
+       "vertical": true,
+       "grid_options": {
+        "columns": 3
+       },
+       "tap_action": {
+        "action": "perform-action",
+        "perform_action": "script.salumi_avvia_ciclo",
+        "confirmation": {
+         "text": "Salumi inseriti? Parte lo sgocciolamento (22 °C, 12 h, UR da tabella)."
+        }
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "script.salumi_fase_successiva",
+       "name": "Fase successiva",
+       "icon": "mdi:skip-next",
+       "color": "amber",
+       "hide_state": true,
+       "vertical": true,
+       "grid_options": {
+        "columns": 3
+       },
+       "tap_action": {
+        "action": "perform-action",
+        "perform_action": "script.salumi_fase_successiva",
+        "confirmation": {
+         "text": "Passare subito alla fase successiva?"
+        }
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "script.salumi_ferma_ciclo",
+       "name": "Ferma ciclo",
+       "icon": "mdi:stop",
+       "color": "red",
+       "hide_state": true,
+       "vertical": true,
+       "grid_options": {
+        "columns": 3
+       },
+       "tap_action": {
+        "action": "perform-action",
+        "perform_action": "script.salumi_ferma_ciclo",
+        "confirmation": {
+         "text": "Fermare il ciclo e spegnere stufa e umidificatore?"
+        }
+       }
+      },
+      {
+       "type": "heading",
+       "heading": "Partenza programmata",
+       "heading_style": "subtitle",
+       "icon": "mdi:calendar-clock"
+      },
+      {
+       "type": "entities",
+       "entities": [
+        {
+         "entity": "input_datetime.salumi_partenza_programmata",
+         "name": "Data e ora"
+        },
+        {
+         "entity": "input_boolean.salumi_partenza_programmata_attiva",
+         "name": "Programmazione attiva"
+        },
+        {
+         "type": "section",
+         "label": "All'ora impostata preme \"Partenza ciclo\" (pesata compresa)"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "heading": "Note",
+       "heading_style": "subtitle",
+       "icon": "mdi:notebook-edit"
+      },
+      {
+       "type": "entities",
+       "entities": [
+        {
+         "entity": "input_text.salumi_nota",
+         "name": "Nuova nota"
+        }
+       ],
+       "grid_options": {
+        "columns": 9
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "script.salumi_aggiungi_nota",
+       "name": "Salva",
+       "icon": "mdi:note-plus",
+       "color": "blue",
+       "hide_state": true,
+       "vertical": true,
+       "grid_options": {
+        "columns": 3
+       },
+       "tap_action": {
+        "action": "perform-action",
+        "perform_action": "script.salumi_aggiungi_nota"
+       }
+      },
+      {
+       "type": "history-graph",
+       "title": "Fasi del ciclo",
+       "hours_to_show": 408,
+       "entities": [
+        {
+         "entity": "sensor.salumi_fase",
+         "name": "Fase"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       }
+      },
+      {
+       "type": "markdown",
+       "content": "Archivio del ciclo: `/share/salumi/{{ states('input_text.salumi_cartella_ciclo') or '—' }}/`",
+       "text_only": true
+      },
+      {
+       "type": "vertical-stack",
+       "cards": [
+        {
+         "type": "entities",
+         "title": "Supervisione Claude",
+         "entities": [
+          {
+           "entity": "input_select.salumi_supervisione",
+           "name": "Modalità"
+          },
+          {
+           "entity": "sensor.salumi_supervisione_battito",
+           "name": "Ultimo segno di vita"
+          }
+         ]
+        },
+        {
+         "type": "conditional",
+         "conditions": [
+          {
+           "condition": "state",
+           "entity": "input_text.salumi_proposta",
+           "state_not": ""
+          }
+         ],
+         "card": {
+          "type": "vertical-stack",
+          "cards": [
+           {
+            "type": "markdown",
+            "content": "**Proposta di Claude**\n\n{{ states('input_text.salumi_proposta') }}\n\n*Risposta: {{ states('input_text.salumi_risposta') }}*"
+           },
+           {
+            "type": "horizontal-stack",
+            "cards": [
+             {
+              "type": "button",
+              "name": "Approva",
+              "icon": "mdi:check",
+              "tap_action": {
+               "action": "perform-action",
+               "perform_action": "script.salumi_approva_proposta",
+               "confirmation": {
+                "text": "Approvare la proposta di Claude?"
+               }
+              }
+             },
+             {
+              "type": "button",
+              "name": "Rifiuta",
+              "icon": "mdi:close",
+              "tap_action": {
+               "action": "perform-action",
+               "perform_action": "script.salumi_rifiuta_proposta"
+              }
+             }
+            ]
+           }
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Ambiente",
+       "icon": "mdi:home-thermometer"
+      },
+      {
+       "type": "thermostat",
+       "entity": "climate.salumi_stufa",
+       "name": "Stufa"
+      },
+      {
+       "type": "humidifier",
+       "entity": "humidifier.salumi_umidita",
+       "name": "Umidificatore"
+      },
+      {
+       "type": "heading",
+       "heading": "Camera (sonda)",
+       "heading_style": "subtitle",
+       "icon": "mdi:sausage"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.sonda_th_temperatura",
+       "name": "Temperatura",
+       "vertical": true,
+       "grid_options": {
+        "columns": 4
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.sonda_th_umidita",
+       "name": "Umidità",
+       "vertical": true,
+       "grid_options": {
+        "columns": 4
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_umidita_assoluta_camera",
+       "name": "Umid. assoluta",
+       "vertical": true,
+       "grid_options": {
+        "columns": 4
+       }
+      },
+      {
+       "type": "heading",
+       "heading": "Cantina (fuori dalla camera)",
+       "heading_style": "subtitle",
+       "icon": "mdi:home-floor-negative-1"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.shelly_h_t_cantina_temperature",
+       "name": "Temperatura",
+       "vertical": true,
+       "grid_options": {
+        "columns": 4
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.shelly_h_t_cantina_humidity",
+       "name": "Umidità",
+       "vertical": true,
+       "grid_options": {
+        "columns": 4
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_umidita_assoluta_cantina",
+       "name": "Umid. assoluta",
+       "vertical": true,
+       "grid_options": {
+        "columns": 4
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Calo peso",
+       "icon": "mdi:scale"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_calo_reale",
+       "name": "Calo reale",
+       "vertical": true,
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_calo_atteso",
+       "name": "Calo atteso",
+       "vertical": true,
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "entities",
+       "entities": [
+        {
+         "entity": "sensor.salumi_peso",
+         "name": "Peso attuale"
+        },
+        {
+         "entity": "input_number.salumi_peso_iniziale",
+         "name": "Peso iniziale (g)"
+        },
+        {
+         "type": "section",
+         "label": "Atteso per nostrano Ø 5-7 cm"
+        },
+        {
+         "entity": "sensor.salumi_calo_atteso_minimo",
+         "name": "Minimo"
+        },
+        {
+         "entity": "sensor.salumi_calo_atteso_massimo",
+         "name": "Massimo"
+        },
+        {
+         "type": "section",
+         "label": "Il peso iniziale si copia dalla bilancia a \"Partenza ciclo\""
+        }
+       ]
+      },
+      {
+       "type": "history-graph",
+       "title": "Calo atteso vs reale (%)",
+       "hours_to_show": 372,
+       "grid_options": {
+        "columns": 12
+       },
+       "entities": [
+        {
+         "entity": "sensor.salumi_calo_atteso_minimo",
+         "name": "Atteso min"
+        },
+        {
+         "entity": "sensor.salumi_calo_atteso",
+         "name": "Atteso"
+        },
+        {
+         "entity": "sensor.salumi_calo_atteso_massimo",
+         "name": "Atteso max"
+        },
+        {
+         "entity": "sensor.salumi_calo_reale",
+         "name": "Reale"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Attuatori e consumi",
+       "icon": "mdi:flash"
+      },
+      {
+       "type": "tile",
+       "entity": "switch.sonoff_1001f24fe4_2",
+       "name": "Stufa",
+       "icon": "mdi:radiator",
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.sonoff_1001f24fe4_power_2",
+       "name": "Potenza stufa",
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "switch.sonoff_1001f24fe4_1",
+       "name": "Umidificatore",
+       "icon": "mdi:air-humidifier",
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.sonoff_1001f24fe4_power_1",
+       "name": "Potenza umidificatore",
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "heading",
+       "heading": "Energia del ciclo",
+       "heading_style": "subtitle"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_energia_ciclo_totale",
+       "name": "Totale ciclo",
+       "grid_options": {
+        "columns": 12
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_energia_ciclo_stufa",
+       "name": "Stufa",
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.salumi_energia_ciclo_umidificatore",
+       "name": "Umidificatore",
+       "grid_options": {
+        "columns": 6
+       }
+      },
+      {
+       "type": "statistics-graph",
+       "title": "Energia giornaliera",
+       "entities": [
+        {
+         "entity": "sensor.salumi_energia_stufa",
+         "name": "Stufa"
+        },
+        {
+         "entity": "sensor.salumi_energia_umidificatore",
+         "name": "Umidificatore"
+        }
+       ],
+       "chart_type": "bar",
+       "period": "day",
+       "stat_types": [
+        "change"
+       ],
+       "days_to_show": 20
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "column_span": 3,
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Andamento",
+       "icon": "mdi:chart-line"
+      },
+      {
+       "type": "history-graph",
+       "title": "Temperatura (reale e obiettivo) e stufa",
+       "hours_to_show": 48,
+       "entities": [
+        {
+         "entity": "climate.salumi_stufa",
+         "name": "Stufa"
+        },
+        {
+         "entity": "sensor.shelly_h_t_cantina_temperature",
+         "name": "Cantina"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       }
+      },
+      {
+       "type": "history-graph",
+       "title": "Umidità e umidificatore",
+       "hours_to_show": 48,
+       "entities": [
+        {
+         "entity": "sensor.sonda_th_umidita",
+         "name": "UR camera"
+        },
+        {
+         "entity": "sensor.shelly_h_t_cantina_humidity",
+         "name": "UR cantina"
+        },
+        {
+         "entity": "humidifier.salumi_umidita",
+         "name": "Umidificatore"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       }
+      },
+      {
+       "type": "history-graph",
+       "title": "Umidità assoluta camera e cantina",
+       "hours_to_show": 48,
+       "entities": [
+        {
+         "entity": "sensor.salumi_umidita_assoluta_camera",
+         "name": "Camera"
+        },
+        {
+         "entity": "sensor.salumi_umidita_assoluta_cantina",
+         "name": "Cantina"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Impostazioni test",
+       "icon": "mdi:cog",
+       "heading_style": "subtitle"
+      },
+      {
+       "type": "entities",
+       "entities": [
+        {
+         "entity": "input_number.salumi_ore_sgocciolamento",
+         "name": "Ore sgocciolamento"
+        },
+        {
+         "entity": "input_number.salumi_ore_per_giorno",
+         "name": "Ore per giorno"
+        },
+        {
+         "type": "section",
+         "label": "Tornano a 12 h / 24 h a ogni riavvio di HA"
+        },
+        {
+         "entity": "script.salumi_applica_setpoint",
+         "name": "Riapplica setpoint"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "markdown",
+       "content": "{%- set f = 'sensor.salumi_fase' -%}\n{%- set step = state_attr(f, 'step') | int(-1) -%}\n{%- set tt = state_attr(f, 'tabella_temp') or [] -%}\n{%- set ut = state_attr(f, 'tabella_ur') or [] -%}\n{%- set es = state_attr(f, 'tabella_estrazione') or [] -%}\n{%- set pre = states('input_number.salumi_ore_preriscaldo') | int(24) -%}\n{%- set prog = is_state('input_boolean.salumi_partenza_programmata_attiva', 'on') -%}\n{%- set part = state_attr('input_datetime.salumi_partenza_programmata', 'timestamp') | float(0) -%}\n{%- set attivo = is_state('input_boolean.salumi_ciclo_attivo', 'on') -%}\n{%- set inizio = state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0) -%}\n{%- set sg = states('input_number.salumi_ore_sgocciolamento') | float(12) -%}\n{%- set opg = states('input_number.salumi_ore_per_giorno') | float(24) -%}\n{%- macro quando(h) -%}\n{%- if attivo -%}{{ (inizio + h * 3600) | timestamp_custom('%d/%m %H:%M') }}{%- else -%}{{ h | round(1) | string | replace('.0', '') }} h{%- endif -%}\n{%- endmacro -%}\n{%- macro min(i, unita) -%}{{ (es[i] ~ ' ' ~ unita) if es | count > i and es[i] is not none else '—' }}{%- endmacro -%}\n{%- macro riga(n, fase, da, a, t, ur, ex) -%}\n{%- set b = '**' if n == step else '' -%}\n| {{ '▶' if n == step else '' }} | {{ b }}{{ fase }}{{ b }} | {{ b }}{{ da }}{{ b }} | {{ b }}{{ a }}{{ b }} | {{ b }}{{ t }}{{ b }} | {{ b }}{{ ur }}{{ b }} | {{ b }}{{ ex }}{{ b }} |\n{%- endmacro -%}\n**Programma: {{ state_attr(f, 'programma') }}**\n\n| | Fase | {{ 'Inizio' if attivo else 'Da' }} | {{ 'Fine' if attivo else 'A' }} | Temp | UR | Estrattore |\n|:-:|:--|:--|:--|--:|--:|--:|\n{{ riga(-2, 'Preriscaldo ' ~ pre ~ ' h', ((part - pre * 3600) | timestamp_custom('%d/%m %H:%M')) if prog and not attivo else (pre ~ ' h prima'), (part | timestamp_custom('%d/%m %H:%M')) if prog and not attivo else 'partenza', (state_attr(f, 'temp_sgocciolamento') ~ ' °C'), 'umid. spento', '—') }}\n{{ riga(0, 'Sgocciolamento', quando(0), quando(sg), (state_attr(f, 'temp_sgocciolamento') ~ ' °C'), (state_attr('sensor.salumi_fase', 'ur_sgocciolamento') | string) ~ ' %', min(0, 'min')) }}\n{%- for i in range(tt | count) %}\n{{ riga(i + 1, 'Giorno ' ~ (i + 1), quando(sg + i * opg), quando(sg + (i + 1) * opg), tt[i] ~ ' °C', ut[i] ~ ' %', min(i + 1, 'min/g')) }}\n{%- endfor %}\n\n{% if not attivo %}*Ore dalla partenza del ciclo (sgocciolamento {{ sg | round(1) | string | replace('.0', '') }} h, giorno = {{ opg | round(1) | string | replace('.0', '') }} h).*{% elif step == 16 %}**Ciclo terminato.**{% endif %}\n\n*Estrattore: stima per {{ states('input_number.salumi_kg_camera') | int(55) }} kg di salumi, cantina 7 °C / 80 %, estrattore 107 m³/h; nello sgocciolamento minuti in tutta la fase, poi minuti al giorno.*\n"
+      },
+      {
+       "type": "entities",
+       "title": "Parametri della stima",
+       "entities": [
+        {
+         "entity": "input_select.salumi_programma",
+         "name": "Programma (non cambiarlo a ciclo avviato)"
+        },
+        {
+         "entity": "input_number.salumi_ore_preriscaldo",
+         "name": "Ore di preriscaldo"
+        },
+        {
+         "entity": "input_number.salumi_kg_camera",
+         "name": "Kg di salumi in camera"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "heading": "Tabella ciclo",
+       "icon": "mdi:table"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1350 @@
+# =============================================================================
+# Camera di stufatura / asciugatura salumi
+#
+# Sensore:      Sonda RS485 S-TH-01 su ESPHome "Sonda TH" (dentro la camera)
+# Riferimento:  Shelly H&T Cantina (in cantina, fuori dalla camera)
+# Attuatori:    Sonoff DUALR3 "Stufa e Umidificatore"
+#               - switch.sonoff_1001f24fe4_2 = Stufa        (power_2)
+#               - switch.sonoff_1001f24fe4_1 = Umidificatore (power_1)
+#
+# Il ciclo è calcolato dall'ora di inizio (input_datetime), quindi sopravvive
+# ai riavvii di HA. Avvio con script.salumi_avvia_ciclo.
+# =============================================================================
+
+input_boolean:
+  # Acceso quando stufa e umidificatore sono stati spenti per sonda ferma
+  salumi_sensore_fermo:
+    name: Salumi - sonda ferma
+    icon: mdi:alert-circle-outline
+  salumi_partenza_programmata_attiva:
+    name: Salumi - partenza programmata attiva
+    icon: mdi:calendar-clock
+  salumi_ciclo_attivo:
+    name: Salumi - ciclo attivo
+    icon: mdi:sausage
+  salumi_preparazione:
+    name: Salumi - preparazione cella
+    icon: mdi:radiator
+  salumi_cella_pronta:
+    name: Salumi - cella pronta
+    icon: mdi:check-circle
+
+input_datetime:
+  salumi_partenza_programmata:
+    name: Salumi - partenza programmata
+    has_date: true
+    has_time: true
+  salumi_inizio_ciclo:
+    name: Salumi - inizio ciclo
+    has_date: true
+    has_time: true
+  salumi_inizio_fase:
+    name: Salumi - inizio fase corrente
+    has_date: true
+    has_time: true
+  salumi_inizio_registrazione:
+    name: Salumi - inizio registrazione
+    has_date: true
+    has_time: true
+
+input_text:
+  salumi_cartella_ciclo:
+    name: Salumi - cartella archivio ciclo
+    max: 64
+  salumi_nota:
+    name: Salumi - nota
+    max: 255
+    icon: mdi:note-edit
+  # Supervisione di Claude Code: proposta in attesa di approvazione e risposta
+  salumi_proposta:
+    name: Salumi - proposta di Claude
+    max: 255
+    icon: mdi:robot
+  salumi_risposta:
+    name: Salumi - risposta alla proposta
+    max: 32
+    icon: mdi:check-decagram
+
+input_select:
+  # Programma del ciclo (tabelle in sensor.salumi_fase). Non cambiarlo a ciclo
+  # avviato: la fase in corso salterebbe ai valori dell'altro programma.
+  salumi_programma:
+    name: Salumi - programma
+    options:
+      - Morganline
+      - Zanotti
+    icon: mdi:table-clock
+  salumi_supervisione:
+    name: Salumi - supervisione Claude
+    options:
+      - osservazione
+      - attiva
+      - sospesa
+    icon: mdi:robot
+
+input_number:
+  # Peso del salame campione (g): copiato dalla bilancia alla partenza ciclo,
+  # correggibile a mano.
+  salumi_peso_iniziale:
+    name: Salumi - peso iniziale
+    min: 0
+    max: 5000
+    step: 1
+    unit_of_measurement: g
+    mode: box
+    icon: mdi:scale
+  # Ore di preriscaldo della camera vuota prima della partenza ciclo
+  salumi_ore_preriscaldo:
+    name: Salumi - ore preriscaldo
+    min: 0
+    max: 72
+    step: 1
+    unit_of_measurement: h
+    mode: box
+    icon: mdi:radiator
+  # Correzione dell'UR target rispetto al programma (punti %), usata dalla
+  # supervisione di Claude. Le temperature non hanno correzione.
+  salumi_correzione_ur:
+    name: Salumi - correzione UR
+    min: -15
+    max: 15
+    step: 1
+    unit_of_measurement: "%"
+    mode: box
+    icon: mdi:water-percent
+  # Chili di salumi in camera: servono alla stima dei minuti di estrattore
+  salumi_kg_camera:
+    name: Salumi - kg in camera
+    min: 1
+    max: 200
+    step: 1
+    unit_of_measurement: kg
+    mode: box
+    icon: mdi:weight-kilogram
+  # Durate: tornano ai valori di default a ogni riavvio di HA (sicurezza).
+  # Abbassarle solo per il test accelerato.
+  salumi_ore_sgocciolamento:
+    name: Salumi - ore sgocciolamento
+    min: 0.05
+    max: 48
+    step: 0.05
+    initial: 12
+    unit_of_measurement: h
+    mode: box
+  salumi_ore_per_giorno:
+    name: Salumi - ore per giorno
+    min: 0.05
+    max: 48
+    step: 0.05
+    initial: 24
+    unit_of_measurement: h
+    mode: box
+  # Valori memorizzati all'accensione degli attuatori (per i controlli)
+  salumi_ur_accensione_umidificatore:
+    name: Salumi - UR all'accensione umidificatore
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: "%"
+    mode: box
+  # Letture dei contatori di energia all'inizio del ciclo
+  salumi_energia_inizio_stufa:
+    name: Salumi - energia stufa a inizio ciclo
+    min: 0
+    max: 1000000
+    step: 0.001
+    unit_of_measurement: kWh
+    mode: box
+  salumi_energia_inizio_umidificatore:
+    name: Salumi - energia umidificatore a inizio ciclo
+    min: 0
+    max: 1000000
+    step: 0.001
+    unit_of_measurement: kWh
+    mode: box
+  salumi_temp_accensione_stufa:
+    name: Salumi - temperatura all'accensione stufa
+    min: -20
+    max: 60
+    step: 0.1
+    unit_of_measurement: °C
+    mode: box
+
+climate:
+  - platform: generic_thermostat
+    name: Salumi Stufa
+    unique_id: salumi_stufa
+    heater: switch.sonoff_1001f24fe4_2
+    target_sensor: sensor.sonda_th_temperatura
+    min_temp: 5
+    max_temp: 30
+    target_temp: 12
+    cold_tolerance: 0.3
+    hot_tolerance: 0.3
+    min_cycle_duration:
+      minutes: 2
+    keep_alive:
+      minutes: 3
+    initial_hvac_mode: "off"
+    precision: 0.1
+
+humidifier:
+  - platform: generic_hygrostat
+    name: Salumi Umidità
+    unique_id: salumi_umidita
+    humidifier: switch.sonoff_1001f24fe4_1
+    target_sensor: sensor.sonda_th_umidita
+    device_class: humidifier
+    min_humidity: 40
+    max_humidity: 98
+    target_humidity: 80
+    dry_tolerance: 1.5
+    wet_tolerance: 1
+    min_cycle_duration:
+      minutes: 1
+    keep_alive:
+      minutes: 3
+    # Se il sensore non aggiorna per 30 min spegne l'umidificatore
+    sensor_stale_duration:
+      minutes: 30
+    initial_state: false
+
+# Contatori di energia calcolati in locale dalla potenza del DUALR3
+# (i sensori energia dell'integrazione Sonoff dipendono dal cloud)
+sensor:
+  - platform: integration
+    name: Salumi energia stufa
+    unique_id: salumi_energia_stufa
+    source: sensor.sonoff_1001f24fe4_power_2
+    unit_prefix: k
+    round: 3
+    method: left
+    max_sub_interval:
+      minutes: 1
+  - platform: integration
+    name: Salumi energia umidificatore
+    unique_id: salumi_energia_umidificatore
+    source: sensor.sonoff_1001f24fe4_power_1
+    unit_prefix: k
+    round: 3
+    method: left
+    max_sub_interval:
+      minutes: 1
+
+template:
+  - sensor:
+      # Umidità assoluta (g/m³) dentro la camera e in cantina: serve a capire
+      # se ricambiare l'aria con la cantina asciuga o inumidisce la camera.
+      - name: Salumi umidità assoluta camera
+        unique_id: salumi_umidita_assoluta_camera
+        unit_of_measurement: g/m³
+        state_class: measurement
+        icon: mdi:water
+        availability: "{{ has_value('sensor.sonda_th_temperatura') and has_value('sensor.sonda_th_umidita') }}"
+        state: >
+          {% set t = states('sensor.sonda_th_temperatura') | float %}
+          {% set rh = states('sensor.sonda_th_umidita') | float %}
+          {{ (6.112 * e ** (17.67 * t / (t + 243.5)) * rh * 2.1674 / (273.15 + t)) | round(2) }}
+      - name: Salumi umidità assoluta cantina
+        unique_id: salumi_umidita_assoluta_cantina
+        unit_of_measurement: g/m³
+        state_class: measurement
+        icon: mdi:water-outline
+        availability: "{{ has_value('sensor.shelly_h_t_cantina_temperature') and has_value('sensor.shelly_h_t_cantina_humidity') }}"
+        state: >
+          {% set t = states('sensor.shelly_h_t_cantina_temperature') | float %}
+          {% set rh = states('sensor.shelly_h_t_cantina_humidity') | float %}
+          {{ (6.112 * e ** (17.67 * t / (t + 243.5)) * rh * 2.1674 / (273.15 + t)) | round(2) }}
+      # --- Calo peso -----------------------------------------------------------
+      # Peso del salame campione dalla bilancia HX711 della Sonda TH.
+      - name: Salumi peso
+        unique_id: salumi_peso
+        unit_of_measurement: g
+        device_class: weight
+        state_class: measurement
+        icon: mdi:scale
+        availability: "{{ has_value('sensor.cantina_sonda_th_peso') }}"
+        state: "{{ states('sensor.cantina_sonda_th_peso') | float }}"
+      - name: Salumi calo reale
+        unique_id: salumi_calo_reale
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:scale-unbalanced
+        availability: >
+          {{ has_value('sensor.salumi_peso') and states('input_number.salumi_peso_iniziale') | float(0) > 0 }}
+        state: >
+          {{ ((1 - states('sensor.salumi_peso') | float / states('input_number.salumi_peso_iniziale') | float) * 100) | round(1) }}
+      # Calo atteso per salame nostrano Ø 5-7 cm nei 15 giorni in camera:
+      # curva calo = a * giorni^b passante per ~8 % al 5° giorno e ~16 % al 15°
+      # (fascia 6-11 % e 13-20 %). Giorni scalati con ore_per_giorno (test accelerato).
+      - name: Salumi calo atteso
+        unique_id: salumi_calo_atteso
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:chart-bell-curve-cumulative
+        availability: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') }}"
+        state: >
+          {% set ore = (as_timestamp(now()) - state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0)) / 3600 %}
+          {% set g = [[ore / states('input_number.salumi_ore_per_giorno') | float(24), 0] | max, 15.5] | min %}
+          {{ (2.9 * g ** 0.631) | round(1) }}
+      - name: Salumi calo atteso minimo
+        unique_id: salumi_calo_atteso_minimo
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:arrow-collapse-down
+        availability: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') }}"
+        state: >
+          {% set ore = (as_timestamp(now()) - state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0)) / 3600 %}
+          {% set g = [[ore / states('input_number.salumi_ore_per_giorno') | float(24), 0] | max, 15.5] | min %}
+          {{ (1.94 * g ** 0.705) | round(1) }}
+      - name: Salumi calo atteso massimo
+        unique_id: salumi_calo_atteso_massimo
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:arrow-collapse-up
+        availability: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') }}"
+        state: >
+          {% set ore = (as_timestamp(now()) - state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0)) / 3600 %}
+          {% set g = [[ore / states('input_number.salumi_ore_per_giorno') | float(24), 0] | max, 15.5] | min %}
+          {{ (4.56 * g ** 0.544) | round(1) }}
+      - name: Salumi energia ciclo stufa
+        unique_id: salumi_energia_ciclo_stufa
+        unit_of_measurement: kWh
+        device_class: energy
+        icon: mdi:radiator
+        state: >
+          {{ [states('sensor.salumi_energia_stufa') | float(0)
+              - states('input_number.salumi_energia_inizio_stufa') | float(0), 0] | max | round(2) }}
+      - name: Salumi energia ciclo umidificatore
+        unique_id: salumi_energia_ciclo_umidificatore
+        unit_of_measurement: kWh
+        device_class: energy
+        icon: mdi:air-humidifier
+        state: >
+          {{ [states('sensor.salumi_energia_umidificatore') | float(0)
+              - states('input_number.salumi_energia_inizio_umidificatore') | float(0), 0] | max | round(2) }}
+      - name: Salumi energia ciclo totale
+        unique_id: salumi_energia_ciclo_totale
+        unit_of_measurement: kWh
+        device_class: energy
+        icon: mdi:lightning-bolt
+        state: >
+          {{ (states('sensor.salumi_energia_ciclo_stufa') | float(0)
+              + states('sensor.salumi_energia_ciclo_umidificatore') | float(0)) | round(2) }}
+
+  - triggers:
+      - trigger: time_pattern
+        minutes: "/1"
+      - trigger: homeassistant
+        event: start
+      - trigger: state
+        entity_id:
+          - input_boolean.salumi_ciclo_attivo
+          - input_boolean.salumi_preparazione
+          - input_boolean.salumi_cella_pronta
+          - input_datetime.salumi_inizio_ciclo
+          - input_number.salumi_ore_sgocciolamento
+          - input_number.salumi_ore_per_giorno
+          - input_number.salumi_kg_camera
+          - input_number.salumi_correzione_ur
+          - input_select.salumi_programma
+    actions:
+      - variables:
+          zanotti: "{{ is_state('input_select.salumi_programma', 'Zanotti') }}"
+          # Morganline: tabella per media pezzatura (sgocciolamento a 22 °C).
+          # Zanotti (manuale SAS/SAR MicroSAS): temperature e UR più basse nei
+          # primi giorni, punto di rugiada 9-11,5 °C invece di 12-15 °C: meno
+          # condensa sulle pareti fredde. Sgocciolamento ai valori del giorno 1.
+          temp_tab: >
+            {{ [19.5, 17.5, 15.5, 14.5, 13.5] + [12.5] * 10 if zanotti
+               else [20, 18, 18, 16, 16, 14, 14, 12, 12, 12, 12, 12, 12, 12, 12] }}
+          ur_tab: >
+            {{ [60, 65, 69, 73, 77] + [80] * 10 if zanotti
+               else [72, 72, 74, 76, 78, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80] }}
+          # preparazione cella e sgocciolamento
+          t_sg: "{{ 19.5 if zanotti else 22 }}"
+          # sgocciolamento: UR bassa, i salumi freschi rilasciano già molta acqua
+          # (era 95 %: l'umidificatore restava acceso e faceva condensa e pozze)
+          ur_sg: "{{ 60 if zanotti else 62 }}"
+          # Stima minuti di estrattore per fase (sgocciolamento: minuti nella fase;
+          # giorni: minuti al giorno). Acqua persa dai salumi secondo la curva del
+          # calo atteso (2,9 * giorni^0,631 %), tolta tutta col ricambio d'aria:
+          # minuti = acqua / (umid. assoluta camera - cantina) / portata.
+          # Cantina di progetto 7 °C / 80 % = 6,2 g/m³; estrattore 107 m³/h.
+          tabella_estrazione: >
+            {% set kg = states('input_number.salumi_kg_camera') | float(55) %}
+            {% set g0 = (states('input_number.salumi_ore_sgocciolamento') | float(12)) / 24 %}
+            {% set ns = namespace(out=[]) %}
+            {% for i in range(-1, temp_tab | count) %}
+              {% if i < 0 %}{% set t = t_sg %}{% set u = ur_sg %}{% set a = 0 %}{% set b = g0 %}
+              {% else %}{% set t = temp_tab[i] %}{% set u = ur_tab[i] %}{% set a = g0 + i %}{% set b = g0 + i + 1 %}{% endif %}
+              {% set ah = 6.112 * e ** (17.67 * t / (t + 243.5)) * u * 2.1674 / (273.15 + t) %}
+              {% set acqua = kg * 10 * 2.9 * (b ** 0.631 - a ** 0.631) %}
+              {% set d = ah - 6.2 %}
+              {% set ns.out = ns.out + [((acqua / d / 107 * 60) | round(0) | int) if d > 0.5 else none] %}
+            {% endfor %}
+            {{ ns.out }}
+          attivo: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') }}"
+          prep: "{{ is_state('input_boolean.salumi_preparazione', 'on') }}"
+          inizio: "{{ state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0) }}"
+          sg: "{{ states('input_number.salumi_ore_sgocciolamento') | float(12) }}"
+          opg: "{{ states('input_number.salumi_ore_per_giorno') | float(24) }}"
+          # arrotondata: valori minuscoli (es. 8.8e-05) HA li leggerebbe come testo
+          ore: "{{ ((as_timestamp(now()) - inizio) / 3600) | round(4) }}"
+          step: >
+            {% if not attivo %}{{ -2 if prep else -1 }}
+            {% elif ore | float < sg | float %}0
+            {% else %}{{ [((ore | float - sg | float) / opg | float) | int + 1, 16] | min }}{% endif %}
+          fine_fase: >
+            {% if step == 0 %}{{ (inizio + sg * 3600) | timestamp_local }}
+            {% elif 1 <= step <= 15 %}{{ (inizio + (sg + step * opg) * 3600) | timestamp_local }}
+            {% else %}{{ none }}{% endif %}
+    sensor:
+      - name: Salumi fase
+        unique_id: salumi_fase
+        icon: mdi:sausage
+        state: >
+          {% if step == -2 %}{{ 'Cella pronta' if is_state('input_boolean.salumi_cella_pronta', 'on') else 'Preparazione cella' }}
+          {% elif step == -1 %}Spento
+          {% elif step == 0 %}Sgocciolamento
+          {% elif step == 16 %}Terminato
+          {% else %}Giorno {{ step }}{% endif %}
+        attributes:
+          step: "{{ step }}"
+          temp_target: >
+            {% if step in [-2, 0] %}{{ t_sg }}{% elif 1 <= step <= 15 %}{{ temp_tab[step - 1] }}{% else %}{{ none }}{% endif %}
+          ur_target: >
+            {% set c = states('input_number.salumi_correzione_ur') | int(0) %}
+            {% if step == 0 %}{{ [[ur_sg + c, 40] | max, 95] | min }}
+            {% elif 1 <= step <= 15 %}{{ [[ur_tab[step - 1] + c, 40] | max, 95] | min }}
+            {% else %}{{ none }}{% endif %}
+          correzione_ur: "{{ states('input_number.salumi_correzione_ur') | int(0) }}"
+          fine_fase: "{{ fine_fase }}"
+          ore_trascorse: "{{ (ore | round(1)) if attivo else none }}"
+          tabella_temp: "{{ temp_tab }}"
+          tabella_ur: "{{ ur_tab }}"
+          ur_sgocciolamento: "{{ ur_sg }}"
+          temp_sgocciolamento: "{{ t_sg }}"
+          programma: "{{ states('input_select.salumi_programma') }}"
+          tabella_estrazione: "{{ tabella_estrazione }}"
+
+# Archivio su file in /share/salumi/<cartella>/ (vedi salumi/salumi_log.py)
+command_line:
+  - sensor:
+      name: Salumi supervisione battito
+      unique_id: salumi_supervisione_battito
+      unit_of_measurement: min
+      icon: mdi:heart-pulse
+      scan_interval: 300
+      command: >-
+        f=/share/salumi/battito; if [ -f $f ]; then echo $(( ($(date +%s) - $(stat -c %Y $f)) / 60 )); else echo 99999; fi
+
+shell_command:
+  # Chiede alla supervisione di Claude un controllo subito (letto dal runner)
+  salumi_richiedi_analisi: "mkdir -p /share/salumi && touch /share/salumi/richiesta_analisi"
+  salumi_log: "python3 /config/salumi/salumi_log.py {{ modo }} {{ cartella }} {{ dati | to_json | base64_encode }}"
+
+script:
+  salumi_registra:
+    alias: Salumi - scrivi nell'archivio
+    mode: queued
+    fields:
+      modo:
+        description: "csv, nota, avviso, diario, riepilogo"
+      dati:
+        description: Dati da registrare
+    sequence:
+      - variables:
+          cartella: "{{ states('input_text.salumi_cartella_ciclo') }}"
+      - condition: "{{ cartella not in ['', 'unknown', 'unavailable'] }}"
+      - action: shell_command.salumi_log
+        continue_on_error: true
+        data:
+          modo: "{{ modo }}"
+          cartella: "{{ cartella }}"
+          dati: "{{ dati }}"
+        response_variable: esito
+      - if: "{{ esito is defined and esito.returncode | default(0) != 0 }}"
+        then:
+          - action: persistent_notification.create
+            data:
+              title: "Salumi: errore archivio"
+              message: "Scrittura '{{ modo }}' fallita: {{ esito.stderr | default('') }}"
+
+  salumi_nuovo_archivio:
+    alias: Salumi - nuova cartella archivio
+    sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.salumi_cartella_ciclo
+        data:
+          value: "{{ now().strftime('%Y-%m-%d_%H%M') }}"
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.salumi_inizio_registrazione
+        data:
+          timestamp: "{{ as_timestamp(now()) }}"
+
+  salumi_aggiungi_nota:
+    alias: Salumi - aggiungi nota
+    icon: mdi:note-plus
+    sequence:
+      - variables:
+          testo: "{{ states('input_text.salumi_nota') | trim }}"
+      - condition: "{{ testo not in ['', 'unknown', 'unavailable'] }}"
+      - if: "{{ states('input_text.salumi_cartella_ciclo') in ['', 'unknown', 'unavailable'] }}"
+        then:
+          - action: persistent_notification.create
+            data:
+              title: "Salumi: nota non salvata"
+              message: "Nessun ciclo registrato: avvia 'Prepara cella' o 'Partenza ciclo' prima di aggiungere note."
+          - stop: nessun archivio
+      - action: script.salumi_registra
+        data:
+          modo: nota
+          dati:
+            testo: "{{ testo }}"
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.salumi_nota
+        data:
+          value: ""
+
+  salumi_avviso:
+    alias: Salumi - invia avviso
+    mode: parallel
+    fields:
+      titolo:
+        description: Titolo
+      messaggio:
+        description: Testo
+      priorita:
+        description: "Priorità Pushover (-1 bassa, 0 normale, 1 alta)"
+        default: 0
+      da_claude:
+        description: "true se l'avviso viene dalla supervisione (non richiede un'altra analisi)"
+        default: false
+    sequence:
+      - action: persistent_notification.create
+        data:
+          title: "{{ titolo }}"
+          message: "{{ messaggio }}"
+      - action: notify.pushover
+        continue_on_error: true
+        data:
+          title: "{{ titolo }}"
+          message: "{{ messaggio }}"
+          data:
+            priority: "{{ priorita | default(0) | int(0) }}"
+      - action: script.salumi_registra
+        continue_on_error: true
+        data:
+          modo: avviso
+          dati:
+            titolo: "{{ titolo }}"
+            messaggio: "{{ messaggio }}"
+      # Ogni avviso del sistema chiede un controllo alla supervisione
+      - if: "{{ not (da_claude | default(false) | bool) }}"
+        then:
+          - action: shell_command.salumi_richiedi_analisi
+            continue_on_error: true
+
+  salumi_approva_proposta:
+    alias: Salumi - approva proposta di Claude
+    icon: mdi:check
+    sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.salumi_risposta
+        data:
+          value: approvata
+      - action: shell_command.salumi_richiedi_analisi
+        continue_on_error: true
+
+  salumi_rifiuta_proposta:
+    alias: Salumi - rifiuta proposta di Claude
+    icon: mdi:close
+    sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.salumi_risposta
+        data:
+          value: rifiutata
+      - action: shell_command.salumi_richiedi_analisi
+        continue_on_error: true
+
+  salumi_applica_setpoint:
+    alias: Salumi - applica setpoint della fase
+    mode: queued
+    sequence:
+      # Sonda ferma: niente riaccensioni finché le letture non tornano
+      - if:
+          - condition: state
+            entity_id: input_boolean.salumi_sensore_fermo
+            state: "on"
+        then:
+          - if: >
+              {% set ns = namespace(ok=true) %}
+              {% for e in ['sensor.sonda_th_temperatura', 'sensor.sonda_th_umidita'] %}
+                {% set s = states[e] %}
+                {% if s is none or s.state in ['unavailable', 'unknown']
+                      or (now() - s.last_reported).total_seconds() >= 120 %}
+                  {% set ns.ok = false %}
+                {% endif %}
+              {% endfor %}
+              {{ ns.ok }}
+            then:
+              - action: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.salumi_sensore_fermo
+            else:
+              - stop: sonda ferma, setpoint non applicati
+      - variables:
+          step: "{{ state_attr('sensor.salumi_fase', 'step') | int(-1) }}"
+          t: "{{ state_attr('sensor.salumi_fase', 'temp_target') }}"
+          h: "{{ state_attr('sensor.salumi_fase', 'ur_target') }}"
+      - if: "{{ step == -2 }}"
+        then:
+          # Preparazione: solo stufa, umidificatore spento
+          - action: climate.set_temperature
+            target:
+              entity_id: climate.salumi_stufa
+            data:
+              hvac_mode: heat
+              temperature: "{{ t }}"
+          - action: humidifier.turn_off
+            target:
+              entity_id: humidifier.salumi_umidita
+      - if: "{{ 0 <= step <= 15 }}"
+        then:
+          - action: climate.set_temperature
+            target:
+              entity_id: climate.salumi_stufa
+            data:
+              hvac_mode: heat
+              temperature: "{{ t }}"
+          - action: humidifier.turn_on
+            target:
+              entity_id: humidifier.salumi_umidita
+          - action: humidifier.set_humidity
+            target:
+              entity_id: humidifier.salumi_umidita
+            data:
+              humidity: "{{ h }}"
+      - if: "{{ step not in [-2] and not 0 <= step <= 15 }}"
+        then:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.salumi_stufa
+            data:
+              hvac_mode: "off"
+          - action: humidifier.turn_off
+            target:
+              entity_id: humidifier.salumi_umidita
+
+  salumi_prepara_cella:
+    alias: Salumi - prepara cella
+    icon: mdi:radiator
+    sequence:
+      - action: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.salumi_ciclo_attivo
+            - input_boolean.salumi_cella_pronta
+      - action: script.salumi_azzera_energia
+      - action: script.salumi_nuovo_archivio
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.salumi_preparazione
+
+  salumi_azzera_energia:
+    alias: Salumi - azzera energia del ciclo
+    icon: mdi:counter
+    sequence:
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.salumi_energia_inizio_stufa
+        data:
+          value: "{{ states('sensor.salumi_energia_stufa') | float(0) }}"
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.salumi_energia_inizio_umidificatore
+        data:
+          value: "{{ states('sensor.salumi_energia_umidificatore') | float(0) }}"
+
+  salumi_avvia_ciclo:
+    alias: Salumi - partenza ciclo
+    icon: mdi:play
+    sequence:
+      # Se si parte senza preparazione, l'energia si conta da adesso
+      - if:
+          - condition: state
+            entity_id: input_boolean.salumi_preparazione
+            state: "off"
+        then:
+          - action: script.salumi_azzera_energia
+          - action: script.salumi_nuovo_archivio
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.salumi_inizio_ciclo
+        data:
+          timestamp: "{{ as_timestamp(now()) }}"
+      # Peso di partenza per il calo percentuale. Senza bilancia lo azzero,
+      # così non resta il peso del ciclo precedente.
+      - if: "{{ has_value('sensor.salumi_peso') and states('sensor.salumi_peso') | float(0) > 0 }}"
+        then:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.salumi_peso_iniziale
+            data:
+              value: "{{ states('sensor.salumi_peso') | float }}"
+        else:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.salumi_peso_iniziale
+            data:
+              value: 0
+          - action: script.salumi_avviso
+            data:
+              titolo: "Salumi: peso iniziale mancante"
+              messaggio: >
+                Alla partenza del ciclo la bilancia non leggeva ({{ states('sensor.salumi_peso') }}).
+                Inserisci il peso iniziale a mano in dashboard per avere il calo percentuale.
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.salumi_ciclo_attivo
+      - action: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.salumi_preparazione
+            - input_boolean.salumi_cella_pronta
+            - input_boolean.salumi_partenza_programmata_attiva
+            - input_boolean.salumi_sensore_fermo
+
+  salumi_ferma_ciclo:
+    alias: Salumi - ferma ciclo
+    icon: mdi:stop
+    sequence:
+      - action: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.salumi_ciclo_attivo
+            - input_boolean.salumi_preparazione
+            - input_boolean.salumi_cella_pronta
+
+  salumi_fase_successiva:
+    alias: Salumi - passa alla fase successiva
+    icon: mdi:skip-next
+    sequence:
+      - condition: "{{ state_attr('sensor.salumi_fase', 'fine_fase') is not none }}"
+      # Sposta indietro l'inizio del ciclo del tempo che manca alla fine della fase
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.salumi_inizio_ciclo
+        data:
+          timestamp: >
+            {{ state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp')
+               - (as_timestamp(state_attr('sensor.salumi_fase', 'fine_fase')) - as_timestamp(now())) + 5 }}
+
+automation:
+  # --- Partenza programmata ----------------------------------------------------
+  - id: salumi_partenza_programmata
+    alias: Salumi - partenza programmata
+    mode: single
+    triggers:
+      - trigger: time
+        at: input_datetime.salumi_partenza_programmata
+        id: ora
+      # Se HA era spento all'ora programmata, parte appena riavviato
+      - trigger: homeassistant
+        event: start
+        id: riavvio
+    conditions:
+      - condition: state
+        entity_id: input_boolean.salumi_partenza_programmata_attiva
+        state: "on"
+      - "{{ now() >= states('input_datetime.salumi_partenza_programmata') | as_datetime | as_local }}"
+    actions:
+      - if:
+          - condition: state
+            entity_id: input_boolean.salumi_ciclo_attivo
+            state: "on"
+        then:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.salumi_partenza_programmata_attiva
+          - action: script.salumi_avviso
+            data:
+              titolo: "Salumi: partenza programmata annullata"
+              messaggio: "Il ciclo era già attivo, la partenza programmata è stata ignorata."
+          - stop: ciclo già attivo
+      - if: "{{ trigger.id == 'riavvio' }}"
+        then:
+          # attende che sensori e bilancia si ricolleghino
+          - delay: "00:01:00"
+      - action: script.salumi_avvia_ciclo
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: ciclo partito"
+          messaggio: >
+            Partenza programmata{{ ' (in ritardo, HA era spento)' if trigger.id == 'riavvio' else '' }}.
+            Peso iniziale {{ states('input_number.salumi_peso_iniziale') | int }} g.
+
+  - id: salumi_partenza_programmata_controllo
+    alias: Salumi - controllo partenza programmata
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.salumi_partenza_programmata_attiva
+        to: "on"
+    conditions:
+      - "{{ now() >= states('input_datetime.salumi_partenza_programmata') | as_datetime | as_local }}"
+    actions:
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.salumi_partenza_programmata_attiva
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: partenza programmata nel passato"
+          messaggio: >
+            {{ as_timestamp(states('input_datetime.salumi_partenza_programmata') | as_datetime | as_local) | timestamp_custom('%d/%m %H:%M') }}
+            è già passata: programmazione disattivata. Imposta una data futura.
+
+  # --- Gestione del ciclo ------------------------------------------------------
+  - id: salumi_cambio_fase
+    alias: Salumi - cambio fase
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id: sensor.salumi_fase
+        not_from: [unavailable, unknown]
+        not_to: [unavailable, unknown]
+    actions:
+      - action: script.salumi_applica_setpoint
+      - choose:
+          - conditions: "{{ trigger.to_state.state == 'Terminato' }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: ciclo terminato"
+                  messaggio: "Asciugatura completata (15 giorni). Stufa e umidificatore spenti."
+              - action: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.salumi_ciclo_attivo
+          - conditions: "{{ trigger.to_state.state == 'Cella pronta' }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: cella pronta"
+                  messaggio: >
+                    Raggiunti {{ states('sensor.sonda_th_temperatura') }} °C.
+                    Inserisci i salumi e premi "Partenza ciclo". La cella resta a {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C in attesa.
+                  priorita: 1
+          - conditions: "{{ trigger.to_state.state == 'Preparazione cella' }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: preparazione cella"
+                  messaggio: "Stufa accesa, riscaldamento della cella fino a {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C. Ti avviso quando è pronta."
+                  priorita: -1
+          - conditions: "{{ trigger.to_state.state == 'Spento' }}"
+            sequence:
+              # Dopo "Terminato" il ciclo si spegne da solo: l'avviso è già partito
+              - condition: "{{ trigger.from_state.state != 'Terminato' }}"
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: ciclo fermato"
+                  messaggio: "Il ciclo è stato fermato. Stufa e umidificatore spenti."
+                  priorita: -1
+        default:
+          - action: script.salumi_avviso
+            data:
+              titolo: "Salumi: {{ trigger.to_state.state }}"
+              messaggio: >
+                Nuova fase: {{ trigger.to_state.state }} →
+                {{ trigger.to_state.attributes.temp_target }} °C,
+                {{ trigger.to_state.attributes.ur_target }}% UR.
+                Fine fase: {{ as_timestamp(trigger.to_state.attributes.fine_fase) | timestamp_custom('%d/%m %H:%M') }}.
+              priorita: -1
+
+  # Cambio del programma a ciclo avviato: i setpoint saltano all'altra tabella
+  - id: salumi_cambio_programma
+    alias: Salumi - cambio programma a ciclo avviato
+    triggers:
+      - trigger: state
+        entity_id: input_select.salumi_programma
+    conditions:
+      - condition: state
+        entity_id: input_boolean.salumi_ciclo_attivo
+        state: "on"
+    actions:
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: programma cambiato a ciclo avviato"
+          messaggio: >
+            Programma passato da {{ trigger.from_state.state }} a {{ trigger.to_state.state }}.
+            La fase in corso ora segue la nuova tabella.
+          priorita: 1
+
+  # Correzione UR (supervisione): riapplica i setpoint senza cambio di fase
+  - id: salumi_cambio_ur_target
+    alias: Salumi - cambio UR target
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id: sensor.salumi_fase
+        attribute: ur_target
+    conditions:
+      - "{{ trigger.from_state is not none and trigger.from_state.state == trigger.to_state.state }}"
+    actions:
+      - action: script.salumi_applica_setpoint
+
+  # Battito del runner di supervisione fermo con il ciclo in corso
+  - id: salumi_supervisione_ferma
+    alias: Salumi - supervisione ferma
+    triggers:
+      - trigger: numeric_state
+        entity_id: sensor.salumi_supervisione_battito
+        above: 180
+    conditions:
+      - condition: state
+        entity_id: input_boolean.salumi_ciclo_attivo
+        state: "on"
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: input_select.salumi_supervisione
+            state: sospesa
+    actions:
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: supervisione ferma"
+          messaggio: >
+            Il runner di Claude non dà segni da {{ states('sensor.salumi_supervisione_battito') }} min.
+            Apri il terminale dell'add-on Claude Code e lancia
+            /homeassistant/salumi/supervisione/avvia.sh. L'impianto continua da solo.
+          da_claude: true
+
+  - id: salumi_riavvio_ha
+    alias: Salumi - ripresa dopo riavvio HA
+    triggers:
+      - trigger: homeassistant
+        event: start
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - delay: "00:01:00"
+      - action: script.salumi_applica_setpoint
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: HA riavviato"
+          messaggio: >
+            Home Assistant è ripartito, ciclo ripreso: {{ states('sensor.salumi_fase') }}
+            ({{ state_attr('sensor.salumi_fase', 'temp_target') }} °C,
+            {{ state_attr('sensor.salumi_fase', 'ur_target') }}% UR).
+
+  # --- Controllo efficacia umidificatore ---------------------------------------
+  - id: salumi_controllo_umidificatore
+    alias: Salumi - controllo umidificatore
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id: switch.sonoff_1001f24fe4_1
+        to: "on"
+        id: acceso
+      - trigger: state
+        entity_id: switch.sonoff_1001f24fe4_1
+        to: "on"
+        for: "00:05:00"
+        id: dopo_5
+      - trigger: state
+        entity_id: switch.sonoff_1001f24fe4_1
+        to: "on"
+        for: "00:15:00"
+        id: dopo_15
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - variables:
+          ur: "{{ states('sensor.sonda_th_umidita') | float(-1) }}"
+          ur0: "{{ states('input_number.salumi_ur_accensione_umidificatore') | float(0) }}"
+      - choose:
+          - conditions: "{{ trigger.id == 'acceso' and ur >= 0 }}"
+            sequence:
+              - action: input_number.set_value
+                target:
+                  entity_id: input_number.salumi_ur_accensione_umidificatore
+                data:
+                  value: "{{ ur }}"
+          - conditions: "{{ trigger.id == 'dopo_5' and 0 <= ur < ur0 }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: umidità in calo con umidificatore acceso"
+                  messaggio: "Umidificatore acceso da 5 min ma l'UR è scesa da {{ ur0 }}% a {{ ur }}%. Controllare acqua/umidificatore."
+                  priorita: 1
+          - conditions: "{{ trigger.id == 'dopo_15' and 0 <= ur <= ur0 }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: umidificatore inefficace"
+                  messaggio: "Umidificatore acceso da 15 min, UR non salita ({{ ur0 }}% → {{ ur }}%). Controllare acqua/umidificatore."
+                  priorita: 1
+
+  # --- Controllo efficacia stufa -----------------------------------------------
+  - id: salumi_controllo_stufa
+    alias: Salumi - controllo stufa
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id: switch.sonoff_1001f24fe4_2
+        to: "on"
+        id: accesa
+      - trigger: state
+        entity_id: switch.sonoff_1001f24fe4_2
+        to: "on"
+        for: "00:15:00"
+        id: dopo_15
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - variables:
+          t: "{{ states('sensor.sonda_th_temperatura') | float(-99) }}"
+          t0: "{{ states('input_number.salumi_temp_accensione_stufa') | float(0) }}"
+      - choose:
+          - conditions: "{{ trigger.id == 'accesa' and t > -99 }}"
+            sequence:
+              - action: input_number.set_value
+                target:
+                  entity_id: input_number.salumi_temp_accensione_stufa
+                data:
+                  value: "{{ t }}"
+          - conditions: "{{ trigger.id == 'dopo_15' and t > -99 and t < t0 + 0.2 }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: stufa inefficace"
+                  messaggio: "Stufa accesa da 15 min ma la temperatura non sale ({{ t0 }} → {{ t }} °C)."
+                  priorita: 1
+
+  # --- Controllo assorbimento elettrico (relè / apparecchi guasti) -------------
+  - id: salumi_controllo_assorbimento
+    alias: Salumi - controllo assorbimento
+    mode: queued
+    triggers:
+      - trigger: template
+        value_template: "{{ is_state('switch.sonoff_1001f24fe4_2', 'on') and states('sensor.sonoff_1001f24fe4_power_2') | float(999) < 50 }}"
+        for: "00:03:00"
+        id: stufa_non_assorbe
+      - trigger: template
+        value_template: "{{ is_state('switch.sonoff_1001f24fe4_2', 'off') and states('sensor.sonoff_1001f24fe4_power_2') | float(0) > 20 }}"
+        for: "00:03:00"
+        id: stufa_bloccata
+      - trigger: template
+        value_template: "{{ is_state('switch.sonoff_1001f24fe4_1', 'on') and states('sensor.sonoff_1001f24fe4_power_1') | float(999) < 3 }}"
+        for: "00:03:00"
+        id: umidificatore_non_assorbe
+      - trigger: template
+        value_template: "{{ is_state('switch.sonoff_1001f24fe4_1', 'off') and states('sensor.sonoff_1001f24fe4_power_1') | float(0) > 10 }}"
+        for: "00:03:00"
+        id: umidificatore_bloccato
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: anomalia assorbimento"
+          messaggio: >
+            {{ {'stufa_non_assorbe': 'Stufa accesa ma non assorbe corrente (termostato interno, spina o guasto?)',
+                'stufa_bloccata': 'Stufa spenta ma assorbe ancora corrente: relè bloccato?',
+                'umidificatore_non_assorbe': 'Umidificatore acceso ma non assorbe corrente (acqua finita o guasto?)',
+                'umidificatore_bloccato': 'Umidificatore spento ma assorbe ancora corrente: relè bloccato?'}[trigger.id] }}
+          priorita: 1
+
+  # --- Valori fuori range prolungati -------------------------------------------
+  - id: salumi_fuori_range
+    alias: Salumi - valori fuori range
+    mode: queued
+    triggers:
+      - trigger: template
+        value_template: >
+          {% set tt = state_attr('sensor.salumi_fase', 'temp_target') %}
+          {{ tt is not none and state_attr('sensor.salumi_fase', 'step') | int(-1) >= 0
+             and states('sensor.sonda_th_temperatura') | float(99) < tt - 1.5 }}
+        for: "01:30:00"
+        id: temp_bassa
+      - trigger: template
+        value_template: >
+          {% set tt = state_attr('sensor.salumi_fase', 'temp_target') %}
+          {{ tt is not none and state_attr('sensor.salumi_fase', 'step') | int(-1) >= 0
+             and states('sensor.sonda_th_temperatura') | float(-99) > tt + 2 }}
+        for: "02:00:00"
+        id: temp_alta
+      - trigger: template
+        value_template: >
+          {% set ht = state_attr('sensor.salumi_fase', 'ur_target') %}
+          {{ ht is not none and states('sensor.sonda_th_umidita') | float(999) < ht - 5 }}
+        for: "01:00:00"
+        id: ur_bassa
+      - trigger: template
+        value_template: >
+          {% set ht = state_attr('sensor.salumi_fase', 'ur_target') %}
+          {{ ht is not none and state_attr('sensor.salumi_fase', 'step') | int(0) >= 1
+             and states('sensor.sonda_th_umidita') | float(-1) > ht + 5 }}
+        for: "03:00:00"
+        id: ur_alta
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: valori fuori range"
+          messaggio: >
+            {{ {'temp_bassa': 'Temperatura troppo bassa da 1h30',
+                'temp_alta': 'Temperatura troppo alta da 2h',
+                'ur_bassa': 'Umidità troppo bassa da 1h',
+                'ur_alta': 'Umidità troppo alta da 3h (serve ricambio d\'aria?)'}[trigger.id] }}:
+            {{ states('sensor.sonda_th_temperatura') }} °C / {{ states('sensor.sonda_th_umidita') }}% UR,
+            obiettivo {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C / {{ state_attr('sensor.salumi_fase', 'ur_target') }}% UR
+            ({{ states('sensor.salumi_fase') }}).
+
+  # --- Sicurezza surriscaldamento ----------------------------------------------
+  - id: salumi_surriscaldamento
+    alias: Salumi - surriscaldamento
+    triggers:
+      - trigger: numeric_state
+        entity_id: sensor.sonda_th_temperatura
+        above: 28
+        for: "00:02:00"
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - action: climate.set_hvac_mode
+        target:
+          entity_id: climate.salumi_stufa
+        data:
+          hvac_mode: "off"
+      - action: switch.turn_off
+        target:
+          entity_id: switch.sonoff_1001f24fe4_2
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: SURRISCALDAMENTO"
+          messaggio: >
+            Temperatura {{ states('sensor.sonda_th_temperatura') }} °C: stufa spenta per sicurezza.
+            Verrà riattivata al prossimo cambio fase o eseguendo "Salumi - applica setpoint".
+          priorita: 1
+
+  # --- Sensore / attuatori non raggiungibili -----------------------------------
+  - id: salumi_sensore_fermo
+    alias: Salumi - sensore non aggiornato
+    mode: queued
+    triggers:
+      # Ferma: temperatura O umidità senza letture da oltre 10 min
+      - trigger: template
+        value_template: >
+          {% set ns = namespace(fermo=false) %}
+          {% for e in ['sensor.sonda_th_temperatura', 'sensor.sonda_th_umidita'] %}
+            {% set s = states[e] %}
+            {% if s is none or s.state in ['unavailable', 'unknown']
+                  or (now() - s.last_reported).total_seconds() > 600 %}
+              {% set ns.fermo = true %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.fermo }}
+        # tollera brevi disconnessioni Wi-Fi
+        for: "00:02:00"
+        id: fermo
+      # Ripristinata: entrambe con letture recenti
+      - trigger: template
+        value_template: >
+          {% set ns = namespace(ok=true) %}
+          {% for e in ['sensor.sonda_th_temperatura', 'sensor.sonda_th_umidita'] %}
+            {% set s = states[e] %}
+            {% if s is none or s.state in ['unavailable', 'unknown']
+                  or (now() - s.last_reported).total_seconds() >= 120 %}
+              {% set ns.ok = false %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.ok }}
+        id: ripristinato
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - choose:
+          - conditions: "{{ trigger.id == 'fermo' }}"
+            sequence:
+              # Senza sonda né stufa né umidificatore sono controllabili: li spengo
+              - action: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.salumi_sensore_fermo
+              - action: climate.set_hvac_mode
+                target:
+                  entity_id: climate.salumi_stufa
+                data:
+                  hvac_mode: "off"
+              - action: humidifier.turn_off
+                target:
+                  entity_id: humidifier.salumi_umidita
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: sensore non raggiungibile"
+                  messaggio: >
+                    La sonda della camera non è raggiungibile da 2 min o non manda letture da oltre 12 min.
+                    Stufa e umidificatore spenti per sicurezza: ripartono da soli quando la sonda torna.
+                  priorita: 1
+          # Riaccendo solo se li avevo spenti io (non dopo un surriscaldamento)
+          - conditions:
+              - "{{ trigger.id == 'ripristinato' }}"
+              - condition: state
+                entity_id: input_boolean.salumi_sensore_fermo
+                state: "on"
+            sequence:
+              - action: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.salumi_sensore_fermo
+              - action: script.salumi_applica_setpoint
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: sensore di nuovo attivo"
+                  messaggio: "La sonda della camera è tornata a trasmettere: stufa e umidificatore riattivati."
+
+  - id: salumi_attuatori_offline
+    alias: Salumi - attuatori non raggiungibili
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id:
+          - switch.sonoff_1001f24fe4_1
+          - switch.sonoff_1001f24fe4_2
+        to: unavailable
+        for: "00:05:00"
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - action: script.salumi_avviso
+        data:
+          titolo: "Salumi: attuatore non raggiungibile"
+          messaggio: "{{ trigger.to_state.name }} non raggiungibile da 5 min."
+          priorita: 1
+
+  # --- Preparazione cella: al raggiungimento della temperatura la cella è pronta
+  - id: salumi_fine_preparazione
+    alias: Salumi - fine preparazione cella
+    mode: single
+    triggers:
+      - trigger: template
+        value_template: >
+          {{ is_state('input_boolean.salumi_preparazione', 'on')
+             and is_state('input_boolean.salumi_cella_pronta', 'off')
+             and states('sensor.sonda_th_temperatura') | float(-99) >= state_attr('sensor.salumi_fase', 'temp_target') | float(22) - 0.3 }}
+        for: "00:02:00"
+        id: pronta
+      - trigger: state
+        entity_id: input_boolean.salumi_preparazione
+        to: "on"
+        for: "06:00:00"
+        id: troppo_lunga
+    actions:
+      - choose:
+          - conditions: "{{ trigger.id == 'pronta' }}"
+            sequence:
+              - action: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.salumi_cella_pronta
+          - conditions: "{{ trigger.id == 'troppo_lunga' and is_state('input_boolean.salumi_cella_pronta', 'off') }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: preparazione troppo lunga"
+                  messaggio: >
+                    Cella in preparazione da 6 ore ma la temperatura è ancora
+                    {{ states('sensor.sonda_th_temperatura') }} °C (obiettivo {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C).
+                  priorita: 1
+
+  # --- Archivio: letture ogni 5 minuti ------------------------------------------
+  - id: salumi_archivio_letture
+    alias: Salumi - archivio letture
+    triggers:
+      - trigger: time_pattern
+        minutes: "/5"
+    conditions:
+      - condition: template
+        value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
+    actions:
+      - action: script.salumi_registra
+        data:
+          modo: csv
+          dati:
+            fase: "{{ states('sensor.salumi_fase') }}"
+            temp_obiettivo: "{{ state_attr('sensor.salumi_fase', 'temp_target') }}"
+            ur_obiettivo: "{{ state_attr('sensor.salumi_fase', 'ur_target') }}"
+            temperatura: "{{ states('sensor.sonda_th_temperatura') }}"
+            umidita: "{{ states('sensor.sonda_th_umidita') }}"
+            temperatura_cantina: "{{ states('sensor.shelly_h_t_cantina_temperature') }}"
+            umidita_cantina: "{{ states('sensor.shelly_h_t_cantina_humidity') }}"
+            peso_g: "{{ states('sensor.salumi_peso') }}"
+            calo_reale_pct: "{{ states('sensor.salumi_calo_reale') }}"
+            calo_atteso_pct: "{{ states('sensor.salumi_calo_atteso') }}"
+            stufa: "{{ states('switch.sonoff_1001f24fe4_2') }}"
+            umidificatore: "{{ states('switch.sonoff_1001f24fe4_1') }}"
+            potenza_stufa_w: "{{ states('sensor.sonoff_1001f24fe4_power_2') }}"
+            potenza_umidificatore_w: "{{ states('sensor.sonoff_1001f24fe4_power_1') }}"
+            energia_ciclo_stufa_kwh: "{{ states('sensor.salumi_energia_ciclo_stufa') }}"
+            energia_ciclo_umidificatore_kwh: "{{ states('sensor.salumi_energia_ciclo_umidificatore') }}"
+
+  # --- Archivio: diario, una voce a ogni cambio fase -----------------------------
+  - id: salumi_archivio_diario
+    alias: Salumi - archivio diario
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id: sensor.salumi_fase
+        attribute: step
+    conditions:
+      - "{{ trigger.from_state is not none and trigger.to_state is not none }}"
+      # Durante reload/riavvio il sensore passa da "unavailable" senza attributi
+      - "{{ 'step' in trigger.from_state.attributes and 'step' in trigger.to_state.attributes }}"
+      - "{{ trigger.from_state.attributes.step != trigger.to_state.attributes.step }}"
+    actions:
+      - variables:
+          da_step: "{{ trigger.from_state.attributes.step | int(-1) }}"
+          a_step: "{{ trigger.to_state.attributes.step | int(-1) }}"
+          adesso: "{{ as_timestamp(now()) }}"
+          inizio_fase: "{{ state_attr('input_datetime.salumi_inizio_fase', 'timestamp') | float(0) }}"
+          inizio_ciclo: "{{ state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0) }}"
+      # -1 = Spento: non è una fase del ciclo, non va nel diario
+      - if: "{{ da_step != -1 and -2 <= da_step <= 15 and inizio_fase > 0 }}"
+        then:
+          - action: script.salumi_registra
+            data:
+              modo: diario
+              dati:
+                fase: "{{ 'Preparazione cella' if da_step == -2 else trigger.from_state.state }}"
+                da: "{{ inizio_fase }}"
+                a: "{{ adesso }}"
+                temp_target: "{{ trigger.from_state.attributes.temp_target }}"
+                ur_target: "{{ trigger.from_state.attributes.ur_target }}"
+                inizio_ciclo: "{{ inizio_ciclo if da_step >= 0 else none }}"
+      - if: "{{ da_step != -1 and -2 <= da_step <= 15 and a_step in [16, -1] }}"
+        then:
+          - action: script.salumi_registra
+            data:
+              modo: riepilogo
+              dati:
+                da: "{{ state_attr('input_datetime.salumi_inizio_registrazione', 'timestamp') }}"
+                a: "{{ adesso }}"
+                esito: "{{ 'ciclo completato' if a_step == 16 else 'ciclo interrotto (' ~ trigger.from_state.state ~ ')' }}"
+                inizio_ciclo: "{{ inizio_ciclo if da_step >= 0 else none }}"
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.salumi_inizio_fase
+        data:
+          timestamp: "{{ adesso }}"
