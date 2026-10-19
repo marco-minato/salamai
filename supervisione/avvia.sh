@@ -6,8 +6,12 @@
 DIR=/homeassistant/salumi/supervisione
 RIGA="*/5 * * * * $DIR/giro.sh >/dev/null 2>&1"
 
+if [ ! -x /usr/local/bin/claude ]; then
+  echo "Qui non c'è claude ($(hostname)): lanciare dalla pagina dell'add-on Claude Code, non dal Terminal & SSH." >&2
+  exit 1
+fi
 if [ -z "$SUPERVISOR_TOKEN" ]; then
-  echo "Manca SUPERVISOR_TOKEN: lanciare dal terminale dell'add-on Claude Code." >&2
+  echo "Manca SUPERVISOR_TOKEN: lanciare dalla pagina dell'add-on Claude Code con '!'." >&2
   exit 1
 fi
 

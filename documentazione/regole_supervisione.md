@@ -66,7 +66,9 @@ parametro. Nei controlli intermedi: osservare e annotare.
   `crond`); `supervisione/ferma.sh` la toglie. **Dopo un riavvio dell'add-on**
   il cron non riparte da solo (l'add-on non ha comandi di avvio
   personalizzabili): HA avvisa con "supervisione ferma" e si rilancia
-  `avvia.sh` dal terminale dell'add-on. L'ESP32 nel frattempo continua da solo.
+  `avvia.sh` dalla pagina dell'add-on Claude Code, scrivendo
+  `! /homeassistant/salumi/supervisione/avvia.sh`. Non dal Terminal & SSH:
+  è un altro contenitore, senza `claude`. L'ESP32 nel frattempo continua da solo.
 - **Modalità** (`input_select.salumi_supervisione`): *osservazione* (Claude
   analizza, scrive il diario e avvisa, ma `strumenti.py imposta` rifiuta ogni
   modifica), *attiva* (modifiche entro i limiti), *sospesa* (nessun controllo).

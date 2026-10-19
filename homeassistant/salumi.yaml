@@ -920,8 +920,9 @@ automation:
           titolo: "Salumi: supervisione ferma"
           messaggio: >
             Il runner di Claude non dà segni da {{ states('sensor.salumi_supervisione_battito') }} min.
-            Apri il terminale dell'add-on Claude Code e lancia
-            /homeassistant/salumi/supervisione/avvia.sh. L'impianto continua da solo.
+            Apri la pagina dell'add-on Claude Code (non il Terminal & SSH) e scrivi
+            ! /homeassistant/salumi/supervisione/avvia.sh
+            L'impianto continua da solo.
           da_claude: true
 
   - id: salumi_riavvio_ha

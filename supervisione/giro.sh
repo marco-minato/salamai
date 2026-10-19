@@ -45,7 +45,7 @@ case "$MOTIVO" in
   *richiesta*) rm -f "$SHARE/richiesta_analisi"; MODELLO=opus ;;
 esac
 
-[ -x "$CLAUDE" ] || { log "errore: claude non trovato ($CLAUDE)"; exit 1; }
+[ -x "$CLAUDE" ] || { log "errore: claude non trovato ($CLAUDE) su $(hostname)"; exit 1; }
 log "inizio: $MOTIVO ($MODELLO)"
 cd "$SHARE" || exit 1
 PROMPT="$(cat "$DIR/prompt.md")
