@@ -13,6 +13,8 @@ mkdir -p "$SHARE" "$DIR/stato"
 
 # Ambiente salvato da avvia.sh: crond parte senza variabili
 [ -f "$DIR/stato/ambiente" ] && . "$DIR/stato/ambiente"
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+CLAUDE=$(command -v claude || echo /usr/local/bin/claude)
 
 log() { echo "$(date '+%d/%m %H:%M') $*" >> "$LOG"; }
 
@@ -43,6 +45,7 @@ case "$MOTIVO" in
   *richiesta*) rm -f "$SHARE/richiesta_analisi"; MODELLO=opus ;;
 esac
 
+[ -x "$CLAUDE" ] || { log "errore: claude non trovato ($CLAUDE)"; exit 1; }
 log "inizio: $MOTIVO ($MODELLO)"
 cd "$SHARE" || exit 1
 PROMPT="$(cat "$DIR/prompt.md")
@@ -52,7 +55,7 @@ Ora: $(date '+%d/%m/%Y %H:%M'). Motivo di questo controllo: $MOTIVO"
 
 # Ambiente pulito: niente variabili della sessione interattiva di Claude Code
 env -i HOME=/root PATH="$PATH" LANG=C.UTF-8 SUPERVISOR_TOKEN="$SUPERVISOR_TOKEN" \
-  timeout 1200 claude -p "$PROMPT" \
+  timeout 1200 "$CLAUDE" -p "$PROMPT" \
     --model "$MODELLO" \
     --permission-mode dontAsk \
     --strict-mcp-config \
