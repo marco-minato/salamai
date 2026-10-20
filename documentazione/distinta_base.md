@@ -1,6 +1,6 @@
 # Camera salumi — distinta base definitiva
 
-Versione 3 del 18/10/2026 (ventole PWM a 12 V, tutto su guida DIN, nessuna saldatura). Le sigle sono quelle dello schema
+Versione 4 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo. Versione 3 del 18/10/2026 (ventole PWM a 12 V, tutto su guida DIN, nessuna saldatura). Le sigle sono quelle dello schema
 (`prompt_schema_qelectrotech.md`). Prezzi Amazon.it rilevati tra il 17 e il
 18/10/2026, indicativi.
 
@@ -17,15 +17,32 @@ negozio di materiale elettrico.
 | -V1…6 | 6 | Diodo 1N4007 sulla bobina (solo se il contattore non ha soppressione interna: verificare col tester all'arrivo) | [B01F4SQ6KU](https://www.amazon.it/dp/B01F4SQ6KU) (100 pz) | 9,99 € | C |
 | -A3 | 1 | Contatore Eastron SDM120 Modbus, monofase 45 A a inserzione diretta, **1 modulo DIN**, RS485 (consumi degli attuatori) | [B08X8SD1FD](https://www.amazon.it/dp/B08X8SD1FD) | 40,80 € | C |
 | -A5 | 1 | Waveshare Pico-RTC-DS3231, si innesta sul connettore Pico della scheda (nessun filo) | [B0915KRWNZ](https://www.amazon.it/dp/B0915KRWNZ) | 19,99 € | C |
-| -A2 | 1 | Modulo MOSFET dual a morsetti (10 pz), sul filo PWM delle ventole: protegge la scheda, nessuna saldatura | [B0GL1NWZQH](https://www.amazon.it/dp/B0GL1NWZQH) | 8,99 € | C |
-| -X5 | 1 | Basetta a morsetti Freenove per Raspberry Pi Pico, su guida DIN con le clip: un morsetto a vite etichettato per ogni pin, LED di stato | [B0BFB53Y2N](https://www.amazon.it/dp/B0BFB53Y2N) | 14,95 € | C |
-| — | 1 | Cavetti Dupont (kit 120 pz, con maschio-maschio): dalle prese sopra l'RTC alle prese della basetta X5, nessun taglio | [B01N40EK6M](https://www.amazon.it/dp/B01N40EK6M) | 9,99 € | C |
-| — | 1 | Quadro IP65 Intratec 48 moduli, 4 file, sportello trasparente | [B08614GVLN](https://www.amazon.it/dp/B08614GVLN) | 69,69 € | C |
-| — | 1 | Clip DIN per circuiti stampati (modulo MOSFET A2, basetta X5) | [B0FCM3N3P9](https://www.amazon.it/dp/B0FCM3N3P9) (20 pz) | 8,99 € | C |
+| — | 1 | **Quadro BOXEXPERT Fleet 500×400×240**, ABS, IP65, sportello trasparente, piastra di fondo in lamiera (verificare sulla pagina che piastra e sportello trasparente siano nella variante scelta) | [B0CBS922L8](https://www.amazon.it/dp/B0CBS922L8) | 78,04 € | C |
+| — | 2 | Guida DIN 35 mm, 1 m (3 spezzoni da ~45 cm) | [Stok, 2 × 1 m, B07VDG4BVZ](https://www.amazon.it/dp/B07VDG4BVZ) | da verificare | C |
+| — | 2 | Canalina asolata 25×40 grigia con coperchio, barra da 2 m | [Elettrocanali ECA2540 (Comcavi)](https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/) | da verificare | C |
+| -X0, -X2, -X3 | 1 | Kit morsetti su guida UK2.5B: 20 morsetti, 2 di terra, ponticelli, 4 fermi, coperchi (fermi in più dalla ferramenta: ne servono 6) | [suaywo, B098X5B7WS](https://www.amazon.it/dp/B098X5B7WS) | 20,79 € | C |
+| — | 1 | Pinza a cricchetto 0,25–10 mm² con 1250 puntalini | [Preciva, B0CRCVMNQZ](https://www.amazon.it/dp/B0CRCVMNQZ) | 29,99 € | C |
+| — | 1 | Cavo 1,5 mm² marrone, blu, giallo-verde, 10 m (cablaggio 230 V) | [Electraline 25139, B00IJCW374](https://www.amazon.it/dp/B00IJCW374) | da verificare | C |
+| — | 10 m | Cavo H05V-K 0,75 mm² rosso e nero (12 V: COM dei relè, bobine) | [ManoMano](https://www.manomano.it/cat/cavo+unipolare+rosso) | da verificare | C/F |
+| — | 1 | Valvola anticondensa M12 (quadro) | [inox con membrana E-PTFE, B0H4S18G2D](https://www.amazon.it/dp/B0H4S18G2D) (verificare IP68 e M12×1,5) | da verificare | C |
 | — | 1 | Pressacavi M20 IP68 (quadro) | [B0GYRDCC9Z](https://www.amazon.it/dp/B0GYRDCC9Z) (26 pz) | 7,99 € | C |
-| -X2… | 1 | Morsetti Wago 221 assortiti (2, 3, 5 vie) | [B06XRJHTS3](https://www.amazon.it/dp/B06XRJHTS3) (40 pz) | 21,96 € | C/F |
-| — | 1 | Resistenza 4,7 kΩ (pull-up 1-Wire) | [B0FPX6T6SC](https://www.amazon.it/dp/B0FPX6T6SC) | 9,99 € | C/F |
-| | | **Subtotale** | | **360,05 €** | |
+| — | 1 | Morsetti Wago 221 assortiti (2, 3, 5 vie): giunzioni in X6 e nelle scatole | [B06XRJHTS3](https://www.amazon.it/dp/B06XRJHTS3) (40 pz) | 21,96 € | C/F |
+| -R1 | 1 | Resistenza 120 Ω (terminazione RS485 lato quadro, solo se la scheda A1 non ha il ponticello) | negozio di elettronica | — | F |
+| | | **Subtotale** (prezzi noti) | | **≈ 366 €** | |
+
+## 1 bis. Nodo in camera (scatola X6)
+
+| Sigla | Q.tà | Componente | Codice / link | Prezzo | Stato |
+|---|---:|---|---|---:|:-:|
+| -A6 | 1 | XIAO ESP32C3 + Seeed XIAO RS485 Breakout: è la sonda-th di oggi, riusata con il firmware `salumi-nodo.yaml` | 102010633 + 113991354 | — | P |
+| -A2 | 1 | Modulo MOSFET dual a morsetti (10 pz), sul filo PWM delle ventole: protegge la XIAO, nessuna saldatura | [B0GL1NWZQH](https://www.amazon.it/dp/B0GL1NWZQH) | 8,99 € | C |
+| -X6 | 1 | Scatola stagna IP65 150×110×70 con pressacavi (A6, A4, A2, Wago, resistenze), in alto sopra la bilancia | [B0F6YGYR7K](https://www.amazon.it/dp/B0F6YGYR7K) | 13,49 € | C |
+| — | 1 | Valvola anticondensa M12 (X6) | come quella del quadro | da verificare | C |
+| -R3 | 1 | Resistenza 4,7 kΩ (pull-up 1-Wire) | [B0FPX6T6SC](https://www.amazon.it/dp/B0FPX6T6SC) | 9,99 € | C/F |
+| -R4, -R5 | 2 | Resistenze 10 kΩ (pull-up dei giri delle ventole) | negozio di elettronica | — | F |
+| -R2 | 1 | Resistenza 120 Ω (terminazione RS485 lato camera, solo se la breakout non l'ha già) | negozio di elettronica | — | F |
+| — | 1 | Vernice protettiva acrilica per circuiti stampati, spray 400 ml (morsetti e connettori esclusi) | [Electrolube APL (RS)](https://it.rs-online.com/web/p/rivestimenti/4090956) | 26,30 € + IVA | C |
+| | | **Subtotale** (prezzi noti, IVA compresa) | | **≈ 65 €** | |
 
 ## 2. Sensori
 
@@ -35,11 +52,10 @@ negozio di materiale elettrico.
 | -B5 | 1 | Sonda Seeed S-TH-01, **cantina**, indirizzo 3 (stesso modello di B1, per avere una differenza di umidità affidabile) | Seeed 101990881, stesso canale d'acquisto della prima | da verificare | **C** |
 | -B3, -B4 | 2 | DS18B20 impermeabile, cavo 3 m: **parete** e **pavimento** | [B07CZ1G29V](https://www.amazon.it/dp/B07CZ1G29V) (2 pz) | 18,26 € | C |
 | -A4, -B2 | 1 | HX711 + cella di carico 2 kg | — | — | P (oggi sulla XIAO, da calibrare) |
-| — | 1 | Scatolina IP65 per HX711 e derivazione delle DS18B20 | [B0F8NW1YZ2](https://www.amazon.it/dp/B0F8NW1YZ2) | 8,59 € | C |
 | — | 1 | Termometro a infrarossi (test di preriscaldo: pavimento, angoli, pareti) | [TempPro TP30, B0BGGJH3G2](https://www.amazon.it/dp/B0BGGJH3G2) | 16,27 € | C |
-| | | **Subtotale** (senza B5) | | **43,12 €** | |
+| | | **Subtotale** (senza B5) | | **34,53 €** | |
 
-La XIAO ESP32-C3 con la scheda RS485 resta di scorta dopo la migrazione.
+La XIAO ESP32-C3 con la scheda RS485 diventa il nodo in camera A6 (sezione 1 bis).
 Lo Shelly H&T Cantina resta come riserva della B5.
 
 ## 3. Attuatori e circuito dell'aria
@@ -68,7 +84,7 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 |---|---:|---|---|---:|:-:|
 | -W1 | 10 m | FROR 5G1,5, quadro → presa CEE stufa | [B01FSZYO08](https://www.amazon.it/dp/B01FSZYO08) | 28,59 € | C |
 | -W2 | 10 m | FROR 4G1,5, quadro → prese umidificatori | [B01FSZYK4I](https://www.amazon.it/dp/B01FSZYK4I) | 24,01 € | C |
-| -W3, -W4, -W5 | 30 m | Cat6 FTP schermato, da tagliare: W3 sonda B1, W4 HX711 + B3 + B4, W5 ventole (12 V, PWM, giri), avanzo per B5 in cantina | [B0CGDQT3P4](https://www.amazon.it/dp/B0CGDQT3P4) | 27,99 € | C |
+| -W3, -W5, -W6 | 30 m | Cat6 FTP schermato, **rame pieno (non CCA)**, da tagliare: W3 quadro → X6 (~10 m: 12 V, 0 V, A, B), W5 X6 → X4 ventole (~1,5 m), W6 quadro → B5 cantina (~2 m); avanzo di scorta | [B0CGDQT3P4](https://www.amazon.it/dp/B0CGDQT3P4) | 27,99 € | C |
 | -X1 | 1 | Presa doppia IP55 Schuko/bipasso con coperchio (umidificatori) | [B0HJD4BD28](https://www.amazon.it/dp/B0HJD4BD28) | 16,99 € | C |
 | -XS3 | 1 | Contenitore Electraline FIXA con presa (estrattore, fuori dalla camera) | [B0G71348W7](https://www.amazon.it/dp/B0G71348W7) | 4,90 € | C |
 | -XS4 | 1 | Presa CEE da parete 16 A 5 poli IP44 (stufa) | [B001BAVXZO](https://www.amazon.it/dp/B001BAVXZO) | 22,45 € | C |
@@ -82,7 +98,8 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 ## 5. Ferramenta e negozio di materiale elettrico
 
 - Spina Schuko per il Vents TT-100.
-- 2 resistenze 10 kΩ (pull-up dei giri delle ventole, solo se quelli interni della scheda non bastano): si serrano nei morsetti, senza saldare.
+- Resistenze 120 Ω e 10 kΩ (sezioni 1 e 1 bis): si serrano nei Wago, senza saldare.
+- Viti autofilettanti 4,2×13 (o M4 con dado) per guide e canaline sulla piastra, 2 fermi fine guida in più, basette adesive per fascette, marcafili.
 - Pannello per chiudere la botola: multistrato 10 mm o PVC espanso, con un foro Ø 100 per l'estrattore e i fori per i pressacavi.
 - Foro Ø 100 nella porta della camera, in basso, per la griglia d'ingresso.
 - Apertura fissa in alto sulla porta esterna della cantina: griglia o feritoia.
@@ -93,12 +110,13 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 
 | Gruppo | Importo |
 |---|---:|
-| Quadro e logica | 360,05 € |
-| Sensori (senza B5) | 43,12 € |
+| Quadro e logica (prezzi noti) | ≈ 366 € |
+| Nodo in camera (prezzi noti) | ≈ 65 € |
+| Sensori (senza B5) | 34,53 € |
 | Attuatori e aria (con Vents TT-100) | 123,25 € |
 | Cavi, prese e scatole (senza filo in silicone) | 181,51 € |
-| **Totale Amazon** | **≈ 708 €** |
-| + sonda S-TH-01 B5, filo in silicone, ferramenta | da aggiungere |
+| **Totale con i prezzi noti** | **≈ 770 €** |
+| + guide DIN, canaline, cavi 1,5 e 0,75 mm², 2 valvole anticondensa, sonda S-TH-01 B5, filo in silicone, ferramenta | da aggiungere |
 
 Si possono togliere:
 - RTC: −20 €;
@@ -112,15 +130,21 @@ Si possono togliere:
 - Contattori Finder: si usano gli HCH8s-25Z, uno per carico.
 - Mean Well HDR-15/30, quadri da 12, 24 e 36 moduli, prese da guida DIN.
 - Vortice Lineo 100, troppo caro.
-- PZEM-016 e modulo RTC sciolto: non si fissano alla guida DIN; sostituiti dal contatore SDM120 e dal Pico-RTC-DS3231. Niente saldature sulle schede: i segnali passano dal connettore Pico con cavetti Dupont fino alla basetta a morsetti X5 su guida DIN.
+- PZEM-016 e modulo RTC sciolto: non si fissano alla guida DIN; sostituiti dal contatore SDM120 e dal Pico-RTC-DS3231.
+- Basetta Freenove X5, cavetti Dupont e clip DIN (versione 3): con il nodo in camera il connettore Pico porta solo l'RTC.
+- Quadro Intratec 48 moduli (versione 3): sostituito dalla cassetta con piastra di fondo, più spaziosa.
+- Cat6 W4 verso l'HX711 (versione 3): HX711 e sonde sono collegati al nodo in camera con i loro cavi.
 - Ventole ELUTENG USB 5 V con DC-DC e modulo MOSFET: sostituite dalle ventole PWM 12 V (velocità minima più bassa e stabile, lettura dei giri). Le ELUTENG restano libere.
 - Serrande motorizzate: i relè sono tutti usati, bastano Y1 e la griglia con valvola.
 
 ## 8. Da verificare all'arrivo
 
 - Contattori: soppressione interna della bobina (se presente, niente diodi), larghezza effettiva in moduli.
-- Waveshare: profondità e posizione sulla fila 3.
+- Waveshare: spessore con l'RTC innestato (dato Waveshare 40 mm) e posizione sulla guida 1.
+- Ponticelli di terminazione 120 Ω: attivi solo sulla Waveshare e in X6 (breakout della XIAO o resistenza R2); spenti sugli altri.
+- XIAO: come si collegano oggi HX711 e alimentazione alla breakout (stesso metodo per DS18B20, PWM e giri).
+- Cat6: rame pieno, non CCA.
 - Vents TT-100: morsettiera e collegamento alla velocità bassa.
 - Contatore SDM120 e B5: indirizzo Modbus (SDM120 a 2 e 9600 baud dai tasti frontali; B5 a 3), uno alla volta, da soli sul bus.
-- Pico-RTC-DS3231: che il coperchio della scheda chiuda con il modulo e i cavetti Dupont innestati.
+- Pico-RTC-DS3231: che il coperchio della scheda chiuda con il modulo innestato.
 - B5: alimentazione a 12 V (range 3,6–30 V).

@@ -7,15 +7,20 @@
 #
 # Pin (specifiche_firmware.md §2):
 #   relè CH1–CH3 lampade GPIO1/2/41, CH4–CH5 umidificatori GPIO42/45,
-#   CH6 estrattore GPIO46 · RS485 GPIO17/18 · ventole PWM GPIO39 (via A2,
-#   invertito), giri GPIO12/11 · HX711 DOUT GPIO40 SCK GPIO6 ·
-#   1-Wire GPIO7 · RTC SDA GPIO4 SCL GPIO5
+#   CH6 estrattore GPIO46 · RS485 GPIO17/18 · RTC SDA GPIO4 SCL GPIO5
+#
+# Bus RS485 (9600 8N1): sonda camera S-TH-01 = 1, contatore SDM120 = 2,
+# sonda cantina S-TH-01 = 3, nodo in camera (XIAO, salumi-nodo.yaml) = 4.
+# Il nodo porta bilancia, sonde di parete e pavimento e ventole: la
+# temperatura della camera arriva invece direttamente dalla S-TH-01, così
+# la stufa non dipende dal nodo.
 #
 # Sicurezze:
 #   - all'avvio tutti i relè spenti (CH5/CH6 sono pin di strapping);
 #   - sonda camera senza letture per 5 min → lampade e umidificatori spenti;
 #   - camera oltre 30 °C → termostato e lampade spenti;
-#   - estrattore e umidificatori mai insieme.
+#   - estrattore e umidificatori mai insieme;
+#   - senza HA o Wi-Fi nessun riavvio automatico: la scheda continua da sola.
 
 substitutions:
   t_massima: "30"
@@ -45,9 +50,12 @@ esp32:
 
 logger:
 
+# Senza questi due reboot_timeout la scheda si riavvierebbe dopo 15 min
+# senza HA o senza Wi-Fi, fermando il ciclo.
 api:
   encryption:
     key: !secret salumi_api_key
+  reboot_timeout: 0s
 
 ota:
   - platform: esphome
@@ -57,6 +65,7 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   power_save_mode: none
+  reboot_timeout: 0s
   ap:
     ssid: "Salumi-Camera Fallback"
     password: !secret ap_password
@@ -69,6 +78,13 @@ debug:
 globals:
   # ultimo istante (millis) con una lettura valida della sonda camera
   - id: ultima_lettura
+    type: uint32_t
+    initial_value: "0"
+  # battito del nodo in camera: ultimo valore letto e quando è cambiato
+  - id: battito_nodo
+    type: int
+    initial_value: "-1"
+  - id: battito_nodo_cambiato
     type: uint32_t
     initial_value: "0"
 
@@ -230,25 +246,34 @@ interval:
             - script.execute: lampade_spegni
             - switch.turn_off: umidificatore_1
             - switch.turn_off: umidificatore_2
+  # Velocità delle ventole riscritta al nodo ogni 30 s: se il nodo si è
+  # riavviato la riprende, e la scrittura gli fa da segnale di vita (senza
+  # scritture per 90 s il nodo porta le ventole al valore di sicurezza).
+  - interval: 30s
+    then:
+      - lambda: |-
+          id(pwm_nodo).set_level(id(ventole).state ? id(ventole).speed / 100.0f : 0.0f);
 
-# --- Ventole di ricircolo -----------------------------------------------------
-# GPIO39 comanda il modulo MOSFET A2, che porta a massa il filo PWM delle
-# ventole: uscita invertita. Scheda spenta o in avvio = ventole al massimo.
+# --- Ventole di ricircolo (sul nodo in camera, via Modbus) --------------------
+# Il valore va al registro 0x0010 del nodo in % (0–100); l'inversione per il
+# modulo MOSFET la fa il nodo.
 output:
-  - platform: ledc
-    id: pwm_ventole
-    pin: GPIO39
-    frequency: 20000Hz
-    inverted: true
+  - platform: modbus_controller
+    id: pwm_nodo
+    modbus_controller_id: nodo
+    address: 0x0010
+    register_type: holding
+    value_type: U_WORD
+    multiply: 100
 
 fan:
   - platform: speed
     id: ventole
     name: "Ventole ricircolo"
-    output: pwm_ventole
+    output: pwm_nodo
     restore_mode: RESTORE_DEFAULT_OFF
 
-# --- RS485: sonda camera, contatore, sonda cantina ----------------------------
+# --- RS485: sonda camera, contatore, sonda cantina, nodo ----------------------
 # Il contatore SDM120 esce di fabbrica con indirizzo 1 e 2400 baud: va portato
 # a indirizzo 2 e 9600 baud dai tasti frontali PRIMA di collegarlo al bus,
 # altrimenti si scontra con la sonda camera (indirizzo 1).
@@ -272,10 +297,25 @@ modbus_controller:
   #   modbus_id: modbus485
   #   address: 0x3
   #   update_interval: 60s
+  - id: nodo
+    modbus_id: modbus485
+    address: 0x4
+    update_interval: 15s
 
-one_wire:
-  - platform: gpio
-    pin: GPIO7
+binary_sensor:
+  # Nodo fermo: il battito non cambia da 60 s (o non è mai arrivato).
+  # Peso, superfici e giri non sono più validi; stufa e sonda camera no.
+  - platform: template
+    name: "Nodo camera non risponde"
+    device_class: problem
+    lambda: |-
+      return id(battito_nodo) < 0 || millis() - id(battito_nodo_cambiato) > 60000;
+  - platform: template
+    name: "Ventole in sicurezza"
+    device_class: problem
+    lambda: |-
+      float s = id(stato_nodo).state;
+      return !isnan(s) && (int(s) & 1) != 0;
 
 sensor:
   # Camera (S-TH-01, indirizzo 1)
@@ -363,83 +403,129 @@ sensor:
     import_active_energy:
       name: "Energia attuatori"
 
-  # Superfici (DS18B20 su GPIO7). Al primo avvio il log elenca gli indirizzi
-  # trovati sul bus ("Found sensors: 0x..."): scaldare una sonda in mano per
-  # capire quale è quale, metterli qui sotto e togliere il commento, anche alle
-  # due template "Superficie più fredda" e "Margine di condensa".
-  # - platform: dallas_temp
-  #   id: t_parete
-  #   name: "Temperatura parete"
-  #   address: 0x0000000000000000
-  #   update_interval: 30s
-  # - platform: dallas_temp
-  #   id: t_pavimento
-  #   name: "Temperatura pavimento"
-  #   address: 0x0000000000000000
-  #   update_interval: 30s
-  # - platform: template
-  #   id: t_fredda
-  #   name: "Superficie più fredda"
-  #   unit_of_measurement: "°C"
-  #   device_class: temperature
-  #   state_class: measurement
-  #   accuracy_decimals: 1
-  #   update_interval: 30s
-  #   lambda: |-
-  #     float a = id(t_parete).state, b = id(t_pavimento).state;
-  #     if (isnan(a)) return b;
-  #     if (isnan(b)) return a;
-  #     return std::min(a, b);
-  # - platform: template
-  #   name: "Margine di condensa"
-  #   unit_of_measurement: "°C"
-  #   state_class: measurement
-  #   accuracy_decimals: 1
-  #   update_interval: 30s
-  #   lambda: |-
-  #     return id(t_fredda).state - id(rugiada_camera).state;
-
-  # Giri ventole (2 impulsi a giro: impulsi al minuto × 0,5 = giri/min)
-  - platform: pulse_counter
-    name: "Giri ventola 1"
-    pin:
-      number: GPIO12
-      mode:
-        input: true
-        pullup: true
-    unit_of_measurement: "rpm"
-    accuracy_decimals: 0
-    update_interval: 10s
-    filters:
-      - multiply: 0.5
-  - platform: pulse_counter
-    name: "Giri ventola 2"
-    pin:
-      number: GPIO11
-      mode:
-        input: true
-        pullup: true
-    unit_of_measurement: "rpm"
-    accuracy_decimals: 0
-    update_interval: 10s
-    filters:
-      - multiply: 0.5
-
-  # Bilancia HX711. "Peso grezzo" serve a calibrare: leggerlo a vuoto (gancio
-  # compreso) e con un peso noto, poi mettere i due valori in "Peso".
-  - platform: hx711
+  # Nodo in camera (indirizzo 4): mappa dei registri in salumi-nodo.yaml.
+  # I valori non validi arrivano come −32768 (o INT32_MIN per il peso) e
+  # diventano "non disponibile".
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: battito_nodo_reg
+    name: "Battito nodo"
+    entity_category: diagnostic
+    internal: true
+    force_update: true
+    register_type: holding
+    address: 0x0001
+    value_type: U_WORD
+    on_value:
+      - lambda: |-
+          int b = (int) x;
+          if (b != id(battito_nodo)) {
+            id(battito_nodo) = b;
+            id(battito_nodo_cambiato) = millis();
+          }
+  - platform: modbus_controller
+    modbus_controller_id: nodo
     id: peso_grezzo
     name: "Peso grezzo"
-    dout_pin: GPIO40
-    clk_pin: GPIO6
-    gain: 128
-    update_interval: 10s
-    accuracy_decimals: 0
     entity_category: diagnostic
+    register_type: holding
+    address: 0x0002
+    value_type: S_DWORD
+    accuracy_decimals: 0
     filters:
-      - median:
-          window_size: 6
-          send_every: 6
+      - lambda: |-
+          if (x <= -2147483648.0f) return {};
+          return x;
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: t_parete
+    name: "Temperatura parete"
+    register_type: holding
+    address: 0x0004
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - lambda: |-
+          if (x == -32768) return {};
+          return x * 0.01f;
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: t_pavimento
+    name: "Temperatura pavimento"
+    register_type: holding
+    address: 0x0005
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - lambda: |-
+          if (x == -32768) return {};
+          return x * 0.01f;
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "Giri ventola 1"
+    register_type: holding
+    address: 0x0006
+    value_type: U_WORD
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "Giri ventola 2"
+    register_type: holding
+    address: 0x0007
+    value_type: U_WORD
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "PWM ventole applicato"
+    register_type: holding
+    address: 0x0008
+    value_type: U_WORD
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: stato_nodo
+    name: "Stato nodo"
+    entity_category: diagnostic
+    internal: true
+    register_type: holding
+    address: 0x0009
+    value_type: U_WORD
+
+  # Superfici: la più fredda tra parete e pavimento, confrontata con il
+  # punto di rugiada dell'aria (specifiche_firmware.md §6.1).
+  - platform: template
+    id: t_fredda
+    name: "Superficie più fredda"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 30s
+    lambda: |-
+      float a = id(t_parete).state, b = id(t_pavimento).state;
+      if (isnan(a)) return b;
+      if (isnan(b)) return a;
+      return std::min(a, b);
+  - platform: template
+    name: "Margine di condensa"
+    unit_of_measurement: "°C"
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 30s
+    lambda: |-
+      return id(t_fredda).state - id(rugiada_camera).state;
+
+  # Bilancia: "Peso grezzo" (dal nodo) serve a calibrare. Leggerlo a vuoto
+  # (gancio compreso) e con un peso noto, poi mettere i due valori qui.
   - platform: copy
     source_id: peso_grezzo
     name: "Peso"

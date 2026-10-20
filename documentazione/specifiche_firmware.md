@@ -1,6 +1,6 @@
 # Camera salumi — specifiche del firmware ESP32
 
-Versione 1, 18/10/2026. Riferimenti: `prompt_schema_qelectrotech.md` (hardware
+Versione 2, 20/10/2026 (nodo in camera). Versione 1, 18/10/2026. Riferimenti: `prompt_schema_qelectrotech.md` (hardware
 e collegamenti), `strategia_processo.md` (diagnosi e decisioni),
 `regole_supervisione.md` (cosa può fare Claude Code).
 
@@ -29,20 +29,75 @@ e collegamenti), `strategia_processo.md` (diagnosi e decisioni),
 | Umidificatore 1 (KM4) | CH4 GPIO42 |
 | Umidificatore 2 (KM5) | CH5 GPIO45 |
 | Estrattore (KM6) | CH6 GPIO46 |
-| Ventole ARCTIC P12 Slim PWM 12 V, 4 fili: PWM in parallelo | GPIO39, LEDC 20 kHz, tramite modulo MOSFET A2 verso massa (uscita **invertita**) |
-| Giri ventola M5 / M6 (TACH, 2 impulsi a giro) | GPIO12 / GPIO11, `pulse_counter`, pull-up interno (10 kΩ esterne sui morsetti X5 se servono) |
-| HX711 (cella 2 kg, salame campione) | DOUT GPIO40, SCK GPIO6 |
-| DS18B20 parete (in basso, lato porta) e DS18B20 pavimento | GPIO7, stesso bus 1-Wire (indirizzo ROM di ciascuna nel firmware), pull-up 4,7 kΩ |
+| Ventole, bilancia, sonde di parete e pavimento | sul **nodo in camera** (§2 bis), letti e comandati via Modbus |
 | RS485 Modbus RTU, 9600 8N1 | UART GPIO17/18, direzione automatica |
 | — sonda S-TH-01 | indirizzo 1: T reg 0x0000 (×0,01), UR 0x0001 (×0,01), rugiada 0x0002 |
 | — contatore Eastron SDM120 Modbus (`sdm_meter`) | indirizzo 2 e 9600 baud (da impostare: esce a 1 e 2400): tensione, corrente, potenza, cos φ, energia degli attuatori |
 | — seconda sonda S-TH-01, **cantina** | indirizzo 3 (da impostare): T e UR dell'aria che entra col ricambio |
+| — nodo in camera (XIAO ESP32C3, `salumi-nodo.yaml`) | indirizzo 4: registri in §2 bis |
 | RTC Waveshare Pico-RTC-DS3231, innestato sul connettore Pico | SDA GPIO4, SCL GPIO5 |
 | Buzzer, LED RGB | GPIO21, GPIO38 |
 
 CH5 e CH6 sono su pin di strapping: all'accensione possono scattare per un
 attimo. Il firmware deve forzarli spenti il prima possibile (`on_boot` con
 priorità alta).
+
+GPIO liberi sulla scheda: 6–16 (tranne 10 da evitare se si rimette la
+basetta X5), 39, 40, 47, 48.
+
+**Senza rete nessun riavvio**: `api` e `wifi` con `reboot_timeout: 0s`, su
+entrambe le schede. Con il valore di fabbrica (15 min) una caduta di HA o del
+Wi-Fi farebbe riavviare la scheda a metà ciclo.
+
+## 2 bis. Nodo in camera
+
+Una XIAO ESP32C3 con la sua scheda RS485 sta in una scatola stagna dentro la
+camera (X6) e porta i sensori e le ventole vicini al prodotto. È un
+dispositivo **comandato**: non decide nulla, la Waveshare lo legge e gli
+scrive la velocità delle ventole. La sonda camera S-TH-01 è sullo stesso bus
+ma la Waveshare la legge **direttamente**: se il nodo si ferma, temperatura,
+umidità e sicurezze della stufa restano valide.
+
+| Funzione | Pin XIAO |
+|---|---|
+| RS485 (scheda Seeed 113991354) | TX D4 (GPIO6), RX D5 (GPIO7), direzione D2 (GPIO4) |
+| HX711 (cella 2 kg) | DOUT D1 (GPIO3), SCK D3 (GPIO5) |
+| DS18B20 parete e pavimento, stesso bus 1-Wire | D10 (GPIO10), pull-up 4,7 kΩ verso 3V3 |
+| PWM ventole, tramite modulo MOSFET A2 verso massa (uscita **invertita**), LEDC 20 kHz | D7 (GPIO20) |
+| Giri ventola M5 / M6 (2 impulsi a giro), pull-up 10 kΩ verso 3V3 | D0 (GPIO2) / D8 (GPIO8) |
+| Liberi | D6 (GPIO21), D9 (GPIO9, tasto BOOT) |
+
+D0 e D8 sono pin di strapping, ma l'avvio lo decide D9: con D9 alto la XIAO
+parte normalmente qualunque cosa ci sia su D0 e D8. D9 non si usa per i giri,
+perché una ventola che gira lo porterebbe basso all'avvio (modalità download).
+
+**Registri** (holding, lettura 0x03, scrittura 0x06/0x10):
+
+| Registro | Contenuto | Tipo |
+|---|---|---|
+| 0x0000 | versione della mappa (1) | U_WORD |
+| 0x0001 | battito, +1 al secondo | U_WORD |
+| 0x0002–0x0003 | peso grezzo HX711 (INT32_MIN = non valido) | S_DWORD, parola alta prima |
+| 0x0004 | T parete × 100 (−32768 = non valida) | S_WORD |
+| 0x0005 | T pavimento × 100 (−32768 = non valida) | S_WORD |
+| 0x0006 / 0x0007 | giri ventola M5 / M6 (giri/min) | U_WORD |
+| 0x0008 | PWM ventole applicato (%) | U_WORD |
+| 0x0009 | stato: bit 0 ventole in sicurezza, bit 1 HX711 valido, bit 2 parete valida, bit 3 pavimento valido | U_WORD |
+| 0x0010 | PWM ventole richiesto (%, 0–100), **lettura e scrittura** | U_WORD |
+
+- **Lettura**: la Waveshare legge 0x0000–0x0009 ogni 15 s.
+- **Ventole**: la Waveshare riscrive 0x0010 ogni 30 s anche se non cambia.
+  Senza scritture per 90 s il nodo porta le ventole a `pwm_sicurezza`
+  (0 %, ferme) e alza il bit 0. Il tetto `ventole_pwm_max` lo applica la
+  Waveshare, che conosce la fase: il nodo accetta 0–100.
+- **Peso**: il nodo manda la lettura grezza, la conversione in grammi (tara e
+  fattore, §7) la fa la Waveshare. Così la taratura non richiede di
+  ricompilare il nodo.
+- **Nodo fermo**: se il battito non cambia per 60 s la Waveshare alza
+  "Nodo camera non risponde". Peso, superfici e giri diventano non validi;
+  il ciclo continua (§9).
+- **Wi-Fi del nodo**: solo aggiornamenti e diagnostica. I dati del processo
+  passano tutti dal bus.
 
 ## 3. Ora e stato persistente
 
@@ -237,6 +292,7 @@ Comportamento:
 | Ventola ferma (giri < 100 con PWM ≥ 20 % per > 1 min) | Allarme; l'umidificatore si blocca se sono ferme entrambe |
 | Sonda di cantina senza risposta | Riserva Shelly via HA, poi ricambio a tempo, allarme |
 | Sonda di parete o di pavimento senza risposta | Si usa l'altra, allarme |
+| Nodo in camera fermo (battito fermo da 60 s) | Allarme. Il ciclo continua; senza superfici l'umidificatore resta bloccato (§6.3), il peso non si registra. Ventole: il nodo le porta a `pwm_sicurezza` da solo |
 | HA non raggiungibile | Nessuna azione: il ciclo continua (la cantina è letta dall'ESP32) |
 
 Ogni allarme è una `binary_sensor` di diagnostica, più un evento HA

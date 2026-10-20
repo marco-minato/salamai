@@ -62,7 +62,7 @@ footer{color:var(--muted);font-size:.9rem}
 <div class="wrap">
   <header>
     <h1>Distinta camera salumi</h1>
-    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH. Sigle come nello schema QElectroTech. Prezzi Amazon.it del 17–18/10/2026, indicativi. Spunta le righe man mano che ordini: le spunte restano solo in questo browser.</p>
+    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH, versione 4 del 20/10/2026: nodo XIAO in camera e quadro con piastra di fondo. Sigle come nello schema QElectroTech (revisione C). Prezzi del 17–20/10/2026, indicativi; dove manca il prezzo va verificato sulla pagina. Spunta le righe man mano che ordini: le spunte restano solo in questo browser.</p>
   </header>
 
   <div class="summary" id="summary"></div>
@@ -76,7 +76,8 @@ footer{color:var(--muted);font-size:.9rem}
     <h2>Ferramenta e negozio</h2>
     <ul class="plain">
       <li>Spina Schuko per il Vents TT-100</li>
-      <li>Due resistenze da 10 kΩ per i giri delle ventole, solo se servono: si serrano nei morsetti, senza saldare</li>
+      <li>Resistenze 120 Ω (terminazioni RS485, solo dove la scheda non ha il ponticello) e 2 × 10 kΩ (giri delle ventole): si serrano nei Wago, senza saldare</li>
+      <li>Viti autofilettanti 4,2×13 (o M4 con dado) per guide e canaline sulla piastra, 2 fermi fine guida in più, basette adesive per fascette, marcafili</li>
       <li>Pannello per la botola (multistrato 10 mm o PVC espanso) con foro Ø 100 e fori per i pressacavi</li>
       <li>Foro Ø 100 in basso nella porta della camera, per la griglia d'ingresso</li>
       <li>Apertura fissa in alto sulla porta esterna della cantina (griglia o feritoia)</li>
@@ -89,16 +90,19 @@ footer{color:var(--muted);font-size:.9rem}
     <h2>Da verificare all'arrivo</h2>
     <ul class="plain">
       <li>Contattori: soppressione interna della bobina (se c'è, niente diodi) e larghezza in moduli</li>
-      <li>Waveshare: profondità e posizione sulla fila 3</li>
+      <li>Waveshare: spessore con l'RTC innestato (dato Waveshare 40 mm) e posizione sulla guida 1</li>
+      <li>Terminazioni 120 Ω attive solo sulla Waveshare e nella scatola X6; spente su tutti gli altri dispositivi</li>
+      <li>XIAO: come si collegano oggi HX711 e alimentazione alla breakout (stesso metodo per sonde, PWM e giri)</li>
+      <li>Cat6 in rame pieno, non CCA</li>
       <li>Vents TT-100: morsettiera e collegamento alla velocità bassa</li>
       <li>Contatore SDM120 a indirizzo 2 e 9600 baud (tasti frontali), sonda B5 a indirizzo 3, uno alla volta da soli sul bus</li>
-      <li>Che il coperchio della scheda chiuda con il modulo RTC e i cavetti innestati</li>
+      <li>Che il coperchio della scheda chiuda con il modulo RTC innestato</li>
       <li>B5 alimentata a 12 V (range 3,6–30 V)</li>
     </ul>
   </section>
 
   <button class="reset" id="reset" type="button">Togli tutte le spunte</button>
-  <footer>Esclusi per scelta: termostato meccanico, salvavita nel quadro, contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN).</footer>
+  <footer>Esclusi per scelta: termostato meccanico, salvavita nel quadro, contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN). Tolti nella versione 4: basetta Freenove X5, cavetti Dupont, clip DIN, quadro Intratec 48 moduli, cavo W4.</footer>
 </div>
 
 <script>
@@ -110,25 +114,36 @@ const G=[
   ["V","-V1…6",6,"Diodi 1N4007 (confezione da 100)","Solo se il contattore non ha soppressione interna","B01F4SQ6KU",9.99,"C"],
   ["A3","-A3",1,"Contatore Eastron SDM120 Modbus, 1 modulo DIN","Consumi degli attuatori, inserzione diretta 45 A. Da impostare a indirizzo 2 e 9600 baud","B08X8SD1FD",40.80,"C"],
   ["A5","-A5",1,"Waveshare Pico-RTC-DS3231","Si innesta sul connettore Pico, nessun filo","B0915KRWNZ",19.99,"C"],
-  ["A2","-A2",1,"Modulo MOSFET dual a morsetti (10 pezzi)","Sul filo PWM delle ventole, protegge la scheda","B0GL1NWZQH",8.99,"C"],
-  ["X5","-X5",1,"Basetta a morsetti Freenove per Raspberry Pi Pico","Su guida DIN con le clip; un morsetto etichettato per ogni pin","B0BFB53Y2N",14.95,"C"],
-  ["dup","—",1,"Cavetti Dupont (kit 120 pezzi)","Maschio-maschio, dalle prese sopra l'RTC alla basetta X5","B01N40EK6M",9.99,"C"],
-  ["Q","quadro",1,"Quadro IP65 Intratec 48 moduli, 4 file","Sportello trasparente","B08614GVLN",69.69,"C"],
-  ["clip","—",1,"Clip DIN per circuiti stampati (20 pezzi)","Per il modulo MOSFET e la basetta X5","B0FCM3N3P9",8.99,"C"],
+  ["Q2","quadro",1,"Quadro BOXEXPERT Fleet 500×400×240, ABS, IP65","Sportello trasparente e piastra di fondo in lamiera: verificare sulla pagina che siano nella variante scelta","B0CBS922L8",78.04,"C"],
+  ["din","—",2,"Guida DIN 35 mm, 1 m (Stok, confezione da 2)","Tre spezzoni da ~45 cm avvitati alla piastra. Prezzo da verificare","B07VDG4BVZ",null,"C"],
+  ["can","—",2,"Canalina asolata 25×40 grigia con coperchio, barra da 2 m","Elettrocanali ECA2540: sopra e sotto ogni guida e sui lati. Prezzo da verificare","https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/",null,"C"],
+  ["uk","-X0 -X2 -X3",1,"Kit morsetti su guida UK2.5B","20 morsetti, 2 di terra, ponticelli, 4 fermi, coperchi. Ingresso, uscite 230 V, bassa tensione","B098X5B7WS",20.79,"C"],
+  ["pinza","—",1,"Pinza a cricchetto 0,25–10 mm² con 1250 puntalini","Per tutti i fili flessibili nei morsetti a vite","B0CRCVMNQZ",29.99,"C"],
+  ["c15","—",1,"Cavo 1,5 mm² marrone, blu, giallo-verde, 10 m","Cablaggio 230 V nel quadro. Prezzo da verificare","B00IJCW374",null,"C"],
+  ["c075","—",1,"Cavo H05V-K 0,75 mm² rosso e nero, ~5 m per colore","12 V: COM dei relè e bobine dei contattori. Prezzo da verificare","https://www.manomano.it/cat/cavo+unipolare+rosso",null,"C"],
+  ["vq","—",1,"Valvola anticondensa M12 (quadro)","Membrana E-PTFE: verificare IP68 e filetto M12×1,5. Prezzo da verificare","B0H4S18G2D",null,"C"],
   ["pm20","—",1,"Pressacavi M20 IP68 (26 pezzi)","","B0GYRDCC9Z",7.99,"C"],
-  ["wago","-X2…",1,"Morsetti Wago 221 assortiti (40 pezzi)","Anche in negozio","B06XRJHTS3",21.96,"C"],
-  ["R","—",1,"Resistenza 4,7 kΩ","Pull-up del bus 1-Wire; anche in negozio","B0FPX6T6SC",9.99,"C"]]},
+  ["wago","—",1,"Morsetti Wago 221 assortiti (40 pezzi)","Giunzioni nella scatola X6 e nelle scatole in camera. Anche in negozio","B06XRJHTS3",21.96,"C"],
+  ["R1","-R1",1,"Resistenza 120 Ω","Terminazione RS485 lato quadro, solo se la Waveshare non ha il ponticello","",null,"F"]]},
+ {t:"Nodo in camera (scatola X6)",i:[
+  ["A6","-A6",1,"XIAO ESP32C3 + Seeed XIAO RS485 Breakout","La sonda-th di oggi, riusata con il firmware salumi-nodo.yaml","",null,"P"],
+  ["A2","-A2",1,"Modulo MOSFET dual a morsetti (10 pezzi)","Sul filo PWM delle ventole, protegge la XIAO","B0GL1NWZQH",8.99,"C"],
+  ["X6","-X6",1,"Scatola stagna IP65 150×110×70 con pressacavi","In alto sopra la bilancia: XIAO, HX711, MOSFET, Wago, resistenze","B0F6YGYR7K",13.49,"C"],
+  ["vx","—",1,"Valvola anticondensa M12 (X6)","Come quella del quadro. Prezzo da verificare","B0H4S18G2D",null,"C"],
+  ["R","-R3",1,"Resistenza 4,7 kΩ","Pull-up del bus 1-Wire; anche in negozio","B0FPX6T6SC",9.99,"C"],
+  ["R45","-R4 -R5",2,"Resistenze 10 kΩ","Pull-up dei giri delle ventole","",null,"F"],
+  ["R2","-R2",1,"Resistenza 120 Ω","Terminazione RS485 lato camera, solo se la breakout non l'ha già","",null,"F"],
+  ["vern","—",1,"Vernice protettiva acrilica per circuiti stampati, spray 400 ml","Electrolube APL. 26,30 € + IVA. Morsetti e connettori esclusi","https://it.rs-online.com/web/p/rivestimenti/4090956",32.09,"C"]]},
  {t:"Sensori",i:[
   ["B1","-B1",1,"Sonda Seeed S-TH-01, camera","Indirizzo 1, oggi sulla XIAO","",null,"P"],
   ["B5","-B5",1,"Sonda Seeed S-TH-01, cantina","Indirizzo 3. Stesso canale d'acquisto della prima, prezzo da verificare","",null,"C"],
   ["DS","-B3 -B4",2,"DS18B20 impermeabile, cavo 3 m (2 pezzi)","Parete e pavimento","B07CZ1G29V",18.26,"C"],
-  ["hx","-A4 -B2",1,"HX711 e cella di carico 2 kg","Oggi sulla XIAO, da calibrare","",null,"P"],
-  ["box","—",1,"Scatolina IP65 per HX711","Anche derivazione delle DS18B20","B0F8NW1YZ2",8.59,"C"],
+  ["hx","-A4 -B2",1,"HX711 e cella di carico 2 kg","Oggi sulla XIAO, da calibrare. L'HX711 va nella scatola X6","",null,"P"],
   ["IR","—",1,"Termometro a infrarossi TempPro TP30","Per il test di preriscaldo delle pareti","B0BGGJH3G2",16.27,"C"]]},
  {t:"Attuatori e circuito dell'aria",i:[
   ["E1","-E1",1,"Stufa 3 lampade IR, 1200 W","","",null,"P"],
   ["M23","-M2 -M3",2,"Umidificatori a ultrasuoni","","",null,"P"],
-  ["M56","-M5 -M6",3,"Ventole ARCTIC P12 Slim PWM PST 12 V (confezione da 3)","4 fili, 200–2100 giri/min. PWM dalla scheda tramite il transistor Q1, giri letti dalla scheda. Una di scorta","B09RWTCXRR",19.22,"C"],
+  ["M56","-M5 -M6",3,"Ventole ARCTIC P12 Slim PWM PST 12 V (confezione da 3)","4 fili, 200–2100 giri/min. PWM e giri dal nodo in camera, tramite il modulo MOSFET A2. Una di scorta","B09RWTCXRR",19.22,"C"],
   ["ext","—",1,"Prolunghe 4 pin PWM (6 pezzi)","Da tagliare per collegare le ventole in X4 senza toccarle","B09SKYRB3V",6.99,"C"],
   ["M4","-M4",1,"Estrattore Vents TT-100 (consigliato)","Flusso misto 145/187 m³/h, 21/33 W, velocità bassa. Senza spina","B01LZQA9U9",40.55,"C"],
   ["M4b","-M4 alt.",1,"Estrattore Airope assiale","107 m³/h a bocca libera, 14 W, con spina. Al posto del Vents","B08QFYMFJL",22.90,"A"],
@@ -138,7 +153,7 @@ const G=[
  {t:"Cavi, prese e scatole",i:[
   ["W1","-W1",1,"FROR 5G1,5, 10 m","Quadro → presa CEE stufa","B01FSZYO08",28.59,"C"],
   ["W2","-W2",1,"FROR 4G1,5, 10 m","Quadro → prese umidificatori","B01FSZYK4I",24.01,"C"],
-  ["W345","-W3 -W4 -W5",1,"Cat6 FTP schermato, 30 m","W3 sonda B1, W4 HX711 + B3 + B4, W5 ventole (12 V, PWM, giri), avanzo per B5","B0CGDQT3P4",27.99,"C"],
+  ["W345","-W3 -W5 -W6",1,"Cat6 FTP schermato, rame pieno, 30 m","W3 quadro → X6 (12 V, 0 V, A, B), W5 X6 → X4 ventole, W6 quadro → B5 cantina","B0CGDQT3P4",27.99,"C"],
   ["X1","-X1",1,"Presa doppia IP55 con coperchio","Umidificatori","B0HJD4BD28",16.99,"C"],
   ["XS3","-XS3",1,"Contenitore Electraline FIXA con presa","Estrattore, fuori dalla camera","B0G71348W7",4.90,"C"],
   ["XS4","-XS4",1,"Presa CEE da parete 16 A 5 poli IP44","Stufa","B001BAVXZO",22.45,"C"],
@@ -165,7 +180,7 @@ function render(){
       const r=document.createElement("div");r.className="row"+(done[id]?" done":"");
       const cb=st==="C"||st==="A"?`<input type="checkbox" id="cb-${id}" aria-label="Ordinato: ${name}" ${done[id]?"checked":""}>`:"<span></span>";
       r.innerHTML=`${cb}<span class="tag">${tag}</span>
-        <div class="body"><span class="name">${q>1?q+" × ":""}${name}</span>${note?`<span class="note">${note}</span>`:""}${asin?`<a href="https://www.amazon.it/dp/${asin}" target="_blank" rel="noopener">amazon.it/dp/${asin}</a>`:""}</div>
+        <div class="body"><span class="name">${q>1?q+" × ":""}${name}</span>${note?`<span class="note">${note}</span>`:""}${asin?(asin.startsWith("http")?`<a href="${asin}" target="_blank" rel="noopener">${new URL(asin).hostname.replace(/^www\./,"")}</a>`:`<a href="https://www.amazon.it/dp/${asin}" target="_blank" rel="noopener">amazon.it/dp/${asin}</a>`):""}</div>
         <div class="right"><span class="price">${price!=null?eur(price):"—"}</span><span class="pill p-${st}">${LBL[st]}</span></div>`;
       const c=r.querySelector("input");
       if(c)c.addEventListener("change",()=>{done[id]=c.checked;if(!c.checked)delete done[id];save();render()});
@@ -175,7 +190,7 @@ function render(){
     sec.appendChild(list);root.appendChild(sec);
   }
   document.getElementById("summary").innerHTML=
-   `<div class="tile"><b>${eur(tot)}</b><span>Totale Amazon</span></div>
+   `<div class="tile"><b>${eur(tot)}</b><span>Totale prezzi noti</span></div>
     <div class="tile"><b>${eur(rest)}</b><span>Ancora da ordinare</span></div>
     <div class="tile"><b>${nd} / ${n}</b><span>Righe ordinate</span></div>`;
 }

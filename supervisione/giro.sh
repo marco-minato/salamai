@@ -14,6 +14,7 @@ mkdir -p "$SHARE" "$DIR/stato"
 # Ambiente salvato da avvia.sh: crond parte senza variabili
 [ -f "$DIR/stato/ambiente" ] && . "$DIR/stato/ambiente"
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export TZ=Europe/Rome
 CLAUDE=$(command -v claude || echo /usr/local/bin/claude)
 
 log() { echo "$(date '+%d/%m %H:%M') $*" >> "$LOG"; }
@@ -54,7 +55,7 @@ PROMPT="$(cat "$DIR/prompt.md")
 Ora: $(date '+%d/%m/%Y %H:%M'). Motivo di questo controllo: $MOTIVO"
 
 # Ambiente pulito: niente variabili della sessione interattiva di Claude Code
-env -i HOME=/root PATH="$PATH" LANG=C.UTF-8 SUPERVISOR_TOKEN="$SUPERVISOR_TOKEN" \
+env -i HOME=/root PATH="$PATH" LANG=C.UTF-8 TZ=Europe/Rome SUPERVISOR_TOKEN="$SUPERVISOR_TOKEN" \
   timeout 1200 "$CLAUDE" -p "$PROMPT" \
     --model "$MODELLO" \
     --permission-mode dontAsk \
@@ -63,7 +64,7 @@ env -i HOME=/root PATH="$PATH" LANG=C.UTF-8 SUPERVISOR_TOKEN="$SUPERVISOR_TOKEN"
     --allowedTools \
       "Bash(python3 /homeassistant/salumi/supervisione/strumenti.py *)" \
       "Read(//share/salumi/**)" "Read(//media/salumi/**)" "Read(//homeassistant/salumi/**)" \
-      "Write(//share/salumi/**)" "Edit(//share/salumi/**)" \
+      "Edit(//share/salumi/**)" \
   >> "$LOG" 2>&1
 ESITO=$?
 

@@ -1,10 +1,10 @@
 #!/bin/sh
-# Avvia la supervisione: salva l'ambiente per crond, installa la riga di cron
+# Avvia la supervisione (lanciare con: sh avvia.sh): salva l'ambiente per crond, installa la riga di cron
 # (giro.sh ogni 5 min) e avvia crond. Da rilanciare dopo ogni riavvio
 # dell'add-on Claude Code (HA avvisa con "supervisione ferma").
 
 DIR=/homeassistant/salumi/supervisione
-RIGA="*/5 * * * * $DIR/giro.sh >/dev/null 2>&1"
+RIGA="*/5 * * * * /bin/sh $DIR/giro.sh >/dev/null 2>&1"
 
 if [ ! -x /usr/local/bin/claude ]; then
   echo "Qui non c'è claude ($(hostname)): lanciare dalla pagina dell'add-on Claude Code, non dal Terminal & SSH." >&2
