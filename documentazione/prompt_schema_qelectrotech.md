@@ -15,7 +15,11 @@
 > - **eliminati dal quadro** la basetta X5, i cavetti Dupont e il modulo
 >   MOSFET A2 (che va in X6); sulla Waveshare resta innestato solo l'RTC A5;
 > - **quadro** nuovo: cassetta BOXEXPERT Fleet 500×400×240 con piastra di
->   fondo, guide DIN e canaline (folio 7 rifatto).
+>   fondo, guide DIN e canaline (folio 7 rifatto);
+> - **umidificatori a spina fuori dalla camera**: il loro cavo, allungato, esce
+>   dalla botola e si inserisce nelle prese XS1 e XS2 accanto al quadro (come
+>   l'estrattore su XS3); **eliminati la scatola prese X1 e il cavo W2**;
+> - nuovo **piano dei morsetti X0, X2, X3** con la numerazione (netlist).
 
 ## Il tuo compito
 
@@ -64,12 +68,12 @@ Il formato `.qet` è XML, ma i dettagli cambiano tra versioni: **non scriverlo a
 | 1 | Copertina e legenda | titolo, descrizione, elenco folii, legenda sigle e colori dei fili |
 | 2 | Alimentazione 230 V | arrivo linea, contatore Eastron SDM120 Modbus (inserzione diretta), distribuzione L/N/PE |
 | 3 | Stufa (3 lampade IR) | contattori KM1–KM3 → cavo W1 5G1,5 → presa/spina CEE 5 poli in camera → cavo stufa → interruttori interni → lampade → antiribaltamento → N |
-| 4 | Prese di servizio | KM4–KM5 → cavo W2 → scatola IP66 con 2 prese in camera (umidificatori); KM6 → presa estrattore **fuori** dalla camera, accanto al quadro |
+| 4 | Prese di servizio | KM4, KM5, KM6 → prese XS1, XS2 (umidificatori) e XS3 (estrattore), tutte **fuori** dalla camera, accanto al quadro; i cavi degli apparecchi escono dalla botola |
 | 5 | Bassa tensione 12 V | alimentatore 12 V, scheda Waveshare, relè K1–K6 → bobine 12 V dei contattori KM1–KM6 (con diodi); 12 V e 0 V verso la camera nel cavo W3 |
 | 6 | Bus RS485 e nodo in camera | bus RS485 (Waveshare, SDM120, sonda cantina B5, cavo W3, sonda camera B1, nodo A6) con le due terminazioni 120 Ω; dentro la scatola X6: nodo A6, HX711 + cella di carico, sonde DS18B20 di parete e pavimento, modulo MOSFET A2 e ventole M5/M6 (via W5 e X4); RTC Pico-RTC-DS3231 innestato sul connettore Pico |
 | 7 | Disposizione sulla piastra | vista della piastra di fondo del quadro con guide DIN, canaline e ingombri (vedi "Disposizione") |
 | 8 | Distinta componenti | tabella nomenclatura (QElectroTech la genera dagli elementi, se la versione lo consente) |
-| 9 | Planimetria e percorso cavi | pianta della camera (vedi "Planimetria") con posizione di quadro, botola, dispositivi, scatole e tracciato dei cavi W1, W2, W3, W5, W6 |
+| 9 | Planimetria e percorso cavi | pianta della camera (vedi "Planimetria") con posizione di quadro, botola, dispositivi, scatole e tracciato dei cavi W1, W3, W5, W6 e dei cavi di M2, M3, M4 |
 
 Cartiglio: progetto "Camera salumi — controllo ESP32", revisione C, data di oggi,
 autore da compilare.
@@ -158,24 +162,24 @@ da sopra), insieme al tubo dell'estrattore.
 | -A5 | **Waveshare Pico-RTC-DS3231** (B0915KRWNZ) | si innesta sul connettore Pico della scheda (espansione prevista da Waveshare), I²C su GPIO4/GPIO5 con la configurazione di fabbrica; batteria tampone CR1220. È l'unica cosa collegata al connettore Pico |
 | -E1 | **Stufa a 3 lampade IR**, 1200 W totali | interruttori interni S1 (rosso, luminoso), S2, S3; S4 rotazione **non usato**; antiribaltamento -S5 a pulsante sotto la base; motorino rotazione -M1 **scollegato** |
 | -E1.1/2/3 | Lampade IR 1, 2, 3 | ~400 W ciascuna, 230 V |
-| -M2, -M3 | **Umidificatori a ultrasuoni** 1 e 2 | a spina |
+| -M2, -M3 | **Umidificatori a ultrasuoni** 1 e 2 | a spina; cavo di alimentazione allungato (FROR 3G1,5, senza giunzioni dentro la camera) fino alle prese XS1 e XS2 fuori dalla camera |
 | -M4 | **Estrattore in linea Ø 100 mm Vents TT-100** (B01LZQA9U9), in alternativa Airope (B08QFYMFJL) | flusso misto, 145/187 m³/h, 21/33 W, 230 V, collegato alla velocità bassa, con spina Schuko aggiunta su XS3; montato nella botola, tubo flessibile Ø 100 fino all'angolo opposto alla porta |
 | -Y2 | **Griglia d'ingresso Ø 100 con valvola antiritorno magnetica** (B0F52BLHQ4) | sulla porta della camera, in basso, si apre verso la camera: ingresso dell'aria della cantina durante il ricambio |
 | -Y1 | **Valvola antiritorno a molla Ø 100 mm** neverest RKI (B08LNS7TCV) | subito dopo l'estrattore, lato cantina: chiude la botola quando l'estrattore è fermo |
 | -M5, -M6 | **Ventole ARCTIC P12 Slim PWM PST** 120 mm (confezione da 3, B09RWTCXRR; una di scorta) | 12 V, 4 fili (GND, +12 V, TACH, PWM), 200–2100 giri/min, 15 mm di spessore; collegate in X4 con prolunghe 4 pin tagliate (B09SKYRB3V), così la ventola resta integra |
-| -X1 | Scatola **IP66 con 2 prese Schuko** con coperchio, in camera sulla parete destra, fuori dal getto della nebbia | XS1 umidificatore 1, XS2 umidificatore 2 (si staccano senza attrezzi per pulire la membrana) |
-| -XS3 | Presa Schuko IP44/IP55 **fuori dalla camera**, accanto al quadro | estrattore (la sua spina esce dalla botola) |
+| -XS1, -XS2 | Prese Schuko IP44/IP55 **fuori dalla camera**, accanto al quadro e a XS3 | umidificatore 1 (KM4) e umidificatore 2 (KM5); ognuna con L, N e PE propri dal quadro |
+| -XS3 | Presa Schuko IP44/IP55 **fuori dalla camera**, accanto al quadro | estrattore (il suo cavo esce dalla botola) |
 | -XS4 / -XP4 | **Presa e spina CEE 16 A 5 poli (3P+N+PE)**, IP44/IP67 | presa in camera vicino alla stufa (fine di W1), spina sul cavo della stufa: la stufa si stacca a fine stagione |
-| -X4 | Scatolina IP65 di derivazione ventole | in alto sulla parete destra, tra le due ventole; da W5 si divide verso M5 e M6 (+12 V, 0 V e PWM in parallelo, TACH separati) |
+| -X4 | Scatolina IP65 di derivazione ventole, con **valvola anticondensa M12** in basso | in alto sulla parete destra, tra le due ventole; da W5 si divide verso M5 e M6 (+12 V, 0 V e PWM in parallelo, TACH separati) |
 | -B3 | **Sonda DS18B20** impermeabile (parete) | incollata/fissata a una piastrella in basso, cavo da 3 m fino a X6 |
 | -B4 | **Sonda DS18B20** impermeabile (pavimento) | uguale a B3, fissata a una piastrella del pavimento vicino al muro; in parallelo a B3 sullo stesso bus 1-Wire (A6 D10) |
 | -B5 | **Sonda Seeed S-TH-01** (101990881), seconda unità | in **cantina**, fuori dalla camera, vicino alla griglia d'ingresso dell'aria; RS485 in parallelo, **indirizzo 3**, con lo spezzone W6 dal quadro (breve derivazione: a 9600 baud non dà problemi); alimentata a 12 V dal Mean Well |
-| -X0, -X2, -X3 | Morsetti su guida **UK2.5B** (con morsetti di terra giallo-verdi, ponticelli e fermi) | X0 ingresso linea L/N/PE; X2 uscite 230 V (L1–L6, N, PE); X3 bassa tensione (+12 V, 0 V, A, B, Earth) |
+| -X0, -X2, -X3 | Morsetti su guida **UK2.5B** (blu per N), morsetti di terra **USLKG2.5** giallo-verdi, ponticelli FBI e fermi | X0 ingresso linea L/N/PE; X2 uscite 230 V (L1–L6, N per ogni carico, PE per ogni carico); X3 bassa tensione (+12 V, 0 V, A, B, terre). Numerazione nel "Piano dei morsetti" |
 | — | Morsetti **Wago 221** | giunzioni nella scatola X6 (12 V, 0 V, A, B, 3V3, 1-Wire) e nelle scatole in camera |
 | -W1 | Cavo **FG16OR16 5G1,5** quadro → presa CEE stufa | L1, L2, L3, N, PE |
-| -W2 | Cavo **FG16OR16 4G1,5** quadro → X1 prese umidificatori | L4 (KM4), L5 (KM5), N, PE |
+| -W2a, -W2b, -W7 | Spezzoni **FROR 3G1,5** quadro → prese accanto al quadro, ~1 m | W2a: L4 (KM4), N, PE → XS1 · W2b: L5 (KM5), N, PE → XS2 · W7: L6 (KM6), N, PE → XS3 |
 | -W3 | Cavo **Cat6 FTP** (rame pieno, non CCA) quadro → scatola X6 in camera, ~10 m | coppia 1: A / B; coppia 2: +12 V / 0 V; coppia 3: +12 V / 0 V (in parallelo alla 2); coppia 4 di riserva; schermo a PE solo lato quadro. Carico ~0,3 A: caduta ~0,25 V |
-| -W5 | Spezzone **Cat6 FTP** X6 → X4 ventole, ~1,5 m | coppia 1: +12 V / 0 V; coppia 2: +12 V / 0 V (in parallelo); coppia 3: PWM / 0 V; coppia 4: TACH M5 / TACH M6; schermo a 0 V solo lato X6 |
+| -W5 | Spezzone **Cat6 FTP** X6 → X4 ventole, ~2,5 m | coppia 1: +12 V / 0 V; coppia 2: +12 V / 0 V (in parallelo); coppia 3: PWM / 0 V; coppia 4: TACH M5 / TACH M6; schermo a 0 V solo lato X6 |
 | -W6 | Spezzone **Cat6 FTP** quadro → sonda cantina B5, ~2 m | coppia 1: A / B; coppia 2: +12 V / 0 V; schermo a PE solo lato quadro |
 | — | Filo silicone 18 AWG (B07TT68455) | collegamenti interni alla stufa (zona calda) |
 | — | Quadro **BOXEXPERT Fleet 500×400×240 mm**, ABS, IP65, sportello trasparente, **piastra di fondo** in lamiera zincata (B0CBS922L8); 3 guide DIN 35 mm da ~45 cm avvitate alla piastra; **canaline asolate 25×40** sopra e sotto ogni guida e sui due lati; morsetti UK2.5B su guida con fermi; valvola anticondensa M12; pressacavi M20 (B0GYRDCC9Z) | meccanica |
@@ -218,6 +222,33 @@ Nessuna saldatura sulle schede.
 
 ## Netlist (collegamenti da disegnare)
 
+### Piano dei morsetti X0, X2, X3
+Un filo per morsetto; i morsetti dello stesso potenziale sono uniti con
+ponticelli FBI. I morsetti di terra (USLKG, giallo-verdi) si serrano sulla
+guida, che fa da barra di terra: la guida 3 e la guida 1 sono unite da un
+filo giallo-verde, e un filo giallo-verde porta la terra alla piastra di fondo.
+Disegnare le tre morsettiere con questi numeri:
+
+| Morsettiera | Morsetto | Funzione | Lato interno | Lato campo |
+|---|---|---|---|---|
+| -X0 (guida 3) | 1, 2 (ponte) | L | T1 L · A3 L ingresso | linea di casa L |
+| | 3, 4 (ponte, blu) | N | T1 N · A3 N | linea di casa N |
+| | PE | PE | piastra di fondo | linea di casa PE |
+| -X2 (guida 3) | 1–3 | L1, L2, L3 | KM1, KM2, KM3 morsetto 2 | W1 |
+| | 4 | L4 | KM4 morsetto 2 | W2a |
+| | 5 | L5 | KM5 morsetto 2 | W2b |
+| | 6 | L6 | KM6 morsetto 2 | W7 |
+| | 7–10 (ponte, blu) | N | filo da X0 N (sul 7) | W1 · W2a · W2b · W7 |
+| | PE1–PE4 | PE | — | W1 · W2a · W2b · W7 |
+| -X3 (guida 1) | 1, 2 (ponte) | +12 V | T1 +V | W3 coppie 2 e 3 · W6 coppia 2 |
+| | 3–5 (ponte) | 0 V | T1 −V · ritorno delle bobine (A2 di KM1–KM6 in catena con puntalini doppi) | W3 coppie 2 e 3 · W6 coppia 2 |
+| | 6, 7 (ponte) | A | A1 A · A3 A | W3 coppia 1 · W6 coppia 1 |
+| | 8, 9 (ponte) | B | A1 B · A3 B | W3 coppia 1 · W6 coppia 1 |
+| | PE1, PE2 | PE | Earth RS485 di A1 · filo verso la guida 3 | schermi di W3 e W6 |
+
+Totale: 23 morsetti di passaggio (6 blu per N) e 7 di terra, più i fermi a
+fine di ogni morsettiera.
+
 ### Folio 2 — 230 V
 - Linea **L / N / PE** dal quadro di casa → morsetti di ingresso del quadro (-X0).
 - **N** e **PE** distribuiti con morsetti a tutti gli utilizzatori.
@@ -251,10 +282,11 @@ Nessuna saldatura sulle schede.
   agli interruttori filo silicone 18 AWG in guaina di vetro.
 
 ### Folio 4 — Prese
-- KM4 morsetto 2 → W2 **L4** → X1 / XS1 L (umidificatore 1, M2).
-- KM5 morsetto 2 → W2 **L5** → X1 / XS2 L (umidificatore 2, M3).
-- W2 N e PE → XS1 e XS2.
-- KM6 morsetto 2 → XS3 L (estrattore M4, presa fuori dalla camera accanto al quadro); N e PE dai morsetti del quadro.
+- KM4 morsetto 2 → X2:4 → W2a **L4** → XS1 L (umidificatore 1, M2); W2a N e PE → XS1.
+- KM5 morsetto 2 → X2:5 → W2b **L5** → XS2 L (umidificatore 2, M3); W2b N e PE → XS2.
+- Ogni presa ha L, N e PE propri fino al quadro. XS1, XS2 e XS3 sono fuori
+  dalla camera, accanto al quadro; i cavi di M2, M3 e M4 escono dalla botola.
+- KM6 morsetto 2 → X2:6 → W7 **L6** → XS3 L (estrattore M4); W7 N e PE → XS3.
 - Nota: K5 e K6 della scheda sono su GPIO di strapping (45/46): possibile breve
   scatto all'accensione, per questo comandano KM5/KM6 (carichi non critici).
 
@@ -299,6 +331,13 @@ Nessuna saldatura sulle schede.
 - W5 coppie 1 e 2 → X4 → +12 V e GND di M5 e M6 in parallelo.
 - TACH M5 → X4 → W5 coppia 4 → A6 **D0**; TACH M6 → X4 → W5 coppia 4 → A6
   **D8**. **R4, R5 10 kΩ** tra ciascun TACH e 3V3.
+- **Dentro X4**: il cavo di ciascuna ventola entra da un pressacavo con la sua
+  spina 4 pin; la spina si innesta nella presa di una prolunga tagliata, i cui
+  4 fili vanno sui Wago insieme ai conduttori di W5 (Wago +12 V: W5 coppie 1 e
+  2 + M5 + M6; Wago 0 V: W5 coppie 1, 2, 3 + M5 + M6; Wago PWM: W5 coppia 3 +
+  M5 + M6; TACH M5 e TACH M6 con un Wago a 2 vie ciascuno verso W5 coppia 4).
+  Tutte le giunzioni restano nella scatola. Il TACH della seconda ventola è
+  separato: non usare la catena PST tra le due ventole.
 - A5 Pico-RTC-DS3231 innestato sul connettore H1/H2 di A1: SDA = **GPIO4**
   (H1 pin 15), SCL = **GPIO5** (H1 pin 14), alimentato dal connettore.
   Nessun filo.
@@ -314,19 +353,19 @@ piastra, canaline asolate 25 × 40 sopra e sotto ogni guida e sui due lati
 
 | Guida | Da sinistra a destra |
 |---|---|
-| 1 (in alto) — bassa tensione | T1 Mean Well HDR-60 (3 mod) · A1 Waveshare con A5 innestato (~150 mm, alta ~90 mm, profonda ~40 mm più l'RTC) · morsettiera bassa tensione X3 su morsetti UK2.5B: +12 V, 0 V, A, B, Earth (~5 mod) |
+| 1 (in alto) — bassa tensione | T1 Mean Well HDR-60 (3 mod) · A1 Waveshare con A5 innestato (~150 mm, alta ~90 mm, profonda ~40 mm più l'RTC) · morsettiera bassa tensione X3 su morsetti UK2.5B: +12 V, 0 V, A, B (9 morsetti) + 2 di terra (~60 mm) |
 | 2 — contattori | KM1 · KM2 · KM3 · KM4 · KM5 · KM6 (~6 mod) con i diodi V1–V6 sui morsetti delle bobine · spazio libero per contattori aggiuntivi |
-| 3 (in basso) — 230 V | morsetti di ingresso X0 (L, N, PE) · A3 SDM120 (1 mod) · morsettiera di uscita X2: L1, L2, L3 (stufa), L4, L5 (umidificatori), L6 (estrattore), N, PE (UK2.5B, morsetti di terra giallo-verdi) · spazio libero |
+| 3 (in basso) — 230 V | morsetti di ingresso X0 (L, L, N, N + 1 di terra) · A3 SDM120 (1 mod) · morsettiera di uscita X2: L1, L2, L3 (stufa), L4, L5 (umidificatori), L6 (estrattore), 4 × N blu, 4 di terra (UK2.5B e USLKG giallo-verdi; 14 morsetti, ~75 mm) · spazio libero |
 
-- 230 V in basso perché i cavi W1, W2 e XS3 entrano dal basso; bassa
+- 230 V in basso perché i cavi W1, W2a, W2b e W7 escono dal basso; bassa
   tensione in alto, lontana dalla potenza.
-- Pressacavi tutti sul fondo: a **sinistra** quelli a 230 V (linea, W1, W2,
-  XS3), a **destra** quelli a bassa tensione (W3, W6). Canalina laterale
+- Pressacavi tutti sul fondo: a **sinistra** quelli a 230 V (linea, W1, W2a,
+  W2b, W7), a **destra** quelli a bassa tensione (W3, W6). Canalina laterale
   sinistra per il 230 V, destra per la bassa tensione.
 - I fili a 12 V delle bobine passano nelle canaline orizzontali tra guida 1 e
   guida 2 insieme ai 230 V: devono avere isolamento 300/500 V o superiore
   (H05V-K o H07V-K).
-- Valvola anticondensa M12 sul fondo, al centro.
+- Valvola anticondensa M12 in nylon (di compensazione, IP68) sul fondo, al centro.
 
 ---
 
@@ -342,8 +381,8 @@ muro; lato corto 160; altezza 210). Disegnarla semplice (rettangoli, testo, frec
   orizzontali sopra i salami verso la parete opposta, con accanto le uscite dei
   tubi PVC della nebbia; più in basso gli umidificatori M2 e M3 rialzati da terra;
   al centro la stufa E1, puntata contro il muro (presa CEE XS4 accanto). Sopra la
-  stufa niente salami. Scatola prese X1 accanto agli umidificatori, scatolina
-  ventole X4 in alto tra le ventole, entrambe fuori dal getto di nebbia.
+  stufa niente salami. Scatolina ventole X4 in alto tra le ventole, fuori dal getto di nebbia.
+  I cavi degli umidificatori salgono alla botola senza giunzioni in camera.
 - **Botola** sul soffitto, 32 × 45, vicino alla porta: estrattore M4 + valvola Y1;
   tubo flessibile Ø 100 fino all'**angolo opposto alla porta** (dietro i salami).
 - **Bilancia**: cella B2 sulla parete della porta, a metà della zona salami;
@@ -360,7 +399,7 @@ muro; lato corto 160; altezza 210). Disegnarla semplice (rettangoli, testo, frec
 - **Percorso**: dal quadro i cavi salgono sul muro esterno, passano **sopra il
   tetto della botte** ed entrano dalla botola attraverso un pannello con
   pressacavi (lo stesso che porta l'estrattore). Due tubi corrugati separati:
-  uno per 230 V (W1, W2), uno per bassa tensione (W3). Dentro la camera
+  uno per 230 V (W1 e i cavi di M2, M3), uno per bassa tensione (W3). Dentro la camera
   cavi fissati a soffitto e parete con clip; pressacavi delle scatole rivolti
   verso il basso con ansa di gocciolamento.
 

@@ -33,6 +33,11 @@ section{display:flex;flex-direction:column;gap:10px}
 .row:first-child{border-top:0}
 .row.done{opacity:.55}
 .row.done .name{text-decoration:line-through}
+.row.own{opacity:.6}
+.row.own .price{text-decoration:line-through}
+.own-btn{font:600 .78rem var(--f-body);background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:2px 10px;cursor:pointer;white-space:nowrap}
+.own-btn[aria-pressed="true"]{background:var(--own-soft);color:var(--own);border-color:var(--own)}
+.own-btn:focus-visible{outline:2px solid var(--own);outline-offset:2px}
 .row input{width:18px;height:18px;margin-top:3px;accent-color:var(--accent)}
 .row input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tag{font:500 .8rem var(--f-mono);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:2px 6px;justify-self:start;white-space:nowrap}
@@ -55,14 +60,14 @@ footer{color:var(--muted);font-size:.9rem}
   .row{grid-template-columns:24px 1fr;}
   .row .tag{grid-column:2}
   .row .body{grid-column:2}
-  .row .right{grid-column:2;flex-direction:row;align-items:center;justify-content:space-between}
+  .row .right{grid-column:2;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between}
 }
 </style>
 
 <div class="wrap">
   <header>
     <h1>Distinta camera salumi</h1>
-    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH, versione 4 del 20/10/2026: nodo XIAO in camera e quadro con piastra di fondo. Sigle come nello schema QElectroTech (revisione C). Prezzi del 17–20/10/2026, indicativi; dove manca il prezzo va verificato sulla pagina. Spunta le righe man mano che ordini: le spunte restano solo in questo browser.</p>
+    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH, versione 4.1 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo, morsetti ricontati, umidificatori su prese fuori dalla camera. Sigle come nello schema QElectroTech (revisione C). Prezzi del 17–20/10/2026, indicativi; dove manca il prezzo va verificato sulla pagina. Spunta le righe man mano che ordini. Con «Già in possesso» togli dal totale quello che hai già. Spunte e scelte restano solo in questo browser.</p>
   </header>
 
   <div class="summary" id="summary"></div>
@@ -82,6 +87,7 @@ footer{color:var(--muted);font-size:.9rem}
       <li>Foro Ø 100 in basso nella porta della camera, per la griglia d'ingresso</li>
       <li>Apertura fissa in alto sulla porta esterna della cantina (griglia o feritoia)</li>
       <li>Clip fermacavo, fascette, puntalini</li>
+      <li>Nastro autoagglomerante in gomma, 19 mm: per spessorare i cavi delle ventole nei pressacavi e proteggere gli innesti</li>
       <li>Silicone neutro o nastro di alluminio per fissare le DS18B20 alle piastrelle</li>
     </ul>
   </section>
@@ -94,6 +100,8 @@ footer{color:var(--muted);font-size:.9rem}
       <li>Terminazioni 120 Ω attive solo sulla Waveshare e nella scatola X6; spente su tutti gli altri dispositivi</li>
       <li>XIAO: come si collegano oggi HX711 e alimentazione alla breakout (stesso metodo per sonde, PWM e giri)</li>
       <li>Cat6 in rame pieno, non CCA</li>
+      <li>Kit morsetti: quanti blu ci sono (6 per N; altrimenti grigi con marcatore N)</li>
+      <li>Cavo degli umidificatori: giunzione solo fuori dalla camera (o cavo sostituito per intero); spina montata dopo il pressacavo della botola</li>
       <li>Vents TT-100: morsettiera e collegamento alla velocità bassa</li>
       <li>Contatore SDM120 a indirizzo 2 e 9600 baud (tasti frontali), sonda B5 a indirizzo 3, uno alla volta da soli sul bus</li>
       <li>Che il coperchio della scheda chiuda con il modulo RTC innestato</li>
@@ -101,8 +109,8 @@ footer{color:var(--muted);font-size:.9rem}
     </ul>
   </section>
 
-  <button class="reset" id="reset" type="button">Togli tutte le spunte</button>
-  <footer>Esclusi per scelta: termostato meccanico, salvavita nel quadro, contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN). Tolti nella versione 4: basetta Freenove X5, cavetti Dupont, clip DIN, quadro Intratec 48 moduli, cavo W4.</footer>
+  <button class="reset" id="reset" type="button">Togli le spunte di ordinato</button>
+  <footer>Esclusi per scelta: termostato meccanico, salvavita nel quadro, contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN). Tolti nella versione 4: basetta Freenove X5, cavetti Dupont, clip DIN, quadro Intratec 48 moduli, cavo W4. Tolti nella 4.1: kit morsetti suaywo (troppo piccolo), presa doppia X1 in camera, cavo W2 4G1,5.</footer>
 </div>
 
 <script>
@@ -117,11 +125,13 @@ const G=[
   ["Q2","quadro",1,"Quadro BOXEXPERT Fleet 500×400×240, ABS, IP65","Sportello trasparente e piastra di fondo in lamiera: verificare sulla pagina che siano nella variante scelta","B0CBS922L8",78.04,"C"],
   ["din","—",2,"Guida DIN 35 mm, 1 m (Stok, confezione da 2)","Tre spezzoni da ~45 cm avvitati alla piastra. Prezzo da verificare","B07VDG4BVZ",null,"C"],
   ["can","—",2,"Canalina asolata 25×40 grigia con coperchio, barra da 2 m","Elettrocanali ECA2540: sopra e sotto ogni guida e sui lati. Prezzo da verificare","https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/",null,"C"],
-  ["uk","-X0 -X2 -X3",1,"Kit morsetti su guida UK2.5B","20 morsetti, 2 di terra, ponticelli, 4 fermi, coperchi. Ingresso, uscite 230 V, bassa tensione","B098X5B7WS",20.79,"C"],
+  ["uk2","-X0 -X2 -X3",2,"Kit morsetti su guida UK2.5B, 5 colori (2 kit)","In tutto 40 morsetti (ne servono 23, blu per N), 4 di terra, 4 ponticelli FBI, 8 fermi. 2 × 18,99 €","B0857JK8PY",37.98,"C"],
+  ["pe","-X0 -X2 -X3",10,"Morsetti di terra USLKG2.5 giallo-verdi (10 pezzi)","Ne servono 7: ingresso, uno per ogni carico, schermi e Earth RS485","B0H8T4TXXR",10.05,"C"],
   ["pinza","—",1,"Pinza a cricchetto 0,25–10 mm² con 1250 puntalini","Per tutti i fili flessibili nei morsetti a vite","B0CRCVMNQZ",29.99,"C"],
+  ["spel","—",1,"Spelafili (già in possesso)","Spelare 11 mm per i morsetti a leva. Fili delle ventole, cavo di rete e cablaggio del quadro","",null,"P"],
   ["c15","—",1,"Cavo 1,5 mm² marrone, blu, giallo-verde, 10 m","Cablaggio 230 V nel quadro. Prezzo da verificare","B00IJCW374",null,"C"],
   ["c075","—",1,"Cavo H05V-K 0,75 mm² rosso e nero, ~5 m per colore","12 V: COM dei relè e bobine dei contattori. Prezzo da verificare","https://www.manomano.it/cat/cavo+unipolare+rosso",null,"C"],
-  ["vq","—",1,"Valvola anticondensa M12 (quadro)","Membrana E-PTFE: verificare IP68 e filetto M12×1,5. Prezzo da verificare","B0H4S18G2D",null,"C"],
+  ["vn","—",5,"Valvole anticondensa in nylon M12×1,5 IP68 (5 pezzi)","Di compensazione: quadro, scatola X6, scatola X4 e due di scorta. Verificare dado e guarnizione","B0HG57QS4F",19.09,"C"],
   ["pm20","—",1,"Pressacavi M20 IP68 (26 pezzi)","","B0GYRDCC9Z",7.99,"C"],
   ["wago","—",1,"Morsetti Wago 221 assortiti (40 pezzi)","Giunzioni nella scatola X6 e nelle scatole in camera. Anche in negozio","B06XRJHTS3",21.96,"C"],
   ["R1","-R1",1,"Resistenza 120 Ω","Terminazione RS485 lato quadro, solo se la Waveshare non ha il ponticello","",null,"F"]]},
@@ -129,7 +139,6 @@ const G=[
   ["A6","-A6",1,"XIAO ESP32C3 + Seeed XIAO RS485 Breakout","La sonda-th di oggi, riusata con il firmware salumi-nodo.yaml","",null,"P"],
   ["A2","-A2",1,"Modulo MOSFET dual a morsetti (10 pezzi)","Sul filo PWM delle ventole, protegge la XIAO","B0GL1NWZQH",8.99,"C"],
   ["X6","-X6",1,"Scatola stagna IP65 150×110×70 con pressacavi","In alto sopra la bilancia: XIAO, HX711, MOSFET, Wago, resistenze","B0F6YGYR7K",13.49,"C"],
-  ["vx","—",1,"Valvola anticondensa M12 (X6)","Come quella del quadro. Prezzo da verificare","B0H4S18G2D",null,"C"],
   ["R","-R3",1,"Resistenza 4,7 kΩ","Pull-up del bus 1-Wire; anche in negozio","B0FPX6T6SC",9.99,"C"],
   ["R45","-R4 -R5",2,"Resistenze 10 kΩ","Pull-up dei giri delle ventole","",null,"F"],
   ["R2","-R2",1,"Resistenza 120 Ω","Terminazione RS485 lato camera, solo se la breakout non l'ha già","",null,"F"],
@@ -152,13 +161,12 @@ const G=[
   ["Y2","-Y2",1,"Griglia d'ingresso Ø 100 inox con valvola magnetica","In basso sulla porta, si apre verso la camera","B0F52BLHQ4",28.44,"C"]]},
  {t:"Cavi, prese e scatole",i:[
   ["W1","-W1",1,"FROR 5G1,5, 10 m","Quadro → presa CEE stufa","B01FSZYO08",28.59,"C"],
-  ["W2","-W2",1,"FROR 4G1,5, 10 m","Quadro → prese umidificatori","B01FSZYK4I",24.01,"C"],
-  ["W345","-W3 -W5 -W6",1,"Cat6 FTP schermato, rame pieno, 30 m","W3 quadro → X6 (12 V, 0 V, A, B), W5 X6 → X4 ventole, W6 quadro → B5 cantina","B0CGDQT3P4",27.99,"C"],
-  ["X1","-X1",1,"Presa doppia IP55 con coperchio","Umidificatori","B0HJD4BD28",16.99,"C"],
-  ["XS3","-XS3",1,"Contenitore Electraline FIXA con presa","Estrattore, fuori dalla camera","B0G71348W7",4.90,"C"],
+  ["W2ab","-W2a -W2b -W7",1,"FROR 3G1,5, 25 m","Spezzoni di ~1 m dal quadro alle prese XS1–XS3 e i due cavi allungati degli umidificatori (fino a ~10 m ciascuno)","B0DH3X2ZXS",38.55,"C"],
+  ["W345","-W3 -W5 -W6",1,"Cat6 FTP schermato, rame pieno, 30 m","W3 quadro → X6 (12 V, 0 V, A, B), W5 X6 → X4 ventole (~2,5 m), W6 quadro → B5 cantina","B0CGDQT3P4",27.99,"C"],
+  ["XS3","-XS1 -XS2 -XS3",3,"Contenitore Electraline FIXA con presa (3 pezzi)","Fuori dalla camera, accanto al quadro: umidificatore 1, umidificatore 2, estrattore. 3 × 4,90 €","B0G71348W7",14.70,"C"],
   ["XS4","-XS4",1,"Presa CEE da parete 16 A 5 poli IP44","Stufa","B001BAVXZO",22.45,"C"],
   ["XP4","-XP4",1,"Spina CEE 16 A 5 poli","Cavo stufa","B0002YZJDW",16.95,"C"],
-  ["X4","-X4",1,"Scatola IP65 150×110×70 con pressacavi","Derivazione ventole","B0F6YGYR7K",13.49,"C"],
+  ["X4","-X4",1,"Scatola IP65 150×110×70 con pressacavi","Derivazione ventole, con valvola anticondensa","B0F6YGYR7K",13.49,"C"],
   ["qw","—",1,"Kit 32 pressacavi M12–M25","Pannello botola e scatole","B0BFL3VQYQ",10.24,"C"],
   ["corr","—",1,"Tubo corrugato Ø 25, 10 m","Due tratti: 230 V e bassa tensione","B0FNKPP8DK",15.90,"C"],
   ["sil","—",1,"Filo in silicone 18 AWG","Collegamenti interni alla stufa, prezzo da verificare","B07TT68455",null,"C"]]}
@@ -169,21 +177,25 @@ let done={};try{done=JSON.parse(localStorage.getItem("distinta-salumi")||"{}")}c
 const save=()=>{try{localStorage.setItem("distinta-salumi",JSON.stringify(done))}catch(e){}};
 function render(){
   const root=document.getElementById("groups");root.innerHTML="";
-  let tot=0,rest=0,n=0,nd=0;
+  let tot=0,rest=0,n=0,nd=0,nown=0,vown=0;
   for(const g of G){
     let sub=0;
     const sec=document.createElement("section");
     const list=document.createElement("div");list.className="list";
     for(const [id,tag,q,name,note,asin,price,st] of g.i){
-      if(st==="C"&&price!=null){sub+=price;tot+=price;if(!done[id])rest+=price}
-      if(st==="C"){n++;if(done[id])nd++}
-      const r=document.createElement("div");r.className="row"+(done[id]?" done":"");
-      const cb=st==="C"||st==="A"?`<input type="checkbox" id="cb-${id}" aria-label="Ordinato: ${name}" ${done[id]?"checked":""}>`:"<span></span>";
+      const own=done[id]==="own",ord=done[id]===true,can=st==="C"||st==="A";
+      if(own){nown++;if(price!=null)vown+=price}
+      else if(st==="C"){n++;if(ord)nd++;if(price!=null){sub+=price;tot+=price;if(!ord)rest+=price}}
+      const r=document.createElement("div");r.className="row"+(ord?" done":"")+(own?" own":"");
+      const cb=can?`<input type="checkbox" id="cb-${id}" aria-label="Ordinato: ${name}" ${ord?"checked":""} ${own?"disabled":""}>`:"<span></span>";
+      const ob=can?`<button type="button" class="own-btn" aria-pressed="${own}">Già in possesso</button>`:"";
       r.innerHTML=`${cb}<span class="tag">${tag}</span>
         <div class="body"><span class="name">${q>1?q+" × ":""}${name}</span>${note?`<span class="note">${note}</span>`:""}${asin?(asin.startsWith("http")?`<a href="${asin}" target="_blank" rel="noopener">${new URL(asin).hostname.replace(/^www\./,"")}</a>`:`<a href="https://www.amazon.it/dp/${asin}" target="_blank" rel="noopener">amazon.it/dp/${asin}</a>`):""}</div>
-        <div class="right"><span class="price">${price!=null?eur(price):"—"}</span><span class="pill p-${st}">${LBL[st]}</span></div>`;
+        <div class="right"><span class="price">${price!=null?eur(price):"—"}</span><span class="pill p-${own?"P":st}">${own?"già in possesso":LBL[st]}</span>${ob}</div>`;
       const c=r.querySelector("input");
-      if(c)c.addEventListener("change",()=>{done[id]=c.checked;if(!c.checked)delete done[id];save();render()});
+      if(c)c.addEventListener("change",()=>{if(c.checked)done[id]=true;else delete done[id];save();render()});
+      const b=r.querySelector(".own-btn");
+      if(b)b.addEventListener("click",()=>{if(own)delete done[id];else done[id]="own";save();render()});
       list.appendChild(r);
     }
     sec.innerHTML=`<h2>${g.t}<small>${eur(sub)}</small></h2>`;
@@ -192,8 +204,9 @@ function render(){
   document.getElementById("summary").innerHTML=
    `<div class="tile"><b>${eur(tot)}</b><span>Totale prezzi noti</span></div>
     <div class="tile"><b>${eur(rest)}</b><span>Ancora da ordinare</span></div>
-    <div class="tile"><b>${nd} / ${n}</b><span>Righe ordinate</span></div>`;
+    <div class="tile"><b>${nd} / ${n}</b><span>Righe ordinate</span></div>
+    <div class="tile"><b>${nown?eur(vown):"—"}</b><span>Già in possesso (${nown} ${nown===1?"riga esclusa":"righe escluse"})</span></div>`;
 }
-document.getElementById("reset").addEventListener("click",()=>{done={};save();render()});
+document.getElementById("reset").addEventListener("click",()=>{for(const k of Object.keys(done))if(done[k]===true)delete done[k];save();render()});
 render();
 </script>
