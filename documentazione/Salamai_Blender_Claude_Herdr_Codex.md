@@ -99,7 +99,7 @@ Agisci come implementatore principale del progetto Salamai. Costruisci un modell
 
 Un modello misurabile, riproducibile e organizzato in layer, utilizzabile per progettare tubazioni e ventole e correlare la disposizione fisica con lo storico dei cicli. Il modello non deve dipendere da modifiche manuali non registrate nel file .blend.
 
-Prima versione: geometria stanza, layer, configurazione dati, generatore, viste quotate, esportazioni e pacchetto analisi AI con esempio di telemetria esplicitamente sintetica. Integra dati reali solo se accessibili e documentati nel repository. Non introdurre nuovi backend, dashboard, database o simulazioni CFD per completare questa prima versione.
+Prima versione: geometria stanza, layer, configurazione dati, generatore, viste quotate, esportazioni, visualizzatore web in sola lettura e pacchetto analisi AI con esempio di telemetria esplicitamente sintetica. Integra dati reali solo se accessibili e documentati nel repository. Realizza il visualizzatore statico descritto sotto; non introdurre nuovi backend, database o simulazioni CFD per completare questa prima versione.
 
 ### Rilievo e coordinate
 
@@ -149,6 +149,27 @@ Produrre .blend, .glb, manifest JSON con ID e frame, pianta quotata, due sezioni
 
 Nessun asset fotorealistico esterno necessario. Il .blend e il GLB sono derivati rigenerabili. Le etichette devono essere leggibili e non coperte dalle pareti; verificare visivamente tutte le immagini.
 
+### Visualizzatore web per consultazione, analisi e studio
+
+Requisito concordato: le modifiche al modello saranno effettuate tramite AI sui sorgenti JSON/Python e successiva rigenerazione. Il browser è esclusivamente per consultazione e analisi: non deve modificare geometria, configurazione autorevole o comandare attuatori. Visibilità, camera, trasparenza e misure temporanee sono stato locale della consultazione.
+
+Realizza nella prima versione un visualizzatore statico con Three.js, GLB e manifest JSON. Usa le convenzioni frontend già presenti, oppure una piccola applicazione dedicata con dipendenze fissate e lockfile. Non richiedere Blender, MCP o servizi AI in esecuzione per consultare il modello. Bundle e asset devono poter essere serviti localmente, senza CDN obbligatorie, con Nginx anche in Docker. Documenta build, avvio locale e pubblicazione sotto un sottopercorso; prepara la configurazione senza distribuire su infrastrutture reali non autorizzate.
+
+Funzioni richieste:
+- Rotazione libera, zoom e pan con mouse e touch; interfaccia utilizzabile da desktop e telefono.
+- Viste dall'alto, frontale, laterale e assonometrica, con ripristino dell'inquadratura.
+- Checkbox dei layer, comandi mostra/nascondi tutto, soffitto e singole pareti nascondibili o trasparenti. La selezione deve ignorare oggetti nascosti e consentire di raggiungere gli elementi interni.
+- Selezione dei componenti con pannello nome, ID, layer, coordinate nel frame canonico, dimensioni, orientamento, caratteristiche note e stato dei dati. Evidenziare placeholder e assunzioni anche nella UI.
+- Quote attivabili e misura temporanea tra due punti del modello: specificare che è distanza rettilinea 3D, mostrare unità e distinguere dalle lunghezze dei percorsi delle tubazioni. Applicare correttamente tutte le trasformazioni di scala e assi.
+- Selezione della revisione del layout; confronto tra due configurazioni con viste affiancate e camera sincronizzata. Mostrare quali componenti sono stati aggiunti, rimossi, spostati o modificati tramite ID stabili e dati JSON. Se esiste un solo layout reale, dichiararlo; un secondo esempio deve essere etichettato come ipotesi dimostrativa, mai come storico reale.
+- Indicatori di caricamento, errori leggibili per file mancanti/incompatibili e messaggio esplicito se WebGL non è disponibile.
+
+Manifest e GLB devono appartenere alla stessa build e revisione. Usa un catalogo dei layout con riferimenti e hash; pubblica gli asset di ogni revisione con percorsi immutabili per evitare combinazioni errate dovute alla cache. La trasformazione Z-up/Y-up deve essere comune a oggetti, quote, punti di misura e selezione.
+
+Collegamento successivo ai cicli: predisporre il contratto dati per ciclo/istante, sensori e attuatori, senza rendere l'integrazione live un prerequisito della prima versione. Se vengono visualizzati dati temporali, caricare il layout valido in quell'istante, mostrare timestamp, unità, qualità e dati mancanti. Nessuna interpolazione spaziale o simulazione del flusso presentata come misura. Le frecce indicano soltanto la direzione nominale delle ventole.
+
+Le modifiche future seguono il percorso richiesta all'AI → modifica JSON/script → validazione e revisione → rigenerazione GLB/manifest/viste → aggiornamento dei file serviti dal web. Conservare le revisioni necessarie a interpretare i cicli precedenti.
+
 ### Collegamento ai cicli
 
 Ogni ciclo fa riferimento a una revisione immutabile della disposizione (layout_id + hash del JSON canonico + commit dei sorgenti ove disponibile). Se la disposizione cambia durante il ciclo, registrare intervalli di validità o eventi con timestamp. Non applicare il layout corrente retroattivamente ai cicli storici.
@@ -169,14 +190,17 @@ Separare osservazioni, inferenze e ipotesi. Vietato inventare campi di velocità
 - Aperture geometricamente libere, layer isolabili, viste leggibili e output riapribili.
 - Telemetria di esempio chiaramente sintetica e separata dai dati reali.
 - Versioni e comando unico per ricostruire tutto documentati.
+- Visualizzatore verificato su viewport desktop e mobile: rotazione/touch, layer, trasparenza, selezione, quote e misura su una distanza nota, confronto layout e gestione errori.
+- Verifica che i controlli web non scrivano nei sorgenti e non inviino comandi ai dispositivi; verifica coerenza GLB/manifest e corretta associazione agli ID.
+- Build web servibile via HTTP con Blender e MCP spenti; dipendenze e asset disponibili localmente.
 
 ### Revisione indipendente Codex
 
-Avvia Codex attraverso Herdr con questa consegna: «Revisiona il commit/snapshot indicato del modello Salamai. Leggi le specifiche, ispeziona codice e configurazione, riproduci la build in output separati, controlla le immagini se il tuo ambiente lo permette. Verifica coordinate botola/porta, quote, assunzioni, Z-up/Y-up, riproducibilità, ID e associazione layout/cicli. Riporta finding con gravità, file, evidenza e correzione proposta. Non modificare l'implementazione né la scena condivisa. Dichiara verifiche non eseguite e limiti. Non approvare senza evidenza.»
+Avvia Codex attraverso Herdr con questa consegna: «Revisiona il commit/snapshot indicato del modello Salamai. Leggi le specifiche, ispeziona codice e configurazione, riproduci la build in output separati, controlla le immagini se il tuo ambiente lo permette. Verifica coordinate botola/porta, quote, assunzioni, Z-up/Y-up, riproducibilità, ID e associazione layout/cicli. Revisiona anche il visualizzatore web in sola lettura, trasformazioni delle misure, layer/selezione, confronto configurazioni, coerenza degli asset e fruibilità mobile; distingui i controlli eseguiti da quelli non verificabili. Riporta finding con gravità, file, evidenza e correzione proposta. Non modificare l'implementazione né la scena condivisa. Dichiara verifiche non eseguite e limiti. Non approvare senza evidenza.»
 
 Salva il report reale in docs/room3d/REVIEW.md indicando commit esaminato e comandi eseguiti. Claude corregge i problemi, poi richiede a Codex la verifica delle correzioni sul nuovo commit. Se una criticità resta aperta, riportarla esplicitamente. La review conclusiva deve riferirsi ai sorgenti finali, non a una versione precedente.
 
-Consegna finale: riepilogo, file e output, comando di build, istruzioni pratiche per modificare layer e percorsi, misure ancora necessarie, esito delle verifiche e revisione Codex. Prepara commit locali coerenti; non fare push o merge senza autorizzazione del proprietario o istruzioni già presenti nel progetto.
+Consegna finale: riepilogo, file e output, comando di build, istruzioni per avviare e consultare il visualizzatore web e per far modificare all'AI layer e percorsi nei sorgenti, misure ancora necessarie, esito delle verifiche e revisione Codex. Prepara commit locali coerenti; non fare push o merge senza autorizzazione del proprietario o istruzioni già presenti nel progetto.
 
 ## 3. Avvio rapido della richiesta
 
