@@ -67,7 +67,7 @@ footer{color:var(--muted);font-size:.9rem}
 <div class="wrap">
   <header>
     <h1>Distinta camera salumi</h1>
-    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH, versione 4.1 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo, morsetti ricontati, umidificatori su prese fuori dalla camera. Sigle come nello schema QElectroTech (revisione C). Prezzi del 17–20/10/2026, indicativi; dove manca il prezzo va verificato sulla pagina. Spunta le righe man mano che ordini. Con «Già in possesso» togli dal totale quello che hai già. Spunte e scelte restano solo in questo browser.</p>
+    <p>Materiale per la migrazione su ESP32-S3-Relay-6CH, versione 4.8 del 26/10/2026 (schema della scatola X6; righe del quadro ridistribuite, Waveshare 145×90×40 mm), su base 4.6: cassetta BOXEXPERT 600×400×200 con 4 guide DIN, display D1 con case sulla guida 2, fase dei contattori in catena con puntalini doppi; nodo XIAO in camera, quadro con piastra di fondo, morsetti ricontati, umidificatori su prese fuori dalla camera. Sigle come nello schema QElectroTech (revisione C). Prezzi del 17–20/10/2026, indicativi; dove manca il prezzo va verificato sulla pagina. Spunta le righe man mano che ordini. Con «Già in possesso» togli dal totale quello che hai già. Spunte e scelte restano solo in questo browser.</p>
   </header>
 
   <div class="summary" id="summary"></div>
@@ -81,7 +81,7 @@ footer{color:var(--muted);font-size:.9rem}
     <h2>Ferramenta e negozio</h2>
     <ul class="plain">
       <li>Spina Schuko per il Vents TT-100</li>
-      <li>Resistenze 120 Ω (terminazioni RS485, solo dove la scheda non ha il ponticello) e 2 × 10 kΩ (giri delle ventole): si serrano nei Wago, senza saldare</li>
+      <li>Resistenza 120 Ω (terminazione RS485 nel quadro, solo se la Waveshare non ha il ponticello) e R3 4,7 kΩ: si serrano nei Wago. In X6 la terminazione è l'interruttore 120R della breakout; i giri delle ventole usano le pull-up interne della XIAO</li>
       <li>Viti autofilettanti 4,2×13 (o M4 con dado) per guide e canaline sulla piastra, 2 fermi fine guida in più, basette adesive per fascette, marcafili</li>
       <li>Pannello per la botola (multistrato 10 mm o PVC espanso) con foro Ø 100 e fori per i pressacavi</li>
       <li>Foro Ø 100 in basso nella porta della camera, per la griglia d'ingresso</li>
@@ -100,7 +100,7 @@ footer{color:var(--muted);font-size:.9rem}
       <li>Terminazioni 120 Ω attive solo sulla Waveshare e nella scatola X6; spente su tutti gli altri dispositivi</li>
       <li>XIAO: come si collegano oggi HX711 e alimentazione alla breakout (stesso metodo per sonde, PWM e giri)</li>
       <li>Cat6 in rame pieno, non CCA</li>
-      <li>Kit morsetti: quanti blu ci sono (6 per N; altrimenti grigi con marcatore N)</li>
+      <li>Kit morsetti: che i ponticelli siano da 10 poli e si possano tagliare (servono 7 pezzi, 17 poli)</li>
       <li>Cavo degli umidificatori: giunzione solo fuori dalla camera (o cavo sostituito per intero); spina montata dopo il pressacavo della botola</li>
       <li>Vents TT-100: morsettiera e collegamento alla velocità bassa</li>
       <li>Contatore SDM120 a indirizzo 2 e 9600 baud (tasti frontali), sonda B5 a indirizzo 3, uno alla volta da soli sul bus</li>
@@ -110,24 +110,27 @@ footer{color:var(--muted);font-size:.9rem}
   </section>
 
   <button class="reset" id="reset" type="button">Togli le spunte di ordinato</button>
-  <footer>Esclusi per scelta: termostato meccanico, salvavita nel quadro, contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN). Tolti nella versione 4: basetta Freenove X5, cavetti Dupont, clip DIN, quadro Intratec 48 moduli, cavo W4. Tolti nella 4.1: kit morsetti suaywo (troppo piccolo), presa doppia X1 in camera, cavo W2 4G1,5.</footer>
+  <footer>Esclusi per scelta: termostato meccanico, differenziale nel quadro (c'è già quello di casa), contattori Finder, Vortice Lineo 100, serrande motorizzate, ventole USB con DC-DC, PZEM-016 e modulo RTC sciolto (non si fissano alla guida DIN). Tolti nella versione 4: basetta Freenove X5, cavetti Dupont, clip DIN, quadro Intratec 48 moduli, cavo W4. Tolti nella 4.1: kit morsetti suaywo (troppo piccolo), presa doppia X1 in camera, cavo W2 4G1,5. Tolti nella 4.5: ripartitore X7 e cavo 2,5 mm² (con guide da ~25 cm non ci stanno).</footer>
 </div>
 
 <script>
 const G=[
  {t:"Quadro e logica",i:[
-  ["A1","-A1",1,"Waveshare ESP32-S3-Relay-6CH","","B0CXPG4XGZ",43.99,"C"],
+  ["A1","-A1",1,"Waveshare ESP32-S3-Relay-6CH (già in possesso)","","B0CXPG4XGZ",null,"P"],
   ["T1","-T1",1,"Alimentatore Mean Well HDR-60-12","12 V, 4,5 A, guida DIN","B072DXXRW3",20.73,"C"],
   ["KM","-KM1…6",6,"Contattore HCH8s-25Z, bobina 12 V DC, 25 A 2NA","6 × 12,00 €","B0BKWQ2P32",72.00,"C"],
   ["V","-V1…6",6,"Diodi 1N4007 (confezione da 100)","Solo se il contattore non ha soppressione interna","B01F4SQ6KU",9.99,"C"],
+  ["Q1","-Q1",1,"Magnetotermico Gewiss MTC45 1P+N C10 (già in possesso)","Generale del quadro: protegge i cavi da 1,5 mm². Il differenziale 30 mA è quello di casa","",null,"P"],
   ["A3","-A3",1,"Contatore Eastron SDM120 Modbus, 1 modulo DIN","Consumi degli attuatori, inserzione diretta 45 A. Da impostare a indirizzo 2 e 9600 baud","B08X8SD1FD",40.80,"C"],
+  ["D1","-D1",1,"Display Waveshare ESP32-S3-Touch-LCD-4.3B, versione con case","Sulla guida 2: si legge attraverso lo sportello, si tocca aprendolo. 12 V e RS485 dalla morsettiera X3","B0DCNSRT31",60.99,"C"],
+  ["clip","—",2,"Clip in alluminio per guida DIN 35 mm (KKSB)","Avvitate ai fori a 75 mm sul retro del case del display. 2 × 4,93 €","B0C5F5B2WL",9.86,"C"],
   ["A5","-A5",1,"Waveshare Pico-RTC-DS3231","Si innesta sul connettore Pico, nessun filo","B0915KRWNZ",19.99,"C"],
-  ["Q2","quadro",1,"Quadro BOXEXPERT Fleet 500×400×240, ABS, IP65","Sportello trasparente e piastra di fondo in lamiera: verificare sulla pagina che siano nella variante scelta","B0CBS922L8",78.04,"C"],
-  ["din","—",2,"Guida DIN 35 mm, 1 m (Stok, confezione da 2)","Tre spezzoni da ~45 cm avvitati alla piastra. Prezzo da verificare","B07VDG4BVZ",null,"C"],
-  ["can","—",2,"Canalina asolata 25×40 grigia con coperchio, barra da 2 m","Elettrocanali ECA2540: sopra e sotto ogni guida e sui lati. Prezzo da verificare","https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/",null,"C"],
-  ["uk2","-X0 -X2 -X3",2,"Kit morsetti su guida UK2.5B, 5 colori (2 kit)","In tutto 40 morsetti (ne servono 23, blu per N), 4 di terra, 4 ponticelli FBI, 8 fermi. 2 × 18,99 €","B0857JK8PY",37.98,"C"],
-  ["pe","-X0 -X2 -X3",10,"Morsetti di terra USLKG2.5 giallo-verdi (10 pezzi)","Ne servono 7: ingresso, uno per ogni carico, schermi e Earth RS485","B0H8T4TXXR",10.05,"C"],
-  ["pinza","—",1,"Pinza a cricchetto 0,25–10 mm² con 1250 puntalini","Per tutti i fili flessibili nei morsetti a vite","B0CRCVMNQZ",29.99,"C"],
+  ["Q2","quadro",1,"Quadro BOXEXPERT Fleet 600×400×200, ABS, IP65, sportello trasparente","Interno 548×341×189 mm, piastra zincata inclusa (misurarla all'arrivo)","B07C84YMZN",81.17,"C"],
+  ["din","—",2,"Guida DIN 35 mm, 1 m (Stok, confezione da 2)","Quattro spezzoni da ~25 cm avvitati alla piastra. Prezzo da verificare","B07VDG4BVZ",null,"C"],
+  ["can","—",2,"Canalina asolata 25×40 grigia con coperchio, barra da 2 m","Da prendere in negozio (servono ~2,3 m: 2 verticali da ~51 cm, 5 orizzontali da ~25 cm). Riferimento Elettrocanali ECA2540","https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/",null,"F"],
+  ["uk2","-X0 -X2 -X3",2,"Kit morsetti su guida UK2.5B JINXM (2 kit)","In tutto 40 morsetti (8 blu: ne servono 26, 6 blu per N), 4 di terra, 4 ponticelli da tagliare, 10 fermi. 2 × 23,89 €","B08MKZ7FQ1",47.78,"C"],
+  ["pe","-X0 -X2 -X3",5,"Morsetti di terra UK2.5 giallo-verdi (5 pezzi)","Ne servono 8: 4 dai due kit + questi 5. Verifica che si serrino sulla guida con un piedino metallico","B0DGX4DRB9",14.99,"C"],
+  ["pinza","—",1,"Pinza a cricchetto Preciva con 1200 puntalini, anche doppi (già in possesso)","Per tutti i fili flessibili nei morsetti a vite; doppi 2×0,75 e 2×1,5 per le catene","B0CRCVMNQZ",null,"P"],
   ["spel","—",1,"Spelafili (già in possesso)","Spelare 11 mm per i morsetti a leva. Fili delle ventole, cavo di rete e cablaggio del quadro","",null,"P"],
   ["c15","—",1,"Cavo 1,5 mm² marrone, blu, giallo-verde, 10 m","Cablaggio 230 V nel quadro. Prezzo da verificare","B00IJCW374",null,"C"],
   ["c075","—",1,"Cavo H05V-K 0,75 mm² rosso e nero, ~5 m per colore","12 V: COM dei relè e bobine dei contattori. Prezzo da verificare","https://www.manomano.it/cat/cavo+unipolare+rosso",null,"C"],
@@ -140,8 +143,7 @@ const G=[
   ["A2","-A2",1,"Modulo MOSFET dual a morsetti (10 pezzi)","Sul filo PWM delle ventole, protegge la XIAO","B0GL1NWZQH",8.99,"C"],
   ["X6","-X6",1,"Scatola stagna IP65 150×110×70 con pressacavi","In alto sopra la bilancia: XIAO, HX711, MOSFET, Wago, resistenze","B0F6YGYR7K",13.49,"C"],
   ["R","-R3",1,"Resistenza 4,7 kΩ","Pull-up del bus 1-Wire; anche in negozio","B0FPX6T6SC",9.99,"C"],
-  ["R45","-R4 -R5",2,"Resistenze 10 kΩ","Pull-up dei giri delle ventole","",null,"F"],
-  ["R2","-R2",1,"Resistenza 120 Ω","Terminazione RS485 lato camera, solo se la breakout non l'ha già","",null,"F"],
+  ["pinhd","—",1,"Pin maschi 2,54 mm in strip e cavetti Dupont femmina-femmina 20 cm","2 file da 7 da saldare sulla breakout della XIAO; i Dupont vanno a Wago e HX711","",null,"F"],
   ["vern","—",1,"Vernice protettiva acrilica per circuiti stampati, spray 400 ml","Electrolube APL. 26,30 € + IVA. Morsetti e connettori esclusi","https://it.rs-online.com/web/p/rivestimenti/4090956",32.09,"C"]]},
  {t:"Sensori",i:[
   ["B1","-B1",1,"Sonda Seeed S-TH-01, camera","Indirizzo 1, oggi sulla XIAO","",null,"P"],

@@ -1,6 +1,6 @@
 # Camera salumi — distinta base definitiva
 
-Versione 4.1 del 20/10/2026: morsetti ricontati; spelafili già in possesso; umidificatori a spina su prese fuori dalla camera, ognuna con terra propria. Versione 4 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo. Versione 3 del 18/10/2026 (ventole PWM a 12 V, tutto su guida DIN, nessuna saldatura). Le sigle sono quelle dello schema
+Versione 4.8 del 26/10/2026: schema della scatola X6 (pin da saldare sulla breakout, niente resistenze dei giri e R2, una sola coppia di alimentazione in W5). Versione 4.7 del 26/10/2026: righe del quadro ridistribuite (stacco di ~9 mm tra canaline e componenti sulle guide 1 e 4, display attaccato, niente fascia libera in basso); Waveshare 145×90×40 mm. Versione 4.6 del 25/10/2026: cassetta più grande, BOXEXPERT Fleet 600×400×200 con 4 guide DIN; display D1 in versione con case, agganciato alla guida 2 con clip DIN (si legge attraverso lo sportello, si tocca aprendolo). Versione 4.5 del 25/10/2026: tolto il ripartitore X7, fase dei contattori di nuovo in catena con puntalini doppi; X3 con 12 morsetti + 3 di terra. Versione 4.4 del 25/10/2026: Waveshare e pinza con puntalini già in possesso. Versione 4.3 del 25/10/2026: ripartitore unipolare Elettrocanali (X7) per la fase dei contattori al posto della catena con puntalini doppi; 6 fili da 2,5 mm². Versione 4.2 del 24/10/2026: magnetotermico generale C10 (Q1) nel quadro, già in possesso. Versione 4.1 del 20/10/2026: morsetti ricontati; spelafili già in possesso; umidificatori a spina su prese fuori dalla camera, ognuna con terra propria. Versione 4 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo. Versione 3 del 18/10/2026 (ventole PWM a 12 V, tutto su guida DIN, nessuna saldatura). Le sigle sono quelle dello schema
 (`prompt_schema_qelectrotech.md`). Prezzi Amazon.it rilevati tra il 17 e il
 18/10/2026, indicativi.
 
@@ -11,18 +11,21 @@ negozio di materiale elettrico.
 
 | Sigla | Q.tà | Componente | Codice / link | Prezzo | Stato |
 |---|---:|---|---|---:|:-:|
-| -A1 | 1 | Waveshare ESP32-S3-Relay-6CH | [B0CXPG4XGZ](https://www.amazon.it/dp/B0CXPG4XGZ) | 43,99 € | C |
+| -A1 | 1 | Waveshare ESP32-S3-Relay-6CH (già in possesso) | [B0CXPG4XGZ](https://www.amazon.it/dp/B0CXPG4XGZ) | — | P |
 | -T1 | 1 | Alimentatore Mean Well HDR-60-12 (12 V, 4,5 A, DIN) | [B072DXXRW3](https://www.amazon.it/dp/B072DXXRW3) | 20,73 € | C |
 | -KM1…6 | 6 | Contattore modulare HCH8s-25Z, bobina 12 V DC, 25 A 2NA | [B0BKWQ2P32](https://www.amazon.it/dp/B0BKWQ2P32) | 6 × 12,00 € | C |
 | -V1…6 | 6 | Diodo 1N4007 sulla bobina (solo se il contattore non ha soppressione interna: verificare col tester all'arrivo) | [B01F4SQ6KU](https://www.amazon.it/dp/B01F4SQ6KU) (100 pz) | 9,99 € | C |
+| -Q1 | 1 | Magnetotermico Gewiss MTC45 GW90026, 1P+N **C10**, 4,5 kA, 1 modulo: generale del quadro, protegge i cavi da 1,5 mm². Il differenziale 30 mA è quello del quadro di casa | — | — | P |
 | -A3 | 1 | Contatore Eastron SDM120 Modbus, monofase 45 A a inserzione diretta, **1 modulo DIN**, RS485 (consumi degli attuatori) | [B08X8SD1FD](https://www.amazon.it/dp/B08X8SD1FD) | 40,80 € | C |
+| -D1 | 1 | Display Waveshare ESP32-S3-Touch-LCD-4.3B **versione con case**, 4,3" 800×480 touch, alimentazione 7–36 V (va col 12 V), RS485 a vite sul retro, fori a 75 mm sul retro del case. Sulla guida 2: si legge attraverso lo sportello trasparente, si tocca aprendolo | [B0DCNSRT31](https://www.amazon.it/dp/B0DCNSRT31) | 60,99 € | C |
+| — | 2 | Clip in alluminio per guida DIN 35 mm con viti, da avvitare ai fori sul retro del case del display | [KKSB, B0C5F5B2WL](https://www.amazon.it/dp/B0C5F5B2WL) | 2 × 4,93 € | C |
 | -A5 | 1 | Waveshare Pico-RTC-DS3231, si innesta sul connettore Pico della scheda (nessun filo) | [B0915KRWNZ](https://www.amazon.it/dp/B0915KRWNZ) | 19,99 € | C |
-| — | 1 | **Quadro BOXEXPERT Fleet 500×400×240**, ABS, IP65, sportello trasparente, piastra di fondo in lamiera (verificare sulla pagina che piastra e sportello trasparente siano nella variante scelta) | [B0CBS922L8](https://www.amazon.it/dp/B0CBS922L8) | 78,04 € | C |
-| — | 2 | Guida DIN 35 mm, 1 m (3 spezzoni da ~45 cm) | [Stok, 2 × 1 m, B07VDG4BVZ](https://www.amazon.it/dp/B07VDG4BVZ) | da verificare | C |
-| — | 2 | Canalina asolata 25×40 grigia con coperchio, barra da 2 m | [Elettrocanali ECA2540 (Comcavi)](https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/) | da verificare | C |
-| -X0, -X2, -X3 | 2 | Kit morsetti su guida UK2.5B, 5 colori: per kit 20 morsetti, 2 di terra, 2 ponticelli FBI-10-6, 4 fermi, 4 coperchi, marcatori. In due kit: 40 morsetti (ne servono 23, blu per N), 8 fermi | [HERKINDNESS, B0857JK8PY](https://www.amazon.it/dp/B0857JK8PY) | 2 × 18,99 € | C |
-| -X0, -X2, -X3 | 10 | Morsetti di terra USLKG2.5 giallo-verdi, si serrano sulla guida (ne servono 7, più i 4 dei kit di scorta) | [B0H8T4TXXR](https://www.amazon.it/dp/B0H8T4TXXR) | 10,05 € | C |
-| — | 1 | Pinza a cricchetto 0,25–10 mm² con 1250 puntalini | [Preciva, B0CRCVMNQZ](https://www.amazon.it/dp/B0CRCVMNQZ) | 29,99 € | C |
+| — | 1 | **Quadro BOXEXPERT Fleet 600×400×200**, ABS, IP65, variante grigia con sportello trasparente, piastra di fondo zincata inclusa. Interno 548×341×189 mm (dato venditore); piastra da misurare (nel disegno stimata 300×510) | [B07C84YMZN](https://www.amazon.it/dp/B07C84YMZN) | 81,17 € | C |
+| — | 2 | Guida DIN 35 mm, 1 m (4 spezzoni da ~25 cm, larghezza utile della piastra tra le canaline laterali: tagliare sulla piastra vera) | [Stok, 2 × 1 m, B07VDG4BVZ](https://www.amazon.it/dp/B07VDG4BVZ) | da verificare | C |
+| — | 2 | Canalina asolata 25×40 grigia con coperchio, barra da 2 m (servono ~2,3 m: 2 pezzi verticali da ~51 cm, 5 orizzontali da ~25 cm; misure da riprendere sulla piastra) | in negozio di materiale elettrico; riferimento [Elettrocanali ECA2540](https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/) | da verificare | F |
+| -X0, -X2, -X3 | 2 | Kit morsetti su guida UK2.5B: per kit 20 morsetti (4 blu), 2 di terra, 2 ponticelli fissi, 5 fermi, 2 guide da 20 cm. In due kit: 40 morsetti (ne servono 26, di cui 6 blu per N), 4 di terra, 4 ponticelli da tagliare a misura, 10 fermi (ne servono 6) | [JINXM, B08MKZ7FQ1](https://www.amazon.it/dp/B08MKZ7FQ1) (il kit HERKINDNESS B0857JK8PY non è più disponibile) | 2 × 23,89 € | C |
+| -X0, -X2, -X3 | 5 | Morsetti di terra UK2.5 giallo-verdi a vite, si serrano sulla guida. Ne servono 8: 4 dai due kit + 5 di questa confezione = 9 | [B0DGX4DRB9](https://www.amazon.it/dp/B0DGX4DRB9) (i USLKG2.5 B0H8T4TXXR arrivano solo a metà novembre) | 14,99 € | C |
+| — | 1 | Pinza a cricchetto Preciva con 1200 puntalini, anche doppi (2×0,5 · 2×0,75 · 2×1 · 2×1,5 mm²): già in possesso | [B0CRCVMNQZ](https://www.amazon.it/dp/B0CRCVMNQZ) | — | P |
 | — | 1 | Spelafili (già in possesso): fili da 0,2 mm² in su, lunghezza di spelatura 11 mm per i Wago | — | — | P |
 | — | 1 | Cavo 1,5 mm² marrone, blu, giallo-verde, 10 m (cablaggio 230 V) | [Electraline 25139, B00IJCW374](https://www.amazon.it/dp/B00IJCW374) | da verificare | C |
 | — | 10 m | Cavo H05V-K 0,75 mm² rosso e nero (12 V: COM dei relè, bobine) | [ManoMano](https://www.manomano.it/cat/cavo+unipolare+rosso) | da verificare | C/F |
@@ -30,7 +33,7 @@ negozio di materiale elettrico.
 | — | 1 | Pressacavi M20 IP68 (quadro) | [B0GYRDCC9Z](https://www.amazon.it/dp/B0GYRDCC9Z) (26 pz) | 7,99 € | C |
 | — | 1 | Morsetti Wago 221 assortiti (2, 3, 5 vie): giunzioni in X6 e nelle scatole | [B06XRJHTS3](https://www.amazon.it/dp/B06XRJHTS3) (40 pz) | 21,96 € | C/F |
 | -R1 | 1 | Resistenza 120 Ω (terminazione RS485 lato quadro, solo se la scheda A1 non ha il ponticello) | negozio di elettronica | — | F |
-| | | **Subtotale** (prezzi noti) | | **≈ 412 €** | |
+| | | **Subtotale** (prezzi noti) | | **≈ 427 €** | |
 
 ## 1 bis. Nodo in camera (scatola X6)
 
@@ -40,8 +43,7 @@ negozio di materiale elettrico.
 | -A2 | 1 | Modulo MOSFET dual a morsetti (10 pz), sul filo PWM delle ventole: protegge la XIAO, nessuna saldatura | [B0GL1NWZQH](https://www.amazon.it/dp/B0GL1NWZQH) | 8,99 € | C |
 | -X6 | 1 | Scatola stagna IP65 150×110×70 con pressacavi (A6, A4, A2, Wago, resistenze), in alto sopra la bilancia | [B0F6YGYR7K](https://www.amazon.it/dp/B0F6YGYR7K) | 13,49 € | C |
 | -R3 | 1 | Resistenza 4,7 kΩ (pull-up 1-Wire) | [B0FPX6T6SC](https://www.amazon.it/dp/B0FPX6T6SC) | 9,99 € | C/F |
-| -R4, -R5 | 2 | Resistenze 10 kΩ (pull-up dei giri delle ventole) | negozio di elettronica | — | F |
-| -R2 | 1 | Resistenza 120 Ω (terminazione RS485 lato camera, solo se la breakout non l'ha già) | negozio di elettronica | — | F |
+| — | 1 | Pin maschi a passo 2,54 mm in strip (2 file da 7 da saldare sulla breakout) e cavetti Dupont femmina-femmina da 20 cm | negozio di elettronica | — | F |
 | — | 1 | Vernice protettiva acrilica per circuiti stampati, spray 400 ml (morsetti e connettori esclusi) | [Electrolube APL (RS)](https://it.rs-online.com/web/p/rivestimenti/4090956) | 26,30 € + IVA | C |
 | | | **Subtotale** (prezzi noti, IVA compresa) | | **≈ 65 €** | |
 
@@ -98,7 +100,7 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 ## 5. Ferramenta e negozio di materiale elettrico
 
 - Spina Schuko per il Vents TT-100.
-- Resistenze 120 Ω e 10 kΩ (sezioni 1 e 1 bis): si serrano nei Wago, senza saldare.
+- Resistenze R1 (120 Ω, solo se serve) e R3 (4,7 kΩ): si serrano nei Wago, senza saldare. Giri delle ventole con le pull-up interne della XIAO; terminazione in X6 con l'interruttore 120R della breakout.
 - Viti autofilettanti 4,2×13 (o M4 con dado) per guide e canaline sulla piastra, basette adesive per fascette, marcafili.
 - Pannello per chiudere la botola: multistrato 10 mm o PVC espanso, con un foro Ø 100 per l'estrattore e i fori per i pressacavi.
 - Foro Ø 100 nella porta della camera, in basso, per la griglia d'ingresso.
@@ -111,12 +113,12 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 
 | Gruppo | Importo |
 |---|---:|
-| Quadro e logica (prezzi noti) | ≈ 412 € |
+| Quadro e logica (prezzi noti) | ≈ 427 € |
 | Nodo in camera (prezzi noti) | ≈ 65 € |
 | Sensori (senza B5) | 34,53 € |
 | Attuatori e aria (con Vents TT-100) | 123,25 € |
 | Cavi, prese e scatole (senza filo in silicone) | 188,86 € |
-| **Totale con i prezzi noti** | **≈ 824 €** |
+| **Totale con i prezzi noti** | **≈ 839 €** |
 | + guide DIN, canaline, cavi 1,5 e 0,75 mm², sonda S-TH-01 B5, filo in silicone, ferramenta | da aggiungere |
 
 Si possono togliere:
@@ -127,8 +129,12 @@ Si possono togliere:
 ## 7. Escluso per scelta (dalle liste precedenti)
 
 - Termostato meccanico di sicurezza: scelta dell'utente, resta l'antiribaltamento della stufa.
-- Salvavita nel quadro: la linea arriva già protetta dal quadro di casa (16 A + Id 30 mA).
+- Differenziale nel quadro: la linea è già protetta dal differenziale 30 mA di casa; nel quadro solo il magnetotermico C10 (Q1).
 - Contattori Finder: si usano gli HCH8s-25Z, uno per carico.
+- Ripartitore unipolare Elettrocanali X7 e cavo da 2,5 mm² (versioni 4.3–4.4): con le guide da ~25 cm non ci sta; la fase torna in catena sul morsetto 1 dei contattori con puntalini doppi.
+- Display su guida DIN Norvi IIOT: schermo da 0,96", 24 V.
+- Display fissato dentro lo sportello (versione 4.5): si leggeva ma non si poteva toccare.
+- Quadro BOXEXPERT Fleet 500×400×240 (ordine annullato): interno largo 340 mm, guide da ~25 cm, il display non ci stava.
 - Mean Well HDR-15/30, quadri da 12, 24 e 36 moduli, prese da guida DIN.
 - Vortice Lineo 100, troppo caro.
 - PZEM-016 e modulo RTC sciolto: non si fissano alla guida DIN; sostituiti dal contatore SDM120 e dal Pico-RTC-DS3231.
@@ -142,12 +148,18 @@ Si possono togliere:
 
 ## 8. Da verificare all'arrivo
 
+- **Piastra di fondo: misure reali.** Il disegno usa 300×510 (stima), 4 guide da ~240 mm utili. La più piena è la guida 2: display + X3 ≈ 216 mm.
+- Puntalino doppio 2×1,5 (TE1508) nel morsetto 1 dei contattori, per la catena della fase.
+- Profondità: interno 189 mm, circa 160 mm davanti alla guida. Waveshare 40 mm (misurata); il più sporgente è il magnetotermico (~70 mm). Margine ampio: resta da misurare solo di quanto è rialzata la piastra.
+- Clip DIN del display: interasse dei fori della clip rispetto ai fori a 75 mm del case (se non coincidono, una piastrina di adattamento).
+- Display D1: supporto ESPHome della scheda (schermo RGB e touch GT911) e collegamento al bus RS485 come dispositivo in più.
 - Contattori: soppressione interna della bobina (se presente, niente diodi), larghezza effettiva in moduli.
 - Waveshare: spessore con l'RTC innestato (dato Waveshare 40 mm) e posizione sulla guida 1.
-- Ponticelli di terminazione 120 Ω: attivi solo sulla Waveshare e in X6 (breakout della XIAO o resistenza R2); spenti sugli altri.
-- XIAO: come si collegano oggi HX711 e alimentazione alla breakout (stesso metodo per DS18B20, PWM e giri).
+- Ponticelli di terminazione 120 Ω: attivi solo sulla Waveshare e in X6 (interruttore 120R della breakout della XIAO); spenti sugli altri.
+- Breakout della XIAO: ordine dei poli delle due morsettiere (serigrafia) e versione della scheda (V1.2: direzione automatica, D2 libero).
 - Cat6: rame pieno, non CCA.
-- Kit morsetti HERKINDNESS: quanti morsetti blu ci sono (servono 6 per N; se mancano, morsetti grigi con marcatore N).
+- Morsetti di terra B0DGX4DRB9: che abbiano il piedino metallico che si serra sulla guida (contatto con la guida, come gli USLKG); se no, renderli.
+- Kit morsetti JINXM: che i ponticelli fissi siano FBI da 10 poli tagliabili (ne servono 7 pezzi da 2–4 poli, 17 poli in tutto).
 - Cavo degli umidificatori: se si allunga con una giunzione, farla fuori dalla camera (o sostituire il cavo per intero); la spina si monta dopo aver passato il cavo nel pressacavo della botola.
 - Vents TT-100: morsettiera e collegamento alla velocità bassa.
 - Contatore SDM120 e B5: indirizzo Modbus (SDM120 a 2 e 9600 baud dai tasti frontali; B5 a 3), uno alla volta, da soli sul bus.
