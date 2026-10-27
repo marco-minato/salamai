@@ -116,7 +116,9 @@ Misure interne ricavate dallo schizzo e dalle indicazioni dell'utente:
 - Rendere esplicita la scelta bordo/centro nella configurazione; non trasformare l'assunzione in misura verificata.
 - Volume interno geometrico lordo: 10,1808 m³. Non equivale al volume libero con prodotti e attrezzature.
 - Spessori reali delle pareti sconosciuti: per visualizzazione usare spessori convenzionali esterni al volume interno e marcarli come tali.
-- La zona salami è a destra nella pianta. Mancano quote di ingombro, altezze e supporti: usare un placeholder distinto dalle misure reali. Anche posizioni precise di ventole, stufa, umidificatore e sensori sono da rilevare.
+- La zona salami è a destra nella pianta. La zona a sinistra della porta sarà destinata a cacciatorini, coppe, lonzino e altri salumi. Secondo il programma indicato dall'utente, questi ultimi, esclusi i cacciatorini, resteranno in camera soltanto 3 giorni per la stufatura; la permanenza dei cacciatorini non è specificata. Registrare carico e rimozioni effettive come eventi, senza assumere che il lato sinistro diventi vuoto dopo 3 giorni. Questo è un requisito descrittivo del processo dell'utente, non una validazione del trattamento.
+- Le ventole di ricircolo sono TRE: predisporre fan_01, fan_02 e fan_03, separati dall'estrattore. Distribuzione, quota e orientamento sono da studiare e non ancora confermati. Non ricavare la quantità dalle sole scritte nello schizzo.
+- Mancano quote di ingombro, altezze e supporti dei prodotti: usare placeholder distinti dalle misure reali. Anche posizioni precise di ventole, stufa, umidificatore e sensori sono da rilevare.
 - Non dedurre misure dal rapporto in pixel dello schizzo. La porta sembra aprire verso l'esterno: anche cerniera/apertura vanno marcate come interpretazione grafica se non confermate.
 
 Archivia lo schizzo se presente tra gli input; se non è disponibile non dichiarare di averlo copiato e usa le quote sopra come base documentata.
