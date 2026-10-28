@@ -97,11 +97,23 @@ class TestBuild(unittest.TestCase):
     def test_outputs_exist(self):
         for e in self.catalog(self.out1)["layouts"]:
             d = os.path.join(self.out1, e["path"])
-            for fn in ("model.blend", "model.glb", "manifest.json"):
+            for fn in ("model.blend", os.path.basename(e["glb"]), "manifest.json"):
                 self.assertTrue(os.path.getsize(os.path.join(d, fn)) > 0, fn)
             self.assertEqual(set(e["images"]), {"plan", "section_x", "section_y", "axon"})
             for rel in e["images"].values():
                 self.assertTrue(os.path.getsize(os.path.join(self.out1, rel)) > 10000, rel)
+
+    def test_revision_paths_are_content_addressed(self):
+        """Cartella = build_id; GLB e PNG con l'hash del contenuto nel nome (cache immutabile sicura)."""
+        for e in self.catalog(self.out1)["layouts"]:
+            self.assertEqual(e["path"], f"layouts/{e['layout_id']}/{e['build_id']}")
+            self.assertEqual(os.path.basename(e["glb"]), f"model-{e['glb_sha256'][:16]}.glb")
+            with open(os.path.join(self.out1, e["manifest"])) as f:
+                m = json.load(f)
+            for view, rel in m["images"].items():
+                sha = core.sha256_file(os.path.join(self.out1, e["path"], rel))
+                self.assertEqual(sha, m["images_sha256"][view])
+                self.assertTrue(rel.endswith(f"-{sha[:16]}.png"), rel)
 
     def test_reproducible_semantics(self):
         c1, c2 = self.catalog(self.out1), self.catalog(self.out2)
@@ -122,7 +134,7 @@ class TestBuild(unittest.TestCase):
             d = os.path.join(self.out1, e["path"])
             with open(os.path.join(d, "manifest.json")) as f:
                 m = json.load(f)
-            glb = os.path.join(d, "model.glb")
+            glb = os.path.join(d, m["gltf"]["file"])
             self.assertEqual(core.sha256_file(glb), m["gltf"]["sha256"])
             self.assertEqual(e["glb_sha256"], m["gltf"]["sha256"])
             self.assertEqual(core.sha256_file(os.path.join(d, "manifest.json")), e["manifest_sha256"])
@@ -246,6 +258,13 @@ print("RESULT" + json.dumps(res))
         self.assertNotEqual(e["config_hash"], e1["config_hash"])
         self.assertNotEqual(e["path"], e1["path"])
         self.assertAlmostEqual(m2["openings"]["hatch"]["y_min"], 0.175, delta=1e-9)
+        # testi derivati dalla variante, non dal caso "bordo vicino" scritto a mano
+        summary = m2["openings"]["hatch"]["texts"]["summary"]
+        self.assertIn("40 cm dalla parete porta al centro", summary)
+        self.assertIn("Y 0,175–0,625 m", summary)
+        notes = " ".join(n for x in m2["entities"] for n in (x.get("notes") or []))
+        self.assertNotIn("bordo vicino", notes)
+        self.assertNotIn("bordo vicino", json.dumps(m2["dimensions"], ensure_ascii=False))
         self.assertEqual([x["id"] for x in m1["entities"]], [x["id"] for x in m2["entities"]])
         ceil1 = next(x for x in m1["entities"] if x["id"] == "ceiling")
         ceil2 = next(x for x in m2["entities"] if x["id"] == "ceiling")
@@ -253,6 +272,30 @@ print("RESULT" + json.dumps(res))
         wall1 = next(x for x in m1["entities"] if x["id"] == "wall_x0")
         wall2 = next(x for x in m2["entities"] if x["id"] == "wall_x0")
         self.assertEqual(wall1["semantic_hash"], wall2["semantic_hash"])
+
+    def test_generator_change_changes_revision(self):
+        """Stessa configurazione, generatore con geometria diversa: nuovo build_id e nuova cartella."""
+        with tempfile.TemporaryDirectory() as tmp:
+            tools = os.path.join(tmp, "tools")
+            shutil.copytree(os.path.dirname(BUILD), tools, ignore=shutil.ignore_patterns("tests", "__pycache__"))
+            core_py = os.path.join(tools, "room3d_core.py")
+            with open(core_py) as f:
+                src = f.read()
+            self.assertEqual(src.count("fw = 0.015"), 1)
+            with open(core_py, "w") as f:
+                f.write(src.replace("fw = 0.015", "fw = 0.020"))
+            out = os.path.join(tmp, "out")
+            cmd = [BLENDER, "--background", "--factory-startup", "--python-exit-code", "1",
+                   "--python", os.path.join(tools, "build_scene.py"), "--",
+                   "--config", os.path.join(MODEL, "room.json"), "--output", out, "--no-render", "--layout", "L001"]
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+            self.assertEqual(r.returncode, 0, r.stderr[-2000:])
+            e2 = self.catalog(out)["layouts"][0]
+        _, e1 = self.manifest(self.out1)
+        self.assertEqual(e2["config_hash"], e1["config_hash"])
+        self.assertNotEqual(e2["semantic_hash"], e1["semantic_hash"])
+        self.assertNotEqual(e2["build_id"], e1["build_id"])
+        self.assertNotEqual(e2["path"], e1["path"])
 
     def test_invalid_config_fails_with_exit_code(self):
         with tempfile.TemporaryDirectory() as tmp:

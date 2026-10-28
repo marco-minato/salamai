@@ -79,6 +79,22 @@ class TestValidConfig(unittest.TestCase):
         self.assertAlmostEqual(h["y_min"], 0.175, delta=TOL)
         self.assertAlmostEqual(h["center_y"], 0.40, delta=TOL)
 
+    def test_opening_texts_follow_data(self):
+        door, h = core.derive_openings(self.room)
+        self.assertIn("40 cm dalla parete porta al bordo vicino", h["texts"]["summary"])
+        self.assertIn("ASSUNZIONE NON CONFERMATA", h["texts"]["summary"])
+        self.assertIn("sconosciuta", door["texts"]["summary"])
+        room = copy.deepcopy(self.room)
+        room["openings"]["hatch"]["offset_reference"].update(value="center", status="measured", source="src_sketch")
+        room["openings"]["door"]["height"] = {"value": 2.0, "status": "measured", "source": "src_sketch"}
+        door, h = core.derive_openings(room)
+        self.assertIn("al centro", h["texts"]["summary"])
+        self.assertNotIn("ASSUNZIONE", h["texts"]["summary"])
+        self.assertEqual(h["texts"]["dim_suffix"], "")
+        self.assertEqual(door["texts"]["summary"], "Altezza porta 2,00 m (misurato).")
+        dims = {d["id"]: d for d in core.dimension_lines(room, self.layouts[0])}
+        self.assertEqual(dims["dim_door_height"]["label"], "200 cm")
+
     def test_hatch_is_hole_in_ceiling(self):
         boxes = core.structure_section_boxes(self.room)
         _, h = core.derive_openings(self.room)

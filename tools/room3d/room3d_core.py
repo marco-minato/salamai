@@ -325,6 +325,7 @@ def derive_openings(room):
         "z": sz,
         "size_x": hx,
         "size_y": hy,
+        "offset_from_door_wall": off,
         "offset_reference": ref,
         "status": {
             "size_x": q_status(h["size_x"]),
@@ -335,7 +336,57 @@ def derive_openings(room):
             "y_min": worst([q_status(h["offset_from_door_wall"]), q_status(h["offset_reference"])]),
         },
     }
+    door["texts"] = door_texts(door)
+    hatch["texts"] = hatch_texts(hatch)
     return door, hatch
+
+
+# Testi su porta e botola: derivati dai valori e dagli stati effettivi, mai
+# scritti a mano, così una variante (es. offset_reference=center) o un
+# rilievo aggiornano cartiglio, note, quote e visualizzatore insieme.
+HATCH_REF_TEXT = {"near_edge": "al bordo vicino", "center": "al centro", "far_edge": "al bordo lontano"}
+STATUS_WORD = {"measured": "misurato", "declared": "dichiarato", "derived": "derivato",
+               "assumed": "ASSUNZIONE NON CONFERMATA", "unknown": "SCONOSCIUTO"}
+
+
+def _m(x):
+    """Metri con almeno due decimali e virgola: 0,40 · 0,175 · 1,90."""
+    txt = f"{x:.3f}"
+    if txt.endswith("0"):
+        txt = txt[:-1]
+    return txt.replace(".", ",")
+
+
+def hatch_texts(h):
+    ref_txt = HATCH_REF_TEXT[h["offset_reference"]]
+    ref_st = h["status"]["offset_reference"]
+    dist = f"{fmt_cm(h['offset_from_door_wall'])} dalla parete porta {ref_txt}"
+    pos = f"Y {_m(h['y_min'])}–{_m(h['y_max'])} m"
+    if ref_st in ("measured", "declared"):
+        summary = f"Botola: {dist} ({pos}), riferimento {STATUS_WORD[ref_st]}."
+        dim_suffix = ""
+    else:
+        summary = f"Botola: {dist} ({pos}); riferimento al {ref_txt[3:]} = {STATUS_WORD[ref_st]}."
+        dim_suffix = f" ASSUNTO: {fmt_cm(h['offset_from_door_wall'])} {ref_txt}"
+    return {"summary": summary, "dim_suffix": dim_suffix, "dim_status": h["status"]["y_min"],
+            "entity_note": f"posizione Y: {dist}, riferimento {STATUS_WORD[ref_st]} ({pos})"}
+
+
+def door_texts(d):
+    st = d["status"]["height"]
+    if st == "unknown":
+        summary = f"Altezza porta sconosciuta ({_m(d['height'])} m solo per il disegno)."
+        dim_suffix = " PROVVISORIO (altezza ignota)"
+        note = "altezza sconosciuta: disegnata con valore provvisorio"
+    elif st == "assumed":
+        summary = f"Altezza porta {_m(d['height'])} m = ASSUNZIONE NON CONFERMATA."
+        dim_suffix = " ASSUNTO"
+        note = "altezza assunta, da rilevare"
+    else:
+        summary = f"Altezza porta {_m(d['height'])} m ({STATUS_WORD[st]})."
+        dim_suffix = ""
+        note = f"altezza {STATUS_WORD[st]}"
+    return {"summary": summary, "dim_suffix": dim_suffix, "entity_note": note}
 
 
 def validate(room, layouts, catalog=None):
@@ -890,7 +941,7 @@ def structure_parts(room):
                              (hatch["x_min"], hatch["x_max"], hatch["y_min"], hatch["y_max"]),
                              "z", sz, sz + tc),
         worst([st_dims, hatch["status"]["y_min"], q_status(room["room"]["ceiling_thickness"])]),
-        [thick_note, "foro della botola: posizione Y dipende dall'assunzione A01 (40 cm al bordo vicino)"])
+        [thick_note, "foro della botola: " + hatch["texts"]["entity_note"]])
     add("wall_y0", "Parete porta (Y=0)",
         mesh_prism_with_hole((-t, sx + t, 0.0, sz), (door["x_min"], door["x_max"], 0.0, door["z_max"]),
                              "y", -t, 0.0),
@@ -920,7 +971,7 @@ def opening_parts(room):
                 "state": "existing", "mesh": merge_meshes(fr), "placement": "interior",
                 "data_status": worst(door["status"].values()),
                 "notes": ["cornice di riferimento attorno alla luce; la luce è un foro reale nella parete",
-                          "altezza sconosciuta: disegnata con valore provvisorio"]})
+                          door["texts"]["entity_note"]]})
     hf = [mesh_aabb([hatch["x_min"] - fw, hatch["y_min"] - fw, sz - 0.004], [hatch["x_max"] + fw, hatch["y_min"], sz]),
           mesh_aabb([hatch["x_min"] - fw, hatch["y_max"], sz - 0.004], [hatch["x_max"] + fw, hatch["y_max"] + fw, sz]),
           mesh_aabb([hatch["x_min"] - fw, hatch["y_min"], sz - 0.004], [hatch["x_min"], hatch["y_max"], sz]),
@@ -928,7 +979,7 @@ def opening_parts(room):
     out.append({"id": hatch["id"], "name": "Botola a soffitto (luce libera)", "layer": "aperture",
                 "type": "hatch_opening", "state": "existing", "mesh": merge_meshes(hf), "placement": "interior",
                 "data_status": worst(hatch["status"].values()),
-                "notes": ["posizione Y dall'assunzione A01: 40 cm dalla parete porta al bordo vicino (non confermata)"]})
+                "notes": [hatch["texts"]["entity_note"]]})
     # anta: interpretazione grafica, esterna alla stanza
     ang = math.radians(num(d["leaf_open_deg"]))
     lt = num(d["leaf_thickness"])
@@ -1015,16 +1066,17 @@ def dimension_lines(room, layout):
         {"id": "dim_hatch_y", "view": "plan", "p1": [hatch["x_max"], hatch["y_min"], 0], "p2": [hatch["x_max"], hatch["y_max"], 0],
          "offset": [0.12, 0, 0], "status": hatch["status"]["size_y"]},
         {"id": "dim_door_to_hatch", "view": "plan", "p1": [hatch["x_min"], 0, 0], "p2": [hatch["x_min"], hatch["y_min"], 0],
-         "offset": [-0.12, 0, 0], "status": "assumed",
-         "label_suffix": " ASSUNTO: al bordo vicino"},
+         "offset": [-0.12, 0, 0], "status": hatch["texts"]["dim_status"],
+         "label_suffix": hatch["texts"]["dim_suffix"]},
         {"id": "dim_room_z", "view": "section_x", "p1": [0, sy, 0], "p2": [0, sy, sz], "offset": [0, 0.35, 0],
          "status": q_status(i["size_z"])},
         {"id": "dim_door_height", "view": "section_x", "p1": [0, 0, 0], "p2": [0, 0, door["z_max"]], "offset": [0, -0.30, 0],
-         "status": door["status"]["height"], "label_suffix": " PROVVISORIO (altezza ignota)"},
+         "status": door["status"]["height"], "label_suffix": door["texts"]["dim_suffix"]},
         {"id": "dim_hatch_y_sec", "view": "section_x", "p1": [0, hatch["y_min"], sz], "p2": [0, hatch["y_max"], sz],
          "offset": [0, 0, 0.62], "status": hatch["status"]["size_y"]},
         {"id": "dim_door_hatch_sec", "view": "section_x", "p1": [0, 0, sz], "p2": [0, hatch["y_min"], sz],
-         "offset": [0, 0, 0.62], "status": "assumed", "label_suffix": " ASSUNTO"},
+         "offset": [0, 0, 0.62], "status": hatch["texts"]["dim_status"],
+         "label_suffix": " ASSUNTO" if hatch["texts"]["dim_suffix"] else ""},
         {"id": "dim_room_z_b", "view": "section_y", "p1": [0, 0, 0], "p2": [0, 0, sz], "offset": [-0.35, 0, 0],
          "status": q_status(i["size_z"])},
         {"id": "dim_room_x_b", "view": "section_y", "p1": [0, 0, 0], "p2": [sx, 0, 0], "offset": [0, 0, -0.30],

@@ -10,8 +10,8 @@ Uso:
       [--at 2026-01-11T12:00:00]
 
 Regole: il layout si prende dal riferimento registrato nel ciclo (layout_id +
-hash della configurazione), mai quello corrente; se quella revisione non è
-nella build si esce con errore. Nessuna interpolazione spaziale, nessun campo
+build_id, che vincola configurazione e geometria generata), mai quello
+corrente; se quella revisione non è nella build si esce con errore. Nessuna interpolazione spaziale, nessun campo
 di velocità, nessuna conclusione di sicurezza alimentare.
 Exit code: 0 ok, 1 dati non validi, 2 revisione del layout non disponibile.
 """
@@ -69,7 +69,7 @@ def load_cycle(cycle_dir):
         raise AnalysisError("cycle.json: nessun riferimento di layout")
     prev_end = None
     for i, r in enumerate(refs):
-        for k in ("layout_id", "config_hash", "valid_from"):
+        for k in ("layout_id", "config_hash", "build_id", "valid_from"):
             if not r.get(k):
                 raise AnalysisError(f"layout_refs[{i}]: '{k}' mancante")
         r["_from"] = parse_ts(r["valid_from"], f"layout_refs[{i}].valid_from")
@@ -96,30 +96,70 @@ def layout_at(cycle, t):
 
 
 def resolve_build(build_dir, ref):
+    """Trova la revisione registrata nel ciclo; mai il layout corrente al suo posto.
+
+    La cartella è layouts/<layout_id>/<build_id>: il build_id deriva da
+    configurazione + geometria generata, quindi una modifica del generatore che
+    cambia la geometria produce un'altra revisione e non viene accettata.
+    Ritorna (percorso, manifest, avvisi di provenienza).
+    """
     cat_path = os.path.join(build_dir, "catalog.json")
     if not os.path.isfile(cat_path):
         raise AnalysisError(f"catalogo della build mancante: {cat_path}", 2)
     with open(cat_path, encoding="utf-8") as f:
         cat = json.load(f)
-    # percorso immutabile per revisione: anche build archiviate non più nel catalogo
-    path = os.path.join(build_dir, "layouts", ref["layout_id"], ref["config_hash"][:12])
+    # anche revisioni archiviate non più nel catalogo
+    path = os.path.join(build_dir, "layouts", ref["layout_id"], ref["build_id"])
     man_path = os.path.join(path, "manifest.json")
     if not os.path.isfile(man_path):
-        current = [e["config_hash"][:12] for e in cat["layouts"] if e["layout_id"] == ref["layout_id"]]
+        current = [e["build_id"] for e in cat["layouts"] if e["layout_id"] == ref["layout_id"]]
         raise AnalysisError(
-            f"revisione {ref['layout_id']} @ {ref['config_hash'][:12]} non presente nella build "
+            f"revisione {ref['layout_id']} build {ref['build_id']} non presente nella build "
             f"(build corrente: {current or 'nessuna'}). Non si applica il layout corrente al ciclo: "
             f"rigenerare quella revisione dal commit dei sorgenti "
             f"({ref.get('source_commit') or 'commit non registrato nel ciclo'}).", 2)
     with open(man_path, encoding="utf-8") as f:
         man = json.load(f)
-    if man["build"]["config_hash"] != ref["config_hash"]:
-        raise AnalysisError(f"manifest in {path} con hash diverso da quello del ciclo", 2)
-    return path, man
+    b = man["build"]
+    for k in ("build_id", "config_hash", "semantic_hash"):
+        if k in ref and ref[k] is not None and b.get(k) != ref[k]:
+            raise AnalysisError(f"manifest in {path}: {k} {b.get(k)} diverso da quello del ciclo ({ref[k]})", 2)
+    warnings = []
+    if ref.get("source_commit") and b.get("source_commit") and not b["source_commit"].startswith(ref["source_commit"]):
+        warnings.append(f"commit dei sorgenti diverso: ciclo {ref['source_commit']}, build {b['source_commit']}. "
+                        f"La geometria coincide (stesso build_id), la provenienza no.")
+    if ref.get("source_commit") and not b.get("source_commit"):
+        warnings.append("la build non registra il commit dei sorgenti: provenienza non verificabile")
+    if b.get("source_dirty"):
+        warnings.append("build generata da sorgenti con modifiche non registrate")
+    return path, man, warnings
 
 
 def is_missing(v, missing):
     return v is None or v.strip() in missing
+
+
+STATE_VALUES = {"on", "off"}
+
+
+def classify(col, v, missing):
+    """Classificazione unica di un campione, usata da aggregati e istantanee.
+
+    Ritorna (qualità, valore): qualità 'missing' | 'invalid' | 'ok'; il valore è
+    float per le colonne numeriche, la stringa per stati e fase, None se non ok.
+    """
+    if is_missing(v, missing):
+        return "missing", None
+    v = v.strip()
+    if col in STATES:
+        return ("ok", v) if v in STATE_VALUES else ("invalid", None)
+    if col in NUMERIC:
+        try:
+            x = float(v)
+        except ValueError:
+            return "invalid", None
+        return ("ok", x) if math.isfinite(x) else ("invalid", None)
+    return "ok", v
 
 
 def read_readings(path, missing, interval_s):
@@ -141,20 +181,16 @@ def read_readings(path, missing, interval_s):
 def column_stats(rows, col, missing):
     vals, n_missing, n_bad = [], 0, 0
     for r in rows:
-        v = r.get(col)
-        if is_missing(v, missing):
+        q, x = classify(col, r.get(col), missing)
+        if q == "missing":
             n_missing += 1
-            continue
-        try:
-            x = float(v)
-            if not math.isfinite(x):
-                raise ValueError
-            vals.append(x)
-        except ValueError:
+        elif q == "invalid":
             n_bad += 1
+        else:
+            vals.append(x)
     out = {"n": len(rows), "valid": len(vals), "missing": n_missing, "invalid": n_bad,
-           "coverage_pct": round(100 * len(vals) / len(rows), 1)}
-    if vals:
+           "coverage_pct": round(100 * len(vals) / len(rows), 1) if rows else 0.0}
+    if vals and col in NUMERIC:
         out.update({"min": round(min(vals), 3), "max": round(max(vals), 3),
                     "mean": round(statistics.fmean(vals), 3), "first": vals[0], "last": vals[-1]})
     return out
@@ -201,8 +237,8 @@ def build_package(args):
             continue
         if ref["_from"] > t1:
             continue
-        path, man = resolve_build(args.build, ref)
-        layouts.append((ref, path, man))
+        path, man, warns = resolve_build(args.build, ref)
+        layouts.append((ref, path, man, warns))
     if not layouts:
         raise AnalysisError("nessun layout valido nell'intervallo delle letture", 2)
     uncovered = [r["ora"] for r in rows if layout_at(cycle, r["_t"]) is None]
@@ -225,49 +261,70 @@ def build_package(args):
         columns[col] = st
 
     layout_pkgs = []
-    for ref, path, man in layouts:
+    observed_air_sensors = set()
+    for ref, path, man, warns in layouts:
+        # disponibilità calcolata solo sulle letture di questo intervallo di layout
+        lrows = [r for r in rows if layout_at(cycle, r["_t"]) is ref]
+        lstats = {col: column_stats(lrows, col, missing) for col in mapping["csv_columns"]}
         ents = {e["id"]: e for e in man["entities"]}
         images = {}
         for view, rel in man.get("images", {}).items():
             src = os.path.join(path, rel)
-            dst_name = f"{ref['layout_id']}_{ref['config_hash'][:12]}_{os.path.basename(rel)}"
+            dst_name = f"{ref['layout_id']}_{ref['build_id']}_{os.path.basename(rel)}"
             shutil.copy2(src, os.path.join(out_dir, "images", dst_name))
             images[view] = f"images/{dst_name}"
-        # punti misurati: componenti collegati a colonne con dati
+        # punti di misura: componenti collegati a colonne; "con dati" solo se ci
+        # sono campioni validi nell'intervallo di questo layout
         points, actuators = [], []
         for col, m in mapping["csv_columns"].items():
             cid = m.get("component")
             if not cid or cid not in ents:
                 continue
             e = ents[cid]
+            st = lstats[col]
             if e["layer"] != "sensori":
                 actuators.append({"column": col, "component": cid, "tag": e.get("tag"), "quantity": m.get("quantity"),
-                                  "entity_id": m.get("entity_id"), "position_status": e["data_status"]})
+                                  "entity_id": m.get("entity_id"), "position_status": e["data_status"],
+                                  "valid_samples": st["valid"], "coverage_pct": st["coverage_pct"]})
                 continue
             points.append({
                 "column": col, "component": cid, "tag": e.get("tag"), "position": e.get("center") or e["bbox_center"],
                 "position_status": e["data_status"], "status_detail": e.get("status_detail"),
-                "coverage_pct": columns[col]["coverage_pct"] if col in columns else None,
+                "valid_samples": st["valid"], "coverage_pct": st["coverage_pct"],
+                "data": "con dati validi" if st["valid"] else "NESSUN DATO VALIDO nell'intervallo",
                 "note": "posizione di progetto, non rilevata" if e["data_status"] in ("assumed", "unknown") else None,
             })
-        observed_components = {p["component"] for p in points}
+        observed_components = {p["component"] for p in points if p["valid_samples"]}
+        mapped_no_data = sorted({p["component"] for p in points} - observed_components)
         zones = []
         for e in man["entities"]:
             if e["type"] != "product_zone":
                 continue
             # solo sonde dell'aria: la bilancia non osserva la zona
-            sensors_in = sorted({p["component"] for p in points if p["column"] in AIR_COLUMNS
-                                 and inside(p["position"], e["bbox_min"], e["bbox_max"])})
+            air_in = [p for p in points if p["column"] in AIR_COLUMNS
+                      and inside(p["position"], e["bbox_min"], e["bbox_max"])]
+            sensors_in = sorted({p["component"] for p in air_in if p["valid_samples"]})
+            no_data_in = sorted({p["component"] for p in air_in} - set(sensors_in))
+            observed_air_sensors.update(sensors_in)
+            if len(sensors_in) == 1:
+                obs = "osservata da una sola sonda puntuale"
+            elif sensors_in:
+                obs = "osservata da più sonde"
+            elif no_data_in:
+                obs = "NON OSSERVATA: sonda presente ma nessun dato valido nell'intervallo"
+            else:
+                obs = "NON OSSERVATA: nessuna sonda"
             zones.append({"id": e["id"], "name": e["name"], "bbox_min": e["bbox_min"], "bbox_max": e["bbox_max"],
                           "status": e["data_status"], "measured_by": sensors_in,
-                          "observation": "osservata da una sola sonda puntuale" if len(sensors_in) == 1 else
-                          ("NON OSSERVATA: nessuna sonda" if not sensors_in else "osservata da più sonde")})
+                          "quantities": sorted({p["column"] for p in air_in if p["valid_samples"]}),
+                          "sensors_without_valid_data": no_data_in, "observation": obs})
         unmapped = sorted(e["entity_id"] for e in man["entities"]
                           if e["role"] == "body" and e["layer"] == "sensori" and e["entity_id"] not in observed_components)
         layout_pkgs.append({
             "layout_id": ref["layout_id"], "config_hash": ref["config_hash"], "source_commit": ref.get("source_commit"),
-            "valid_from": ref["valid_from"], "valid_to": ref.get("valid_to"),
+            "valid_from": ref["valid_from"], "valid_to": ref.get("valid_to"), "readings_in_interval": len(lrows),
             "build_id": man["build"]["build_id"], "semantic_hash": man["build"]["semantic_hash"],
+            "build_source_commit": man["build"].get("source_commit"), "provenance_warnings": warns,
             "kind": man["layout"]["kind"], "title": man["layout"]["title"],
             "frame": man["frame"], "units": man["units"], "room": man["room"], "openings": man["openings"],
             "components": [{k: e.get(k) for k in ("id", "tag", "name", "type", "layer", "state", "data_status",
@@ -275,7 +332,9 @@ def build_package(args):
                                                   "properties", "notes")}
                            for e in man["entities"] if e["role"] == "body"],
             "assumptions": man["assumptions"], "unknowns": man["unknowns"],
-            "measurement_points": points, "actuators_with_data": actuators, "product_zones": zones, "sensors_without_data": unmapped,
+            "measurement_points": points, "actuators_with_data": actuators, "product_zones": zones,
+            "sensors_without_data": sorted(set(unmapped) | set(mapped_no_data)),
+            "sensors_mapped_without_valid_data": mapped_no_data,
             "images": images,
         })
 
@@ -289,15 +348,17 @@ def build_package(args):
         rec = before[-1] if before else None
         age = (t - rec["_t"]).total_seconds() if rec else None
         values = {}
+        stale = age is not None and age > 2 * arch["readings_interval_s"]
         for col in NUMERIC + STATES + ["fase"]:
-            v = rec.get(col) if rec else None
+            raw = rec.get(col) if rec else None
+            q, val = classify(col, raw, missing)
             values[col] = {
-                "value": None if (v is None or is_missing(v, missing)) else v,
+                "value": val,
                 "unit": mapping["csv_columns"].get(col, {}).get("unit"),
-                "quality": "mancante" if (v is None or is_missing(v, missing)) else
-                           ("vecchia" if age is not None and age > 2 * arch["readings_interval_s"] else "ok"),
+                "quality": {"missing": "mancante", "invalid": "non valida"}.get(q, "vecchia" if stale else "ok"),
+                "raw": raw if q == "invalid" else None,
             }
-        instant = {"t": args.at, "layout_id": ref["layout_id"], "config_hash": ref["config_hash"],
+        instant = {"t": args.at, "layout_id": ref["layout_id"], "config_hash": ref["config_hash"], "build_id": ref["build_id"],
                    "reading_time": rec["ora"] if rec else None, "reading_age_s": age, "values": values,
                    "note": "valori dell'ultima lettura non successiva all'istante; nessuna interpolazione"}
 
@@ -326,7 +387,9 @@ def build_package(args):
             f"{len(rows)} letture dal {rows[0]['ora']} al {rows[-1]['ora']}, intervallo nominale {arch['readings_interval_s']} s",
             f"{len(gaps)} lacune oltre il doppio dell'intervallo" + (f" (la più lunga {max(g['minutes'] for g in gaps)} min)" if gaps else ""),
             f"copertura temperatura camera {columns['temperatura']['coverage_pct']} %, umidità camera {columns['umidita']['coverage_pct']} %",
-            "una sola sonda di temperatura/umidità in camera collegata ai dati (B1): valori puntuali, posizione di progetto",
+            (f"sonde dell'aria in camera con dati validi: {', '.join(sorted(observed_air_sensors))} "
+             f"({len(observed_air_sensors)}); valori puntuali, posizione di progetto" if observed_air_sensors else
+             "nessuna sonda dell'aria in camera con dati validi: nessuna zona prodotto è osservata"),
         ],
         "inferences": [],
         "inference_rule": "Ogni inferenza va scritta separata dalle osservazioni, con il metodo usato e i dati da cui deriva.",
@@ -367,12 +430,15 @@ def readme(p):
         L.append("  - Punti misurati:")
         for m in lay["measurement_points"]:
             pos = ", ".join(f"{v:.2f}" for v in m["position"])
-            L.append(f"    - `{m['column']}` ← {m['component']} ({m['tag']}) in [{pos}] m, posizione {m['position_status']}, copertura {m['coverage_pct']} %")
+            L.append(f"    - `{m['column']}` ← {m['component']} ({m['tag']}) in [{pos}] m, posizione {m['position_status']}, "
+                     f"{m['data']} ({m['valid_samples']} campioni, copertura {m['coverage_pct']} %)")
         L.append("  - Attuatori con dati: " + ", ".join(f"`{a['column']}` ← {a['component']}" for a in lay["actuators_with_data"]))
         L.append("  - Zone prodotto (osservazione dell'aria):")
         for z in lay["product_zones"]:
             L.append(f"    - {z['id']}: {z['observation']}" + (f" ({', '.join(z['measured_by'])})" if z["measured_by"] else ""))
-        L.append(f"  - Sonde del modello senza dati in questo ciclo: {', '.join(lay['sensors_without_data']) or 'nessuna'}")
+        L.append(f"  - Sonde del modello senza dati validi in questo intervallo: {', '.join(lay['sensors_without_data']) or 'nessuna'}")
+        for w in lay["provenance_warnings"]:
+            L.append(f"  - AVVISO provenienza: {w}")
         L.append(f"  - Immagini: {', '.join(lay['images'].values())}")
     L += ["", "## Colonne", "", "| colonna | grandezza | unità | copertura | min | max | media | origine |", "|---|---|---|---|---|---|---|---|"]
     for col, s in p["readings"]["columns"].items():
@@ -388,8 +454,9 @@ def readme(p):
     L += ["", "## Eventi", ""] + [f"- {e['t']} {e['type']}: " + ", ".join(f"{k}={v}" for k, v in e.items() if k not in ("t", "type")) for e in p["events"]]
     if p["instant"]:
         i = p["instant"]
-        L += ["", f"## Istante {i['t']}", "", f"Layout {i['layout_id']} `{i['config_hash'][:12]}`; lettura delle {i['reading_time']} ({i['note']})."]
-        L += [f"- {k}: {v['value']} {v['unit'] or ''} [{v['quality']}]" for k, v in i["values"].items()]
+        L += ["", f"## Istante {i['t']}", "", f"Layout {i['layout_id']} build `{i['build_id']}`; lettura delle {i['reading_time']} ({i['note']})."]
+        L += [f"- {k}: {v['value']} {v['unit'] or ''} [{v['quality']}]" + (f" (grezzo: {v['raw']!r})" if v["raw"] is not None else "")
+              for k, v in i["values"].items()]
     L += ["", "## Osservazioni (dai dati)", ""] + [f"- {o}" for o in p["observations"]]
     L += ["", "## Inferenze", "", f"- nessuna registrata. Regola: {p['inference_rule']}"]
     L += ["", "## Ipotesi", "", f"- nessuna registrata. Regola: {p['hypothesis_rule']}"]

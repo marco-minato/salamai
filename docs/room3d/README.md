@@ -120,13 +120,14 @@ La build scrive in `build/room3d/`, che non è versionata:
 ```text
 build/room3d/
   catalog.json                       # layout costruiti, con hash e percorsi
-  layouts/<layout_id>/<config_hash[:12]>/
-    model.blend   model.glb   manifest.json
-    views/pianta.png  sezione_A_x.png  sezione_B_y.png  assonometria_aperta.png
+  layouts/<layout_id>/<build_id>/
+    model.blend   model-<sha16>.glb   manifest.json
+    views/pianta-<sha16>.png  sezione_A_x-<sha16>.png  sezione_B_y-<sha16>.png  assonometria_aperta-<sha16>.png
   analysis/<cycle_id>/              # pacchetti di analisi
 ```
 
-- **Percorsi immutabili.** Ogni percorso contiene l'hash della configurazione. A una revisione corrisponde sempre lo stesso percorso, quindi il browser e i cicli non possono mescolare file di revisioni diverse.
+- **Identità della revisione.** La cartella è il `build_id`, calcolato da `config_hash` (JSON stanza + layout) e `semantic_hash` (geometria effettivamente generata). Se cambia il generatore e con lui la geometria, cambiano `build_id` e cartella anche a configurazione invariata: i cicli registrati non vengono associati alla geometria nuova.
+- **Cache.** GLB e PNG hanno nel nome i primi 16 caratteri del loro SHA256, quindi un nome indica sempre lo stesso contenuto e può essere servito con cache `immutable`. `manifest.json` ha nome fisso, cambia a ogni build (data, commit) e va sempre riconvalidato.
 - **Manifest.** Per ogni entità riporta ID stabile, layer, stato, provenienza, centro, ingombro e orientamento nel frame canonico, oltre all'hash semantico. Contiene anche aperture, quote, assunzioni, dati sconosciuti, fonti e lo SHA256 del GLB.
 - **Nodi glTF.** Hanno lo stesso nome degli ID e portano negli `extras` `salamai_id`, layer, stato e provenienza. La scena glTF porta `salamai_build_id`.
 - **Riproducibilità.** Due build della stessa configurazione hanno gli stessi ID, `config_hash`, `semantic_hash` e `build_id`. I file `.blend` non sono identici byte per byte, e non è richiesto.
@@ -170,7 +171,7 @@ Nginx si comporta così:
 
 - accetta solo GET e HEAD; gli altri metodi ricevono 405;
 - invia una Content-Security-Policy restrittiva;
-- serve i file di revisione con cache `immutable` e `catalog.json` con `no-cache`.
+- serve con cache `immutable` solo i GLB e i PNG con l'hash nel nome; `manifest.json`, `catalog.json` e `index.html` hanno `no-cache`.
 
 Un server statico qualsiasi va bene: il visualizzatore non richiede Blender, MCP né servizi AI.
 
@@ -225,7 +226,7 @@ Così i cicli precedenti restano associati alla revisione che avevano.
 
 - **ID del ciclo.** L'unico identificativo esistente è il nome della cartella di archivio `/share/salumi/<YYYY-MM-DD_HHMM>/` (vedi `homeassistant/salumi.yaml`), che contiene `letture.csv`.
 - **`cycle.json`.** Accanto al CSV va un file `cycle.json` (vedi `model/room3d/cycles/cycle.schema.json`) con:
-  - `layout_refs`: `layout_id`, `config_hash` (dal manifest o da `catalog.json`), `source_commit` e intervallo di validità. Se la disposizione cambia durante il ciclo, si aggiunge un nuovo intervallo;
+  - `layout_refs`: `layout_id`, `config_hash` e `build_id` (obbligatori), `semantic_hash` (consigliato), tutti dal manifest o da `catalog.json`, più `source_commit` e intervallo di validità. Se la disposizione cambia durante il ciclo, si aggiunge un nuovo intervallo;
   - `events`: carico, rimozioni, cambi di layout e note, con timestamp. Una rimozione non vuol dire che la zona è vuota.
 - **`mapping.json`.** Collega componenti e colonne CSV agli ID reali, con questi stati:
   - `in_use`: oggi usato nel repository;
@@ -239,16 +240,17 @@ python3 tools/room3d/export_analysis.py --cycle <cartella_ciclo> [--at 2026-01-1
 ```
 
 - **Scelta del layout.** Lo script usa la revisione registrata nel ciclo. Se nella build non c'è, esce con codice 2: **non applica mai il layout corrente ai cicli storici**.
-- **Conservare le revisioni.** Per interpretare cicli passati si possono archiviare le cartelle `build/room3d/layouts/<id>/<hash>/`, che sono immutabili. In alternativa si rigenerano dal `source_commit`.
+- **Conservare le revisioni.** Per interpretare cicli passati si possono archiviare le cartelle `build/room3d/layouts/<id>/<build_id>/`. In alternativa si rigenerano dal `source_commit`: la revisione è accettata solo se il `build_id` rigenerato coincide. Se il commit registrato nel ciclo è diverso da quello della build, il pacchetto lo riporta in `provenance_warnings` (la geometria coincide, la provenienza no).
 - **Contenuto del pacchetto.** Il pacchetto (`package.json` più `README.md` testuale) riporta:
   - geometria, layout, unità e immagini;
   - copertura e qualità delle misure, lacune e aggregati per fase;
   - eventi e carico;
-  - punti misurati, zone **non osservate** e osservazioni.
+  - punti di misura con i campioni validi nell'intervallo di ciascun layout, zone **non osservate** (anche quando la sonda c'è ma non ha dati validi) e osservazioni;
+  - nell'istantanea `--at`, valori numerici come numeri e qualità `non valida` per NaN, infiniti, testo o stati diversi da on/off (il dato grezzo resta in `raw`).
 
   Inferenze e ipotesi sono sezioni separate e vuote finché qualcuno non le scrive con il metodo usato.
 - **Limiti.** Il pacchetto non interpola nello spazio, non costruisce campi di velocità e non trae conclusioni di sicurezza alimentare.
-- **Esempio.** `model/room3d/cycles/examples/SINTETICO_2026-01-10_0800/` contiene **dati sintetici**: lo dicono il nome della cartella, `synthetic: true` e la prima riga del README del pacchetto. Va rigenerato con `make_synthetic_cycle.py` quando cambia L001, altrimenti il suo `config_hash` non corrisponde più (un test lo segnala).
+- **Esempio.** `model/room3d/cycles/examples/SINTETICO_2026-01-10_0800/` contiene **dati sintetici**: lo dicono il nome della cartella, `synthetic: true` e la prima riga del README del pacchetto. Va rigenerato con `make_synthetic_cycle.py --build build/room3d` quando cambia L001 o la sua geometria, altrimenti `config_hash` o `build_id` non corrispondono più (un test lo segnala).
 - **Visualizzatore.** In questa prima versione non mostra dati temporali: il collegamento live non è un prerequisito.
 
 ## Verifiche

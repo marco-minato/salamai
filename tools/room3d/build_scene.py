@@ -21,6 +21,7 @@ import argparse
 import datetime
 import math
 import os
+import shutil
 import subprocess
 import sys
 
@@ -499,7 +500,7 @@ def render_view(sc, view, ctx, out_png):
     # cartiglio
     # cornice: stanza + quote (0,6 m) + colonne di richiami, cartiglio sopra
     us = [c.dot(right) for c in corners]
-    title_h = size * 9.5
+    title_h = size * 11.2  # somma delle righe sotto (size × 1,9 ciascuna)
     top = max(v_hi, max(vs) + 0.7) + 0.1
     bottom = min(v_lo, min(vs) - 0.7)
     width = (max(us) - min(us)) + 2 * 2.75
@@ -517,8 +518,8 @@ def render_view(sc, view, ctx, out_png):
         (f"config {ctx['config_hash'][:12]} · build {ctx['build_id']}", INK, size * 0.8),
         ("Quote in cm. Arancio / [A] = dato assunto o sconosciuto, disegnato con valore provvisorio (da rilevare). "
          "[P] = segnaposto.", INK_ASSUMED, size * 0.85),
-        ("Frecce rosse = direzione NOMINALE delle ventole, non simulata. "
-         "Botola: 40 cm dalla parete porta al bordo vicino = ASSUNZIONE NON CONFERMATA.", INK_ASSUMED, size * 0.85),
+        ("Frecce rosse = direzione NOMINALE delle ventole, non simulata.", INK_ASSUMED, size * 0.85),
+        (hatch["texts"]["summary"] + " " + door["texts"]["summary"], INK_ASSUMED, size * 0.85),
     ]
     off = 0.0
     for text, rgba, s in lines:
@@ -650,9 +651,15 @@ def build_layout(room, layout, args, out_root, git):
     sc["salamai_layout_id"] = layout["layout_id"]
     sc["salamai_config_hash"] = cfg_hash
 
-    rel_dir = f"layouts/{layout['layout_id']}/{cfg_hash[:12]}"
+    # Cartella della revisione = build_id (configurazione + geometria generata):
+    # se cambia il generatore e quindi la geometria, cambia anche la cartella.
+    # GLB e PNG hanno l'hash del contenuto nel nome (cache immutabile sicura);
+    # manifest.json è l'unico file a nome fisso e va sempre riconvalidato.
+    rel_dir = f"layouts/{layout['layout_id']}/{build_id}"
     out_dir = os.path.join(out_root, rel_dir)
-    os.makedirs(os.path.join(out_dir, "views"), exist_ok=True)
+    if os.path.isdir(out_dir):
+        shutil.rmtree(out_dir)
+    os.makedirs(os.path.join(out_dir, "views"))
 
     # GLB: solo oggetti del modello (niente annotazioni, camere, testi)
     bpy.ops.object.select_all(action="DESELECT")
@@ -664,6 +671,10 @@ def build_layout(room, layout, args, out_root, git):
                               export_cameras=False, export_lights=False)
     if not os.path.isfile(glb):
         raise BuildError("esportazione GLB fallita")
+    glb_sha = core.sha256_file(glb)
+    glb_name = f"model-{glb_sha[:16]}.glb"
+    os.replace(glb, os.path.join(out_dir, glb_name))
+    glb = os.path.join(out_dir, glb_name)
 
     dims = core.dimension_lines(room, layout)
     images = {}
@@ -677,7 +688,9 @@ def build_layout(room, layout, args, out_root, git):
                             ("section_y", "sezione_B_y.png"), ("axon", "assonometria_aperta.png")):
             png = os.path.join(out_dir, "views", fname)
             render_view(sc, view, ctx, png)
-            images[view] = f"views/{fname}"
+            named = f"{os.path.splitext(fname)[0]}-{core.sha256_file(png)[:16]}.png"
+            os.replace(png, os.path.join(out_dir, "views", named))
+            images[view] = f"views/{named}"
         for col in ann_parent.children:
             col.hide_render = False
             col.hide_viewport = col.name != "ann_plan"
@@ -711,8 +724,8 @@ def build_layout(room, layout, args, out_root, git):
         "units": room["units"],
         "frame": room["frame"],
         "gltf": {
-            "file": "model.glb",
-            "sha256": core.sha256_file(glb),
+            "file": glb_name,
+            "sha256": glb_sha,
             "up_axis": "+Y",
             "canonical_to_gltf": core.CANONICAL_TO_GLTF,
             "gltf_to_canonical": core.GLTF_TO_CANONICAL,
@@ -740,6 +753,7 @@ def build_layout(room, layout, args, out_root, git):
         "unknowns": unknowns,
         "sources": room.get("sources", []),
         "images": images,
+        "images_sha256": {k: core.sha256_file(os.path.join(out_dir, v)) for k, v in images.items()},
     }
     import json
     with open(os.path.join(out_dir, "manifest.json"), "w", encoding="utf-8") as f:
@@ -763,7 +777,7 @@ def build_layout(room, layout, args, out_root, git):
         "path": rel_dir,
         "manifest": f"{rel_dir}/manifest.json",
         "manifest_sha256": core.sha256_file(os.path.join(out_dir, "manifest.json")),
-        "glb": f"{rel_dir}/model.glb",
+        "glb": f"{rel_dir}/{glb_name}",
         "glb_sha256": manifest["gltf"]["sha256"],
         "images": {k: f"{rel_dir}/{v}" for k, v in images.items()},
     }
@@ -809,7 +823,8 @@ def main():
         "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "source_commit": git["commit"],
         "source_dirty": git["dirty"],
-        "note": "Percorsi immutabili per revisione: layouts/<layout_id>/<config_hash[:12]>/. "
+        "note": "Revisioni in layouts/<layout_id>/<build_id>/ (build_id = configurazione + geometria). "
+                "GLB e PNG hanno l'hash del contenuto nel nome; manifest.json va riconvalidato. "
                 "'hypothetical_demo' è un esempio, mai uno storico reale.",
         "layouts": [entries[i] for i in order if i in entries],
     }

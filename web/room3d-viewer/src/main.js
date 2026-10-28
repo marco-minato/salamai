@@ -248,7 +248,8 @@ function renderLayoutInfo() {
     state.catalog.layouts.filter((x) => x.kind.startsWith('real')).length === 1
       ? el('div', { class: 'small warn' }, 'Esiste una sola disposizione reale (pianificata). Gli altri layout sono ipotesi dimostrative.')
       : null,
-    el('div', { class: 'small warn' }, 'Botola: 40 cm dalla parete porta al bordo vicino = ASSUNZIONE NON CONFERMATA. Altezza porta sconosciuta (1,90 m solo per il disegno).'),
+    // testi derivati dai dati della revisione caricata (openings.*.texts nel manifest)
+    el('div', { class: 'small warn' }, `${m.openings.hatch.texts.summary} ${m.openings.door.texts.summary}`),
   );
 }
 

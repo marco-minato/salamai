@@ -114,6 +114,12 @@ async function selectionText(page) {
   await ready(page);
   ok(await page.locator('#error').isHidden(), 'desktop: caricamento senza errori');
   ok((await page.locator('canvas').count()) === 1, 'desktop: un riquadro 3D');
+  const openTexts = await page.evaluate(() => {
+    const o = window.__salamai.state.a.manifest.openings;
+    return { info: document.querySelector('#layout-info').innerText, hatch: o.hatch.texts.summary, door: o.door.texts.summary };
+  });
+  ok(openTexts.info.includes(openTexts.hatch) && openTexts.info.includes(openTexts.door),
+    'desktop: avvisi botola/porta presi dal manifest della revisione caricata');
   await page.screenshot({ path: join(OUT, 'desktop_asson.png') });
 
   // rotazione con il mouse: la camera si sposta
@@ -304,7 +310,7 @@ async function selectionText(page) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1200, height: 800 } });
   const page = await ctx.newPage();
-  await page.route('**/model.glb', (r) => r.fulfill({ status: 200, body: Buffer.from('glTF non valido') }));
+  await page.route('**/model-*.glb', (r) => r.fulfill({ status: 200, body: Buffer.from('glTF non valido') }));
   await page.goto(BASE);
   await page.waitForSelector('#error:not([hidden])', { timeout: 15000 });
   ok((await page.locator('#error .msg').innerText()).includes('GLB'), 'errori: GLB non corrispondente o incompatibile segnalato');

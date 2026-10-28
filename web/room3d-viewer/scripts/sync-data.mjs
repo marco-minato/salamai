@@ -24,6 +24,12 @@ for (const e of catalog.layouts) {
   // coerenza: manifest e GLB devono essere quelli registrati nel catalogo
   if (sha(join(src, e.manifest)) !== e.manifest_sha256) throw new Error(`manifest alterato: ${e.manifest}`);
   if (sha(join(src, e.glb)) !== e.glb_sha256) throw new Error(`GLB alterato: ${e.glb}`);
+  // immagini: hash nel manifest e nel nome del file (servite con cache immutabile)
+  const man = JSON.parse(readFileSync(join(src, e.manifest), 'utf8'));
+  for (const [view, rel] of Object.entries(man.images ?? {})) {
+    const h = sha(join(src, e.path, rel));
+    if (h !== man.images_sha256?.[view] || !rel.endsWith(`-${h.slice(0, 16)}.png`)) throw new Error(`immagine alterata: ${rel}`);
+  }
   cpSync(join(src, e.path), join(dst, e.path), {
     recursive: true,
     filter: (p) => !p.endsWith('.blend') && !p.endsWith('.blend1'),

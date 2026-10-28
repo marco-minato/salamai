@@ -32,10 +32,18 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="model/room3d/room.json")
     ap.add_argument("--output", default="model/room3d/cycles/examples")
+    ap.add_argument("--build", default="build/room3d",
+                    help="build Blender da cui leggere build_id e semantic_hash di L001")
     args = ap.parse_args()
     room, _, layouts = core.load_model(args.config, "L001")
     lay = layouts[0]
     cfg_hash = core.config_hash(room, lay)
+    cat_path = os.path.join(args.build, "catalog.json")
+    if not os.path.isfile(cat_path):
+        sys.exit(f"catalogo mancante: {cat_path}. Eseguire prima la build Blender (tools/room3d/build_all.sh).")
+    entry = next((e for e in core.load_json(cat_path)["layouts"] if e["layout_id"] == "L001"), None)
+    if entry is None or entry["config_hash"] != cfg_hash:
+        sys.exit(f"la build in {args.build} non corrisponde alla configurazione corrente di L001: rigenerarla.")
 
     rnd = random.Random(20260110)
     start = dt.datetime(2026, 1, 10, 8, 0, 0)
@@ -98,7 +106,8 @@ def main():
         "started_at": rows[0]["ora"],
         "ended_at": rows[-1]["ora"],
         "layout_refs": [
-            {"layout_id": "L001", "config_hash": cfg_hash, "source_commit": None,
+            {"layout_id": "L001", "config_hash": cfg_hash, "build_id": entry["build_id"],
+             "semantic_hash": entry["semantic_hash"], "source_commit": None,
              "valid_from": rows[0]["ora"], "valid_to": None,
              "note": "per un ciclo reale indicare anche il commit dei sorgenti del modello"}
         ],

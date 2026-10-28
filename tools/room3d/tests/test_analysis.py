@@ -1,6 +1,7 @@
 """Test del collegamento ciclo ↔ layout e del pacchetto di analisi (usa Blender per la build)."""
 
 import copy
+import csv
 import json
 import os
 import shutil
@@ -37,9 +38,26 @@ class TestAnalysis(unittest.TestCase):
         code = ea.main(["--cycle", cycle_dir, "--build", self.build, "--mapping", MAPPING, "--output", out, *extra])
         return code, out
 
-    def cycle_copy(self, mutate):
+    def entry(self, layout_id):
+        with open(os.path.join(self.build, "catalog.json")) as f:
+            return next(e for e in json.load(f)["layouts"] if e["layout_id"] == layout_id)
+
+    def package(self, out):
+        with open(os.path.join(out, "SINTETICO_2026-01-10_0800", "package.json")) as f:
+            return json.load(f)
+
+    def cycle_copy(self, mutate, mutate_rows=None):
         d = tempfile.mkdtemp(dir=self.tmp)
         shutil.copy(os.path.join(CYCLE, "letture.csv"), d)
+        if mutate_rows:
+            with open(os.path.join(d, "letture.csv"), newline="") as f:
+                rows = list(csv.DictReader(f))
+            fields = list(rows[0])
+            mutate_rows(rows)
+            with open(os.path.join(d, "letture.csv"), "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields)
+                w.writeheader()
+                w.writerows(rows)
         with open(os.path.join(CYCLE, "cycle.json")) as f:
             c = json.load(f)
         mutate(c)
@@ -52,6 +70,8 @@ class TestAnalysis(unittest.TestCase):
             c = json.load(f)
         room, _, lays = core.load_model(os.path.join(MODEL, "room.json"), "L001")
         self.assertEqual(c["layout_refs"][0]["config_hash"], core.config_hash(room, lays[0]),
+                         "rigenerare l'esempio con tools/room3d/make_synthetic_cycle.py")
+        self.assertEqual(c["layout_refs"][0]["build_id"], self.entry("L001")["build_id"],
                          "rigenerare l'esempio con tools/room3d/make_synthetic_cycle.py")
 
     def test_synthetic_package(self):
@@ -77,11 +97,98 @@ class TestAnalysis(unittest.TestCase):
 
     def test_unknown_revision_is_not_replaced_by_current(self):
         def mutate(c):
-            c["layout_refs"][0]["config_hash"] = "0" * 64
+            c["layout_refs"][0]["build_id"] = "0" * 20
             c["layout_refs"][0]["source_commit"] = "abc1234"
         d = self.cycle_copy(mutate)
         code, _ = self.export(d)
         self.assertEqual(code, 2)
+
+    def test_changed_geometry_same_config_rejected(self):
+        """Stessa configurazione ma geometria diversa (es. generatore cambiato): non si accetta."""
+        e = self.entry("L001")
+        fake = "f" * 20
+        src = os.path.join(self.build, e["path"])
+        dst = os.path.join(os.path.dirname(src), fake)
+        shutil.copytree(src, dst)
+        self.addCleanup(shutil.rmtree, dst, True)
+        man_path = os.path.join(dst, "manifest.json")
+        with open(man_path) as f:
+            m = json.load(f)
+        m["build"]["build_id"], m["build"]["semantic_hash"] = fake, "e" * 64
+        with open(man_path, "w") as f:
+            json.dump(m, f)
+        # il ciclo registra la build originale: la copia con geometria diversa non viene usata
+        code, out = self.export(CYCLE)
+        self.assertEqual(code, 0)
+        self.assertEqual(self.package(out)["layouts"][0]["build_id"], e["build_id"])
+        # un ciclo che punta alla cartella ma con il semantic_hash originale viene rifiutato
+        def mutate(c):
+            c["layout_refs"][0]["build_id"] = fake
+        self.assertEqual(self.export(self.cycle_copy(mutate))[0], 2)
+
+    def test_source_commit_mismatch_is_reported(self):
+        def mutate(c):
+            c["layout_refs"][0]["source_commit"] = "0000000deadbeef"
+        code, out = self.export(self.cycle_copy(mutate))
+        self.assertEqual(code, 0)
+        warns = self.package(out)["layouts"][0]["provenance_warnings"]
+        self.assertTrue(any("0000000deadbeef" in w for w in warns), warns)
+
+    def test_zone_without_valid_data_is_not_observed(self):
+        def rows(rs):
+            for r in rs:
+                r["temperatura"] = r["umidita"] = "unavailable"
+                r["peso_g"] = "unknown"
+        code, out = self.export(self.cycle_copy(lambda c: None, rows))
+        self.assertEqual(code, 0)
+        lay = self.package(out)["layouts"][0]
+        zones = {z["id"]: z for z in lay["product_zones"]}
+        self.assertEqual(zones["zone_salami"]["measured_by"], [])
+        self.assertIn("nessun dato valido", zones["zone_salami"]["observation"])
+        self.assertIn("sensor_b1_sth01", zones["zone_salami"]["sensors_without_valid_data"])
+        self.assertIn("sensor_b1_sth01", lay["sensors_without_data"])
+        for p in lay["measurement_points"]:
+            if p["column"] in ("temperatura", "umidita", "peso_g"):
+                self.assertEqual(p["valid_samples"], 0)
+                self.assertIn("NESSUN DATO VALIDO", p["data"])
+
+    def test_coverage_is_per_layout_interval(self):
+        room, _, lays = core.load_model(os.path.join(MODEL, "room.json"))
+        demo = self.entry("L900_DEMO")
+
+        def mutate(c):
+            c["layout_refs"][0]["valid_to"] = "2026-01-11T14:00:00"
+            c["layout_refs"].append({"layout_id": "L900_DEMO", "config_hash": demo["config_hash"],
+                                     "build_id": demo["build_id"], "valid_from": "2026-01-11T14:00:00", "valid_to": None})
+
+        def rows(rs):  # dati della sonda solo prima del cambio di layout
+            for r in rs:
+                if r["ora"] >= "2026-01-11T14:00:00":
+                    r["temperatura"] = r["umidita"] = "unavailable"
+        code, out = self.export(self.cycle_copy(mutate, rows))
+        self.assertEqual(code, 0)
+        l1, l2 = self.package(out)["layouts"]
+        z1 = {z["id"]: z for z in l1["product_zones"]}
+        z2 = {z["id"]: z for z in l2["product_zones"]}
+        self.assertEqual(z1["zone_salami"]["measured_by"], ["sensor_b1_sth01"])
+        self.assertNotIn("sensor_b1_sth01", z2.get("zone_salami", {"measured_by": []})["measured_by"])
+        self.assertTrue(all(p["valid_samples"] == 0 for p in l2["measurement_points"] if p["column"] == "temperatura"))
+
+    def test_instant_flags_invalid_values(self):
+        def rows(rs):
+            rs[0]["temperatura"], rs[0]["umidita"], rs[0]["stufa"] = "NaN", "nonsense", "forse"
+            rs[1]["temperatura"] = "inf"
+        code, out = self.export(self.cycle_copy(lambda c: None, rows), "--at", "2026-01-10T08:00:00")
+        self.assertEqual(code, 0)
+        p = self.package(out)
+        v = p["instant"]["values"]
+        for col, raw in (("temperatura", "NaN"), ("umidita", "nonsense"), ("stufa", "forse")):
+            self.assertEqual(v[col]["quality"], "non valida", col)
+            self.assertIsNone(v[col]["value"], col)
+            self.assertEqual(v[col]["raw"], raw)
+        self.assertEqual(v["fase"]["quality"], "ok")
+        self.assertIsInstance(v["temp_obiettivo"]["value"], float)
+        self.assertEqual(p["readings"]["columns"]["temperatura"]["invalid"], 2)
 
     def test_layout_change_during_cycle(self):
         room, _, lays = core.load_model(os.path.join(MODEL, "room.json"))
@@ -90,6 +197,7 @@ class TestAnalysis(unittest.TestCase):
         def mutate(c):
             c["layout_refs"][0]["valid_to"] = "2026-01-11T14:00:00"
             c["layout_refs"].append({"layout_id": "L900_DEMO", "config_hash": core.config_hash(room, demo),
+                                     "build_id": self.entry("L900_DEMO")["build_id"],
                                      "valid_from": "2026-01-11T14:00:00", "valid_to": None})
         d = self.cycle_copy(mutate)
         code, out = self.export(d, "--at", "2026-01-12T09:00:00")
