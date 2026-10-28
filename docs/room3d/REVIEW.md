@@ -1,6 +1,6 @@
 # Revisione indipendente — room3d
 
-Stato: **revisione 5 di Codex su `f6425c6`: F6 risolto, un finding F7 (bassa) nel test sulle note.** F7 corretto nel commit successivo (solo test), in attesa della revisione 6. L'ultima approvazione completa di Codex resta quella di `11a0d31` (revisione 3). Nessuna approvazione è dichiarata da chi ha implementato.
+Stato: **revisione 6 di Codex su `f56281c`: approvato nel perimetro software verificato. F1–F7 risolti, nessun nuovo finding.** Comprende il nuovo percorso del tubo di aspirazione (T e due rami Ø80, bocche in alto). L'approvazione è di Codex, non di chi ha implementato, e non certifica misure fisiche, portate, impianto o processo alimentare. Il commit che aggiunge questo report modifica solo `docs/room3d/REVIEW.md`; ogni modifica successiva ai sorgenti richiede una nuova verifica.
 
 Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pannello Codex (`herdr agent start reviewer --kind codex -- --no-daemon`) nel worktree separato `../salamai-review`, con HEAD detached sul commit da esaminare e la consegna della sezione 2 delle specifiche. Codex scrive ogni report nel worktree; qui sotto i report sono copiati senza modifiche, salvo il livello dei titoli. Le richieste di Codex di eseguire comandi fuori dal suo sandbox (npm ci, Blender batch, test, Chrome headless, Docker locale) sono state approvate dall'utente o, su sua delega, solo per azioni locali con output nel worktree di revisione o in `/tmp`.
 
@@ -11,7 +11,7 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 | 3 | `11a0d31` | Approvato: F1–F5 risolti, nessun nuovo finding |
 | 4 | `f219e49` | Nuovo percorso del tubo (T + due rami Ø80, bocche in alto): geometria ok; F6 media |
 | 5 | `f6425c6` | F6 risolto; F7 bassa (falso positivo del test) |
-| 6 | commit di correzione di F7 | in attesa |
+| 6 | `f56281c` | Approvato: F1–F7 risolti, nessun nuovo finding |
 
 ## Correzioni
 
@@ -47,6 +47,106 @@ Verifiche dell'implementatore (non sono una revisione): `build_all.sh` exit 0 co
 | F7 — Bassa | Il controllo sulle note accetta anche le frasi che dichiarano un dato non noto ("non misurata", "sconosciuto", "non calcolata", "non verificata", "da verificare"), oltre a ipotesi e direzioni nominali. | `test_flow_claim_detector`: tre affermazioni non qualificate devono essere segnalate (fra cui le due vecchie note di F6), quattro frasi ammesse no (fra cui "Portata non misurata: dato sconosciuto." e "riportata"). |
 
 Nessun cambiamento al modello: `build_id` invariati.
+
+## Revisione 6 — report di Codex su `f56281c`
+
+### Riverifica 6 — Salamai room3d, f56281c
+
+Data: 28 ottobre 2026. Revisore indipendente: Codex.
+
+**Commit esaminato:** `f56281c39ed48ccd8d257f80ca8677a5c5462d82`, HEAD detached nel worktree `/home/marco/lab/salamai-review`.
+
+**Verdetto complessivo: approvato nel perimetro software verificato. F1–F7 risolti; nessun nuovo finding.** F7 non è più riproducibile sulla frase che aveva causato il falso positivo. Le formulazioni precedenti di F6 e le affermazioni non qualificate provate continuano a essere respinte. La suite Python completa passa e i build ID del modello sono invariati.
+
+#### Perimetro e integrità
+
+Letti il diff `f6425c6..f56281c`, la correzione F7 in `docs/room3d/REVIEW.md` e il report precedente. **Il diff contiene soltanto** `tools/room3d/tests/test_core.py` e `docs/room3d/REVIEW.md`. Verificata anche l'assenza di differenze nei JSON, generatore/core/esportatore, script di build e intera directory del visualizzatore. Diff salvato in `/tmp/salamai-review-f56281c/diff.patch`.
+
+Nessuna modifica all'implementazione o alla scena condivisa, nessun commit, nessun accesso MCP né scrittura nel worktree principale. Le mutazioni delle note sono soltanto nella copia `/tmp/salamai-review-f56281c/fixture/`. La build aggiuntiva scrive in `/tmp/salamai-review-f56281c/build/`. Test Blender eseguiti in batch separato fuori sandbox con autorizzazione.
+
+Prima della scrittura del report, `git diff --exit-code`, `git diff --cached --exit-code` e `git diff --check` risultano puliti; sono presenti soltanto i cinque report precedenti non tracciati.
+
+#### Comandi ed esiti
+
+Ambiente invariato rispetto alla revisione precedente: Blender 5.2.3 LTS, Python 3.14.4; nessuna modifica alle dipendenze. Comandi dalla radice del worktree salvo indicazione diversa.
+
+| Comando / controllo | Esito |
+|---|---|
+| `git rev-parse HEAD`, `git status --short`, `git diff --stat f6425c6..f56281c`, lettura del diff e di REVIEW | Commit corretto; due soli file cambiati, entrambi documentazione/test. |
+| `git diff --exit-code f6425c6..f56281c -- model/room3d tools/room3d/build_scene.py tools/room3d/room3d_core.py tools/room3d/export_analysis.py tools/room3d/build_all.sh web/room3d-viewer` | **Exit 0**, nessuna differenza nei sorgenti applicativi e del modello indicati. |
+| `python3 -m unittest discover -s tools/room3d/tests > /tmp/salamai-review-f56281c-tests.log 2>&1` | **Exit 0: 68 test passati in 11,301 s**, nessun test segnalato come saltato. Comprende i test d'integrazione Blender e analisi, non solo i test puri del core. Gli errori attesi delle prove negative non sono fallimenti della suite. |
+| `python3 /tmp/salamai-review-f56281c/test_probe.py` | **Exit 0 delle asserzioni della sonda**: undici esecuzioni isolate del test sulle note, con gli esiti dettagliati sotto. Log `test_probe.log` e log individuali nella stessa directory. |
+| `python3 -m unittest test_core.TestValidConfig.test_flow_claims_in_notes_are_marked_as_hypotheses -v` dalla copia `fixture/tools/room3d/tests` | Comando reale usato per ciascuna mutazione. I fallimenti delle sei note non qualificate sono voluti e identificano il contenuto corretto. |
+| `blender --background --factory-startup --python-exit-code 1 --python tools/room3d/build_scene.py -- --config model/room3d/room.json --output /tmp/salamai-review-f56281c/build --no-render` | **Exit 0**, catalogo/GLB/manifest/blend rigenerati indipendentemente; log `build.log`. |
+| Sonda Python su cataloghi e manifest della build corrente e dell'ultima build completa f6425c6 conservata nel worktree | Config hash, semantic hash, build ID, percorsi, SHA GLB e mappa ID/hash entità uguali per entrambi i layout. Riferimento del ciclo sintetico coincidente. Risultati in `identity.log`. |
+| `git diff --exit-code`, `git diff --cached --exit-code`, `git diff --check` | Nessuna modifica ai file tracciati introdotta dalla revisione. |
+
+I log con nomi relativi sono in `/tmp/salamai-review-f56281c/`.
+
+#### F7 — Risolto: ripetizione del falso positivo e controlli negativi
+
+Il controllo è ora estratto in `TestValidConfig.flow_claim_unqualified`. Le qualificazioni ammesse includono anche dichiarazioni di dato non noto: `non misurat`, `non calcolat`, `sconosciut`, `non verificat`, `da verificare`. È aggiunto `test_flow_claim_detector`, che copre direttamente esempi ammessi e non ammessi; questo test passa nella suite completa.
+
+La sonda indipendente non si limita a chiamare il classificatore: copia strumenti e modello in `/tmp`, inserisce le note nel JSON della copia ed esegue il test che attraversa realmente le note dei layout. Dopo ogni prova riparte dal JSON attuale; al termine ripristina la baseline della copia. Le tre vecchie note sono estratte dal commit `f219e49` con `git show`, senza ricostruirne approssimativamente il testo.
+
+| Mutazione nella copia temporanea | Exit del test | Esito della verifica |
+|---|---:|---|
+| Baseline corrente | 0 | Passa. |
+| **“Portata non misurata: dato sconosciuto.”** aggiunta al T | **0** | Il falso positivo F7 è corretto. |
+| Nota logistica “Raccordo non presente in distinta: da acquistare.” | 0 | Nessun falso positivo nel caso provato. |
+| Nota geometrica sulla quota provvisoria della bocca | 0 | Nessun falso positivo nel caso provato. |
+| Direzione nominale con esplicita assenza di misura di portata | 0 | Ammessa correttamente. |
+| Vecchia nota del T: “Con rami di lunghezza diversa (1,27 m e 1,57 m disegnati) aspira di più il ramo corto.” | 1 | Regressione F6 intercettata; assertion indica `L001/duct_tee_01`. |
+| Vecchia nota assertiva sul percorso dell'aria, ripristinata in D2 | 1 | Regressione F6 intercettata su D2. |
+| Stessa vecchia nota ripristinata in D3 | 1 | Regressione F6 intercettata su D3. |
+| “Portata 120 m³/h per ramo.” | 1 | Affermazione non qualificata respinta. |
+| “La ripartizione è 50% per ogni ramo.” | 1 | Affermazione non qualificata respinta. |
+| “L'aria attraversa tutta la camera.” | 1 | Affermazione non qualificata respinta. |
+
+Questi esiti dimostrano che la correzione non consiste nel disabilitare il controllo e che il falso positivo segnalato è effettivamente eliminato. Il controllo rimane un'euristica lessicale: non è una prova generale di comprensione del linguaggio naturale o di validità delle affermazioni fisiche.
+
+#### Modello invariato e decisione su build_all/e2e
+
+La build Blender aggiuntiva corrente è stata confrontata con gli output della build completa di f6425c6 conservati nel worktree:
+
+| Layout | Build ID confermato | Semantic hash | Entità |
+|---|---|---|---:|
+| L001 | `ce7905cd44a7e4c12fd9` | `8eebc290011fb8c7f1afe59fbea621fb5e7c8fbf7ee0c3077fe71dbe4a8f4da1` | 38 |
+| L900_DEMO | `9d83373ca77b8b87025d` | `f1d6990a44465513db60e33dbfb7afcb13054668663a2e6a57cd8f1fe828574f` | 34 |
+
+Coincidono anche config hash, percorsi e SHA256 GLB, oltre agli ID/hash semantici di tutte le entità. Il ciclo sintetico registra ancora il build ID, config hash e semantic hash corretti di L001. Non serve rigenerare il suo riferimento: il modello autorevole non è cambiato.
+
+**Non ho ripetuto `build_all.sh` né `npm run e2e` in questa riverifica.** La scelta è proporzionata al diff: nessun cambiamento a modello, esportazioni, frontend, dipendenze, asset sorgenti o deploy. La suite Python completa esegue già build Blender, rendering e controlli d'integrazione in directory temporanee; una build aggiuntiva persistente conferma l'identità degli asset geometrici. La build completa e la suite browser erano entrambe passate su f6425c6 nella revisione 5. Ripeterle qui non aggiungerebbe copertura pertinente alla sola logica del test modificato. Le precedenti evidenze browser rimangono attribuite a f6425c6, non presentate come nuove esecuzioni su f56281c.
+
+#### Stato di F1–F7
+
+| Finding | Stato sullo snapshot | Evidenza pertinente |
+|---|---|---|
+| F1 — identità delle revisioni/cache | **Risolto** | Sorgenti invariati, suite d'integrazione e riproducibilità passata, identità corrente confermata. La prova HTTP/Nginx resta quella delle revisioni precedenti. |
+| F2 — zona osservata senza dati | **Risolto** | Esportatore invariato; test missing e copertura per intervallo passati nella suite completa. |
+| F3 — invalidi “ok” nell'istantanea | **Risolto** | Classificatore invariato; test sugli invalidi passato. |
+| F4 — testi statici di porta/botola | **Risolto** | Generatore/core/frontend invariati; test dei testi derivati e variante center passati. |
+| F5 — contratto ciclo/schema | **Risolto** | Schema/runtime invariati; test del contratto 1.1 passati. |
+| F6 — conclusioni non qualificate nelle note | **Risolto** | Note attuali invariate e già verificate nella catena JSON→manifest→browser→pacchetto nella revisione 5; le tre vecchie note vengono ancora respinte dalle mutazioni riprodotte. |
+| F7 — falso positivo del test | **Risolto** | Frase esatta del finding ora accettata nel JSON copiato; controlli negativi continuano a fallire come atteso. |
+
+#### Nuovi finding
+
+**Nessuno rilevato nel perimetro verificato.** Nessun F8 aperto: **0 critici, 0 alti, 0 medi, 0 bassi**.
+
+#### Verifiche non eseguite e limiti
+
+- Nessuna nuova prova browser, e2e, Nginx/Docker o cache HTTP, per le ragioni motivate sopra. Nessun deploy.
+- Non ripetuta manualmente l'ispezione di PNG o pannelli del visualizzatore; nessuna modifica dei relativi sorgenti. La build aggiuntiva persistente usa `--no-render`; i test d'integrazione della suite completa eseguono anche rendering.
+- Non ripetuta la sonda collisioni/BVH: modello e geometria sono invariati. Restano i limiti già dichiarati per supporti mancanti, raccordo schematico, ingombri provvisori e prodotto reale.
+- Nessuna misura di portata, simulazione, verifica fisica/impiantistica o del processo alimentare. L'approvazione riguarda lo snapshot software, non il comportamento reale dell'aria.
+- Il test usa parole chiave e qualificazioni lessicali. Sono verificati i casi elencati, senza rivendicare assenza universale di falsi positivi/falsi negativi su frasi arbitrarie o validità di ogni possibile affermazione sul flusso.
+- Nessuna migrazione di cicli reali, accesso a dispositivi/HA, audit dipendenze o fuzzing esaustivo.
+
+#### Verdetto complessivo
+
+**Approvato `f56281c39ed48ccd8d257f80ca8677a5c5462d82` nel perimetro software delle revisioni e delle verifiche eseguite. F1–F7 chiusi, nessun nuovo finding.** La correzione F7 è sostenuta da riproduzione positiva e negativa, non soltanto dal successo della suite. Il modello e gli asset geometrici restano quelli già verificati; le assunzioni di progetto e i limiti di verifica fisica rimangono espliciti.
+
 
 ## Revisione 5 — report di Codex su `f6425c6`
 
