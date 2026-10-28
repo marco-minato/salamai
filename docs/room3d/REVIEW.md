@@ -1,6 +1,6 @@
 # Revisione indipendente — room3d
 
-Stato: **revisione 2 di Codex su `4337901`: F1–F4 risolti, nuovo finding F5 (media).** F5 corretto nel commit successivo, in attesa della revisione 3. Nessuna approvazione è dichiarata da chi ha implementato.
+Stato: **revisione 3 di Codex su `11a0d31`: approvato nel perimetro della revisione software. F1–F5 risolti, nessun nuovo finding.** L'approvazione è di Codex, non di chi ha implementato, e non certifica misure fisiche, impianto o processo alimentare (vedi i limiti nel report). Il commit che aggiunge questo report modifica solo `docs/room3d/REVIEW.md`; ogni modifica successiva ai sorgenti richiede una nuova verifica.
 
 Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pannello Codex (`herdr agent start reviewer --kind codex -- --no-daemon`) nel worktree separato `../salamai-review`, con HEAD detached sul commit da esaminare e la consegna della sezione 2 delle specifiche. Codex scrive ogni report nel worktree; qui sotto i report sono copiati senza modifiche, salvo il livello dei titoli. Le richieste di Codex di eseguire comandi fuori dal suo sandbox (npm ci, Blender batch, test, Chrome headless, Docker locale) sono state approvate dall'utente o, su sua delega, solo per azioni locali con output nel worktree di revisione o in `/tmp`.
 
@@ -8,7 +8,7 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 |---|---|---|
 | 1 | `14b2495` | Modifiche richieste: F1 alta, F2–F4 medie |
 | 2 | `4337901` | F1–F4 risolti; F5 media (contratto dei cicli) |
-| 3 | commit di correzione di F5 | in attesa |
+| 3 | `11a0d31` | Approvato: F1–F5 risolti, nessun nuovo finding |
 
 ## Correzioni
 
@@ -21,7 +21,7 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 | F3 — Media | Una sola funzione `classify` per aggregati e istantanea: numeri finiti come float, NaN/Inf/testo e stati diversi da on/off → qualità `non valida`, valore `null`, grezzo in `raw`. | `test_instant_flags_invalid_values`. |
 | F4 — Media | Testi di botola e porta generati da `derive_openings` (`openings.*.texts`) e usati da cartiglio PNG, note delle entità, suffissi delle quote e visualizzatore. | `test_opening_texts_follow_data` (variante centro e porta misurata), controlli sul manifest della variante centro in `test_parameter_change_moves_without_duplicates`, controllo e2e che il pannello mostri i testi del manifest caricato. |
 
-### Commit successivo (F5)
+### Commit `11a0d31` (F5)
 
 | Finding | Correzione | Prove aggiunte |
 |---|---|---|
@@ -29,9 +29,128 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 
 Verifiche dell'implementatore sul commit di F5 (non sono una revisione): `tools/room3d/build_all.sh` exit 0 con 65 test Python superati; `npm run e2e` superato. `build_id` invariati.
 
-## Revisione 3
+## Revisione 3 — report di Codex su `11a0d31`
 
-In attesa della riverifica di Codex.
+### Riverifica 3 — Salamai room3d, 11a0d31
+
+Data: 28 ottobre 2026. Revisore indipendente: Codex.
+
+**Commit esaminato:** `11a0d31c5f45eb3ed2c72d0d21b0f942ab08edc8`, HEAD detached nel worktree `/home/marco/lab/salamai-review`.
+
+**Verdetto: approvato nel perimetro della revisione software e delle verifiche eseguite. F1–F5 risolti; nessun nuovo finding.** La build completa termina con exit 0, i **65 test** passano e la suite Chrome desktop/mobile passa. La correzione F5 è confermata da sonde indipendenti schema/runtime e da invocazioni CLI senza traceback sui casi richiesti. I limiti riportati sotto restano validi: questa approvazione non certifica misure fisiche, impianto o processo alimentare.
+
+#### Perimetro e integrità
+
+Letti `docs/room3d/REVIEW.md`, sezione Correzioni F5, e il diff `4337901..11a0d31`, inclusi schema, runtime, generatore sintetico, esempio, test e documentazione della migrazione. Confrontati i risultati con `CODEX_REVIEW_4337901.md` e le sonde delle revisioni precedenti.
+
+Il diff riguarda sette file: README e REVIEW, schema ed esempio ciclo, `export_analysis.py`, `make_synthetic_cycle.py`, `test_analysis.py`. Non modifica generatore geometrico, frontend, sync-data o template Nginx. Il diff è salvato in `/tmp/salamai-review-11a0d31/diff.patch`.
+
+Nessuna modifica ai sorgenti tracciati, nessun commit, nessun uso della scena condivisa o di MCP, nessuna scrittura nel worktree principale. Configurazioni e generatore modificati nelle sonde sono copie in `/tmp/salamai-review-11a0d31/`. La build standard scrive soltanto nel worktree di revisione; gli altri output sono in `/tmp`. Blender usa processi batch separati con `--factory-startup`.
+
+`git diff --exit-code`, `git diff --cached --exit-code` e `git diff --check` risultano puliti. Prima della scrittura del presente report erano non tracciati soltanto i due report precedenti.
+
+#### Comandi ed esiti
+
+Ambiente come nelle revisioni precedenti: Blender 5.2.3 LTS, Python 3.14.4, Node v24.14.0, npm 11.9.0 e Chrome di sistema. `jsonschema` è disponibile: i controlli sullo schema sono stati realmente eseguiti, non saltati. Nessuna installazione aggiuntiva di librerie Python.
+
+I comandi sono eseguiti dalla radice del worktree salvo indicazione diversa. Blender/build e browser sono stati eseguiti fuori sandbox con autorizzazione, per evitare i limiti ambientali già dimostrati nelle revisioni precedenti.
+
+| Comando / prova | Esito ed evidenza |
+|---|---|
+| `git rev-parse HEAD`, `git status --short`, `git diff 4337901..11a0d31 --stat`, lettura del diff e delle correzioni | Commit corretto; sorgenti puliti; ispezione completata. |
+| `tools/room3d/build_all.sh > /tmp/salamai-review-11a0d31-build.log 2>&1` | **Exit 0**. Validazione, due layout e otto PNG, GLB/manifest/blend, pacchetto sintetico, **65 test passati in 11,193 s**, npm ci, build web e controllo sola lettura. Nessun test segnalato come saltato. Gli errori previsti dai test negativi non costituiscono fallimenti. |
+| `python3 /tmp/salamai-review-11a0d31/contract_probe.py` | **Exit 0**: 30 casi schema/runtime concordanti, più l'esatto ciclo legacy estratto dal commit `14b2495`. Log `contract_probe.log`, risultati strutturati `contracts.json`. |
+| `python3 /tmp/salamai-review-11a0d31/variants.py` | **Exit 0**: prepara copie isolate di strumenti e configurazioni; la cornice nel solo generatore copiato cambia 15→20 mm. |
+| `blender --background --factory-startup --python-exit-code 1 --python /tmp/salamai-review-11a0d31/variants/tools/build_scene.py -- --config /home/marco/lab/salamai-review/model/room3d/room.json --output /tmp/salamai-review-11a0d31/generator-change --no-render` | **Exit 0**, sonda F1. Log `generator-change.log`. |
+| `python3 /tmp/salamai-review-11a0d31/probes.py` | **Exit 0**: CSV copiato con missing/invalid, qualità e disponibilità, warning di provenienza e rifiuto della geometria cambiata. Log `probes.log`. |
+| `python3 /tmp/salamai-review-11a0d31/cli_probe.py` | **Exit 0** delle asserzioni della sonda: sette invocazioni CLI, migrazione storica e controlli mirati F1/F4. Log `cli_probe.log`. |
+| `python3 tools/room3d/make_synthetic_cycle.py --build build/room3d --output /tmp/salamai-review-11a0d31/synthetic` | **Exit 0**, esempio rigenerato con 855 righe e contratto 1.1. Log `synthetic.log`. Successiva verifica con schema e `load_cycle`: accettato da entrambi, build ID L001 corretto. |
+| `npm run e2e -- --out /tmp/salamai-review-11a0d31/e2e` in `web/room3d-viewer` | **Exit 0, tutte le verifiche superate**. Log `e2e.log`, screenshot nella directory `e2e`. |
+| `view_image` su `/tmp/salamai-review-11a0d31/e2e/telefono_pannello.png` | Screenshot della revisione corrente ispezionato: pannello e avvisi leggibili, commit corretto, nessuna regressione visiva evidente rispetto alla revisione precedente. |
+| `git diff --exit-code`, `git diff --cached --exit-code`, `git diff --check` | Nessuna modifica ai file tracciati o errore whitespace introdotto dalla revisione. |
+
+I log indicati con nomi relativi sono in `/tmp/salamai-review-11a0d31/`.
+
+#### F5 — Risolto: contratto 1.1 e validazione prima dei percorsi
+
+Riferimenti esaminati: `model/room3d/cycles/cycle.schema.json`, `tools/room3d/export_analysis.py:35` e `:75`, `tools/room3d/make_synthetic_cycle.py`, sezione Collegamento ai cicli del README.
+
+Lo schema richiede ora `build_id`, stringa esadecimale minuscola di 20 caratteri. `semantic_hash` è opzionale/null oppure SHA256 di 64 caratteri; sono specificati anche i formati di layout, config hash e commit. Il runtime controlla tipi e formati prima di costruire i percorsi. Il contratto passa esplicitamente a **1.1** e la migrazione da 1.0 è descritta sia nel messaggio d'errore sia nella documentazione.
+
+##### Sonde schema/runtime indipendenti
+
+Ogni caso usa una copia del JSON in `/tmp`. La verifica schema usa `jsonschema.Draft202012Validator`; il runtime usa `load_cycle`. Nessun caso seguente ha prodotto un'eccezione non gestita.
+
+| Gruppo di casi | Schema | Runtime |
+|---|---|---|
+| Esempio attuale 1.1 | Accetta | Accetta |
+| Contratto 1.0; versione sconosciuta 9.9 | Rifiuta | `AnalysisError`, codice 1 |
+| `build_id` assente, intero 123, vuoto, `../../etc`, caratteri non esadecimali, lunghezza 19 o 21, null, booleano | Rifiuta | `AnalysisError`, codice 1, percorso `layout_refs[0].build_id` |
+| `semantic_hash` testo `xyz`, intero, vuoto, 63 caratteri | Rifiuta | `AnalysisError`, codice 1, percorso del campo |
+| `semantic_hash` null oppure assente | Accetta | Accetta, coerentemente con il carattere opzionale |
+| `config_hash` corto o booleano | Rifiuta | `AnalysisError`, codice 1 |
+| `layout_id` con `../`, vuoto o intero | Rifiuta | `AnalysisError`, codice 1 |
+| `source_commit` non esadecimale o intero | Rifiuta | `AnalysisError`, codice 1 |
+| `source_commit` esadecimale di 7 caratteri oppure null | Accetta | Accetta |
+| `layout_refs` vuoto, oggetto anziché array, elemento intero anziché oggetto | Rifiuta | `AnalysisError`, codice 1 |
+
+**Totale: 30 casi concordanti.** È una matrice mirata sui campi interessati da F5, non una dimostrazione di equivalenza esaustiva fra tutto lo schema e il runtime.
+
+È stato anche estratto l'esatto esempio legacy con:
+
+```bash
+git show 14b2495:model/room3d/cycles/examples/SINTETICO_2026-01-10_0800/cycle.json
+```
+
+Schema e runtime lo rifiutano. Il runtime specifica che occorre aggiungere build ID/semantic hash dalla **build storica verificata**, impostare `schema_version` a 1.1 e non usare la build corrente al suo posto.
+
+##### Ripetizione tramite CLI e migrazione
+
+La sonda lancia realmente `python3 tools/room3d/export_analysis.py --cycle <copia> --build build/room3d --output <directory-in-tmp>` per legacy 1.0, build ID mancante/intero/vuoto/con percorso e semantic hash malformato. Tutti terminano con **exit 1**, messaggio `ERRORE:` e **nessun traceback**. L'esempio valido termina con **exit 0** e produce il pacchetto sintetico.
+
+Per il ciclo legacy copiato è stata inoltre provata la procedura documentata: lettura del catalogo originale conservato dalla prima revisione in `/tmp/salamai-review-build2/catalog.json`, verifica del config hash, copia dei suoi build ID e semantic hash nel riferimento e passaggio a 1.1. Il nuovo esportatore accetta il ciclo così migrato con **exit 0**. Gli ID geometrici storici coincidono con quelli attuali, come già dimostrato nelle revisioni precedenti: non sono stati inventati riferimenti da una disposizione differente. La prova riguarda una copia sintetica, non modifica archivi reali.
+
+L'esempio rigenerato da `make_synthetic_cycle.py` è anch'esso 1.1 e valido per schema e runtime. Non è più riproducibile il precedente `TypeError` con `build_id:123`.
+
+#### F1–F4 — Conferma delle correzioni precedenti
+
+| Finding | Stato | Test e sonda mirata della revisione corrente |
+|---|---|---|
+| **F1 — Alta**, identità revisioni e cache | **Risolto** | Passano test di identità, nomi con hash, riproducibilità, generatore modificato e rifiuto della geometria discordante. Ripetuta indipendentemente la modifica della cornice: stessa configurazione, build ID e directory differenti. `resolve_build` rifiuta il riferimento originale con codice 2 quando è disponibile solo la geometria modificata. |
+| **F2 — Media**, zona osservata senza dati | **Risolto** | Passano test missing e copertura per intervallo. Sonda CSV tutta missing su T/UR: zona salami con `measured_by:[]`, nessuna quantità osservata, B1 indicata senza dati validi; messaggio globale coerente. B2 con peso missing ha zero campioni e avviso esplicito. |
+| **F3 — Media**, istantanea con invalidi “ok” | **Risolto** | Passa `test_instant_flags_invalid_values`. Ripetuta sonda con NaN, testo non numerico, stato invalido e inf: istantanea null/“non valida” con `raw`, aggregato temperatura con due invalidi esclusi dai valori validi. |
+| **F4 — Media**, testi statici di botola/porta | **Risolto** | Passano test dei testi derivati e della variante center. Sonda in memoria con center e porta misurata a 2 m: Y=0,175–0,625, testo “40 cm ... al centro”, porta “2,00 m (misurato)”, nessun suffisso provvisorio della porta. E2E verifica che il browser mostri i riepiloghi del manifest effettivamente caricato. |
+| **F5 — Media**, schema/runtime dei cicli | **Risolto** | Matrice indipendente di 30 casi, legacy originale, CLI senza traceback, migrazione esplicita e generatore sintetico 1.1 descritti sopra. |
+
+Risultati numerici della sonda F1:
+
+- L001: `1ff600bc3a7b36eee701` → `28623ce848eb8dae6915` con cornice modificata;
+- L900_DEMO: `274d53fea584bd3da762` → `62e442adc0fd2b92ee8b`;
+- config hash invariati, directory diverse; warning esplicito anche per commit di provenienza differente.
+
+La suite completa mantiene i controlli su coordinate di porta/botola, geometria dei fori, riapertura blend, Z-up/Y-up, scala, ID ed errori di configurazione. I build ID originali sono invariati rispetto alle revisioni precedenti.
+
+La suite web passa su server statico nel sottopercorso `/salamai/room3d/`: caricamento, avvisi derivati, rotazione, layer, trasparenza e selezione interna, quote, misura porta **65,0 cm**, confronto per ID e camera sincronizzata. Passano gli errori manifest/GLB/WebGL e la verifica di richieste GET senza CDN. Sul telefono emulato 390×844 passano rotazione, pinch, selezione, pannello e assenza di overflow orizzontale. Non sono state osservate regressioni dovute al cambiamento del contratto dei cicli.
+
+#### Nuovi finding
+
+**Nessuno nel perimetro verificato.** Nessun F6 aperto. Conteggio: **0 critici, 0 alti, 0 medi, 0 bassi**.
+
+#### Verifiche non eseguite e limiti
+
+- Non eseguiti rilievi fisici, collegamenti a Home Assistant/dispositivi/Modbus o analisi di telemetria reale. Altezza e verso della porta, riferimento dei 40 cm e altre assunzioni restano dati da confermare. Nessuna validazione di portata o sicurezza alimentare.
+- Non ripetuti Docker/Nginx e sonde HTTP/cache della revisione 2: template, sync-data, frontend e generatore geometrico sono invariati nel diff corrente. Le precedenti evidenze restano pertinenti a quei file; il presente report non le presenta come nuovi test runtime di Nginx.
+- Non rigenerata e ispezionata nuovamente una variante center nel PNG e nel browser: questa volta center/porta misurata sono verificati da test e sonda mirata Python; il browser verifica i testi del manifest del layout di default. Il controllo PNG/browser della variante center era stato riprodotto nella revisione 2.
+- Gli otto PNG originali sono stati rigenerati dalla build, ma non ispezionati tutti manualmente in questa riverifica. È stato ispezionato lo screenshot mobile corrente; nessun controllo in Blender GUI o via MCP. Motore di build Workbench, Cycles non riprovato.
+- Chrome headless/SwiftShader con touch emulato; non dispositivi fisici, Safari/iOS, Firefox o ogni viewport. Non ripetuta su mobile l'intera sequenza desktop di misure/confronto/errori. Accessibilità e pan non verificati con prove dedicate.
+- Le sonde schema/runtime coprono i casi elencati; non eseguiti fuzzing o verifica esaustiva di ogni campo, timestamp, fuso e possibile struttura JSON. Il validatore schema delle sonde non attiva un controllo aggiuntivo dei formati date-time. Il confronto mirato riguarda versioni e riferimenti interessati da F5.
+- Nessuna migrazione di cicli reali né recupero da archivi esterni; solo esempio sintetico e artefatti storici locali della revisione. La disponibilità di una build storica verificabile rimane necessaria.
+- Nessun audit dipendenze, benchmark, pubblicazione o modifica della scena condivisa.
+
+#### Verdetto finale
+
+**F1–F5 chiusi sul commit `11a0d31c5f45eb3ed2c72d0d21b0f942ab08edc8`. Nessun nuovo finding rilevato.** Le evidenze riprodotte supportano l'approvazione dello snapshot nel perimetro software esaminato, con i limiti espliciti sopra. Qualsiasi revisione successiva dei sorgenti richiederà una verifica riferita al suo commit.
+
 
 ## Revisione 2 — report di Codex su `4337901`
 
