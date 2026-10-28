@@ -226,7 +226,8 @@ Così i cicli precedenti restano associati alla revisione che avevano.
 
 - **ID del ciclo.** L'unico identificativo esistente è il nome della cartella di archivio `/share/salumi/<YYYY-MM-DD_HHMM>/` (vedi `homeassistant/salumi.yaml`), che contiene `letture.csv`.
 - **`cycle.json`.** Accanto al CSV va un file `cycle.json` (vedi `model/room3d/cycles/cycle.schema.json`) con:
-  - `layout_refs`: `layout_id`, `config_hash` e `build_id` (obbligatori), `semantic_hash` (consigliato), tutti dal manifest o da `catalog.json`, più `source_commit` e intervallo di validità. Se la disposizione cambia durante il ciclo, si aggiunge un nuovo intervallo;
+  - `layout_refs`: `layout_id`, `config_hash` e `build_id` (obbligatori), `semantic_hash` (consigliato), tutti dal manifest o da `catalog.json`, più `source_commit` e intervallo di validità. Lo schema è `model/room3d/cycles/cycle.schema.json`, versione **1.1**; l'esportatore applica gli stessi formati prima di usare i valori nei percorsi.
+  - **Cicli 1.0** (senza `build_id`): sono rifiutati con un messaggio esplicito. Per integrarli si rigenera la build dal `source_commit` del ciclo (o si usa la cartella archiviata), si verifica che il `config_hash` coincida, si copiano `build_id` e `semantic_hash` dal suo `catalog.json` e si porta `schema_version` a `1.1`. Non si usa mai la build corrente al posto di quella storica. Se la disposizione cambia durante il ciclo, si aggiunge un nuovo intervallo;
   - `events`: carico, rimozioni, cambi di layout e note, con timestamp. Una rimozione non vuol dire che la zona è vuota.
 - **`mapping.json`.** Collega componenti e colonne CSV agli ID reali, con questi stati:
   - `in_use`: oggi usato nel repository;

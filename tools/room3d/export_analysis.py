@@ -22,6 +22,7 @@ import datetime as dt
 import json
 import math
 import os
+import re
 import shutil
 import statistics
 import sys
@@ -31,6 +32,15 @@ sys.path.insert(0, HERE)
 import room3d_core as core  # noqa: E402
 
 PACKAGE_VERSION = "1.0"
+CYCLE_SCHEMA_VERSION = "1.1"
+# formati dei riferimenti di layout: gli stessi di model/room3d/cycles/cycle.schema.json
+REF_FORMATS = {
+    "layout_id": (r"[A-Za-z0-9_-]+", True),
+    "config_hash": (r"[0-9a-f]{64}", True),
+    "build_id": (r"[0-9a-f]{20}", True),
+    "semantic_hash": (r"[0-9a-f]{64}", False),
+    "source_commit": (r"[0-9a-f]{7,40}", False),
+}
 NUMERIC = ["temp_obiettivo", "ur_obiettivo", "temperatura", "umidita", "temperatura_cantina", "umidita_cantina",
            "peso_g", "calo_reale_pct", "calo_atteso_pct", "potenza_stufa_w", "potenza_umidificatore_w",
            "energia_ciclo_stufa_kwh", "energia_ciclo_umidificatore_kwh"]
@@ -62,16 +72,32 @@ def load_cycle(cycle_dir):
             errs.append(f"campo '{k}' mancante")
     if errs:
         raise AnalysisError("cycle.json non valido: " + "; ".join(errs))
+    if c["schema_version"] == "1.0":
+        raise AnalysisError("cycle.json: contratto 1.0 non più accettato. Aggiungere a ogni layout_refs il build_id "
+                            "(e semantic_hash) della build storica verificata e impostare schema_version "
+                            f"'{CYCLE_SCHEMA_VERSION}'; non si usa mai la build corrente al suo posto.")
+    if c["schema_version"] != CYCLE_SCHEMA_VERSION:
+        raise AnalysisError(f"cycle.json: schema_version {c['schema_version']!r} non supportata (attesa '{CYCLE_SCHEMA_VERSION}')")
     if not isinstance(c["synthetic"], bool):
         raise AnalysisError("cycle.json: 'synthetic' deve essere true/false")
     refs = c["layout_refs"]
-    if not refs:
+    if not isinstance(refs, list) or not refs:
         raise AnalysisError("cycle.json: nessun riferimento di layout")
     prev_end = None
     for i, r in enumerate(refs):
-        for k in ("layout_id", "config_hash", "build_id", "valid_from"):
-            if not r.get(k):
-                raise AnalysisError(f"layout_refs[{i}]: '{k}' mancante")
+        if not isinstance(r, dict):
+            raise AnalysisError(f"layout_refs[{i}]: deve essere un oggetto")
+        if not r.get("valid_from"):
+            raise AnalysisError(f"layout_refs[{i}].valid_from: mancante")
+        # validati prima di costruire percorsi (layout_id e build_id finiscono nel percorso)
+        for k, (pattern, required) in REF_FORMATS.items():
+            v = r.get(k)
+            if v is None:
+                if required:
+                    raise AnalysisError(f"layout_refs[{i}].{k}: mancante")
+                continue
+            if not isinstance(v, str) or not re.fullmatch(pattern, v):
+                raise AnalysisError(f"layout_refs[{i}].{k}: valore {v!r} non valido (formato atteso {pattern})")
         r["_from"] = parse_ts(r["valid_from"], f"layout_refs[{i}].valid_from")
         r["_to"] = parse_ts(r["valid_to"], f"layout_refs[{i}].valid_to") if r.get("valid_to") else None
         if r["_to"] and r["_to"] <= r["_from"]:

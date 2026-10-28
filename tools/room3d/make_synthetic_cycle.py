@@ -96,7 +96,7 @@ def main():
         w.writerows(rows)
 
     cycle = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "cycle_id": CYCLE_ID,
         "synthetic": True,
         "synthetic_notice": "DATI SINTETICI DI ESEMPIO generati da tools/room3d/make_synthetic_cycle.py: NON sono misure reali e non descrivono nessun ciclo avvenuto.",

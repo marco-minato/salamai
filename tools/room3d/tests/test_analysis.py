@@ -227,5 +227,74 @@ class TestAnalysis(unittest.TestCase):
         self.assertEqual(code, 1)
 
 
+try:
+    import jsonschema
+except ImportError:  # lo schema si controlla solo se la libreria c'è; il runtime sempre
+    jsonschema = None
+
+
+class TestCycleContract(unittest.TestCase):
+    """Schema JSON e runtime devono accettare e rifiutare gli stessi riferimenti."""
+
+    def setUp(self):
+        with open(os.path.join(CYCLE, "cycle.json")) as f:
+            self.base = json.load(f)
+        with open(os.path.join(MODEL, "cycles", "cycle.schema.json")) as f:
+            self.schema = json.load(f)
+        self.tmp = tempfile.mkdtemp(prefix="room3d_contract_")
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+
+    def check(self, mutate):
+        c = copy.deepcopy(self.base)
+        mutate(c)
+        with open(os.path.join(self.tmp, "cycle.json"), "w") as f:
+            json.dump(c, f)
+        try:
+            ea.load_cycle(self.tmp)
+            runtime = None
+        except ea.AnalysisError as e:
+            runtime = e
+        schema_ok = None
+        if jsonschema is not None:
+            schema_ok = jsonschema.Draft202012Validator(self.schema).is_valid(c)
+        return runtime, schema_ok
+
+    def test_example_valid_for_both(self):
+        runtime, schema_ok = self.check(lambda c: None)
+        self.assertIsNone(runtime)
+        self.assertIn(schema_ok, (True, None))
+
+    def test_malformed_refs_rejected_by_both(self):
+        def set_ref(k, v):
+            def m(c):
+                if v is ...:
+                    del c["layout_refs"][0][k]
+                else:
+                    c["layout_refs"][0][k] = v
+            return m
+        cases = {
+            "build_id mancante": set_ref("build_id", ...),
+            "build_id intero": set_ref("build_id", 123),
+            "build_id vuoto": set_ref("build_id", ""),
+            "build_id formato": set_ref("build_id", "../../etc"),
+            "semantic_hash malformato": set_ref("semantic_hash", "xyz"),
+            "layout_id con percorso": set_ref("layout_id", "../L001"),
+            "config_hash corto": set_ref("config_hash", "abc"),
+            "source_commit non esadecimale": set_ref("source_commit", "main"),
+            "contratto 1.0": lambda c: c.update(schema_version="1.0"),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(name):
+                runtime, schema_ok = self.check(mutate)
+                self.assertIsInstance(runtime, ea.AnalysisError, name)
+                self.assertEqual(runtime.code, 1)
+                self.assertIn(schema_ok, (False, None), name)
+
+    def test_legacy_message_explains_migration(self):
+        runtime, _ = self.check(lambda c: c.update(schema_version="1.0"))
+        self.assertIn("build_id", str(runtime))
+        self.assertIn("build storica", str(runtime))
+
+
 if __name__ == "__main__":
     unittest.main()
