@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "description": "Collegamento fra componenti del modello 3D e identificativi reali (Home Assistant, ESPHome, Modbus, colonne di letture.csv). Stati: 'in_use' = stringa usata oggi nel repository; 'derived_unverified' = ricavata dalle regole ESPHome (friendly_name + nome entità), non ancora presente in HA; 'unresolved' = nessun identificativo reale.",
+  "sources": {
+    "salumi_yaml": "homeassistant/salumi.yaml",
+    "salumi_log": "homeassistant/salumi_log.py",
+    "camera_yaml": "esphome/salumi-camera.yaml",
+    "nodo_yaml": "esphome/salumi-nodo.yaml",
+    "sonda_yaml": "esphome/sonda-th.yaml"
+  },
+  "cycle_archive": {
+    "cycle_id_rule": "nome della cartella di archivio /share/salumi/<cartella>/, formato %Y-%m-%d_%H%M (homeassistant/salumi.yaml:474-481); unico identificativo di ciclo esistente",
+    "readings_file": "letture.csv",
+    "readings_interval_s": 300,
+    "timestamp": "colonna 'ora', ISO 8601 locale senza fuso (datetime.now().isoformat(timespec='seconds'), salumi_log.py:288)",
+    "missing_values": ["", "unavailable", "unknown", "none", "None"],
+    "phase_column": "fase"
+  },
+  "csv_columns": {
+    "temperatura": {"component": "sensor_b1_sth01", "quantity": "temperatura aria camera", "unit": "°C", "status": "in_use", "entity_id": "sensor.sonda_th_temperatura", "note": "oggi viene dalla S-TH-01 letta dalla XIAO (sonda-th.yaml); la posizione fisica attuale della sonda non è rilevata: la posizione del componente è quella di progetto"},
+    "umidita": {"component": "sensor_b1_sth01", "quantity": "umidità relativa camera", "unit": "%", "status": "in_use", "entity_id": "sensor.sonda_th_umidita", "note": "come sopra"},
+    "temperatura_cantina": {"component": null, "quantity": "temperatura cantina", "unit": "°C", "status": "in_use", "entity_id": "sensor.shelly_h_t_cantina_temperature", "note": "Shelly H&T cantina, posizione non modellata; la futura B5 (sensor_b5_cantina) la sostituirà"},
+    "umidita_cantina": {"component": null, "quantity": "umidità relativa cantina", "unit": "%", "status": "in_use", "entity_id": "sensor.shelly_h_t_cantina_humidity"},
+    "peso_g": {"component": "load_cell_b2", "quantity": "peso del salame campione", "unit": "g", "status": "in_use", "entity_id": "sensor.salumi_peso", "note": "template HA basato su sensor.cantina_sonda_th_peso (prefisso anomalo, forse rinominato)"},
+    "calo_reale_pct": {"component": "load_cell_b2", "quantity": "calo peso reale", "unit": "%", "status": "in_use", "entity_id": "sensor.salumi_calo_reale"},
+    "calo_atteso_pct": {"component": null, "quantity": "calo atteso (modello di riferimento)", "unit": "%", "status": "in_use", "entity_id": "sensor.salumi_calo_atteso", "note": "valore calcolato, non una misura"},
+    "stufa": {"component": "heater_e1", "quantity": "stato relè stufa", "unit": "on/off", "status": "in_use", "entity_id": "switch.sonoff_1001f24fe4_2"},
+    "umidificatore": {"component": null, "quantity": "stato relè umidificatore", "unit": "on/off", "status": "in_use", "entity_id": "switch.sonoff_1001f24fe4_1", "note": "un solo canale oggi: non si sa quale fra M2 e M3 (o entrambi) sia collegato"},
+    "potenza_stufa_w": {"component": "heater_e1", "quantity": "potenza stufa", "unit": "W", "status": "in_use", "entity_id": "sensor.sonoff_1001f24fe4_power_2"},
+    "potenza_umidificatore_w": {"component": null, "quantity": "potenza umidificatore", "unit": "W", "status": "in_use", "entity_id": "sensor.sonoff_1001f24fe4_power_1"},
+    "energia_ciclo_stufa_kwh": {"component": "heater_e1", "quantity": "energia stufa nel ciclo", "unit": "kWh", "status": "in_use", "entity_id": "sensor.salumi_energia_ciclo_stufa"},
+    "energia_ciclo_umidificatore_kwh": {"component": null, "quantity": "energia umidificatore nel ciclo", "unit": "kWh", "status": "in_use", "entity_id": "sensor.salumi_energia_ciclo_umidificatore"},
+    "fase": {"component": null, "quantity": "fase del ciclo", "unit": null, "status": "in_use", "entity_id": "sensor.salumi_fase"},
+    "temp_obiettivo": {"component": null, "quantity": "temperatura obiettivo", "unit": "°C", "status": "in_use", "note": "obiettivo di programma, non una misura"},
+    "ur_obiettivo": {"component": null, "quantity": "umidità obiettivo", "unit": "%", "status": "in_use", "note": "obiettivo di programma, non una misura"}
+  },
+  "components": {
+    "sensor_b1_sth01": {
+      "current": [{"entity_id": "sensor.sonda_th_temperatura", "status": "in_use"}, {"entity_id": "sensor.sonda_th_umidita", "status": "in_use"}, {"entity_id": "sensor.sonda_th_dew_point", "status": "in_use"}],
+      "future": [{"entity_id": "sensor.camera_salumi_temperatura_camera", "status": "derived_unverified"}, {"entity_id": "sensor.camera_salumi_umidita_camera", "status": "derived_unverified"}],
+      "modbus": {"bus": "RS485 9600 8N1", "address": 1}
+    },
+    "sensor_b5_cantina": {
+      "current": [],
+      "future": [],
+      "modbus": {"bus": "RS485 9600 8N1", "address": 3, "note": "commentata nel firmware, da acquistare"},
+      "status": "unresolved"
+    },
+    "sensor_b3_wall": {"current": [], "future": [{"entity_id": "sensor.camera_salumi_temperatura_parete", "status": "derived_unverified"}], "modbus": {"address": 4, "register": "0x0004"}},
+    "sensor_b4_floor": {"current": [], "future": [{"entity_id": "sensor.camera_salumi_temperatura_pavimento", "status": "derived_unverified"}], "modbus": {"address": 4, "register": "0x0005"}},
+    "load_cell_b2": {
+      "current": [{"entity_id": "sensor.cantina_sonda_th_peso", "status": "in_use", "note": "prefisso anomalo"}, {"entity_id": "sensor.salumi_peso", "status": "in_use"}],
+      "future": [{"entity_id": "sensor.camera_salumi_peso", "status": "derived_unverified"}],
+      "modbus": {"address": 4, "register": "0x0002-0x0003"}
+    },
+    "node_box_x6": {"current": [], "future": [{"entity_id": "binary_sensor.camera_salumi_nodo_camera_non_risponde", "status": "derived_unverified"}], "esphome_device": "salumi-nodo", "modbus": {"address": 4}},
+    "fan_01": {"current": [], "future": [{"entity_id": "sensor.camera_salumi_giri_ventola_1", "status": "derived_unverified", "note": "giri M5, non portata"}, {"entity_id": "fan.camera_salumi_ventole_ricircolo", "status": "derived_unverified", "note": "PWM comune a tutte le ventole"}]},
+    "fan_02": {"current": [], "future": [{"entity_id": "sensor.camera_salumi_giri_ventola_2", "status": "derived_unverified", "note": "giri M6, non portata"}, {"entity_id": "fan.camera_salumi_ventole_ricircolo", "status": "derived_unverified"}]},
+    "fan_03": {"current": [], "future": [{"entity_id": "fan.camera_salumi_ventole_ricircolo", "status": "derived_unverified", "note": "solo PWM comune"}], "status": "unresolved", "note": "il firmware ha due soli ingressi giri: nessuna lettura dei giri della terza ventola"},
+    "heater_e1": {
+      "current": [{"entity_id": "switch.sonoff_1001f24fe4_2", "status": "in_use"}, {"entity_id": "climate.salumi_stufa", "status": "in_use"}, {"entity_id": "sensor.sonoff_1001f24fe4_power_2", "status": "in_use"}],
+      "future": [{"entity_id": "switch.camera_salumi_lampada_1", "status": "derived_unverified"}, {"entity_id": "switch.camera_salumi_lampada_2", "status": "derived_unverified"}, {"entity_id": "switch.camera_salumi_lampada_3", "status": "derived_unverified"}, {"entity_id": "climate.camera_salumi_stufa", "status": "derived_unverified"}]
+    },
+    "humidifier_m2": {"current": [{"entity_id": "switch.sonoff_1001f24fe4_1", "status": "in_use", "note": "canale unico: non si sa se comanda M2, M3 o entrambi"}], "future": [{"entity_id": "switch.camera_salumi_umidificatore_1", "status": "derived_unverified", "note": "CH4: corrispondenza CH4↔M2 da verificare"}], "status": "unresolved"},
+    "humidifier_m3": {"current": [], "future": [{"entity_id": "switch.camera_salumi_umidificatore_2", "status": "derived_unverified", "note": "CH5: corrispondenza CH5↔M3 da verificare"}], "status": "unresolved"},
+    "extractor_m4": {"current": [], "future": [{"entity_id": "switch.camera_salumi_estrattore", "status": "derived_unverified"}], "note": "salumi_log.py cita switch.salumi_aspiratore, che oggi non esiste"},
+    "inlet_y2": {"current": [], "future": [], "status": "unresolved", "note": "elemento passivo, nessun segnale"},
+    "check_valve_y1": {"current": [], "future": [], "status": "unresolved", "note": "elemento passivo, nessun segnale"}
+  }
+}

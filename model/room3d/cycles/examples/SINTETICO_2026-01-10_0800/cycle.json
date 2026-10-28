@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "cycle_id": "SINTETICO_2026-01-10_0800",
+  "synthetic": true,
+  "synthetic_notice": "DATI SINTETICI DI ESEMPIO generati da tools/room3d/make_synthetic_cycle.py: NON sono misure reali e non descrivono nessun ciclo avvenuto.",
+  "archive_folder": null,
+  "timezone": "Europe/Rome",
+  "timezone_note": "letture.csv usa ora locale senza fuso: il fuso è un'assunzione del contratto",
+  "started_at": "2026-01-10T08:00:00",
+  "ended_at": "2026-01-13T07:55:00",
+  "layout_refs": [
+    {
+      "layout_id": "L001",
+      "config_hash": "e6524a05288a297be4751cb6faff4af62fb90e8a7a84e4615c82b6bc341de87d",
+      "source_commit": null,
+      "valid_from": "2026-01-10T08:00:00",
+      "valid_to": null,
+      "note": "per un ciclo reale indicare anche il commit dei sorgenti del modello"
+    }
+  ],
+  "telemetry": {
+    "file": "letture.csv",
+    "format": "salumi_log.py/letture.csv",
+    "mapping": "model/room3d/mapping.json"
+  },
+  "events": [
+    {
+      "t": "2026-01-10T07:40:00",
+      "type": "load",
+      "zone": "zone_salami",
+      "product": "salami",
+      "quantity": {
+        "value": 30,
+        "unit": "kg"
+      },
+      "note": "esempio sintetico"
+    },
+    {
+      "t": "2026-01-10T07:45:00",
+      "type": "load",
+      "zone": "zone_tagli_interi",
+      "product": "coppa, lonzino",
+      "quantity": {
+        "value": 8,
+        "unit": "kg"
+      },
+      "note": "esempio sintetico"
+    },
+    {
+      "t": "2026-01-10T07:50:00",
+      "type": "load",
+      "zone": "zone_cacciatorini",
+      "product": "cacciatorini",
+      "quantity": {
+        "value": 2,
+        "unit": "kg"
+      },
+      "note": "esempio sintetico; permanenza non specificata"
+    },
+    {
+      "t": "2026-01-11T09:00:00",
+      "type": "note",
+      "text": "esempio di nota sintetica"
+    },
+    {
+      "t": "2026-01-11T14:00:00",
+      "type": "load",
+      "zone": "zone_tagli_interi",
+      "product": "guanciale",
+      "quantity": {
+        "value": 1.5,
+        "unit": "kg"
+      },
+      "note": "esempio sintetico (Giorno 1)"
+    },
+    {
+      "t": "2026-01-12T10:00:00",
+      "type": "removal",
+      "zone": "zone_tagli_interi",
+      "product": "coppa, lonzino",
+      "quantity": {
+        "value": 7.6,
+        "unit": "kg"
+      },
+      "note": "esempio sintetico: rimozione registrata, la zona NON è considerata vuota"
+    }
+  ]
+}

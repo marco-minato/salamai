@@ -12,6 +12,7 @@ per dashboard e archivio, supervisione periodica con Claude Code.
 | `esphome/` | `salumi-camera.yaml` (scheda Waveshare, firmware di prova), `salumi-nodo.yaml` (nodo in camera su XIAO ESP32C3, server Modbus indirizzo 4), `sonda-th.yaml` (sonda attuale sulla stessa XIAO, fino alla migrazione) | `/homeassistant/esphome/` |
 | `camera_salumi/` | Schema elettrico QElectroTech e immagini | — |
 | `qet-tools/` | Strumenti per generare ed esportare gli schemi QElectroTech | — |
+| `model/room3d/`, `tools/room3d/`, `web/room3d-viewer/` | Modello 3D parametrico della camera (JSON → Blender → GLB, manifest e viste quotate) e visualizzatore web in sola lettura: vedi `docs/room3d/README.md` | — |
 
 Non versionati: `secrets.yaml` di ESPHome e `supervisione/stato/` (contiene il
 token del Supervisor e lo stato del runner).

@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "salamai/room3d/room.schema.json",
+  "title": "Salamai room3d — stanza e layout",
+  "description": "Struttura di room.json e dei layout in layouts/. Il validatore autorevole è tools/room3d/validate_config.py, che controlla anche i vincoli geometrici (aperture nella stanza, elementi dentro la stanza, assi, tubazioni) che questo schema non esprime.",
+  "type": "object",
+  "required": ["schema_version", "model_id", "units", "frame", "tolerance_m", "layouts_catalog", "sources", "assumptions", "room", "openings"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "model_id": {"type": "string"},
+    "title": {"type": "string"},
+    "units": {
+      "type": "object",
+      "required": ["length", "display_length"],
+      "properties": {"length": {"const": "m"}, "display_length": {"const": "cm"}, "angle": {"const": "deg"}, "mass": {"const": "kg"}}
+    },
+    "frame": {
+      "type": "object",
+      "required": ["id", "handedness", "up", "origin"],
+      "properties": {"handedness": {"const": "right"}, "up": {"const": "+Z"}}
+    },
+    "tolerance_m": {"type": "number", "exclusiveMinimum": 0},
+    "layouts_catalog": {"type": "string"},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "assumptions": {"type": "array", "items": {"$ref": "#/$defs/assumption"}},
+    "room": {
+      "type": "object",
+      "required": ["interior", "wall_thickness", "floor_thickness", "ceiling_thickness"],
+      "properties": {
+        "interior": {
+          "type": "object",
+          "required": ["size_x", "size_y", "size_z"],
+          "properties": {
+            "size_x": {"$ref": "#/$defs/q_number"},
+            "size_y": {"$ref": "#/$defs/q_number"},
+            "size_z": {"$ref": "#/$defs/q_number"},
+            "x_breakdown": {"type": "array", "items": {"$ref": "#/$defs/q_number"}}
+          }
+        },
+        "wall_thickness": {"$ref": "#/$defs/q_number"},
+        "floor_thickness": {"$ref": "#/$defs/q_number"},
+        "ceiling_thickness": {"$ref": "#/$defs/q_number"}
+      }
+    },
+    "openings": {
+      "type": "object",
+      "required": ["door", "hatch"],
+      "properties": {
+        "door": {
+          "type": "object",
+          "required": ["id", "x_min", "width", "height", "hinge_side", "swing", "leaf_open_deg", "leaf_thickness"],
+          "properties": {
+            "id": {"$ref": "#/$defs/id"},
+            "x_min": {"$ref": "#/$defs/q_number"},
+            "width": {"$ref": "#/$defs/q_number"},
+            "height": {"$ref": "#/$defs/q_number"},
+            "hinge_side": {"$ref": "#/$defs/q_enum"},
+            "swing": {"$ref": "#/$defs/q_enum"},
+            "leaf_open_deg": {"$ref": "#/$defs/q_number"},
+            "leaf_thickness": {"$ref": "#/$defs/q_number"}
+          }
+        },
+        "hatch": {
+          "type": "object",
+          "required": ["id", "size_x", "size_y", "center_x_rule", "offset_from_door_wall", "offset_reference"],
+          "properties": {
+            "id": {"$ref": "#/$defs/id"},
+            "center_x_rule": {"const": "door_center"},
+            "offset_reference": {"$ref": "#/$defs/q_enum", "description": "near_edge | center | far_edge: bordo o centro a cui si riferisce la distanza dalla parete porta"}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "status": {"enum": ["measured", "declared", "derived", "assumed", "unknown"]},
+    "quantity": {
+      "type": "object",
+      "description": "Dato con provenienza. 'unknown' => value null e draw_value provvisorio per il disegno (non diventa mai un dato). 'measured'/'declared' => source obbligatoria. 'assumed' => note o assumption obbligatoria.",
+      "required": ["status"],
+      "properties": {
+        "status": {"$ref": "#/$defs/status"},
+        "source": {"type": "string"},
+        "note": {"type": "string"},
+        "assumption": {"type": "string"},
+        "alternatives": {"type": "array"}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "unknown"}}}, "then": {"required": ["draw_value"], "properties": {"value": {"type": "null"}}}, "else": {"required": ["value"]}},
+        {"if": {"properties": {"status": {"enum": ["measured", "declared"]}}}, "then": {"required": ["source"]}},
+        {"if": {"properties": {"status": {"const": "assumed"}}}, "then": {"anyOf": [{"required": ["note"]}, {"required": ["assumption"]}]}}
+      ]
+    },
+    "q_number": {"allOf": [{"$ref": "#/$defs/quantity"}, {"properties": {"value": {"type": ["number", "null"]}, "draw_value": {"type": "number"}}}]},
+    "q_enum": {"allOf": [{"$ref": "#/$defs/quantity"}, {"properties": {"value": {"type": ["string", "null"]}, "draw_value": {"type": "string"}}}]},
+    "q_vec3": {"allOf": [{"$ref": "#/$defs/quantity"}, {"properties": {
+      "value": {"oneOf": [{"type": "null"}, {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3}]},
+      "draw_value": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3}}}]},
+    "vec3": {
+      "description": "Vettore 3D come una sola grandezza oppure per asse, ognuno con la sua provenienza.",
+      "oneOf": [
+        {"$ref": "#/$defs/q_vec3"},
+        {"type": "object", "required": ["x", "y", "z"], "properties": {"x": {"$ref": "#/$defs/q_number"}, "y": {"$ref": "#/$defs/q_number"}, "z": {"$ref": "#/$defs/q_number"}}}
+      ]
+    },
+    "source": {"type": "object", "required": ["id", "kind", "path"], "properties": {"id": {"$ref": "#/$defs/id"}, "sha256": {"type": "string"}}},
+    "assumption": {"type": "object", "required": ["id", "text"], "properties": {"id": {"$ref": "#/$defs/id"}, "affects": {"type": "array", "items": {"type": "string"}}}},
+    "geometry": {
+      "type": "object",
+      "required": ["kind"],
+      "oneOf": [
+        {"properties": {"kind": {"enum": ["box", "zone"]}, "center": {"$ref": "#/$defs/vec3"}, "size": {"$ref": "#/$defs/vec3"}, "yaw_deg": {"$ref": "#/$defs/q_number"}}, "required": ["center", "size"]},
+        {"properties": {"kind": {"const": "marker"}, "center": {"$ref": "#/$defs/vec3"}, "diameter": {"$ref": "#/$defs/q_number"}}, "required": ["center", "diameter"]},
+        {"properties": {"kind": {"const": "cylinder"}, "center": {"$ref": "#/$defs/vec3"}, "axis": {"$ref": "#/$defs/vec3"}, "diameter": {"$ref": "#/$defs/q_number"}, "length": {"$ref": "#/$defs/q_number"}}, "required": ["center", "axis", "diameter", "length"]},
+        {"properties": {"kind": {"const": "fan"}, "center": {"$ref": "#/$defs/vec3"}, "axis": {"$ref": "#/$defs/vec3", "description": "versore = verso nominale dell'aria"}, "frame_size": {"$ref": "#/$defs/q_number"}, "depth": {"$ref": "#/$defs/q_number"}, "rotor_diameter": {"$ref": "#/$defs/q_number"}, "arrow_length": {"$ref": "#/$defs/q_number"}}, "required": ["center", "axis", "frame_size", "depth", "rotor_diameter"]},
+        {"properties": {"kind": {"const": "pipe"}, "points": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/vec3"}}, "outer_diameter": {"$ref": "#/$defs/q_number"}, "inner_diameter": {"$ref": "#/$defs/q_number"}, "bend_radius": {"$ref": "#/$defs/q_number"}}, "required": ["points", "outer_diameter"]}
+      ]
+    },
+    "component": {
+      "type": "object",
+      "required": ["id", "name", "type", "layer", "state", "geometry"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "tag": {"type": "string"},
+        "name": {"type": "string"},
+        "type": {"type": "string"},
+        "layer": {"enum": ["struttura", "aperture", "estrazione_ingresso", "ricircolo", "riscaldamento_umidificazione", "supporti_prodotto", "sensori", "quote_annotazioni", "analisi_temporale"]},
+        "state": {"enum": ["existing", "installed", "planned", "placeholder"]},
+        "placement": {"enum": ["interior", "external", "through_opening"]},
+        "placement_reason": {"type": "string"},
+        "opening": {"type": "string"},
+        "geometry": {"$ref": "#/$defs/geometry"},
+        "properties": {"type": "object", "additionalProperties": {"$ref": "#/$defs/quantity"}},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": ["schema_version", "layout_id", "revision", "kind", "title", "components"],
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "layout_id": {"type": "string"},
+        "revision": {"type": "integer", "minimum": 1},
+        "kind": {"enum": ["real_plan", "real_as_built", "hypothetical_demo"]},
+        "valid_from": {"type": ["string", "null"]},
+        "valid_to": {"type": ["string", "null"]},
+        "derived_from": {"type": ["string", "null"]},
+        "assumptions": {"type": "array", "items": {"$ref": "#/$defs/assumption"}},
+        "components": {"type": "array", "items": {"$ref": "#/$defs/component"}}
+      }
+    }
+  }
+}

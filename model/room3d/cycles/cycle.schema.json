@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "salamai/room3d/cycle.schema.json",
+  "title": "Salamai room3d — contratto ciclo ↔ layout",
+  "description": "cycle.json accanto a letture.csv nella cartella del ciclo. Il validatore è tools/room3d/export_analysis.py.",
+  "type": "object",
+  "required": ["schema_version", "cycle_id", "synthetic", "layout_refs", "telemetry", "events"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "cycle_id": {"type": "string", "description": "Per i cicli reali: nome della cartella di archivio /share/salumi/<YYYY-MM-DD_HHMM>"},
+    "synthetic": {"type": "boolean", "description": "true solo per dati di esempio generati; mai mescolati con dati reali"},
+    "synthetic_notice": {"type": "string"},
+    "archive_folder": {"type": ["string", "null"]},
+    "timezone": {"type": "string"},
+    "started_at": {"type": "string"},
+    "ended_at": {"type": ["string", "null"]},
+    "layout_refs": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Revisioni immutabili del layout con intervalli di validità contigui e non sovrapposti; solo l'ultimo può essere aperto.",
+      "items": {
+        "type": "object",
+        "required": ["layout_id", "config_hash", "valid_from"],
+        "properties": {
+          "layout_id": {"type": "string"},
+          "config_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256 del JSON canonico stanza+layout (core.config_hash)"},
+          "source_commit": {"type": ["string", "null"]},
+          "valid_from": {"type": "string", "format": "date-time"},
+          "valid_to": {"type": ["string", "null"], "format": "date-time"}
+        }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "required": ["file"],
+      "properties": {"file": {"type": "string"}, "format": {"type": "string"}, "mapping": {"type": "string"}}
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["t", "type"],
+        "properties": {
+          "t": {"type": "string", "format": "date-time"},
+          "type": {"enum": ["load", "removal", "layout_change", "note", "maintenance"]},
+          "zone": {"type": "string"},
+          "product": {"type": "string"},
+          "quantity": {"type": "object", "properties": {"value": {"type": "number"}, "unit": {"type": "string"}}},
+          "text": {"type": "string"},
+          "note": {"type": "string"}
+        }
+      }
+    }
+  }
+}
