@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Salamai 3D</title>
+    <meta name="description" content="Modello 3D della camera di asciugatura Salamai: consultazione in sola lettura" />
+  </head>
+  <body>
+    <header class="bar">
+      <div class="brand">Salamai 3D <span class="ro">sola lettura</span></div>
+      <div class="group">
+        <label>Layout <select id="sel-a" aria-label="Layout"></select></label>
+        <label>Confronta <select id="sel-b" aria-label="Confronta con"></select></label>
+      </div>
+      <div class="group views">
+        <button data-view="top" title="Vista dall'alto">Alto</button>
+        <button data-view="front" title="Vista frontale (dalla porta)">Fronte</button>
+        <button data-view="side" title="Vista laterale (da destra)">Lato</button>
+        <button data-view="axon" title="Vista assonometrica">Asson.</button>
+        <button id="btn-reset" title="Ripristina inquadratura">↺</button>
+      </div>
+      <div class="group">
+        <button id="btn-dims" title="Mostra le quote">Quote</button>
+        <button id="btn-measure" title="Misura una distanza fra due punti">Misura</button>
+        <button id="btn-panel" class="only-mobile" title="Pannello informazioni">Info</button>
+      </div>
+    </header>
+    <main>
+      <div id="panes"></div>
+      <aside id="panel">
+        <details open id="sec-layout"><summary>Layout</summary><div id="layout-info"></div></details>
+        <details open id="sec-layers"><summary>Layer</summary><div id="layers"></div></details>
+        <details open id="sec-selection"><summary>Selezione</summary><div id="selection"></div></details>
+        <details id="sec-diff" hidden open><summary>Confronto A / B</summary><div id="diff"></div></details>
+        <details id="sec-measure"><summary>Misura</summary><div id="measure"></div></details>
+        <details id="sec-data">
+          <summary>Dati dei cicli</summary>
+          <div class="small">
+            Nessun collegamento ai dati in tempo reale in questa versione. Il contratto per associare
+            ciclo, istante, sensori e layout è in <code>model/room3d/cycles/</code>; il pacchetto di analisi si genera
+            con <code>tools/room3d/export_analysis.py</code>. Le frecce indicano solo la direzione nominale delle ventole:
+            nessun campo di velocità o mappa di umidità viene simulato o interpolato.
+          </div>
+        </details>
+      </aside>
+    </main>
+    <div id="loading" hidden><div class="spinner"></div><div class="txt">Caricamento…</div></div>
+    <div id="error" hidden role="alert"><div class="msg"></div><button class="close">Chiudi</button></div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

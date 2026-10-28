@@ -1,0 +1,25 @@
+{
+  "name": "salamai-room3d-viewer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Visualizzatore web in sola lettura del modello 3D della camera Salamai",
+  "type": "module",
+  "scripts": {
+    "sync-data": "node scripts/sync-data.mjs",
+    "dev": "npm run sync-data && vite",
+    "build": "npm run sync-data && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "check": "node scripts/check-readonly.mjs",
+    "e2e": "node scripts/e2e.mjs"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "playwright-core": "1.64.0",
+    "vite": "8.3.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

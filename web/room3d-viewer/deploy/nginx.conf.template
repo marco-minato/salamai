@@ -1,0 +1,57 @@
+# Visualizzatore Salamai 3D: file statici in sola lettura sotto ${SUBPATH}/.
+# Template per l'immagine ufficiale nginx (envsubst sostituisce solo SUBPATH).
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+    server_tokens off;
+
+    # sola lettura: qualsiasi metodo diverso da GET/HEAD viene rifiutato
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+
+    types {
+        text/html html;
+        text/css css;
+        text/javascript js mjs;
+        application/json json;
+        model/gltf-binary glb;
+        image/png png;
+        image/jpeg jpg jpeg;
+        image/svg+xml svg;
+    }
+    default_type application/octet-stream;
+
+    add_header X-Content-Type-Options nosniff always;
+    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'self'" always;
+
+    location = ${SUBPATH} {
+        return 301 ${SUBPATH}/;
+    }
+
+    location ${SUBPATH}/ {
+        try_files $uri $uri/index.html =404;
+        add_header Cache-Control "no-cache" always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Content-Security-Policy "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'self'" always;
+    }
+
+    # bundle con nome dipendente dal contenuto: cache lunga
+    location ${SUBPATH}/assets/ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header X-Content-Type-Options nosniff always;
+    }
+
+    # revisioni del modello: percorsi immutabili layouts/<id>/<hash>/
+    location ${SUBPATH}/data/layouts/ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header X-Content-Type-Options nosniff always;
+    }
+
+    # il catalogo cambia a ogni pubblicazione: sempre riconvalidato
+    location = ${SUBPATH}/data/catalog.json {
+        add_header Cache-Control "no-cache" always;
+        add_header X-Content-Type-Options nosniff always;
+    }
+}

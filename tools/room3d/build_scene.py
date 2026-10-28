@@ -734,7 +734,8 @@ def build_layout(room, layout, args, out_root, git):
         },
         "openings": {"door": {k: v for k, v in door.items()}, "hatch": hatch},
         "entities": [entity_record(e, ent_hashes[e["id"]]) for e in entities],
-        "dimensions": [{k: d[k] for k in ("id", "view", "p1", "p2", "length_m", "label", "status")} for d in dims],
+        "dimensions": [{k: d[k] for k in ("id", "view", "p1", "p2", "offset", "length_m", "label", "status")}
+                       for d in dims],
         "assumptions": room.get("assumptions", []) + layout.get("assumptions", []),
         "unknowns": unknowns,
         "sources": room.get("sources", []),
