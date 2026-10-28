@@ -1,0 +1,1159 @@
+{
+  "schema_version": "1.0",
+  "layout_id": "L900_DEMO",
+  "revision": 1,
+  "kind": "hypothetical_demo",
+  "title": "IPOTESI DIMOSTRATIVA — non è una disposizione reale né uno storico",
+  "status": "hypothetical",
+  "description": "Variante inventata solo per provare il confronto fra layout nel visualizzatore. Non descrive la camera reale e non va associata a nessun ciclo.",
+  "valid_from": null,
+  "valid_to": null,
+  "derived_from": "L001",
+  "assumptions": [
+    {
+      "id": "l900_demo_only",
+      "text": "Tutte le modifiche rispetto a L001 sono un esempio dimostrativo, senza alcun riscontro reale."
+    },
+    {
+      "id": "l900_fan_layout",
+      "text": "Le ventole di ricircolo sono TRE (fan_01, fan_02, fan_03). Distribuzione, quota e orientamento NON confermati: disegnate in alto sulla parete destra, equidistanti, che soffiano verso la parete opposta (prompt_schema_qelectrotech.md:419-421 descrive due ventole M5/M6 in questa posizione). Da studiare."
+    },
+    {
+      "id": "l900_duct_corner",
+      "text": "'Tubo flessibile Ø100 fino all'angolo opposto alla porta' (prompt_schema_qelectrotech.md:425-426) è interpretato come angolo in fondo a sinistra (X=0, Y=1,60), a valle del soffio delle ventole. Percorso, raggi di curva e quota della bocca (0,50 m) sono assunti."
+    },
+    {
+      "id": "l900_equipment_sizes",
+      "text": "Ingombri di stufa, umidificatori ed estrattore non documentati: scatole e cilindri provvisori per il disegno."
+    },
+    {
+      "id": "l900_product_zones",
+      "text": "Zone prodotto provvisorie. Mancano ingombri, altezze e supporti reali. Le zone applicano le regole di strategia_processo.md:127-155 (niente sotto 50 cm, 15–20 cm dalle pareti, niente sopra o davanti alla stufa, niente davanti all'ingresso basso)."
+    },
+    {
+      "id": "l900_sensor_positions",
+      "text": "Posizioni delle sonde descritte solo a parole nella documentazione: le coordinate sono una traduzione provvisoria, da rilevare."
+    }
+  ],
+  "components": [
+    {
+      "id": "extractor_m4",
+      "tag": "M4",
+      "name": "Estrattore M4 (in linea, nella botola)",
+      "type": "extractor_fan",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "placement": "through_opening",
+      "opening": "hatch_01",
+      "placement_reason": "montato nella botola, sopra il pannello di chiusura (prompt_schema_qelectrotech.md:425)",
+      "geometry": {
+        "kind": "cylinder",
+        "center": {
+          "x": {
+            "value": 1.365,
+            "status": "derived",
+            "note": "centro botola"
+          },
+          "y": {
+            "value": 0.625,
+            "status": "derived",
+            "note": "centro botola, dipende da a01"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.25
+          }
+        },
+        "axis": {
+          "value": [
+            0,
+            0,
+            1
+          ],
+          "status": "assumed",
+          "assumption": "l900_equipment_sizes",
+          "note": "flusso verso l'alto (estrazione verso la cantina)"
+        },
+        "diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.17,
+          "assumption": "l900_equipment_sizes"
+        },
+        "length": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.25,
+          "assumption": "l900_equipment_sizes"
+        }
+      },
+      "properties": {
+        "model": {
+          "value": "Vents TT-100 (consigliato) — alternativa Airope",
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "airflow_m3h": {
+          "value": "145/187 a bocca libera, collegato alla velocità bassa",
+          "status": "declared",
+          "source": "src_distinta",
+          "note": "dato del produttore, non una portata misurata in impianto"
+        },
+        "power_w": {
+          "value": "21/33",
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "duct_nominal_diameter_m": {
+          "value": 0.1,
+          "status": "declared",
+          "source": "src_distinta"
+        }
+      },
+      "notes": [
+        "Sigla M4. Presa XS3 fuori dalla camera.",
+        "Flusso nominale: dalla camera verso la cantina, non simulato."
+      ]
+    },
+    {
+      "id": "check_valve_y1",
+      "tag": "Y1",
+      "name": "Valvola antiritorno Y1 (uscita, lato cantina)",
+      "type": "check_valve",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "placement": "through_opening",
+      "opening": "hatch_01",
+      "placement_reason": "subito dopo l'estrattore, lato cantina (prompt_schema_qelectrotech.md:174)",
+      "geometry": {
+        "kind": "cylinder",
+        "center": {
+          "x": {
+            "value": 1.365,
+            "status": "derived"
+          },
+          "y": {
+            "value": 0.625,
+            "status": "derived"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.43
+          }
+        },
+        "axis": {
+          "value": [
+            0,
+            0,
+            1
+          ],
+          "status": "assumed",
+          "assumption": "l900_equipment_sizes"
+        },
+        "diameter": {
+          "value": 0.1,
+          "status": "declared",
+          "source": "src_distinta",
+          "note": "Ø100 nominale"
+        },
+        "length": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.1
+        }
+      },
+      "properties": {
+        "model": {
+          "value": "valvola antiritorno a molla Ø100, neverest RKI",
+          "status": "declared",
+          "source": "src_distinta"
+        }
+      }
+    },
+    {
+      "id": "exhaust_duct_01",
+      "tag": "D1",
+      "name": "Tubo di aspirazione flessibile Ø100",
+      "type": "duct",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "geometry": {
+        "kind": "pipe",
+        "points": [
+          {
+            "value": [
+              1.365,
+              0.625,
+              2.1
+            ],
+            "status": "derived"
+          },
+          {
+            "value": [
+              1.365,
+              0.625,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l900_demo_only"
+          },
+          {
+            "value": [
+              1.365,
+              1.48,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l900_demo_only"
+          },
+          {
+            "value": [
+              0.12,
+              1.48,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l900_demo_only"
+          },
+          {
+            "value": [
+              0.12,
+              1.48,
+              0.7
+            ],
+            "status": "assumed",
+            "assumption": "l900_demo_only"
+          }
+        ],
+        "inner_diameter": {
+          "value": 0.1,
+          "status": "declared",
+          "source": "src_distinta",
+          "note": "Ø100 nominale"
+        },
+        "outer_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.105
+        },
+        "bend_radius": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.1,
+          "assumption": "l900_duct_corner"
+        }
+      },
+      "properties": {
+        "material": {
+          "value": "flessibile in alluminio",
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "purchased_length_m": {
+          "value": 3.0,
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "loss_coefficients": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "nessun coefficiente di perdita disponibile: non attribuirne"
+        }
+      },
+      "notes": [
+        "La lunghezza riportata nel manifest deriva dal percorso disegnato, non dal tubo acquistato (3 m)."
+      ]
+    },
+    {
+      "id": "inlet_y2",
+      "tag": "Y2",
+      "name": "Griglia d'ingresso Y2 Ø100 (in basso sulla porta)",
+      "type": "air_inlet",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "placement": "through_opening",
+      "opening": "door_01",
+      "placement_reason": "montata sull'anta della porta: posizione riferita alla porta chiusa",
+      "geometry": {
+        "kind": "cylinder",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.365,
+            "note": "centrata sulla porta, da rilevare"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": -0.02,
+            "note": "nello spessore dell'anta chiusa"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.15,
+            "note": "'in basso'"
+          }
+        },
+        "axis": {
+          "value": [
+            0,
+            1,
+            0
+          ],
+          "status": "declared",
+          "source": "src_distinta",
+          "note": "valvola che si apre verso la camera: aria entrante"
+        },
+        "diameter": {
+          "value": 0.1,
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "length": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.04
+        }
+      },
+      "properties": {
+        "model": {
+          "value": "griglia inox Ø100 con valvola antiritorno magnetica",
+          "status": "declared",
+          "source": "src_distinta"
+        }
+      },
+      "notes": [
+        "Sul disegno l'anta è aperta: la griglia resta nella posizione di esercizio (porta chiusa)."
+      ]
+    },
+    {
+      "id": "fan_01",
+      "tag": "F1",
+      "name": "Ventola di ricircolo 1 (M5)",
+      "type": "recirculation_fan",
+      "layer": "ricircolo",
+      "state": "planned",
+      "geometry": {
+        "kind": "fan",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.995,
+            "note": "sulla parete destra, distanziale assunto"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.35,
+            "assumption": "l900_fan_layout"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.85,
+            "assumption": "l900_fan_layout"
+          }
+        },
+        "axis": {
+          "value": [
+            -1,
+            0,
+            0
+          ],
+          "status": "assumed",
+          "assumption": "l900_fan_layout",
+          "note": "verso nominale dell'aria: verso la parete opposta"
+        },
+        "frame_size": {
+          "value": 0.12,
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "depth": {
+          "value": 0.015,
+          "status": "declared",
+          "source": "src_psq"
+        },
+        "rotor_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.11
+        },
+        "arrow_length": {
+          "value": 0.35,
+          "status": "assumed",
+          "note": "solo grafica"
+        }
+      },
+      "properties": {
+        "model": {
+          "value": "ARCTIC P12 Slim PWM PST 120 mm, 12 V, 4 fili",
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "rpm_range": {
+          "value": "200–2100 giri/min",
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "airflow": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "nessuna portata nel repository; PWM e giri NON sono misure di portata"
+        },
+        "tach_input": {
+          "value": "M5 → D0 (GPIO2), registro 0x0006",
+          "status": "declared",
+          "source": "src_firmware"
+        }
+      }
+    },
+    {
+      "id": "fan_02",
+      "tag": "F2",
+      "name": "Ventola di ricircolo 2 (M6)",
+      "type": "recirculation_fan",
+      "layer": "ricircolo",
+      "state": "planned",
+      "geometry": {
+        "kind": "fan",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.995
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.3,
+            "assumption": "l900_fan_layout"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.6,
+            "assumption": "l900_fan_layout"
+          }
+        },
+        "axis": {
+          "value": [
+            -1,
+            0,
+            0
+          ],
+          "status": "assumed",
+          "assumption": "l900_fan_layout"
+        },
+        "frame_size": {
+          "value": 0.12,
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "depth": {
+          "value": 0.015,
+          "status": "declared",
+          "source": "src_psq"
+        },
+        "rotor_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.11
+        },
+        "arrow_length": {
+          "value": 0.35,
+          "status": "assumed",
+          "note": "solo grafica"
+        }
+      },
+      "properties": {
+        "model": {
+          "value": "ARCTIC P12 Slim PWM PST 120 mm, 12 V, 4 fili",
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "airflow": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "nessuna portata nel repository"
+        },
+        "tach_input": {
+          "value": "M6 → D8 (GPIO8), registro 0x0007",
+          "status": "declared",
+          "source": "src_firmware"
+        }
+      }
+    },
+    {
+      "id": "fan_03",
+      "tag": "F3",
+      "name": "Ventola di ricircolo 3",
+      "type": "recirculation_fan",
+      "layer": "ricircolo",
+      "state": "planned",
+      "geometry": {
+        "kind": "fan",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.995
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.8,
+            "assumption": "l900_fan_layout"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.85,
+            "assumption": "l900_fan_layout"
+          }
+        },
+        "axis": {
+          "value": [
+            -0.9659258262890683,
+            -0.25881904510252074,
+            0.0
+          ],
+          "status": "assumed",
+          "assumption": "l900_demo_only",
+          "note": "ruotata di 15° verso la porta (dimostrativo)"
+        },
+        "frame_size": {
+          "value": 0.12,
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "depth": {
+          "value": 0.015,
+          "status": "declared",
+          "source": "src_psq"
+        },
+        "rotor_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.11
+        },
+        "arrow_length": {
+          "value": 0.35,
+          "status": "assumed",
+          "note": "solo grafica"
+        }
+      },
+      "properties": {
+        "model": {
+          "value": "ARCTIC P12 Slim PWM PST 120 mm (terza della confezione)",
+          "status": "declared",
+          "source": "src_distinta",
+          "note": "la distinta la indica come scorta; l'utente ne prevede tre in uso (src_brief)"
+        },
+        "airflow": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null
+        },
+        "tach_input": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "il firmware ha solo due ingressi giri (M5, M6): giri della terza ventola non letti"
+        }
+      }
+    },
+    {
+      "id": "junction_box_x4",
+      "tag": "X4",
+      "name": "Scatola di derivazione ventole X4",
+      "type": "junction_box",
+      "layer": "ricircolo",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": 2.995,
+            "status": "derived",
+            "note": "a muro, profondità 7 cm"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.575,
+            "note": "'tra le ventole' (prompt_schema_qelectrotech.md:179)"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.85
+          }
+        },
+        "size": {
+          "value": [
+            0.07,
+            0.15,
+            0.11
+          ],
+          "status": "declared",
+          "source": "src_distinta",
+          "note": "IP65 150×110×70"
+        }
+      }
+    },
+    {
+      "id": "heater_e1",
+      "tag": "E1",
+      "name": "Stufa E1 (3 lampade IR, 1200 W)",
+      "type": "heater",
+      "layer": "riscaldamento_umidificazione",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.63
+          },
+          "y": {
+            "value": 0.8,
+            "status": "derived",
+            "note": "'al centro' della parete destra (prompt_schema_qelectrotech.md:422)"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.425
+          }
+        },
+        "size": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": [
+            0.3,
+            0.45,
+            0.85
+          ],
+          "assumption": "l900_equipment_sizes"
+        }
+      },
+      "properties": {
+        "power_w": {
+          "value": 1200,
+          "status": "declared",
+          "source": "src_distinta"
+        },
+        "lamps": {
+          "value": "3 × ~400 W, 230 V",
+          "status": "declared",
+          "source": "src_psq"
+        },
+        "orientation": {
+          "value": "puntata contro il muro destro",
+          "status": "declared",
+          "source": "src_psq"
+        }
+      },
+      "notes": [
+        "Sopra la stufa niente salami (prompt_schema_qelectrotech.md:423)."
+      ]
+    },
+    {
+      "id": "socket_xs4",
+      "tag": "XS4",
+      "name": "Presa CEE XS4 (accanto alla stufa)",
+      "type": "socket",
+      "layer": "riscaldamento_umidificazione",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": 2.995,
+            "status": "derived"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.12
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.45
+          }
+        },
+        "size": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": [
+            0.07,
+            0.1,
+            0.13
+          ]
+        }
+      }
+    },
+    {
+      "id": "humidifier_m2",
+      "tag": "M2",
+      "name": "Umidificatore M2 (ultrasuoni)",
+      "type": "humidifier",
+      "layer": "riscaldamento_umidificazione",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.85
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.3,
+            "note": "lo schizzo indica HUM 1 verso la porta"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.38,
+            "note": "rialzato da terra"
+          }
+        },
+        "size": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": [
+            0.25,
+            0.25,
+            0.3
+          ],
+          "assumption": "l900_equipment_sizes"
+        }
+      },
+      "notes": [
+        "Presa XS1 fuori dalla camera accanto al quadro; cavo in uscita dalla botola."
+      ]
+    },
+    {
+      "id": "humidifier_m3",
+      "tag": "M3",
+      "name": "Umidificatore M3 (ultrasuoni)",
+      "type": "humidifier",
+      "layer": "riscaldamento_umidificazione",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.85
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.3,
+            "note": "lo schizzo indica HUM 2 verso il fondo"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.38
+          }
+        },
+        "size": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": [
+            0.25,
+            0.25,
+            0.3
+          ],
+          "assumption": "l900_equipment_sizes"
+        }
+      },
+      "notes": [
+        "Presa XS2 fuori dalla camera accanto al quadro."
+      ]
+    },
+    {
+      "id": "mist_tube_m2",
+      "tag": "T2",
+      "name": "Tubo nebbia M2 (PVC)",
+      "type": "mist_tube",
+      "layer": "riscaldamento_umidificazione",
+      "state": "planned",
+      "geometry": {
+        "kind": "pipe",
+        "points": [
+          {
+            "value": [
+              2.85,
+              0.3,
+              0.53
+            ],
+            "status": "assumed",
+            "note": "uscita umidificatore",
+            "assumption": "l900_equipment_sizes"
+          },
+          {
+            "value": [
+              2.85,
+              0.3,
+              1.7
+            ],
+            "status": "assumed",
+            "note": "'escono accanto alle ventole' (prompt_schema_qelectrotech.md:114-115)",
+            "assumption": "l900_equipment_sizes"
+          }
+        ],
+        "outer_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.032
+        }
+      }
+    },
+    {
+      "id": "mist_tube_m3",
+      "tag": "T3",
+      "name": "Tubo nebbia M3 (PVC)",
+      "type": "mist_tube",
+      "layer": "riscaldamento_umidificazione",
+      "state": "planned",
+      "geometry": {
+        "kind": "pipe",
+        "points": [
+          {
+            "value": [
+              2.85,
+              1.3,
+              0.53
+            ],
+            "status": "assumed",
+            "assumption": "l900_equipment_sizes"
+          },
+          {
+            "value": [
+              2.85,
+              1.3,
+              1.7
+            ],
+            "status": "assumed",
+            "assumption": "l900_equipment_sizes"
+          }
+        ],
+        "outer_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.032
+        }
+      }
+    },
+    {
+      "id": "zone_salami",
+      "tag": "Z1",
+      "name": "Zona salami (ingombro provvisorio)",
+      "type": "product_zone",
+      "layer": "supporti_prodotto",
+      "state": "placeholder",
+      "geometry": {
+        "kind": "zone",
+        "center": {
+          "value": [
+            2.29,
+            0.8,
+            1.2
+          ],
+          "status": "assumed",
+          "assumption": "l900_product_zones"
+        },
+        "size": {
+          "value": [
+            1.08,
+            1.2,
+            1.4
+          ],
+          "status": "assumed",
+          "assumption": "l900_product_zones"
+        }
+      },
+      "notes": [
+        "prompt_schema_qelectrotech.md:419 indica una struttura di ~130 × 150 cm sulla metà destra; qui l'ingombro è ridotto applicando le distanze minime. Da rilevare.",
+        "Salami appesi a una struttura in legno: supporti non modellati (dimensioni ignote)."
+      ]
+    },
+    {
+      "id": "sensor_b1_sth01",
+      "tag": "B1",
+      "name": "Sonda camera B1 (S-TH-01, T/UR)",
+      "type": "sensor_temperature_humidity",
+      "layer": "sensori",
+      "state": "planned",
+      "geometry": {
+        "kind": "marker",
+        "center": {
+          "x": {
+            "value": 2.03,
+            "status": "derived",
+            "note": "almeno 1 m dalla parete destra (prompt_schema_qelectrotech.md:433)"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.8,
+            "assumption": "l900_sensor_positions"
+          },
+          "z": {
+            "value": 1.2,
+            "status": "declared",
+            "source": "src_psq",
+            "note": "~1,2 m da terra"
+          }
+        },
+        "diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.06
+        }
+      },
+      "properties": {
+        "bus": {
+          "value": "RS485 Modbus, indirizzo 1",
+          "status": "declared",
+          "source": "src_distinta"
+        }
+      }
+    },
+    {
+      "id": "sensor_b3_wall",
+      "tag": "B3",
+      "name": "Sonda parete B3 (DS18B20)",
+      "type": "sensor_temperature",
+      "layer": "sensori",
+      "state": "planned",
+      "geometry": {
+        "kind": "marker",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 2.5,
+            "note": "vicino a X6"
+          },
+          "y": {
+            "value": 0.016,
+            "status": "derived",
+            "note": "a contatto della parete porta"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.3,
+            "note": "'in basso'"
+          }
+        },
+        "diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.03
+        }
+      }
+    },
+    {
+      "id": "sensor_b4_floor",
+      "tag": "B4",
+      "name": "Sonda pavimento B4 (DS18B20)",
+      "type": "sensor_temperature",
+      "layer": "sensori",
+      "state": "planned",
+      "geometry": {
+        "kind": "marker",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.1,
+            "note": "posizione finale: il punto più freddo trovato (strategia_processo.md:140-142)"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.8
+          },
+          "z": {
+            "value": 0.016,
+            "status": "derived",
+            "note": "su una piastrella del pavimento"
+          }
+        },
+        "diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.03
+        }
+      }
+    },
+    {
+      "id": "load_cell_b2",
+      "tag": "B2",
+      "name": "Cella di carico B2 (2 kg, salame campione)",
+      "type": "load_cell",
+      "layer": "sensori",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": 2.29,
+            "status": "derived",
+            "note": "'a metà della zona salami' (prompt_schema_qelectrotech.md:427), dipende dalla zona provvisoria"
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.1
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.55
+          }
+        },
+        "size": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": [
+            0.13,
+            0.03,
+            0.03
+          ]
+        }
+      }
+    },
+    {
+      "id": "node_box_x6",
+      "tag": "X6",
+      "name": "Scatola nodo X6 (XIAO + HX711 + MOSFET)",
+      "type": "node_box",
+      "layer": "sensori",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": 2.29,
+            "status": "derived",
+            "note": "sopra la bilancia"
+          },
+          "y": {
+            "value": 0.035,
+            "status": "derived",
+            "note": "a muro sulla parete porta"
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 1.85
+          }
+        },
+        "size": {
+          "value": [
+            0.15,
+            0.07,
+            0.11
+          ],
+          "status": "declared",
+          "source": "src_distinta"
+        }
+      }
+    },
+    {
+      "id": "sensor_b5_cantina",
+      "tag": "B5",
+      "name": "Sonda cantina B5 (S-TH-01, fuori camera)",
+      "type": "sensor_temperature_humidity",
+      "layer": "sensori",
+      "state": "planned",
+      "placement": "external",
+      "placement_reason": "misura l'aria della cantina, vicino alla porta all'altezza della griglia d'ingresso (prompt_schema_qelectrotech.md:430-432)",
+      "geometry": {
+        "kind": "marker",
+        "center": {
+          "x": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.85
+          },
+          "y": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": -0.2
+          },
+          "z": {
+            "value": null,
+            "status": "unknown",
+            "draw_value": 0.15
+          }
+        },
+        "diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.06
+        }
+      },
+      "properties": {
+        "bus": {
+          "value": "RS485 Modbus, indirizzo 3 (da acquistare, commentata nel firmware)",
+          "status": "declared",
+          "source": "src_distinta"
+        }
+      }
+    },
+    {
+      "id": "zone_left_products",
+      "tag": "Z9",
+      "name": "Zona sinistra unica (dimostrativa)",
+      "type": "product_zone",
+      "layer": "supporti_prodotto",
+      "state": "placeholder",
+      "geometry": {
+        "kind": "zone",
+        "center": {
+          "value": [
+            0.52,
+            0.8,
+            1.1
+          ],
+          "status": "assumed",
+          "assumption": "l900_demo_only"
+        },
+        "size": {
+          "value": [
+            0.64,
+            1.2,
+            1.2
+          ],
+          "status": "assumed",
+          "assumption": "l900_demo_only"
+        }
+      },
+      "notes": [
+        "Zona dimostrativa che sostituisce le due zone di L001."
+      ]
+    }
+  ]
+}

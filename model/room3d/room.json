@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "model_id": "salamai_room3d",
+  "title": "Camera di asciugatura salumi — modello tecnico 3D",
+  "units": {
+    "length": "m",
+    "display_length": "cm",
+    "angle": "deg",
+    "mass": "kg"
+  },
+  "frame": {
+    "id": "salamai_room_v1",
+    "handedness": "right",
+    "up": "+Z",
+    "origin": "pavimento, angolo sinistro della parete con la porta, come visto nella pianta (faccia interna)",
+    "x": "verso destra lungo la parete della porta",
+    "y": "verso la parete opposta alla porta",
+    "z": "verso il soffitto"
+  },
+  "tolerance_m": 0.0005,
+  "layouts_catalog": "layouts/catalog.json",
+  "sources": [
+    {
+      "id": "src_sketch",
+      "kind": "schizzo a mano quotato",
+      "path": "sources/sala_stagionatura_schizzo.jpg",
+      "sha256": "5d1744dcf9f8991c62ee8e2cd765f8d92740fb4434aae64d6a53f023c7a4d702",
+      "description": "Pianta quotata disegnata da Marco: 104 + 65 + 134, 160, altezza 210, botola 32 × 45 con quota 65 (larghezza porta). Le misure in pixel NON sono usate."
+    },
+    {
+      "id": "src_brief",
+      "kind": "specifica utente",
+      "path": "../../documentazione/Salamai_Blender_Claude_Herdr_Codex.md",
+      "description": "Sezione 2, 'Rilievo e coordinate': misure dichiarate, distanza porta–botola 40 cm, tre ventole, zone prodotto."
+    },
+    {
+      "id": "src_psq",
+      "kind": "documentazione progetto",
+      "path": "../../documentazione/prompt_schema_qelectrotech.md",
+      "description": "Disposizione in camera (righe 414–434), componenti e sigle (righe 159–179)."
+    },
+    {
+      "id": "src_distinta",
+      "kind": "distinta base",
+      "path": "../../documentazione/distinta_base.md",
+      "description": "Modelli e quantità: ventole ARCTIC P12 Slim (riga 70), estrattore (72), tubo Ø100 3 m (75), griglia d'ingresso (76), scatole X4/X6, sonde."
+    },
+    {
+      "id": "src_strategia",
+      "kind": "documentazione processo",
+      "path": "../../documentazione/strategia_processo.md",
+      "description": "Disposizione del carico (righe 127–155), distanze dalle pareti, posizione sonde (56, 138–142)."
+    },
+    {
+      "id": "src_firmware",
+      "kind": "configurazione firmware",
+      "path": "../../esphome/salumi-nodo.yaml",
+      "description": "Due ingressi giri ventola (M5, M6) e un solo PWM comune."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "a01_hatch_offset_reference",
+      "text": "La distanza di 40 cm fra porta e botola è interpretata come distanza dalla faccia interna della parete porta al bordo più vicino della botola (Y 0,40–0,85 m). ASSUNZIONE NON CONFERMATA: potrebbe essere riferita al centro.",
+      "affects": ["hatch_01", "ceiling", "extractor_m4", "check_valve_y1", "exhaust_duct_01"]
+    },
+    {
+      "id": "a02_door_height",
+      "text": "Altezza della porta sconosciuta: disegnata a 1,90 m solo per la visualizzazione.",
+      "affects": ["door_01", "wall_y0", "door_01_leaf"]
+    },
+    {
+      "id": "a03_thickness",
+      "text": "Spessori di pareti, pavimento e soffitto sconosciuti: disegnati a 10 cm all'esterno del volume interno, per convenzione.",
+      "affects": ["floor", "ceiling", "wall_y0", "wall_y1", "wall_x0", "wall_x1"]
+    },
+    {
+      "id": "a04_door_swing",
+      "text": "Verso di apertura e lato cerniera della porta non confermati. Lo schizzo sembra mostrare apertura verso l'esterno con cerniera sul lato X=1,69; prompt_schema_qelectrotech.md:417 dice invece 'apre verso l'interno'. L'anta è disegnata aperta verso l'esterno a 90° solo come interpretazione grafica.",
+      "affects": ["door_01_leaf"]
+    }
+  ],
+  "room": {
+    "description": "Vecchia botte da vino in cemento, pareti e pavimento in piastrelle vetrificate (src_psq righe 92–94).",
+    "interior": {
+      "size_x": {"value": 3.03, "status": "declared", "source": "src_sketch", "note": "104 + 65 + 134 cm"},
+      "size_y": {"value": 1.60, "status": "declared", "source": "src_sketch"},
+      "size_z": {"value": 2.10, "status": "declared", "source": "src_sketch", "note": "scritta 'ALTEZZA 210'"},
+      "x_breakdown": [
+        {"value": 1.04, "status": "declared", "source": "src_sketch", "note": "muro a sinistra della porta"},
+        {"value": 0.65, "status": "declared", "source": "src_sketch", "note": "porta"},
+        {"value": 1.34, "status": "declared", "source": "src_sketch", "note": "muro a destra della porta"}
+      ]
+    },
+    "wall_thickness": {"value": null, "status": "unknown", "draw_value": 0.10, "assumption": "a03_thickness"},
+    "floor_thickness": {"value": null, "status": "unknown", "draw_value": 0.10, "assumption": "a03_thickness"},
+    "ceiling_thickness": {"value": null, "status": "unknown", "draw_value": 0.10, "assumption": "a03_thickness"}
+  },
+  "openings": {
+    "door": {
+      "id": "door_01",
+      "x_min": {"value": 1.04, "status": "declared", "source": "src_sketch"},
+      "width": {"value": 0.65, "status": "declared", "source": "src_sketch"},
+      "height": {"value": null, "status": "unknown", "draw_value": 1.90, "assumption": "a02_door_height"},
+      "hinge_side": {"value": null, "status": "unknown", "draw_value": "x_max", "assumption": "a04_door_swing"},
+      "swing": {"value": null, "status": "unknown", "draw_value": "outward", "assumption": "a04_door_swing"},
+      "leaf_open_deg": {"value": null, "status": "unknown", "draw_value": 90, "assumption": "a04_door_swing"},
+      "leaf_thickness": {"value": null, "status": "unknown", "draw_value": 0.04, "note": "porta in multistrato (strategia_processo.md:104), spessore ignoto"}
+    },
+    "hatch": {
+      "id": "hatch_01",
+      "size_x": {"value": 0.32, "status": "declared", "source": "src_sketch"},
+      "size_y": {"value": 0.45, "status": "declared", "source": "src_sketch"},
+      "center_x_rule": "door_center",
+      "offset_from_door_wall": {"value": 0.40, "status": "declared", "source": "src_brief", "note": "distanza porta–botola indicata dall'utente"},
+      "offset_reference": {"value": "near_edge", "status": "assumed", "assumption": "a01_hatch_offset_reference", "alternatives": ["center", "far_edge"]},
+      "note": "Chiusa da un pannello (multistrato 10 mm o PVC espanso) con foro Ø100 per l'estrattore e fori per i pressacavi (distinta_base.md:105). Tutti i cavi entrano da qui."
+    }
+  }
+}

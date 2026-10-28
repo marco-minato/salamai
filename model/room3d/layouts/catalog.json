@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "description": "Catalogo dei layout. 'real_plan' = disposizione reale pianificata; 'hypothetical_demo' = esempio, mai storico reale.",
+  "default_layout": "L001",
+  "layouts": [
+    {
+      "layout_id": "L001",
+      "file": "L001_progetto.json",
+      "kind": "real_plan"
+    },
+    {
+      "layout_id": "L900_DEMO",
+      "file": "L900_DEMO_ipotesi.json",
+      "kind": "hypothetical_demo"
+    }
+  ]
+}
