@@ -1,6 +1,6 @@
 # Revisione indipendente — room3d
 
-Stato: **revisione 3 di Codex su `11a0d31`: approvato nel perimetro della revisione software. F1–F5 risolti, nessun nuovo finding.** L'approvazione è di Codex, non di chi ha implementato, e non certifica misure fisiche, impianto o processo alimentare (vedi i limiti nel report). Il commit che aggiunge questo report modifica solo `docs/room3d/REVIEW.md`; ogni modifica successiva ai sorgenti richiede una nuova verifica.
+Stato: **revisione 4 di Codex su `f219e49` (nuovo percorso del tubo di aspirazione): geometria coerente, nessuna collisione, un finding F6 (media) sulle note del flusso.** F6 corretto nel commit successivo, in attesa della revisione 5. L'ultima approvazione completa di Codex resta quella di `11a0d31` (revisione 3) e non copre le modifiche successive al modello. Nessuna approvazione è dichiarata da chi ha implementato.
 
 Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pannello Codex (`herdr agent start reviewer --kind codex -- --no-daemon`) nel worktree separato `../salamai-review`, con HEAD detached sul commit da esaminare e la consegna della sezione 2 delle specifiche. Codex scrive ogni report nel worktree; qui sotto i report sono copiati senza modifiche, salvo il livello dei titoli. Le richieste di Codex di eseguire comandi fuori dal suo sandbox (npm ci, Blender batch, test, Chrome headless, Docker locale) sono state approvate dall'utente o, su sua delega, solo per azioni locali con output nel worktree di revisione o in `/tmp`.
 
@@ -9,6 +9,8 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 | 1 | `14b2495` | Modifiche richieste: F1 alta, F2–F4 medie |
 | 2 | `4337901` | F1–F4 risolti; F5 media (contratto dei cicli) |
 | 3 | `11a0d31` | Approvato: F1–F5 risolti, nessun nuovo finding |
+| 4 | `f219e49` | Nuovo percorso del tubo (T + due rami Ø80, bocche in alto): geometria ok; F6 media |
+| 5 | commit di correzione di F6 | in attesa |
 
 ## Correzioni
 
@@ -28,6 +30,171 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 | F5 — Media | `cycle.schema.json` passa a `schema_version` **1.1**: `build_id` obbligatorio (`^[0-9a-f]{20}$`), `semantic_hash` opzionale (SHA256), formati per `layout_id`, `config_hash`, `source_commit`. `load_cycle` applica gli stessi formati prima di costruire percorsi e risponde con `AnalysisError` (codice 1) e il percorso del campo. I cicli 1.0 sono rifiutati con un messaggio che spiega come integrarli dalla build storica; il README documenta la procedura. Esempio sintetico e `make_synthetic_cycle.py` portati a 1.1. | `TestCycleContract`: l'esempio è valido per schema e runtime; `build_id` mancante, intero, vuoto o con percorso, `semantic_hash` malformato, `layout_id` con `..`, `config_hash` corto, `source_commit` non esadecimale e contratto 1.0 sono rifiutati **sia** dallo schema (`jsonschema`) **sia** dal runtime. |
 
 Verifiche dell'implementatore sul commit di F5 (non sono una revisione): `tools/room3d/build_all.sh` exit 0 con 65 test Python superati; `npm run e2e` superato. `build_id` invariati.
+
+### Commit successivo a `f219e49` (F6)
+
+| Finding | Correzione | Prove aggiunte |
+|---|---|---|
+| F6 — Media | Le due note su sbilanciamento dei rami e percorso dell'aria riscritte come **IPOTESI** / intento di progetto, con "nessuna ripartizione di portata calcolata o misurata" e "percorso reale dell'aria non misurato né simulato". Arrivano così marcate anche a manifest, visualizzatore e pacchetto di analisi. | `test_flow_claims_in_notes_are_marked_as_hypotheses`: ogni nota dei layout che parla di aspirazione, percorso, ripartizione o portata deve essere marcata come ipotesi o direzione nominale. La vecchia frase fa fallire il test. |
+
+Verifiche dell'implementatore (non sono una revisione): `build_all.sh` exit 0 con 67 test superati; `npm run e2e` superato. `semantic_hash` di L001 invariato (`8eebc290011f…`); `build_id` cambiato perché le note fanno parte della configurazione (`ce7905cd44a7e4c12fd9`); ciclo d'esempio rigenerato.
+
+## Revisione 4 — report di Codex su `f219e49`
+
+### Riverifica 4 — Salamai room3d, f219e49
+
+Data: 28 ottobre 2026. Revisore indipendente: Codex.
+
+**Commit esaminato:** `f219e493f4080cdcfd9ade7664620e19d0716c42`, HEAD detached nel worktree `/home/marco/lab/salamai-review`.
+
+**Verdetto: modifiche richieste per F6 (media).** La geometria rappresentata è coerente con la nuova indicazione, build e test passano e non sono state trovate interferenze con i componenti richiesti nelle forme attualmente disegnate. Rimane una nuova affermazione non verificata sul comportamento dell'aria nelle note autorevoli, propagata al browser e al pacchetto AI. **Finding: 0 critici, 0 alti, 1 medio, 0 bassi.**
+
+#### Perimetro e integrità
+
+Letto il diff `11a0d31..f219e49`, inclusi il commit documentale `9fdc067`, il nuovo layout, la fonte utente, il ciclo sintetico, i test e la documentazione. Nel range compare anche `58d9514`, copia documentale del report della revisione 3. Diff conservato in `/tmp/salamai-review-f219e49.diff`.
+
+Nessuna modifica all'implementazione, alle configurazioni autorevoli o alla scena condivisa; nessun commit, nessun accesso MCP e nessuna scrittura nel worktree principale. Build standard nel solo worktree di revisione; script, log e screenshot aggiuntivi in `/tmp/salamai-review-f219e49/`. Blender avviato in batch separato con `--factory-startup`. Eseguite con autorizzazione le prove fuori sandbox necessarie per Blender e Chrome.
+
+`git diff --exit-code`, `git diff --cached --exit-code` e `git diff --check` puliti. Prima della scrittura del report erano non tracciati soltanto i tre report precedenti.
+
+#### Comandi ed esiti
+
+Ambiente invariato: Blender 5.2.3 LTS, Python 3.14.4, Node v24.14.0, npm 11.9.0 e Chrome di sistema. Comandi dalla radice del worktree salvo indicazione diversa.
+
+| Comando / controllo | Esito |
+|---|---|
+| `git rev-parse HEAD`, `git status --short`, `git diff --stat 11a0d31..f219e49`, lettura del diff e dei file modificati | Snapshot corretto, sorgenti puliti, ispezione completata. |
+| `tools/room3d/build_all.sh > /tmp/salamai-review-f219e49-build.log 2>&1` | **Exit 0**: validazione, due layout, otto PNG e altri derivati, pacchetto sintetico, **66 test passati in 11,928 s**, npm ci, build web e controllo sola lettura. Nessun test segnalato come saltato. |
+| `python3 /tmp/salamai-review-f219e49/probe.py` | **Exit 0**: confronto ID/configurazioni/mesh con `11a0d31`, percorsi e lunghezze, stati e fonti, separazione degli ingombri, associazione ciclo/build, estrazione note e percorsi immagini. Log `probe.log`, ingombri in `bounds.json`. |
+| `blender --background --factory-startup --python-exit-code 1 --python /tmp/salamai-review-f219e49/collision_blender.py` | **Exit 0**. BVH delle superfici generate: nessuna intersezione tra D1/T/D2/D3 e ventole, frecce, tubi nebbia, zone prodotto, pareti o soffitto. Log `collision.log`, risultato `collision.json` uguale a `[]`. |
+| `npm run e2e -- --out /tmp/salamai-review-f219e49/e2e` in `web/room3d-viewer` | **Exit 0, tutte le verifiche superate**. Log `e2e.log`, screenshot nella directory `e2e`. |
+| `node /tmp/salamai-review-f219e49/browser.mjs` | **Exit 0**: selezione reale con click di T, D2 e D3 dalla vista alta, lettura dei pannelli, screenshot e confronto con L900_DEMO. Log `browser.log`, immagini `duct_tee_01.png`, `exhaust_duct_02.png`, `exhaust_duct_03.png`, `compare.png`. |
+| Sonda Python di SHA256 su catalogo, manifest, GLB e PNG di entrambi i layout | Tutti gli hash verificati; `ALL_CATALOG_ASSET_HASHES_OK`. |
+| Lettura del pacchetto sintetico generato | Nuove entità e note presenti; le sezioni `hypotheses` e `inferences` sono vuote. Evidenza per F6. |
+| `view_image` | Ispezionati pianta e assonometria L001 rigenerate, screenshot web iniziale assonometrico e screenshot della selezione del T dall'alto. |
+| `git diff --exit-code`, `git diff --cached --exit-code`, `git diff --check` | Nessuna modifica tracciata introdotta dalla revisione. |
+
+I log con nome relativo sono in `/tmp/salamai-review-f219e49/`.
+
+#### Geometria rispetto all'indicazione
+
+La fonte `src_user_20261028` registra esplicitamente: tubo dalla botola verso la parete lunga di fondo, raccordo a T, due rami Ø80 agli angoli lontani dalla porta e bocche in alto. Il modello realizza questa topologia nel frame canonico Z-up, con parete porta Y=0 e fondo Y=1,60.
+
+| Elemento | Coordinate / dimensioni rappresentate | Esito |
+|---|---|---|
+| D1 `exhaust_duct_01` | Asse `(1,365; 0,625; 2,10)` → `(1,365; 0,625; 1,92)` → `(1,365; 1,50; 1,92)`; curva R=0,10 m | Parte dalla botola e va verso +Y, al fondo. |
+| T `duct_tee_01` | Centro `(1,365; 1,50; 1,92)`; ingombro provvisorio 0,22×0,12×0,12 m | D1 termina nel centro del T; raccordo rappresentato schematicamente da un box. |
+| D2 `exhaust_duct_02` | Dal centro T a `(0,10; 1,50; 1,92)` | Bocca nell'angolo sinistro di fondo, in alto. |
+| D3 `exhaust_duct_03` | Dal centro T a `(2,93; 1,50; 1,92)` | Bocca nell'angolo destro di fondo, in alto. |
+
+Le bocche sono a 18 cm dal soffitto lungo l'asse Z, a 10 cm dalla parete di fondo e a 10 cm dalle pareti laterali lungo l'asse X. Questi sono **valori assunti**, non quote rilevate. I due rami sono orizzontali lungo X, con terminali geometrici rivolti verso le pareti laterali: anche questo dettaglio è documentato come provvisorio.
+
+Lunghezze derivate dal percorso effettivo:
+
+- D1: **1,01208 m**, due tratti e una curva;
+- D2: **1,265 m**, un tratto rettilineo;
+- D3: **1,565 m**, un tratto rettilineo.
+
+Il Ø100 nominale conserva la fonte `src_distinta`; i Ø80 nominali e le connessioni del T hanno stato `declared` e fonte `src_user_20261028`. I diametri esterni sono sconosciuti, disegnati rispettivamente a 0,105 e 0,084 m. Le coordinate del T e dei rami sono `assumed`; l'ingombro del T è `unknown`, con `value:null` e `draw_value`. Raggio della curva, materiale dei nuovi tubi e coefficienti di perdita rimangono sconosciuti. Nessuna quota esatta dei nuovi rami è promossa a misura reale.
+
+Tutti i nuovi componenti sono `planned`, nel layer `estrazione_ingresso`; il browser evidenzia correttamente dati assunti/sconosciuti. La fonte utente descrive la topologia senza inventare coordinate esatte. L'assunzione `l001_duct_corner` distingue la decisione dichiarata dalle quote provvisorie; il problema F6 riguarda invece le note sul flusso.
+
+#### Collisioni e interferenze
+
+La sonda confronta prima gli AABB ricavati dalle mesh canoniche. Una distanza positiva tra AABB è un limite inferiore conservativo della distanza fra le forme; non è una misura in opera. Non risultano sovrapposizioni tra la nuova rete e ventole, tubi nebbia o zone prodotto.
+
+Esempi di separazione minima conservativa nelle forme disegnate:
+
+| Coppia / vincolo | Separazione ricavata |
+|---|---:|
+| T – parete di fondo | **4,0 cm** |
+| Rami Ø80 – parete di fondo | **5,8 cm** |
+| D3 – zona salami | **5,8 cm**, lungo Y |
+| D3 – ventola `fan_02` | **almeno 15,88 cm**, distanza tra AABB |
+| D3 – tubo nebbia M3 | **almeno 22,77 cm**, distanza tra AABB |
+| Rami Ø80 – soffitto | **13,8 cm**, in Z |
+| T – soffitto | **12,0 cm**, in Z |
+| Bocche – rispettive pareti laterali | **10,0 cm**, in X |
+
+Per D1 l'AABB globale del soffitto si sovrappone al punto di attacco Z=2,10, ma non descrive il foro della botola. Il controllo successivo delle superfici con `mathutils.bvhtree.BVHTree` non rileva intersezioni, confermando che D1 arriva nella botola libera e non attraversa la parte piena del soffitto.
+
+Le sovrapposizioni fra T e tubi sono le connessioni schematiche previste, non collisioni con apparecchiature. I rami arrivano al centro del box T: non vengono modellati innesti, spessori, guarnizioni o volume idraulico interno del raccordo. Non è stata interpretata questa schematizzazione come raccordo costruttivo validato.
+
+Il BVH delle superfici non trova intersezioni della nuova rete con le categorie richieste. Il controllo resta limitato agli ingombri attuali: supporti reali, isolamento, tolleranze di montaggio e prodotto effettivamente appeso non sono modellati. In particolare i 5,8 cm rispetto al placeholder salami non garantiscono la distanza reale dal prodotto.
+
+#### ID, associazione dei cicli e regressioni
+
+Confronto riprodotto contro il JSON di `11a0d31`, estratto con `git show` e valutato in memoria:
+
+- **aggiunti soltanto** `duct_tee_01`, `exhaust_duct_02`, `exhaust_duct_03`;
+- nessun ID rimosso o rinominato;
+- fra i componenti già presenti cambia soltanto la configurazione di `exhaust_duct_01`;
+- fra le mesh/hash semantici delle entità preesistenti cambia soltanto `exhaust_duct_01`. Ventole, tubi nebbia, zone prodotto, struttura e aperture restano invariati.
+
+L001 passa da 35 a **38 entità**, con:
+
+```text
+config_hash   4ec3494e994a72cfb9b32cd59664b1476e84f5bfa198550d516ba4c77825b5e2
+semantic_hash 8eebc290011fb8c7f1afe59fbea621fb5e7c8fbf7ee0c3077fe71dbe4a8f4da1
+build_id      c08d7f70134af6a6cfe7
+```
+
+Tutti e tre coincidono con il riferimento nel ciclo sintetico aggiornato. Il comando unico esporta il pacchetto senza errori e lo marca come sintetico. I test confermano il riferimento alla revisione esatta, senza assegnare retroattivamente la nuova disposizione ai cicli storici.
+
+L900_DEMO rimane geometricamente invariato: 34 entità e semantic hash `f1d6990a44465513db60e33dbfb7afcb13054668663a2e6a57cd8f1fe828574f`. Il suo build ID diventa `9d83373ca77b8b87025d` perché il config hash include anche `room.json`, dove è stata aggiunta la fonte utente. È una conseguenza del contratto di hash esistente, non uno spostamento nascosto del layout demo.
+
+Il nuovo test `test_exhaust_tee_two_branches_high_in_back_corners` verifica attacco D1/T, partenza dei rami, diametro nominale e collocazione delle bocche. Il test sulla lunghezza aggiorna le attese al numero di punti, mantenendo il controllo tratti+archi. Passano anche i test precedenti di coordinate, aperture, Z-up/Y-up, scala, ID GLB/manifest, riproducibilità, contratti 1.1, missing/invalid e generatore modificato. Il test nuovo usa soglie ampie di posizione e non copre collisioni né classificazione delle note: le sonde aggiuntive hanno verificato separatamente questi aspetti.
+
+#### Documentazione e controllo visivo/web
+
+`ASSUMPTIONS.md` e README sostituiscono correttamente il precedente tubo verso un solo angolo con bocca bassa. Sono allineati a T, rami Ø80 e bocche alte; quote esatte e orientamento delle bocche restano da confermare. Le lunghezze arrotondate del documento sono coerenti con quelle calcolate. È segnalata la necessità di acquistare T e tubi Ø80, assenti dalla distinta.
+
+`MISURE_MANCANTI.md` indica il build ID corretto `c08d7f70134af6a6cfe7`; righe 22, 23 e 23a riportano diametri esterni, raggio, posizione/ingombro T e bocche come provvisori, con i percorsi JSON da aggiornare. I valori delle ventole e degli altri componenti ispezionati corrispondono al layout. Non è stato necessario aggiornare il mapping dei dispositivi per i raccordi passivi.
+
+Ispezionate le immagini rigenerate:
+
+- `build/room3d/layouts/L001/c08d7f70134af6a6cfe7/views/pianta-e38414a6af48c644.png`;
+- `build/room3d/layouts/L001/c08d7f70134af6a6cfe7/views/assonometria_aperta-8fd8667659498b55.png`.
+
+Entrambe mostrano il percorso verso il fondo e i rami alti correttamente; T, D2 e D3 sono riconoscibili nei richiami, con marcatura `[A]`. Le sovrapposizioni prospettiche non corrispondono a collisioni 3D secondo le sonde. Nessun difetto bloccante di leggibilità nelle due viste richieste.
+
+Il visualizzatore carica il nuovo build ID. La sonda aggiuntiva seleziona con click i tre nuovi componenti dalla vista alta e legge ID, layer, quote, diametri, lunghezze e stati corretti. I loro nomi e metadati sono presenti negli asset. Nel confronto con il demo sono elencati i tre componenti presenti solo in A e il percorso D1 differente; le viste restano sincronizzate.
+
+La suite e2e completa passa: layer, trasparenza, selezione interna, quote, misura porta **65,0 cm**, confronto, errori, sola lettura e assenza di CDN; sul telefono emulato 390×844 passano rotazione, pinch, selezione, pannello e assenza di overflow orizzontale. Il finding seguente è stato osservato anche leggendo i pannelli effettivi del browser.
+
+#### Finding
+
+##### F6 — Media — Le note presentano inferenze sul flusso come comportamenti accertati
+
+**File:** `model/room3d/layouts/L001_progetto.json:297`, `:359`, `:421`.
+
+**Evidenza:** nel raccordo T compare:
+
+> Con rami di lunghezza diversa (1,27 m e 1,57 m disegnati) aspira di più il ramo corto.
+
+I due rami riportano inoltre come conseguenza certa dell'ingresso basso e delle bocche alte che l'aria attraversi la camera dal basso verso l'alto. Queste frasi non sono marcate come ipotesi, non hanno una fonte di misura o un metodo di calcolo e non specificano condizioni di validità. La fonte `src_user_20261028` dichiara il percorso desiderato, non queste prestazioni. Materiali dei rami, perdite del T/bocche e coefficienti di perdita sono esplicitamente sconosciuti nel medesimo modello.
+
+**Riproduzione:** build completa, selezione con click di `duct_tee_01` e dei rami nel visualizzatore (`/tmp/salamai-review-f219e49/browser.log`): le frasi compaiono nel pannello “Note”. Sono copiate nel manifest e in `build/room3d/analysis/SINTETICO_2026-01-10_0800/package.json` nelle note dei componenti, mentre `hypotheses` e `inferences` del pacchetto sono vuote. La propagazione è quindi effettiva, non solo un commento interno del sorgente.
+
+**Impatto:** la disposizione geometrica può essere interpretata come dimostrazione dello sbilanciamento fra rami o della distribuzione dell'aria nella camera. La sola differenza di lunghezza e la posizione delle aperture non costituiscono nel modello una verifica di tali risultati; il requisito originale separa osservazioni, inferenze e ipotesi e non presenta direzioni o campi di flusso come misure. I badge dei dati geometrici provvisori non classificano esplicitamente queste conclusioni fluidodinamiche.
+
+**Correzione proposta:** eliminare le conclusioni certe oppure riscriverle esplicitamente come ipotesi/intento di progetto, ad esempio “possibile sbilanciamento tra i rami, da verificare; nessuna ripartizione di portata calcolata” e “disposizione pensata per ingresso basso e aspirazione alta; percorso reale dell'aria non verificato”. Mantenerle separate da osservazioni misurate nel pacchetto AI e verificare che la classificazione resti chiara nel browser. Non servono CFD o coefficienti inventati per correggere il problema. Aggiungere una verifica mirata sulle note esportate così che ipotesi di flusso non risultino affermazioni accertate.
+
+#### Verifiche non eseguite e limiti
+
+- Nessun rilievo fisico o prova con apparecchiature reali. Quote, distanze, ingombri e supporti non misurati restano provvisori; nessuna certificazione costruttiva o di montabilità.
+- Nessuna misura/calcolo di portata, bilanciamento dei rami, campo d'aria, perdite, rumore o efficacia di asciugatura; nessuna validazione del processo alimentare. F6 riguarda proprio la classificazione delle affermazioni non verificate.
+- Interferenze controllate sulle mesh generate e sui placeholder correnti, con separazione AABB e intersezione superfici BVH. Non verificati montanti/supporti mancanti, prodotto reale, tolleranze, accesso per manutenzione, innesti e volume idraulico interno del T. Nessuna analisi degli ostacoli al flusso oltre alla geometria disegnata.
+- Il BVH non è un controllo esaustivo di contenimento di solidi arbitrari. Per le categorie richieste, salvo il soffitto perforato, gli AABB positivamente separati escludono anche il contenimento; per D1/soffitto sono stati controllati il foro e le superfici reali generate.
+- Ispezionate manualmente pianta e assonometria richieste, non tutte le sezioni/viste del demo rigenerate. Rendering Workbench; non Cycles, Blender GUI o MCP.
+- Browser Chrome headless/SwiftShader, touch emulato: non telefono fisico, Safari/iOS, Firefox o tutte le viewport. Non eseguita una nuova suite specifica mobile per i tre nuovi componenti; selezione mirata effettuata su desktop.
+- Non ripetuti Docker/Nginx e test cache HTTP: configurazione di deploy e codice web invariati nel diff. Hash degli asset verificati localmente e caricamento web eseguito; nessun rollout su infrastrutture reali.
+- Nessuna modifica ai cicli reali né migrazione di archivi storici. Il ciclo aggiornato è esclusivamente l'esempio sintetico. Nessun audit dipendenze o fuzzing esaustivo.
+
+#### Verdetto finale
+
+**Geometria, provenienze geometriche, ID, ciclo sintetico e documentazione tecnica della nuova disposizione risultano coerenti con l'indicazione e con le prove eseguite. Nessuna collisione rilevata nelle forme disegnate; build e test superati.** Lo snapshot `f219e49` non riceve approvazione complessiva finché F6 non distingue esplicitamente le ipotesi sul flusso dalle affermazioni accertate. I precedenti finding F1–F5 non sono stati riaperti dalle verifiche effettuate.
+
 
 ## Revisione 3 — report di Codex su `11a0d31`
 

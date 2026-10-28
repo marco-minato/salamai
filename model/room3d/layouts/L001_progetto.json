@@ -294,7 +294,7 @@
       },
       "notes": [
         "Raccordo non presente in distinta_base.md: da acquistare.",
-        "Con rami di lunghezza diversa (1,27 m e 1,57 m disegnati) aspira di più il ramo corto."
+        "IPOTESI da verificare: i rami disegnati hanno lunghezze diverse (1,27 m e 1,57 m), quindi la portata potrebbe non dividersi in parti uguali. Nessuna ripartizione di portata calcolata o misurata."
       ]
     },
     {
@@ -356,7 +356,7 @@
       },
       "notes": [
         "Tubo Ø80 non presente in distinta_base.md: da acquistare.",
-        "Bocca in alto: con l'ingresso Y2 in basso sulla porta l'aria attraversa la camera dal basso verso l'alto."
+        "Intento di progetto (IPOTESI, non verificata): bocca in alto e ingresso Y2 in basso sulla porta, perché il ricambio attraversi la camera dal basso verso l'alto. Percorso reale dell'aria non misurato né simulato."
       ]
     },
     {
@@ -418,7 +418,7 @@
       },
       "notes": [
         "Tubo Ø80 non presente in distinta_base.md: da acquistare.",
-        "Bocca in alto: con l'ingresso Y2 in basso sulla porta l'aria attraversa la camera dal basso verso l'alto."
+        "Intento di progetto (IPOTESI, non verificata): bocca in alto e ingresso Y2 in basso sulla porta, perché il ricambio attraversi la camera dal basso verso l'alto. Percorso reale dell'aria non misurato né simulato."
       ]
     },
     {

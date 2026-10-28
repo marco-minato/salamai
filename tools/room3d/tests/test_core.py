@@ -5,6 +5,7 @@
 
 import copy
 import math
+import re
 import os
 import sys
 import unittest
@@ -135,6 +136,17 @@ class TestValidConfig(unittest.TestCase):
         self.assertAlmostEqual(pp["length"], expect, delta=1e-9)
         self.assertEqual(len(pp["straights"]), len(pts) - 1)
         self.assertEqual(len(pp["bends"]), len(pts) - 2)
+
+    def test_flow_claims_in_notes_are_marked_as_hypotheses(self):
+        """Le note non presentano come accertati effetti sul flusso d'aria (portate, percorsi, ripartizioni)."""
+        claim = re.compile(r"aspira di più|\battravers|\bripartizion|\bportat[ae]\b")
+        for lay in self.layouts:
+            for c in lay["components"]:
+                for n in c.get("notes", []):
+                    low = n.lower()
+                    if claim.search(low):
+                        self.assertTrue(any(k in low for k in ("ipotesi", "nominale", "non simulat", "non sono misure", "non una portata")),
+                                        f"{lay['layout_id']}/{c['id']}: affermazione sul flusso non marcata come ipotesi: {n}")
 
     def test_exhaust_tee_two_branches_high_in_back_corners(self):
         """Decisione utente 28/10/2026: Ø100 → T sulla parete di fondo → due Ø80 negli angoli lontani, bocche in alto."""

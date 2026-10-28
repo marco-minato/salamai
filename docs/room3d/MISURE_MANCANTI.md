@@ -6,7 +6,7 @@ Riferimento delle coordinate: origine nell'angolo **interno sinistro della paret
 
 File: `room.json` = `model/room3d/room.json`; `L001` = `model/room3d/layouts/L001_progetto.json`.
 
-Fonte: elenco `unknowns` e `assumptions` del manifest di L001, build `c08d7f70134af6a6cfe7`.
+Fonte: elenco `unknowns` e `assumptions` del manifest di L001, build `ce7905cd44a7e4c12fd9`.
 
 ## Stanza e aperture
 
