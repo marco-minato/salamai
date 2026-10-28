@@ -1,6 +1,6 @@
 # Revisione indipendente — room3d
 
-Stato: **revisione 4 di Codex su `f219e49` (nuovo percorso del tubo di aspirazione): geometria coerente, nessuna collisione, un finding F6 (media) sulle note del flusso.** F6 corretto nel commit successivo, in attesa della revisione 5. L'ultima approvazione completa di Codex resta quella di `11a0d31` (revisione 3) e non copre le modifiche successive al modello. Nessuna approvazione è dichiarata da chi ha implementato.
+Stato: **revisione 5 di Codex su `f6425c6`: F6 risolto, un finding F7 (bassa) nel test sulle note.** F7 corretto nel commit successivo (solo test), in attesa della revisione 6. L'ultima approvazione completa di Codex resta quella di `11a0d31` (revisione 3). Nessuna approvazione è dichiarata da chi ha implementato.
 
 Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pannello Codex (`herdr agent start reviewer --kind codex -- --no-daemon`) nel worktree separato `../salamai-review`, con HEAD detached sul commit da esaminare e la consegna della sezione 2 delle specifiche. Codex scrive ogni report nel worktree; qui sotto i report sono copiati senza modifiche, salvo il livello dei titoli. Le richieste di Codex di eseguire comandi fuori dal suo sandbox (npm ci, Blender batch, test, Chrome headless, Docker locale) sono state approvate dall'utente o, su sua delega, solo per azioni locali con output nel worktree di revisione o in `/tmp`.
 
@@ -10,7 +10,8 @@ Come è stata eseguita: Claude Code dentro Herdr (`HERDR_ENV=1`) ha aperto un pa
 | 2 | `4337901` | F1–F4 risolti; F5 media (contratto dei cicli) |
 | 3 | `11a0d31` | Approvato: F1–F5 risolti, nessun nuovo finding |
 | 4 | `f219e49` | Nuovo percorso del tubo (T + due rami Ø80, bocche in alto): geometria ok; F6 media |
-| 5 | commit di correzione di F6 | in attesa |
+| 5 | `f6425c6` | F6 risolto; F7 bassa (falso positivo del test) |
+| 6 | commit di correzione di F7 | in attesa |
 
 ## Correzioni
 
@@ -38,6 +39,147 @@ Verifiche dell'implementatore sul commit di F5 (non sono una revisione): `tools/
 | F6 — Media | Le due note su sbilanciamento dei rami e percorso dell'aria riscritte come **IPOTESI** / intento di progetto, con "nessuna ripartizione di portata calcolata o misurata" e "percorso reale dell'aria non misurato né simulato". Arrivano così marcate anche a manifest, visualizzatore e pacchetto di analisi. | `test_flow_claims_in_notes_are_marked_as_hypotheses`: ogni nota dei layout che parla di aspirazione, percorso, ripartizione o portata deve essere marcata come ipotesi o direzione nominale. La vecchia frase fa fallire il test. |
 
 Verifiche dell'implementatore (non sono una revisione): `build_all.sh` exit 0 con 67 test superati; `npm run e2e` superato. `semantic_hash` di L001 invariato (`8eebc290011f…`); `build_id` cambiato perché le note fanno parte della configurazione (`ce7905cd44a7e4c12fd9`); ciclo d'esempio rigenerato.
+
+### Commit successivo a `f6425c6` (F7, solo test)
+
+| Finding | Correzione | Prove aggiunte |
+|---|---|---|
+| F7 — Bassa | Il controllo sulle note accetta anche le frasi che dichiarano un dato non noto ("non misurata", "sconosciuto", "non calcolata", "non verificata", "da verificare"), oltre a ipotesi e direzioni nominali. | `test_flow_claim_detector`: tre affermazioni non qualificate devono essere segnalate (fra cui le due vecchie note di F6), quattro frasi ammesse no (fra cui "Portata non misurata: dato sconosciuto." e "riportata"). |
+
+Nessun cambiamento al modello: `build_id` invariati.
+
+## Revisione 5 — report di Codex su `f6425c6`
+
+### Riverifica 5 — Salamai room3d, f6425c6
+
+Data: 28 ottobre 2026. Revisore indipendente: Codex.
+
+**Commit esaminato:** `f6425c6c8ae6654483e35ed288ea3ef4a66c85fb`, HEAD detached nel worktree `/home/marco/lab/salamai-review`.
+
+**F6: risolto. Verdetto: approvazione nel perimetro verificato con rilievo non bloccante F7, gravità bassa, sul nuovo test.** Le note corrette sono esplicitamente ipotesi/intento di progetto in JSON, manifest, browser e pacchetto AI; geometria invariata, build e suite web superate. Il test intercetta tutte le vecchie note, ma non è privo di falsi positivi: respinge anche una semplice dichiarazione di dato sconosciuto. **Nuovi finding: 0 critici, 0 alti, 0 medi, 1 basso.**
+
+#### Perimetro e integrità
+
+Letti `docs/room3d/REVIEW.md`, correzione F6, e il diff completo `f219e49..f6425c6`. Il diff modifica tre note di L001, il riferimento del ciclo sintetico, il build ID nella scheda misure, aggiunge il test sulle note e aggiorna la documentazione della review. Non modifica codice del generatore, esportatore, frontend, sync-data o Nginx. Diff salvato in `/tmp/salamai-review-f6425c6/diff.patch`.
+
+Nessuna modifica all'implementazione, alla scena condivisa o al worktree principale; nessun commit né accesso MCP. La mutazione delle vecchie note e le prove di falsi positivi sono eseguite **solo** su una copia di strumenti/modello in `/tmp/salamai-review-f6425c6/fixture/`. Build ordinaria nel worktree di revisione, altri output in `/tmp`. I comandi Blender e Chrome sono eseguiti fuori sandbox con autorizzazione.
+
+Controlli Git prima della scrittura del report: `git diff --exit-code`, `git diff --cached --exit-code` e `git diff --check` puliti; presenti soltanto i quattro report precedenti non tracciati.
+
+#### Comandi ed esiti
+
+Ambiente invariato rispetto alle precedenti revisioni: Blender 5.2.3 LTS, Python 3.14.4, Node v24.14.0, npm 11.9.0, Chrome di sistema. Comandi dalla radice del worktree salvo diversa indicazione.
+
+| Comando / prova | Esito |
+|---|---|
+| `git rev-parse HEAD`, `git status --short`, lettura di REVIEW e `git diff f219e49..f6425c6` | Commit corretto, ispezione completata. |
+| `tools/room3d/build_all.sh > /tmp/salamai-review-f6425c6-build.log 2>&1` | **Exit 0**: validazione, due layout e otto PNG, GLB/manifest/blend, pacchetto sintetico, **67 test passati in 11,400 s**, npm ci, build web e controllo sola lettura. Nessun test segnalato come saltato. |
+| `python3 /tmp/salamai-review-f6425c6/pipeline_probe.py` | **Exit 0**: confronta mesh e ID con f219e49, verifica identità delle note JSON/manifest/pacchetto, ciclo e build, SHA degli asset. Log `pipeline_probe.log`. |
+| `python3 /tmp/salamai-review-f6425c6/test_probe.py` | **Exit 0 della sonda**, che esegue otto invocazioni isolate del nuovo test nella copia temporanea. Baseline e tre controlli innocui passano; le tre vecchie note falliscono come atteso; una dichiarazione innocua di portata sconosciuta fallisce indebitamente. Log `test_probe.log` e log individuali. |
+| `python3 -m unittest test_core.TestValidConfig.test_flow_claims_in_notes_are_marked_as_hypotheses -v` dalla directory `fixture/tools/room3d/tests` | È il comando reale eseguito dalla sonda per ogni variante; gli esiti intenzionalmente non zero sono distinti sotto. La copia dei JSON viene ripristinata alla baseline al termine. |
+| `npm run e2e -- --out /tmp/salamai-review-f6425c6/e2e` in `web/room3d-viewer` | **Exit 0, tutte le verifiche superate**, log `e2e.log`. |
+| `node /tmp/salamai-review-f6425c6/browser.mjs` | **Exit 0**: serve il bundle corrente, seleziona con click T/D2/D3 dalla vista alta, legge il pannello e verifica la presenza di `IPOTESI` e del disclaimer del T. Salva screenshot e prova anche il confronto con il demo. Log `browser.log`. |
+| `view_image` su `duct_tee_01.png` | Screenshot corrente del T selezionato ispezionato; note complete verificate nel testo DOM del pannello, registrato nel log browser. |
+| `git diff --exit-code`, `git diff --cached --exit-code`, `git diff --check` | Nessuna modifica tracciata introdotta dalla revisione. |
+
+I log con nome relativo sono in `/tmp/salamai-review-f6425c6/`.
+
+#### F6 — Risolto: evidenza lungo l'intera catena
+
+Nel JSON, le due classi di frasi sono ora:
+
+- T: **“IPOTESI da verificare”**, possibile ripartizione non uniforme e **“Nessuna ripartizione di portata calcolata o misurata”**;
+- D2 e D3: **“Intento di progetto (IPOTESI, non verificata)”**, con **“Percorso reale dell'aria non misurato né simulato”**.
+
+La sonda verifica con uguaglianza esatta che gli array `notes` di `duct_tee_01`, `exhaust_duct_02` e `exhaust_duct_03` siano uguali nei tre punti:
+
+1. `model/room3d/layouts/L001_progetto.json`;
+2. manifest L001 della build corrente;
+3. `build/room3d/analysis/SINTETICO_2026-01-10_0800/package.json`, note dei componenti del layout.
+
+Le asserzioni passano per tutti e tre i componenti. Non sono più esportate le precedenti formulazioni assertive nelle loro note. Le sezioni strutturate `inferences` e `hypotheses` del pacchetto restano vuote: l'ipotesi è dichiarata direttamente nelle note dei componenti, senza essere presentata come osservazione misurata. Non sono state aggiunte portate o simulazioni inventate.
+
+La verifica browser usa i GLB/manifest realmente generati: click sul T, poi D2 e D3; il pannello mostra per ciascuno le nuove frasi complete e la marcatura **IPOTESI**. Le asserzioni della sonda sul testo DOM passano. `browser.log` contiene i pannelli completi; gli screenshot sono `duct_tee_01.png`, `exhaust_duct_02.png`, `exhaust_duct_03.png`. Non è una verifica limitata alla sola lettura dei sorgenti frontend.
+
+La correzione del contenuto soddisfa F6: intenzione geometrica e ipotesi sul flusso sono ora distinte dai risultati verificati.
+
+#### Verifica del nuovo test e mutazioni in /tmp
+
+La copia temporanea mantiene la struttura `tools/room3d/tests` e `model/room3d`, così il test legge davvero i JSON mutati. Per ogni prova viene modificato solo il JSON della copia; il file del test è quello del commit corrente.
+
+| Variante | Exit del test | Valutazione |
+|---|---:|---|
+| Baseline corrente | 0 | Corretto. |
+| Vecchia nota T ripristinata da `git show f219e49:...L001_progetto.json` | 1 | Corretto: assertion identifica `L001/duct_tee_01` e la frase “aspira di più il ramo corto”. |
+| Vecchia nota D2 ripristinata | 1 | Corretto: assertion identifica D2 e la frase assertiva sull'attraversamento dell'aria. |
+| Vecchia nota D3 ripristinata | 1 | Corretto, analogo a D2. |
+| Nota logistica: “Raccordo non presente in distinta: da acquistare.” | 0 | Corretto. |
+| Nota geometrica: “Bocca in alto a quota provvisoria 1,92 m.” | 0 | Corretto. |
+| Nota nominale: “Freccia = direzione nominale, non una misura di portata.” | 0 | Corretto. |
+| Nota: **“Portata non misurata: dato sconosciuto.”** | **1** | **Falso positivo**, F7. Non viene affermato alcun effetto o valore di portata. |
+
+I fallimenti delle tre mutazioni storiche sono quindi reali e pertinenti, non errori di percorso/import. Il test protegge esattamente contro la regressione originaria, ma la sua euristica generale non discrimina tutte le dichiarazioni innocue di dati mancanti.
+
+#### Regressioni: identità della build, ciclo e geometria
+
+Confronto indipendente del layout attuale con quello di `f219e49`, estratto con `git show` e valutato usando il core corrente, invariato nel diff:
+
+- stessi **38 ID** di entità L001;
+- **tutte le mesh identiche**, vertici e facce confrontati direttamente;
+- stessi hash semantici di ogni entità;
+- nessuna differenza nei campi `geometry` dei componenti.
+
+La nuova identità è coerente con la modifica delle note nel JSON autorevole:
+
+```text
+config_hash   99f5cb5e5392c4ded19536b26364be2e2cecb5eb83db9d4093722b66ba021dc2
+semantic_hash 8eebc290011fb8c7f1afe59fbea621fb5e7c8fbf7ee0c3077fe71dbe4a8f4da1
+build_id      ce7905cd44a7e4c12fd9
+```
+
+Il semantic hash è quello di f219e49; config hash e build ID cambiano per le note. Tutti e tre coincidono fra catalogo, riferimento del ciclo sintetico e pacchetto di analisi. `MISURE_MANCANTI.md` indica il nuovo build ID corretto. Verificati SHA256 di manifest, GLB e immagini di entrambi i layout rispetto al catalogo/manifest.
+
+La suite completa conserva i test di riproducibilità, cambiamento del generatore, coordinate/aperture, Z-up/Y-up, scala, ID, dati mancanti/invalidi e contratto ciclo 1.1. La suite web passa caricamento, layer, trasparenza/selezione, quote e misura porta **65,0 cm**, confronto, sincronizzazione camera, errori, richieste GET e assenza di CDN. Su mobile emulato 390×844 passano rotazione, pinch, selezione, pannello e assenza di overflow orizzontale. Non sono emerse regressioni funzionali nei controlli eseguiti.
+
+#### Nuovo finding
+
+##### F7 — Bassa — Il test sulle note scambia una dichiarazione di dato sconosciuto per un'affermazione sul flusso
+
+**File:** `tools/room3d/tests/test_core.py:142` e `:148`.
+
+**Evidenza riprodotta:** nella sola copia in `/tmp`, aggiunta a `duct_tee_01.notes` la frase:
+
+```text
+Portata non misurata: dato sconosciuto.
+```
+
+Il nuovo test termina con exit 1 e messaggio:
+
+```text
+L001/duct_tee_01: affermazione sul flusso non marcata come ipotesi:
+Portata non misurata: dato sconosciuto.
+```
+
+Log `/tmp/salamai-review-f6425c6/unknown_flow.log`. Il termine `portata` attiva la regex, ma la frase non contiene nessuna delle cinque sottostringhe ammesse. Il controllo non riconosce la negazione esplicita di una misura e classifica erroneamente il contenuto come conclusione sul flusso.
+
+**Impatto:** può bloccare in futuro una documentazione corretta dell'incertezza, pur senza alcun contenuto fuorviante. Non altera la geometria o i dati serviti nel commit corrente e non annulla la correzione F6; per questo il rilievo è basso e non bloccante per l'uso del modello attuale.
+
+**Correzione proposta:** restringere il test di regressione alle affermazioni da proteggere oppure distinguere esplicitamente le dichiarazioni di assenza/incertezza dalle conclusioni. Aggiungere fixture positive e negative, includendo le tre vecchie frasi (da rifiutare), le note corrette e le dichiarazioni “portata non misurata/non disponibile” (da accettare). Non chiedere di etichettare come ipotesi l'assenza nota di una misura. Una generica whitelist di parole non deve essere presentata come controllo semantico esaustivo.
+
+#### Verifiche non eseguite e limiti
+
+- Nessuna misura reale di portata, simulazione CFD, valutazione impiantistica o del processo alimentare. Si verifica la classificazione delle note, non la validità fisica delle ipotesi.
+- Non ripetute le sonde collisioni/BVH della revisione 4: tutte le mesh sono identiche al confronto diretto. Restano validi i limiti relativi a forme provvisorie, supporti mancanti, raccordi schematici e prodotto reale.
+- Gli otto PNG sono rigenerati e i loro hash verificati, ma non ispezionati manualmente tutti. Non riprovati Cycles, Blender GUI o MCP.
+- Browser Chrome headless/SwiftShader e touch emulato; non dispositivi fisici, Safari/iOS, Firefox o tutte le viewport. I tre nuovi pannelli sono verificati con selezione mirata desktop; mobile coperto dalla suite generale.
+- Non ripetuti Docker/Nginx, cache HTTP o rollout concorrenti: quei sorgenti sono invariati nel diff. Verificati invece hash e caricamento degli asset locali correnti.
+- Le mutazioni del test coprono i casi elencati, non ogni formulazione del linguaggio naturale; non è dimostrata assenza generale di falsi positivi o falsi negativi.
+- Nessuna modifica/migrazione di cicli reali, audit dipendenze o fuzzing completo. Il ciclo rigenerato è esplicitamente sintetico.
+
+#### Verdetto finale
+
+**F6 chiuso su `f6425c6c8ae6654483e35ed288ea3ef4a66c85fb`. Approvazione del contenuto corretto e dello snapshot nel perimetro verificato, con rilievo non bloccante F7 (bassa) da correggere nel test.** Non è un'approvazione senza riserve della robustezza del nuovo controllo: il falso positivo è riprodotto e rimane aperto. Nessuna regressione funzionale rilevata; nessuna certificazione di misure fisiche o comportamento reale dell'aria implicita.
+
 
 ## Revisione 4 — report di Codex su `f219e49`
 

@@ -137,16 +137,35 @@ class TestValidConfig(unittest.TestCase):
         self.assertEqual(len(pp["straights"]), len(pts) - 1)
         self.assertEqual(len(pp["bends"]), len(pts) - 2)
 
+    FLOW_CLAIM = re.compile(r"aspira di più|\battravers|\bripartizion|\bportat[ae]\b")
+    # una nota sul flusso è accettabile se è un'ipotesi, una direzione nominale
+    # o se dichiara che il dato non è noto (non misurato, sconosciuto, ...)
+    FLOW_QUALIFIERS = ("ipotesi", "nominale", "non simulat", "non sono misure", "non una portata",
+                       "non misurat", "non calcolat", "sconosciut", "non verificat", "da verificare")
+
+    @classmethod
+    def flow_claim_unqualified(cls, note):
+        low = note.lower()
+        return bool(cls.FLOW_CLAIM.search(low)) and not any(k in low for k in cls.FLOW_QUALIFIERS)
+
+    def test_flow_claim_detector(self):
+        for bad in ("Con rami di lunghezza diversa aspira di più il ramo corto.",
+                    "Con l'ingresso in basso l'aria attraversa la camera dal basso verso l'alto.",
+                    "Portata 120 m³/h per ramo."):
+            self.assertTrue(self.flow_claim_unqualified(bad), bad)
+        for ok in ("Portata non misurata: dato sconosciuto.",
+                   "IPOTESI da verificare: la portata potrebbe non dividersi in parti uguali.",
+                   "La lunghezza riportata nel manifest deriva dal percorso disegnato.",
+                   "Flusso nominale: dalla camera verso la cantina, non simulato."):
+            self.assertFalse(self.flow_claim_unqualified(ok), ok)
+
     def test_flow_claims_in_notes_are_marked_as_hypotheses(self):
         """Le note non presentano come accertati effetti sul flusso d'aria (portate, percorsi, ripartizioni)."""
-        claim = re.compile(r"aspira di più|\battravers|\bripartizion|\bportat[ae]\b")
         for lay in self.layouts:
             for c in lay["components"]:
                 for n in c.get("notes", []):
-                    low = n.lower()
-                    if claim.search(low):
-                        self.assertTrue(any(k in low for k in ("ipotesi", "nominale", "non simulat", "non sono misure", "non una portata")),
-                                        f"{lay['layout_id']}/{c['id']}: affermazione sul flusso non marcata come ipotesi: {n}")
+                    self.assertFalse(self.flow_claim_unqualified(n),
+                                     f"{lay['layout_id']}/{c['id']}: affermazione sul flusso non marcata come ipotesi: {n}")
 
     def test_exhaust_tee_two_branches_high_in_back_corners(self):
         """Decisione utente 28/10/2026: Ø100 → T sulla parete di fondo → due Ø80 negli angoli lontani, bocche in alto."""
