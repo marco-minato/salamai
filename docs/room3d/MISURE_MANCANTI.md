@@ -6,7 +6,7 @@ Riferimento delle coordinate: origine nell'angolo **interno sinistro della paret
 
 File: `room.json` = `model/room3d/room.json`; `L001` = `model/room3d/layouts/L001_progetto.json`.
 
-Fonte: elenco `unknowns` e `assumptions` del manifest di L001, build `1ff600bc3a7b36eee701`.
+Fonte: elenco `unknowns` e `assumptions` del manifest di L001, build `c08d7f70134af6a6cfe7`.
 
 ## Stanza e aperture
 
@@ -48,8 +48,9 @@ Fonte: elenco `unknowns` e `assumptions` del manifest di L001, build `1ff600bc3a
 | 19 | Estrattore M4: diametro × lunghezza | 17 × 25 cm | | `L001` → `extractor_m4.geometry` |
 | 20 | Estrattore M4: altezza del centro | 2,25 m | | `L001` → `extractor_m4.geometry.center.z` |
 | 21 | Valvola antiritorno Y1: altezza del centro e lunghezza | 2,43 m · 10 cm | | `L001` → `check_valve_y1.geometry` |
-| 22 | Tubo D1: diametro esterno | 10,5 cm | | `L001` → `exhaust_duct_01.geometry.outer_diameter` |
-| 23 | Tubo D1: percorso reale (in quale angolo finisce) e raggio delle curve | angolo in fondo a sinistra (X 0, Y 1,60); raggio 10 cm | | `L001` → `exhaust_duct_01.geometry.points` / `bend_radius` |
+| 22 | Tubo principale D1 Ø100: diametro esterno e raggio della curva sotto la botola | 10,5 cm · raggio 10 cm | | `L001` → `exhaust_duct_01.geometry` |
+| 23 | Raccordo a T: X lungo la parete di fondo, distanza dalla parete, altezza, ingombro | X 1,365 (in linea con la botola) · asse a 10 cm dalla parete · Z 1,92 m · 22 × 12 × 12 cm | | `L001` → `duct_tee_01.geometry` e ultimo punto di `exhaust_duct_01` |
+| 23a | Rami D2 e D3 Ø80: diametro esterno, altezza, posizione delle bocche (distanza dalle pareti, rivolte verso il muro o verso il basso) | 8,4 cm · Z 1,92 m · bocche orizzontali a 10 cm dalle pareti laterali | | `L001` → `exhaust_duct_02/03.geometry` |
 | 24 | Griglia d'ingresso Y2 sulla porta: X, altezza da terra, spessore | X 1,365 · Z 0,15 m · 4 cm | | `L001` → `inlet_y2.geometry` |
 
 ## Ventole di ricircolo F1, F2, F3 e scatola X4

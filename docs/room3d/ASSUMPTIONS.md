@@ -54,7 +54,7 @@ Le misure in pixel dello schizzo non sono usate. Lo schizzo è archiviato in `mo
 | ID | Assunzione |
 |---|---|
 | `l001_fan_layout` | Tre ventole in alto sulla parete destra (X≈3,00), a Y 0,35 / 0,80 / 1,25 e Z 1,85, che soffiano verso −X. Distribuzione, quota e orientamento **da studiare**. Le frecce indicano la direzione **nominale, non simulata** |
-| `l001_duct_corner` | Il tubo Ø100 (3 m acquistati) va dalla botola all'angolo **in fondo a sinistra** (X=0, Y=1,60), a valle del soffio. Percorso, raggio di curva (10 cm) e bocca a 0,50 m sono assunti. La lunghezza dell'asse disegnato è nel manifest, ricavata dalla geometria: **3,02 m**, poco più dei 3 m acquistati. Con questo percorso la bocca non arriva a 0,50 m: è da verificare in opera |
+| `l001_duct_corner` | **Percorso dichiarato dall'utente (28/10/2026, `src_user_20261028`):** Ø100 dalla botola verso la parete lunga di fondo; lì un T (`duct_tee_01`) divide in due rami Ø80 (`exhaust_duct_02`, `exhaust_duct_03`) che arrivano agli angoli in fondo a sinistra e a destra; bocche **in alto**. **Assunti:** quota dei tubi 1,92 m, asse a 10 cm dalla parete di fondo, T in linea con la botola (X 1,365), bocche orizzontali a 10 cm dalle pareti laterali, ingombro del T, raggio della curva sotto la botola (10 cm). Lunghezze dell'asse disegnato nel manifest: circa 1,0 m di Ø100 e 1,27 m + 1,57 m di Ø80. Tubi Ø80 e T non sono in distinta. Sostituisce la versione precedente (unico tubo con bocca in basso a 0,50 m nell'angolo in fondo a sinistra) |
 | `l001_equipment_sizes` | Ingombri di stufa, umidificatori, estrattore, valvola, prese e tubi nebbia non documentati: forme provvisorie |
 | `l001_product_zones` | Zone prodotto provvisorie (salami, cacciatorini, tagli interi). Mancano strutture, altezze e ingombri reali |
 | `l001_sensor_positions` | Sonde descritte solo a parole: B1 a X 2,03 (≥ 1 m dalla parete destra, derivato) e Z 1,20 (dichiarato); le altre coordinate sono provvisorie |
@@ -78,7 +78,7 @@ Sono in `model/room3d/mapping.json`:
 1. Distanza porta–botola: bordo vicino o centro (`a01`). Basta un metro.
 2. Altezza della porta, lato cerniera, verso di apertura; posizione e altezza della griglia Y2 sull'anta.
 3. Posizione, quota e orientamento delle tre ventole, e il loro supporto.
-4. Percorso del tubo flessibile, raggi di curva, quota della bocca, angolo scelto.
+4. Tubo di aspirazione: posizione del T sulla parete di fondo, quota dei tubi e delle bocche, distanza delle bocche dalle pareti, diametri esterni, raggio della curva sotto la botola.
 5. Ingombri reali di stufa (con distanza dal muro), umidificatori (con rialzo), estrattore e valvola.
 6. Posizione di B1, B3, B4, B5, della cella di carico e delle scatole X4/X6.
 7. Struttura in legno di appensione: ingombri, altezze, file.

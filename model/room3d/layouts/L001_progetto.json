@@ -16,7 +16,7 @@
     },
     {
       "id": "l001_duct_corner",
-      "text": "'Tubo flessibile Ø100 fino all'angolo opposto alla porta' (prompt_schema_qelectrotech.md:425-426) è interpretato come angolo in fondo a sinistra (X=0, Y=1,60), a valle del soffio delle ventole. Percorso, raggi di curva e quota della bocca (0,50 m) sono assunti."
+      "text": "Percorso dichiarato dall'utente (28/10/2026): Ø100 dalla botola verso la parete lunga di fondo (Y=1,60), T, due rami Ø80 negli angoli più lontani dalla porta (X=0 e X=3,03, Y=1,60), bocche in alto. ASSUNTI: quota dei tubi 1,92 m, asse a 10 cm dalla parete di fondo, T in linea con la botola (X 1,365), bocche orizzontali a 10 cm dalle pareti laterali, ingombro del T, raggio della curva sotto la botola."
     },
     {
       "id": "l001_equipment_sizes",
@@ -171,7 +171,7 @@
     {
       "id": "exhaust_duct_01",
       "tag": "D1",
-      "name": "Tubo di aspirazione flessibile Ø100",
+      "name": "Tubo di aspirazione principale Ø100 (botola → T)",
       "type": "duct",
       "layer": "estrazione_ingresso",
       "state": "planned",
@@ -198,22 +198,13 @@
           },
           {
             "value": [
-              0.12,
-              1.48,
+              1.365,
+              1.5,
               1.92
             ],
             "status": "assumed",
-            "assumption": "l001_duct_corner"
-          },
-          {
-            "value": [
-              0.12,
-              1.48,
-              0.5
-            ],
-            "status": "assumed",
             "assumption": "l001_duct_corner",
-            "note": "bocca di aspirazione nell'angolo in fondo a sinistra"
+            "note": "T sulla parete lunga di fondo (direzione dichiarata, posizione esatta assunta)"
           }
         ],
         "inner_diameter": {
@@ -253,7 +244,181 @@
         }
       },
       "notes": [
-        "La lunghezza riportata nel manifest deriva dal percorso disegnato, non dal tubo acquistato (3 m)."
+        "La lunghezza riportata nel manifest deriva dal percorso disegnato, non dal tubo acquistato (3 m).",
+        "Termina nel T duct_tee_01; i due rami Ø80 sono exhaust_duct_02 e exhaust_duct_03."
+      ]
+    },
+    {
+      "id": "duct_tee_01",
+      "tag": "T1",
+      "name": "Raccordo a T Ø100 → 2 × Ø80",
+      "type": "duct_fitting",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "geometry": {
+        "kind": "box",
+        "center": {
+          "x": {
+            "value": 1.365,
+            "status": "assumed",
+            "assumption": "l001_duct_corner"
+          },
+          "y": {
+            "value": 1.5,
+            "status": "assumed",
+            "assumption": "l001_duct_corner"
+          },
+          "z": {
+            "value": 1.92,
+            "status": "assumed",
+            "assumption": "l001_duct_corner"
+          }
+        },
+        "size": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": [
+            0.22,
+            0.12,
+            0.12
+          ],
+          "assumption": "l001_duct_corner"
+        }
+      },
+      "properties": {
+        "connections": {
+          "value": "ingresso Ø100 dalla botola, due uscite Ø80",
+          "status": "declared",
+          "source": "src_user_20261028"
+        }
+      },
+      "notes": [
+        "Raccordo non presente in distinta_base.md: da acquistare.",
+        "Con rami di lunghezza diversa (1,27 m e 1,57 m disegnati) aspira di più il ramo corto."
+      ]
+    },
+    {
+      "id": "exhaust_duct_02",
+      "tag": "D2",
+      "name": "Ramo di aspirazione Ø80 verso l'angolo in fondo a sinistra",
+      "type": "duct",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "geometry": {
+        "kind": "pipe",
+        "points": [
+          {
+            "value": [
+              1.365,
+              1.5,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l001_duct_corner",
+            "note": "uscita del T"
+          },
+          {
+            "value": [
+              0.1,
+              1.5,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l001_duct_corner",
+            "note": "bocca di aspirazione in alto nell'angolo in fondo a sinistra"
+          }
+        ],
+        "inner_diameter": {
+          "value": 0.08,
+          "status": "declared",
+          "source": "src_user_20261028",
+          "note": "Ø80 nominale"
+        },
+        "outer_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.084
+        }
+      },
+      "properties": {
+        "material": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "da confermare"
+        },
+        "loss_coefficients": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "nessun coefficiente di perdita disponibile: non attribuirne"
+        }
+      },
+      "notes": [
+        "Tubo Ø80 non presente in distinta_base.md: da acquistare.",
+        "Bocca in alto: con l'ingresso Y2 in basso sulla porta l'aria attraversa la camera dal basso verso l'alto."
+      ]
+    },
+    {
+      "id": "exhaust_duct_03",
+      "tag": "D3",
+      "name": "Ramo di aspirazione Ø80 verso l'angolo in fondo a destra",
+      "type": "duct",
+      "layer": "estrazione_ingresso",
+      "state": "planned",
+      "geometry": {
+        "kind": "pipe",
+        "points": [
+          {
+            "value": [
+              1.365,
+              1.5,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l001_duct_corner",
+            "note": "uscita del T"
+          },
+          {
+            "value": [
+              2.93,
+              1.5,
+              1.92
+            ],
+            "status": "assumed",
+            "assumption": "l001_duct_corner",
+            "note": "bocca di aspirazione in alto nell'angolo in fondo a destra"
+          }
+        ],
+        "inner_diameter": {
+          "value": 0.08,
+          "status": "declared",
+          "source": "src_user_20261028",
+          "note": "Ø80 nominale"
+        },
+        "outer_diameter": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": 0.084
+        }
+      },
+      "properties": {
+        "material": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "da confermare"
+        },
+        "loss_coefficients": {
+          "value": null,
+          "status": "unknown",
+          "draw_value": null,
+          "note": "nessun coefficiente di perdita disponibile: non attribuirne"
+        }
+      },
+      "notes": [
+        "Tubo Ø80 non presente in distinta_base.md: da acquistare.",
+        "Bocca in alto: con l'ingresso Y2 in basso sulla porta l'aria attraversa la camera dal basso verso l'alto."
       ]
     },
     {

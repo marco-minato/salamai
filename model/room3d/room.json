@@ -56,6 +56,11 @@
       "kind": "configurazione firmware",
       "path": "../../esphome/salumi-nodo.yaml",
       "description": "Due ingressi giri ventola (M5, M6) e un solo PWM comune."
+    },
+    {
+      "id": "src_user_20261028",
+      "kind": "specifica utente",
+      "description": "Indicazione dell'utente del 28/10/2026: il tubo di aspirazione dalla botola va verso la parete lunga di fondo, lì un T lo divide in due tubi Ø80 che arrivano agli angoli più lontani dalla porta; le bocche restano in alto."
     }
   ],
   "assumptions": [

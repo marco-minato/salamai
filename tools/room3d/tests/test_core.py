@@ -133,8 +133,29 @@ class TestValidConfig(unittest.TestCase):
             th = math.radians(b["angle_deg"])
             expect += R * th - 2 * R * math.tan(th / 2)
         self.assertAlmostEqual(pp["length"], expect, delta=1e-9)
-        self.assertEqual(len(pp["straights"]), 3)
-        self.assertEqual(len(pp["bends"]), 2)
+        self.assertEqual(len(pp["straights"]), len(pts) - 1)
+        self.assertEqual(len(pp["bends"]), len(pts) - 2)
+
+    def test_exhaust_tee_two_branches_high_in_back_corners(self):
+        """Decisione utente 28/10/2026: Ø100 → T sulla parete di fondo → due Ø80 negli angoli lontani, bocche in alto."""
+        lay = self.layouts[0]
+        sx, sy, sz = core.room_dims(self.room)
+        main = [core.vec3(p)[0] for p in comp(lay, "exhaust_duct_01")["geometry"]["points"]]
+        tee = core.vec3(comp(lay, "duct_tee_01")["geometry"]["center"])[0]
+        self.assertEqual(main[-1], tee, "il tubo principale termina nel T")
+        self.assertGreater(tee[1], sy / 2, "il T è verso la parete di fondo, lontano dalla porta")
+        ends = []
+        for cid in ("exhaust_duct_02", "exhaust_duct_03"):
+            g = comp(lay, cid)["geometry"]
+            pts = [core.vec3(p)[0] for p in g["points"]]
+            self.assertEqual(pts[0], tee, f"{cid} parte dal T")
+            self.assertAlmostEqual(core.num(g["inner_diameter"]), 0.08, delta=TOL)
+            ends.append(pts[-1])
+        self.assertEqual(sorted(e[0] < sx / 2 for e in ends), [False, True], "un ramo per angolo")
+        for e in ends:
+            self.assertGreater(e[1], sy - 0.2, "bocca vicino alla parete di fondo")
+            self.assertGreater(e[2], sz * 0.75, "bocca in alto")
+            self.assertLess(min(e[0], sx - e[0]), 0.2, "bocca vicino a una parete laterale")
 
     def test_unknown_not_zero(self):
         # nessuna grandezza 'unknown' ha valore 0 al posto di null

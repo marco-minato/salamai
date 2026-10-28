@@ -297,7 +297,7 @@ La scheda da compilare, con i valori provvisori e il campo JSON da aggiornare pe
 2. Altezza della porta, lato cerniera e verso di apertura (le fonti sono in conflitto).
 3. Spessori di pareti, soffitto e pavimento.
 4. Posizione, quota e orientamento delle tre ventole.
-5. Percorso reale del tubo Ø100 e quota della bocca; quale angolo è "opposto alla porta".
+5. Tubo di aspirazione (percorso con T e due rami Ø80 dichiarato): posizione del T, quote dei tubi e delle bocche.
 6. Ingombri e posizioni di stufa, umidificatori, estrattore, X4, X6 e prese.
 7. Posizione rilevata delle sonde (B1, B3, B4, B5) e della cella di carico.
 8. Strutture di appensione e ingombri reali del prodotto.

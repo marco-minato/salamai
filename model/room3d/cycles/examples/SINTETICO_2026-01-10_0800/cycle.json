@@ -11,9 +11,9 @@
   "layout_refs": [
     {
       "layout_id": "L001",
-      "config_hash": "e6524a05288a297be4751cb6faff4af62fb90e8a7a84e4615c82b6bc341de87d",
-      "build_id": "1ff600bc3a7b36eee701",
-      "semantic_hash": "1556fc63c52529de0cf0ff8675cd526d12efda987958b010763bbc032fc8b769",
+      "config_hash": "4ec3494e994a72cfb9b32cd59664b1476e84f5bfa198550d516ba4c77825b5e2",
+      "build_id": "c08d7f70134af6a6cfe7",
+      "semantic_hash": "8eebc290011fb8c7f1afe59fbea621fb5e7c8fbf7ee0c3077fe71dbe4a8f4da1",
       "source_commit": null,
       "valid_from": "2026-01-10T08:00:00",
       "valid_to": null,
