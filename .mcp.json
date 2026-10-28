@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "blender": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-for-blender@2.2.4"
+      ],
+      "env": {
+        "DISABLE_TELEMETRY": "true",
+        "BLENDERMCP_NO_UPDATE_CHECK": "1"
+      }
+    }
+  }
+}

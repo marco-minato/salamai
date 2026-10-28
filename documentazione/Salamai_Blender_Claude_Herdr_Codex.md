@@ -49,6 +49,25 @@ Tenere il collegamento locale. Non abilitare integrazioni per asset esterni, gen
 
 Smoke test: in un file Blender temporaneo chiedere a Claude di elencare la scena, creare un cubo di lato 0,10 m, leggerne le dimensioni e salvarlo. Verificare manualmente dimensioni e file, poi chiudere il test. Registrare le versioni funzionanti di Blender, add-on e pacchetto MCP e fissarle nella documentazione/configurazione del progetto; non aggiornare automaticamente durante un lavoro.
 
+### Versioni fissate (workstation, 2026-10-28)
+
+| Componente | Versione | Note |
+|---|---|---|
+| OS | Ubuntu 26.04.1 LTS, x86_64, Wayland | |
+| Blender | 5.2.3 LTS (hash e13b728c6880) | tarball ufficiale `blender-5.2.3-linux-x64.tar.xz`, SHA256 verificato; in `~/opt/blender-5.2.3-linux-x64`, link `~/.local/bin/blender`. Il pacchetto apt (5.0.1) non è usato |
+| Pacchetto MCP | `mcp-for-blender` 2.2.4 | fissato in `.mcp.json` (`uvx mcp-for-blender@2.2.4`); lo scope progetto evita che `uvx` prenda l'ultima release |
+| Add-on | MCP for Blender 1.8 (incluso nel pacchetto 2.2.4) | `~/.config/blender/5.2/scripts/addons/blender_mcp.py`, abilitato nelle preferenze |
+| uv | 0.9.22 | |
+| Claude Code | 2.1.312 | |
+| Codex CLI | 0.160.1 | |
+| Herdr | 0.9.3 | |
+
+Privacy e rete: telemetria dell'add-on opt-in e spenta di default; in `.mcp.json` sono comunque impostati `DISABLE_TELEMETRY=true` e `BLENDERMCP_NO_UPDATE_CHECK=1`. Le integrazioni PolyHaven/Hyper3D/Hunyuan3D/Sketchfab sono spente di default: lasciarle spente. Il socket dell'add-on ascolta solo su `127.0.0.1:9876` e parte da solo all'apertura di Blender.
+
+Aggiornare solo deliberatamente: cambiare insieme versione in `.mcp.json`, rieseguire `uvx mcp-for-blender@<versione> install-addon --addons-dir ~/.config/blender/5.2/scripts/addons`, ripetere lo smoke test e aggiornare questa tabella.
+
+Smoke test eseguiti: batch (`blender -b`, cubo 0,10 m → dimensioni 0,1×0,1×0,1, file salvato) ✔; socket add-on con Blender GUI (`get_scene_info`) ✔; smoke test via Claude Code MCP (2026-10-28) ✔: `get_addon_status` → Blender 5.2.3 LTS, add-on 1.8, protocollo 15/15, telemetria off, librerie e generatori off; scena elencata; cubo `SmokeCube_10cm` di lato 0,10 m creato in file temporaneo, dimensioni lette 0,1×0,1×0,1 m (unità METRIC, scala 1.0), file salvato e riaperto con un processo Blender separato (stesse dimensioni, 8 vertici); test chiuso tornando alla scena iniziale. Socket solo su `127.0.0.1:9876`, nessuna connessione esterna di Blender o del server MCP.
+
 ### Herdr e agenti
 
 Servono Claude Code e Codex CLI già installati e autenticati. Verificare `claude --version` e `codex --version`; non inserire credenziali nel repository.
