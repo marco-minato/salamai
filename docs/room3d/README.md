@@ -291,7 +291,7 @@ La stessa suite è stata eseguita anche sul container Nginx.
 
 ## Misure ancora necessarie
 
-L'elenco completo e motivato è in [ASSUMPTIONS.md](ASSUMPTIONS.md). In sintesi:
+La scheda da compilare, con i valori provvisori e il campo JSON da aggiornare per ognuna, è in [MISURE_MANCANTI.md](MISURE_MANCANTI.md). Le motivazioni sono in [ASSUMPTIONS.md](ASSUMPTIONS.md). In sintesi:
 
 1. Riferimento della distanza porta–botola di 40 cm: bordo vicino o centro.
 2. Altezza della porta, lato cerniera e verso di apertura (le fonti sono in conflitto).
