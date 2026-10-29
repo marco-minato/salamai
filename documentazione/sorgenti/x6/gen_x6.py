@@ -24,7 +24,7 @@ def lab(x,y,w,t,fs=6,fc="#222222",align="center"):
     text(x,y,w,4,t,fs=fs,align=align,valign="middle",fc=fc)
 
 COL={"P12":"#E00000","V0":"#000000","G":"#555555","A":"#FF8C00","B":"#8A2BE2","V33":"#C99700","OW":"#00897B",
-     "PWM":"#E0399A","TACH":"#00ACC1","HX":"#7CB342","CELL":"#8D6E63","CAB":"#6c8ebf","PRL":"#9e9e9e"}
+     "PWM":"#E0399A","TACH":"#00ACC1","HX":"#7CB342","CELL":"#8D6E63","CAB":"#6c8ebf","PRL":"#424242"}
 def wire(pts,kind,a,b,net,dash=False):
     WIRES.append(dict(kind=kind,pts=[(round(x,2),round(y,2)) for x,y in pts],a=a,b=b,net=net))
 
@@ -222,25 +222,49 @@ y_hg=LANE[0]; route(pin("HX711 GND"),sl("GND",1),"G","HX711 GND",sname("GND",1),
 route(pin("HX711 VCC"),sl("3V3",1),"V33","HX711 VCC",sname("3V3",1),"3,3 V")
 route([PIN["HX711 DT"]],xiao("D1"),"HX","HX711 DT","XIAO D1 (pin)","HX711 DT")
 y_sc=LANE[0]; route([PIN["HX711 SCK"]],xiao("D3"),"HX","HX711 SCK","XIAO D3 (pin)","HX711 SCK")
-cx3=(STUBR["D7"]+STUBR["D8"])/2; ym3=(y_d7+y_d0)/2
-band([(cx3,PIN["XIAO D7"][1]+2),(cx3,ym3),(124,ym3)],"C3 ventole",66,ym3-4.6,bw=3)
-cx2=STUBR["3V3"]; ym2=(y_10+y_gn)/2; xs2=WAGO["GND"]["slots"][0]-3
-band([(cx2,PIN["XIAO D7"][1]+2),(cx2,ym2),(xs2,ym2)],"C2 sensori",66,ym2-4.2)
-hx=(PIN["HX711 GND"][0]+PIN["HX711 VCC"][0])/2; ym1=(y_hg+y_sc)/2; xl=(STUBL["D1"]+STUBL["D3"])/2
-band([(hx,PIN["HX711 GND"][1]+0.5),(hx,ym1)],"",0,0,bw=PIN["HX711 VCC"][0]-PIN["HX711 GND"][0]+1.6)
-band([(hx,ym1),(xl,ym1),(xl,PIN["XIAO D3"][1]+2)],"C1 HX711",66,ym1-4.2)
-# cavetti dalle prolunghe ventola: etichette sui capi
-TAGL={"D0":"C3·1","D1":"C1·DT","D3":"C1·SCK"}
-TAGR={"GND":"C2·1","3V3":"C2·2","D10":"C2·3","D8":"C3·2","D7":"C3·3"}
-for nm,t in TAGL.items():
-    x,y=PIN["XIAO "+nm]; lab(15.2,y-3.6,9,t,3.6,fc="#b26a00",align="left")
-for nm,t in TAGR.items():
-    x,y=PIN["XIAO "+nm]; lab(50.4,y-3.6,9,t,3.6,fc="#b26a00",align="left")
+# Ogni cavetto ha un tratto unico e due aperture. I singoli fili vengono
+# mostrati solo fuori dalla guaina; i capi elettrici restano quelli originali.
+HARNESS = [
+    ("C1", (76, 54), (110, 54), ["HX711 GND", "HX711 VCC", "HX711 DT", "HX711 SCK"]),
+    ("C2", (68, 59), (204, 59), ["XIAO D10 (pin)", "XIAO 3V3 (pin)", "XIAO GND (pin)"]),
+    ("C3", (71, 66), (176, 66), ["XIAO D7 (pin)", "XIAO D8 (pin)", "XIAO D0 (pin)"]),
+]
+OPENINGS=[]
+for cable, start, end, members in HARNESS:
+    bundle=[]
+    for w in WIRES:
+        if w["a"] not in members: continue
+        # C1 parte dall'HX711; C2 e C3 dalla XIAO.
+        pa=w["pts"][0]; pb=w["pts"][-1]
+        j=len(bundle); offset=(j-(len(members)-1)/2)*1.25
+        sa=(start[0],start[1]+offset); sb=(end[0],end[1]+offset)
+        if cable=="C1":
+            lead=[pa,(pa[0],48+j*1.25),sa]
+        else:
+            stub=xiao(w["a"].split()[1]); lead=stub+[(stub[-1][0],start[1]+offset),sa]
+        # Apertura lato destinazioni: corsie distinte sotto i cavetti.
+        yy=68.6+j*2+(0 if cable=="C1" else 9 if cable=="C2" else 17)
+        if pb[1]<30 and pb[0]<65:  # DT e SCK al guscio sinistro
+            stub=xiao(w["b"].split()[1]); tail=[sb,(end[0]+j*1.3,yy),(stub[-1][0],yy)]+stub[::-1]
+        elif w["b"]=="Modulo MOSFET PWM":
+            tail=[sb,(end[0]+j*1.3,yy),(118,yy),(118,pb[1]),pb]
+        else:
+            tail=[sb,(end[0]+j*1.3,yy),(pb[0],yy),pb]
+        w["segments"]=[lead,tail]
+        w["pts"]=lead+[start,end]+tail
+        w["cable"]=cable
+        bundle.append(w)
+    trunk=dict(kind="PRL",bw=2.4,pts=[start,end],a=None,b=None,net=None,cable=cable)
+    WIRES.insert(0,trunk)
+    OPENINGS.extend([start,end])
+    lab((start[0]+end[0])/2-12,start[1]-4,24,cable+" · 4 fili",6,fc="#333333")
+# Riepilogo in uno spazio libero sopra le corsie; nessuna fascia sotto i fili.
 x0=PIN["HX711 GND"][0]; x1=PIN["HX711 VCC"][0]; yb=PIN["HX711 GND"][1]
 rect(x0-1.6,yb-2.2,x1-x0+3.2,4.4,"","fillColor=none;strokeColor=#ff9800;strokeWidth=1.5;")
-text(HX+HW+1,yb-11,13,11,"C1: connettore femmina della prolunga, innestato sui 4 pin",4.5,fc="#b26a00")
-# note
-text(W-118,40,112,60,"<b>Note</b><br>• Scheda RS485: ordine dei poli delle morsettiere da verificare sulla serigrafia.<br>• Fili Dupont nei Wago: puntalino da 0,25–0,5 mm².<br>• Giri ventole: pull-up interni della XIAO, niente resistenze.<br>• W5 coppia arancio e bianco-verde: di riserva.<br>• Cat5e UTP: nessuno schermo da collegare.<br>• Pin XIAO: due gusci Dupont 1×6 (arancio tratteggiato) su D0–D5 e GND–D7; tappi vuoti da 1 (grigi) su D6 e 5V.<br><b>Cavetti da prolunga ventola (4 fili)</b><br>• C1 HX711: connettore sull'HX711; DT → D1, SCK → D3, GND → Wago GND sensori, VCC → Wago 3,3 V.<br>• C2 sensori: 1 GND → Wago GND sensori, 2 3V3 → Wago 3,3 V, 3 D10 → Wago 1-Wire, 4 di riserva.<br>• C3 ventole: 1 D0 → Wago giri M5, 2 D8 → Wago giri M6, 3 D7 → MOSFET PWM, 4 di riserva.",6)
+
+# Riquadro di lettura dei cavetti, lontano dai percorsi.
+rect(180,10,W-210,37,"","fillColor=#ffffff;strokeColor=#999999;")
+text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1: femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2: 1 GND → GND f.1; 2 3V3 → 3,3 V f.1; 3 D10 → 1-Wire f.1.<br>C3: 1 D0 → giri M5 f.1; 2 D8 → giri M6 f.1; 3 D7 → MOSFET PWM.<br>C2 e C3: filo 4 isolato a entrambi i capi. Tutti neri; n.1 con riga.<br>Guscio sinistro D0–D5: C3·1 / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: C2·1 / C2·2 / C2·3 / vuoto / C3·2 / C3·3.<br>Ordine dal lato USB. Tappi vuoti: D6 e 5V. Colori = funzione del filo.",6)
 
 # ---------------- reti (union-find sui nomi dei capi)
 par={}
@@ -274,17 +298,22 @@ for k,d in enumerate(nets):
     d["id"]=k
     for i in d["wires"]: WIRES[i]["net"]=k
 for w in WIRES:
-    if w["a"] is None: w["net"]=None
-splits=[[SPLIT[c],YS] for c in CHAN]
+    if w["a"] is None:
+        w["net"]=None
+        if w.get("cable"):
+            w["nets"]=sorted({v["net"] for v in WIRES if v.get("cable")==w["cable"] and v["a"]})
+splits=[[SPLIT[c],YS] for c in CHAN]+OPENINGS
 json.dump(dict(W=W,H=H,V=[{**v,"x":round(v["x"],2),"y":round(v["y"],2),"w":round(v["w"],2),"h":round(v["h"],2)} for v in V],
                wires=WIRES,nets=nets,dots=[],splits=splits),open(sys.argv[2],'w'),ensure_ascii=False)
 
 # drawio: fili
 ST={k:f"strokeColor={c};strokeWidth={ {'CAB':9,'PRL':12}.get(k,2)};"+("opacity=55;" if k=='CAB' else "opacity=45;" if k=='PRL' else "") for k,c in COL.items()}
 for w in WIRES:
-    p=[(OX+x*S,OY+y*S) for x,y in w["pts"]]
+  for segment in w.get("segments", [w["pts"]]):
+    p=[(OX+x*S,OY+y*S) for x,y in segment]
     mids=''.join(f'<mxPoint x="{x:.1f}" y="{y:.1f}"/>' for x,y in p[1:-1])
-    st=ST[w["kind"]] if w["kind"]!="PRL" else f"strokeColor={COL['PRL']};strokeWidth={w['bw']*S:.0f};opacity=45;"
+    st=ST[w["kind"]] if w["kind"]!="PRL" else f"strokeColor={COL['PRL']};strokeWidth={w['bw']*S:.0f};opacity=100;"
+    if w["kind"]=="G": st+="dashed=1;dashPattern=4 2;"
     cells.append(f'<mxCell id="{nid()}" value="" style="endArrow=none;html=1;rounded=0;jumpStyle=arc;jumpSize=4;{st}" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="{p[0][0]:.1f}" y="{p[0][1]:.1f}" as="sourcePoint"/><mxPoint x="{p[-1][0]:.1f}" y="{p[-1][1]:.1f}" as="targetPoint"/>'+(f'<Array as="points">{mids}</Array>' if mids else '')+'</mxGeometry></mxCell>')
 xml=('<mxfile host="app.diagrams.net"><diagram id="x6" name="Scatola X6"><mxGraphModel dx="1400" dy="1000" grid="0" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>'
      +''.join(cells)+'</root></mxGraphModel></diagram></mxfile>')
