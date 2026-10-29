@@ -70,8 +70,9 @@ main{flex:1;position:relative;min-height:0}
 .w{fill:none;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
 .hit{fill:none;stroke:transparent;stroke-width:16px;vector-effect:non-scaling-stroke;cursor:pointer}
 .cab{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.5}
-.prl{fill:none;stroke-linejoin:round;opacity:.35}
+.prl{fill:none;stroke-linejoin:round;opacity:1}
 svg.sel .w,svg.sel .cab,svg.sel .prl{opacity:.12}
+svg.sel .prl.on{opacity:1}
 svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
 .pinmark{fill:#ffe14d;stroke:#1d2329;stroke-width:1.5px;vector-effect:non-scaling-stroke}
 .layer-off{display:none}
@@ -132,6 +133,7 @@ svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
       <span class="sw" style="background:#E0399A"></span><span>PWM ventole</span>
       <span class="sw" style="background:#00ACC1"></span><span>Giri ventole</span>
       <span class="sw" style="background:#6c8ebf;height:8px;opacity:.6"></span><span>Cavo con guaina (dal pressacavo)</span>
+      <span class="sw" style="background:#424242;height:8px"></span><span>C1, C2, C3: tratto unico a 4 fili; punti grigi = aperture. I fili colorati alle estremità indicano la funzione; nella realtà sono tutti neri.</span>
       <span class="box" style="background:#dae8fc"></span><span>Schede</span>
       <span class="box" style="background:#fbe7a1"></span><span>Wago (colore = collegamento)</span>
       <span class="box" style="background:#f3d9b1;height:8px"></span><span>Resistenza R3 4,7 kΩ</span>
@@ -195,11 +197,13 @@ D.wires.forEach((w,i)=>{
   const g=HV.has(w.kind)?gW230:gWbt;
   const pts=w.pts.map(p=>p.join(",")).join(" ");
   if(w.kind==="CAB"){el("polyline",{points:pts,class:"cab",stroke:COL[w.kind],"stroke-width":7},g);return}
-  if(w.kind==="PRL"){el("polyline",{points:pts,class:"prl",stroke:COL[w.kind],"stroke-width":w.bw||3.6},g);return}
-  const a={points:pts,class:"w",stroke:COL[w.kind],"stroke-width":1.8,"data-net":w.net};
+  if(w.kind==="PRL"){const p=el("polyline",{points:pts,class:"prl",stroke:"#424242","stroke-width":w.bw||2.4,"data-nets":(w.nets||[]).join(",")},g);wireEls.push(p);return}
+  for(const segment of (w.segments||[w.pts])){
+  const a={points:segment.map(p=>p.join(",")).join(" "),class:"w",stroke:COL[w.kind],"stroke-width":1.8,"data-net":w.net};
   if(w.kind==="G")a["stroke-dasharray"]="1.6 0.7";
   const p=el("polyline",a,g); wireEls.push(p);
-  el("polyline",{points:pts,class:"hit","data-net":w.net},g);
+  el("polyline",{points:a.points,class:"hit","data-net":w.net},g);
+  }
 });
 for(const d of D.dots) el("circle",{cx:d[0],cy:d[1],r:.9,fill:"#1d2329"},gWbt);
 for(const d of D.splits) el("circle",{cx:d[0],cy:d[1],r:1.6,fill:"#777",opacity:.7},gV);
@@ -251,7 +255,7 @@ const NOTE={P12:"Due Wago (da 5 e da 3) uniti da un ponticello di filo: tutti i 
   TACH:"Il filo dei giri arriva da X4 e va al pin della XIAO, che ha la pull-up interna attiva nel firmware."};
 let cur=null;
 function select(id,zoom){cur=id;const n=NETS.get(id);svg.classList.add("sel");
-  wireEls.forEach(p=>p.classList.toggle("on",+p.dataset.net===id));
+  wireEls.forEach(p=>p.classList.toggle("on",p.dataset.nets?p.dataset.nets.split(",").includes(String(id)):+p.dataset.net===id));
   gMark.replaceChildren();
   let bx=[1e9,1e9,-1e9,-1e9];
   n.wires.forEach(i=>{for(const [x,y] of D.wires[i].pts){bx=[Math.min(bx[0],x),Math.min(bx[1],y),Math.max(bx[2],x),Math.max(bx[3],y)]}
