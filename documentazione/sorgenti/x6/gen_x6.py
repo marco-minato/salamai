@@ -49,11 +49,11 @@ for k,nm in enumerate(LCOL):
 for k,nm in enumerate(RCOL):
     x,y=AX+AW-2.2,AY+3.5+2.54*k; PIN["XIAO "+nm]=(x,y)
     rect(x-0.9,y-0.9,1.8,1.8,"","fillColor=#e0b84a;strokeColor=none;"); lab(x-7.2,y-2,6,nm,5,fc="#ffffff",align="right")
-# gusci Dupont 1×6 (tratteggio) e tappi da 1 vuoti (grigi) sulle due file di pin
+# gusci Dupont 1×6 e guscio da 1 su D6 (tratteggio), tappo da 1 vuoto (grigio) sul 5V
 GS="fillColor=none;strokeColor=#ff9800;strokeWidth=1.5;dashed=1;"
 TP="fillColor=#9e9e9e;strokeColor=#424242;"
 x,y=PIN["XIAO D0"]; rect(x-1.4,y-1.4,2.8,5*2.54+2.8,"",GS)
-x,y=PIN["XIAO D6"]; rect(x-1.2,y-1.2,2.4,2.4,"",TP)
+x,y=PIN["XIAO D6"]; rect(x-1.4,y-1.4,2.8,2.8,"",GS)
 x,y=PIN["XIAO GND"]; rect(x-1.4,y-1.4,2.8,5*2.54+2.8,"",GS)
 x,y=PIN["XIAO 5V"]; rect(x-1.2,y-1.2,2.4,2.4,"",TP)
 # morsettiere (ordine dei poli da verificare sulla serigrafia)
@@ -89,7 +89,7 @@ for nm,dx in [("DC+",7),("DC−",14),("OUT+",25),("OUT−",32)]:
 YW=112; WD=18.6
 def wago_w(n): return {2:13.1,3:18.9,5:29.9}[n]
 SEQ=[("cab","W3",6),("w","A",3),("w","B",3),("cab","B1",4),("w","12a",5),("w","12b",3),("w","0a",5),("w","0b",5),
-     ("cab","B3",3),("w","GND",5),("w","3V3",5),("w","1W",5),("cab","B4",3),("cab","W5",5),("w","T5",2),("w","T6",2),("cab","B2",4)]
+     ("cab","B3",3),("w","GND",5),("w","3V3",5),("w","1W",5),("cab","B4",3),("cab","W5",6),("w","T5",2),("w","T6",2),("w","T7",2),("cab","B2",4)]
 WAGO={}; CHAN={}
 x=30
 prev=None
@@ -103,8 +103,8 @@ for t,nm,k in SEQ:
         x+=3; CHAN[nm]=[x+1.4*i for i in range(k)]; x+=1.4*(k-1)+3
     prev=(t,nm)
 W=round(x+8); frame()
-WTITLE={"A":"RS485 A","B":"RS485 B","12a":"+12 V","12b":"+12 V","0a":"0 V","0b":"0 V","GND":"GND sensori","3V3":"3,3 V","1W":"1-Wire","T5":"giri M5","T6":"giri M6"}
-WFILL={"A":"#ffd8a8","B":"#e0ccf5","12a":"#f8b4b4","12b":"#f8b4b4","0a":"#cfcfcf","0b":"#cfcfcf","GND":"#e3e3e3","3V3":"#fbe7a1","1W":"#b2dfdb","T5":"#b2ebf2","T6":"#b2ebf2"}
+WTITLE={"A":"RS485 A","B":"RS485 B","12a":"+12 V","12b":"+12 V","0a":"0 V","0b":"0 V","GND":"GND sensori","3V3":"3,3 V","1W":"1-Wire","T5":"giri M5","T6":"giri M6","T7":"giri M7"}
+WFILL={"A":"#ffd8a8","B":"#e0ccf5","12a":"#f8b4b4","12b":"#f8b4b4","0a":"#cfcfcf","0b":"#cfcfcf","GND":"#e3e3e3","3V3":"#fbe7a1","1W":"#b2dfdb","T5":"#b2ebf2","T6":"#b2ebf2","T7":"#b2ebf2"}
 for nm,d in WAGO.items():
     rect(d["x"],YW,d["w"],WD,"",f"fillColor={WFILL[nm]};strokeColor=#555555;")
     for i,sx in enumerate(d["slots"]):
@@ -138,7 +138,7 @@ def route(pa,pb,kind,a,b,net):
     pts=pa+[(pa[-1][0],y),(pb[-1][0],y)]+pb[::-1]
     wire(pts,kind,a,b,net)
 # capi
-STUBL={"D0":12,"D1":13.4,"D3":14.8}            # uscite a sinistra della XIAO
+STUBL={"D0":12,"D1":13.4,"D3":14.8,"D6":16.2}            # uscite a sinistra della XIAO
 STUBR={"D7":58,"D8":59.4,"D10":60.8,"3V3":62.2,"GND":63.6}  # uscite a destra della XIAO
 def xiao(nm):
     x,y=PIN["XIAO "+nm]
@@ -151,7 +151,7 @@ def cab(c,i): return cab_start(c,i)
 CN={"W3":["blu (A)","bianco-blu (B)","arancio (+12 V)","bianco-arancio (0 V)","verde (+12 V)","bianco-verde (0 V)"],
     "B1":["+ (alimentazione)","− (alimentazione)","A","B"],
     "B3":["rosso (VDD)","nero (GND)","giallo (DATA)"],"B4":["rosso (VDD)","nero (GND)","giallo (DATA)"],
-    "W5":["blu (+12 V)","bianco-blu (0 V)","verde (PWM)","marrone (giri M5)","bianco-marrone (giri M6)"],
+    "W5":["blu (+12 V)","bianco-blu (0 V)","verde (PWM)","marrone (giri M5)","bianco-marrone (giri M6)","arancio (giri M7)"],
     "B2":["rosso (E+)","nero (E−)","bianco (A−)","verde (A+)"]}
 def cname(c,i): return f"{GLAB[c].split(' ')[0]} {CN[c][i]}"
 
@@ -196,6 +196,7 @@ wire([(RX+3.5,RY),(s2[0],RY),(s2[0],YW)],"OW","R3 (4,7 kΩ) piedino 2",sname("1W
 # giri ventole (pull-up interni della XIAO)
 route(cab("W5",3),sl("T5",1),"TACH",cname("W5",3),sname("T5",1),"Giri ventola M5")
 route(cab("W5",4),sl("T6",1),"TACH",cname("W5",4),sname("T6",1),"Giri ventola M6")
+route(cab("W5",5),sl("T7",1),"TACH",cname("W5",5),sname("T7",1),"Giri ventola M7")
 # HX711 DT/SCK: cavetto C1 (prolunga ventola) dall'HX711 alla XIAO
 # PWM: D7 → ingresso del MOSFET (sopra le schede); OUT− → W5 verde
 route(cab("W5",2),pin("MOSFET OUT−"),"PWM",cname("W5",2),"Modulo MOSFET OUT−","PWM ventole (uscita)")
@@ -213,6 +214,7 @@ def band(pts,label,lx,ly,lw=22,bw=3.6):
 y_d7=LANE[0]; route(xiao("D7"),[PIN["MOSFET PWM"],(124,PIN["MOSFET PWM"][1])],"PWM","XIAO D7 (pin)","Modulo MOSFET PWM","PWM ventole (comando)")
 y_d8=LANE[0]; route(xiao("D8"),sl("T6",0),"TACH","XIAO D8 (pin)",sname("T6",0),"Giri ventola M6")
 y_d0=LANE[0]; route(xiao("D0"),sl("T5",0),"TACH","XIAO D0 (pin)",sname("T5",0),"Giri ventola M5")
+route(xiao("D6"),sl("T7",0),"TACH","XIAO D6 (pin)",sname("T7",0),"Giri ventola M7")
 # C2 sensori: D10, 3V3, GND
 y_10=LANE[0]; route(xiao("D10"),sl("1W",0),"OW","XIAO D10 (pin)",sname("1W",0),"1-Wire sonde")
 route(xiao("3V3"),sl("3V3",0),"V33","XIAO 3V3 (pin)",sname("3V3",0),"3,3 V")
@@ -227,7 +229,7 @@ y_sc=LANE[0]; route([PIN["HX711 SCK"]],xiao("D3"),"HX","HX711 SCK","XIAO D3 (pin
 HARNESS = [
     ("C1", (76, 54), (110, 54), ["HX711 GND", "HX711 VCC", "HX711 DT", "HX711 SCK"]),
     ("C2", (68, 59), (204, 59), ["XIAO D10 (pin)", "XIAO 3V3 (pin)", "XIAO GND (pin)"]),
-    ("C3", (71, 66), (176, 66), ["XIAO D7 (pin)", "XIAO D8 (pin)", "XIAO D0 (pin)"]),
+    ("C3", (71, 66), (176, 66), ["XIAO D7 (pin)", "XIAO D8 (pin)", "XIAO D0 (pin)", "XIAO D6 (pin)"]),
 ]
 OPENINGS=[]
 for cable, start, end, members in HARNESS:
@@ -264,7 +266,7 @@ rect(x0-1.6,yb-2.2,x1-x0+3.2,4.4,"","fillColor=none;strokeColor=#ff9800;strokeWi
 
 # Riquadro di lettura dei cavetti, lontano dai percorsi.
 rect(180,10,W-210,37,"","fillColor=#ffffff;strokeColor=#999999;")
-text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1: femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2: 1 GND → GND f.1; 2 3V3 → 3,3 V f.1; 3 D10 → 1-Wire f.1.<br>C3: 1 D0 → giri M5 f.1; 2 D8 → giri M6 f.1; 3 D7 → MOSFET PWM.<br>C2 e C3: filo 4 isolato a entrambi i capi. Tutti neri; n.1 con riga.<br>Guscio sinistro D0–D5: C3·1 / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: C2·1 / C2·2 / C2·3 / vuoto / C3·2 / C3·3.<br>Ordine dal lato USB. Tappi vuoti: D6 e 5V. Colori = funzione del filo.",6)
+text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1: femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2: 1 GND → GND f.1; 2 3V3 → 3,3 V f.1; 3 D10 → 1-Wire f.1.<br>C3: 1 D0 → giri M5 f.1; 2 D8 → giri M6 f.1; 3 D7 → MOSFET PWM; 4 D6 → giri M7 f.1.<br>C2: filo 4 isolato a entrambi i capi. Tutti neri; n.1 con riga.<br>Guscio sinistro D0–D5: C3·1 / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: C2·1 / C2·2 / C2·3 / vuoto / C3·2 / C3·3.<br>D6: guscio da 1, C3·4. Ordine dal lato USB. Tappo vuoto: 5V. Colori = funzione del filo.",6)
 
 # ---------------- reti (union-find sui nomi dei capi)
 par={}

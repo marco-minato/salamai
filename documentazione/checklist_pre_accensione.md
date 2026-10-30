@@ -82,7 +82,7 @@
 - [ ] **[B] F02** W3: blu/bianco-blu dedicati a RS485 A/B, arancio e verde +12 V, rispettivi bianchi 0 V, marroni isolati di riserva. **Verifica alle due estremità** prima di collegare le schede.
 - [ ] **[B] F03** X6: Wago 221 adatti a conduttore **rigido 24 AWG**, lunghezza di spelatura secondo modello, rame inserito fino in fondo, nessun reimpiego di trefoli o piegatura improvvisata del singolo filo.
 - [ ] **[B] F04** In X6 ben distinti +12 V, 0 V, 3,3 V, RS485 A/B e segnali: nessun +12 V sui GPIO XIAO, HX711 o DS18B20; massa e alimentazione dei sensori come schema.
-- [ ] **[B] F05** W5 da X6 a X4: +12 V/0 V alla coppia ventole; PWM condiviso; TACH M5 e M6 separati e riferiti alla stessa massa; pinout ventole e MOSFET verificato sul componente reale.
+- [ ] **[B] F05** W5 da X6 a X4: +12 V/0 V alla coppia ventole; PWM condiviso; TACH M5, M6 e M7 separati e riferiti alla stessa massa; pinout ventole e MOSFET verificato sul componente reale.
 - [ ] **[B] F06** Polarità 12 V della breakout Seeed RS485, della sonda B1 e della sonda B5 corretta; nessun collegamento di alimentazione sui morsetti A/B RS485.
 - [ ] **[B] F07** Scatole X6 e X4 asciutte, passacavi serrati, cavi fermati, guaine di sensori e cella protette, nessun contatto che possa creare corti con condensa o vibrazioni.
 - [ ] **[C] F08** Resistenza terminazione bus RS485 prevista solo alle due estremità designate; indirizzi previsti B1=1, A3=2, B5=3, XIAO=4, baud rate 9600 (configurazione e comunicazione effettive da provare **dopo** accensione).

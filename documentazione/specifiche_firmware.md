@@ -63,9 +63,9 @@ umidità e sicurezze della stufa restano valide.
 | RS485 (scheda Seeed 113991354) | TX D4 (GPIO6), RX D5 (GPIO7), direzione D2 (GPIO4) |
 | HX711 (cella 2 kg) | DOUT D1 (GPIO3), SCK D3 (GPIO5) |
 | DS18B20 parete e pavimento, stesso bus 1-Wire | D10 (GPIO10), pull-up 4,7 kΩ verso 3V3 |
-| PWM ventole, tramite modulo MOSFET A2 verso massa (uscita **invertita**), LEDC 20 kHz | D7 (GPIO20) |
-| Giri ventola M5 / M6 (2 impulsi a giro), pull-up 10 kΩ verso 3V3 | D0 (GPIO2) / D8 (GPIO8) |
-| Liberi | D6 (GPIO21), D9 (GPIO9, tasto BOOT) |
+| PWM ventole, tramite modulo MOSFET A2 verso massa (uscita **invertita**), LEDC **1 kHz** (a 20 kHz il modulo è troppo lento: prova al banco del 30/10/2026) | D7 (GPIO20) |
+| Giri ventola M5 / M6 / M7 (2 impulsi a giro), pull-up interne | D0 (GPIO2) / D8 (GPIO8) / D6 (GPIO21) |
+| Libero | D9 (GPIO9, tasto BOOT) |
 
 D0 e D8 sono pin di strapping, ma l'avvio lo decide D9: con D9 alto la XIAO
 parte normalmente qualunque cosa ci sia su D0 e D8. D9 non si usa per i giri,
@@ -83,9 +83,10 @@ perché una ventola che gira lo porterebbe basso all'avvio (modalità download).
 | 0x0006 / 0x0007 | giri ventola M5 / M6 (giri/min) | U_WORD |
 | 0x0008 | PWM ventole applicato (%) | U_WORD |
 | 0x0009 | stato: bit 0 ventole in sicurezza, bit 1 HX711 valido, bit 2 parete valida, bit 3 pavimento valido | U_WORD |
+| 0x000A | giri ventola M7 (giri/min) | U_WORD |
 | 0x0010 | PWM ventole richiesto (%, 0–100), **lettura e scrittura** | U_WORD |
 
-- **Lettura**: la Waveshare legge 0x0000–0x0009 ogni 15 s.
+- **Lettura**: la Waveshare legge 0x0000–0x000A ogni 15 s.
 - **Ventole**: la Waveshare riscrive 0x0010 ogni 30 s anche se non cambia.
   Senza scritture per 90 s il nodo porta le ventole a `pwm_sicurezza`
   (0 %, ferme) e alza il bit 0. Il tetto `ventole_pwm_max` lo applica la

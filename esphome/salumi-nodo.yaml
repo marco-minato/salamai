@@ -16,8 +16,8 @@
 #   HX711: DOUT D1, SCK D3 (come su sonda-th)
 #   DS18B20 parete + pavimento: D10, pull-up 4,7 kΩ verso 3V3
 #   PWM ventole: D7 → modulo MOSFET A2 (uscita invertita)
-#   Giri ventola M5: D0 · M6: D8, pull-up 10 kΩ verso 3V3
-#   D9 (tasto BOOT) e D6 liberi.
+#   Giri ventola M5: D0 · M6: D8 · M7: D6, pull-up interne
+#   D9 (tasto BOOT) libero: non usarlo per i giri (basso all'avvio = programmazione).
 #   D0 e D8 sono pin di strapping, ma decidono l'avvio solo se D9 è basso:
 #   con il pull-up restano alti e vanno bene come ingressi dei giri.
 #
@@ -33,6 +33,7 @@
 #   0x0008  PWM ventole applicato, %
 #   0x0009  stato: bit0 ventole in sicurezza (Waveshare silente),
 #           bit1 HX711 valido, bit2 parete valida, bit3 pavimento valido
+#   0x000A  giri ventola M7, giri/min
 #   0x0010  PWM ventole richiesto, % (0–100), lettura e scrittura
 #
 # Sicurezza: se la Waveshare non scrive 0x0010 per 90 s (la riscrive ogni
@@ -166,6 +167,11 @@ modbus_server:
           if (!isnan(id(t_parete).state)) s |= 4;
           if (!isnan(id(t_pavimento).state)) s |= 8;
           return s;
+      - address: 0x000A
+        value_type: U_WORD
+        read_lambda: |-
+          float v = id(giri_m7).state;
+          return isnan(v) ? 0 : (uint16_t) lroundf(v);
       - address: 0x0010
         value_type: U_WORD
         read_lambda: return id(pwm_richiesto);
@@ -179,11 +185,13 @@ modbus_server:
 # --- Ventole -----------------------------------------------------------------
 # D7 comanda il modulo MOSFET A2, che porta a massa il filo PWM delle ventole:
 # uscita invertita. XIAO spenta o in avvio = ventole al massimo.
+# 1000 Hz: a 20 kHz il modulo è troppo lento a spegnersi (prova al banco del
+# 30/10/2026: 50 % → 0 giri a 20 kHz, 858 giri a 1 kHz; curva regolare, nessun fischio).
 output:
   - platform: ledc
     id: pwm_ventole
     pin: GPIO20   # D7
-    frequency: 20000Hz
+    frequency: 1000Hz
     inverted: true
 
 script:
@@ -263,6 +271,19 @@ sensor:
     pin:
       number: GPIO8   # D8
       ignore_strapping_warning: true
+      mode:
+        input: true
+        pullup: true
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+    update_interval: 10s
+    filters:
+      - multiply: 0.5
+  - platform: pulse_counter
+    id: giri_m7
+    name: "Giri ventola 3"
+    pin:
+      number: GPIO21   # D6
       mode:
         input: true
         pullup: true
