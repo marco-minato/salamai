@@ -120,7 +120,7 @@ rect(x+5,cy-38,XL-X5W-x-10,76,"contattori HCH8s-25Z, bobina 12 V<br>con diodo in
 x=XL-X5W
 x=stop(x,cy-17.5)
 FUH=72.5; FU={}
-for nm,t in [("F1","F1 camera · 1 A? (da conf.)"),("F2","F2 cantina · 0,25 A T? (da conf.)")]:
+for nm,t in [("F1","F1 camera · 1 A T"),("F2","F2 cantina · 0,25 A T")]:
     FU[nm]=x+4.1
     rect(x,cy-FUH/2,8.2,FUH,t,"fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8;horizontal=0;html=1;verticalAlign=middle;whiteSpace=wrap;")
     x+=8.2
@@ -303,7 +303,7 @@ text(lx,0,240,330,
 "• Fase ai contattori in catena sul morsetto 1 con puntalini doppi.<br>"
 "• Morsetti UK2.5B larghi 5,2 mm; 1 modulo = 17,5 mm.<br>"
 "• Ponticelli: X0 1-2, 3-4 · X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 2-3, 4-6 (X5 1 da solo).<br>"
-"• Fusibili 5×20 su portafusibili UK5-HESI: F1 → W3 camera (X5 2-3), F2 → W6 cantina (X5 1). Valori da confermare.",10)
+"• Fusibili 5×20 su portafusibili UK5-HESI: F1 → W3 camera (X5 2-3), F2 → W6 cantina (X5 1). F1 1 A T, F2 0,25 A T (ritardati).",10)
 text(lx,340,240,200,
 "<b>Fili</b> (livelli «Fili 230 V» e «Fili bassa tensione»)<br>"
 "<span style='color:#8B4513'>━━</span> fase L · <span style='color:#1E56C8'>━━</span> neutro N · <span style='color:#2E9B2E'>╍╍</span> terra<br>"
