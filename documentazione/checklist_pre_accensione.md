@@ -29,7 +29,7 @@
 
 ## A. Documentazione, componenti e stato sicuro
 
-- [ ] **[B] A01** Confrontato il cablaggio **filo per filo** con l'ultima versione degli schemi, non con documenti storici: sigle Q1, T1, A1, A3, D1, X0/X2/X3, KM1–KM6, W1/W3/W5/W6, X6, F1/F2.
+- [ ] **[B] A01** Confrontato il cablaggio **filo per filo** con l'ultima versione degli schemi, non con documenti storici: sigle Q1, T1, A1, A3, X2/X3/X5, KM1–KM6, W1/W3/W5/W6, X6, F1/F2.
 - [ ] **[B] A02** Risolte tutte le differenze tra schemi e distinta base (Cat5e UTP al posto di Cat6 FTP; niente schermature; cavo stufa W1 diretto; F1/F2 introdotti; bobine con diodo interno senza diodi esterni).
 - [ ] **[B] A03** Trovati e letti i dati di targa dei componenti effettivamente montati; tensione/corrente previste compatibili con l'impiego e con i collegamenti.
 - [ ] **[B] A04 [T]** Linea di rete sezionata **a monte del quadro**; verificata l'assenza di tensione, compresi i morsetti d'ingresso che possono restare attivi se si apre solo Q1.
@@ -42,12 +42,12 @@
 - [ ] **[B] B03** Sezioni, tipi di cavo e terminali adatti al relativo morsetto; un solo conduttore per foro salvo esplicita autorizzazione del produttore; puntalini crimpati e serrati correttamente.
 - [ ] **[B] B04 [T]** Catena di alimentazione KM1–KM6 con puntalini doppi 2×1,5 mm² e morsetti realmente compatibili: verifica non limitata al fatto che il puntalino entra o sembra tenere.
 - [ ] **[B] B05** Pressacavi/fermacavi presenti e serrati, cavi protetti da tagli, spigoli, trazione, condensa e zone calde; scatole in camera con ingressi adatti all'umidità.
-- [ ] **[C] B06** Spazio sufficiente sulla guida 3 per F1/F2, separazione dai contattori 230 V, accesso ai fusibili e alle relative etichette.
+- [ ] **[C] B06** Spazio sufficiente sulla guida 2 per F1/F2, separazione dai contattori 230 V, accesso ai fusibili e alle relative etichette.
 
 ## C. Rete 230 V, interruttore e distribuzione
 
 - [ ] **[B][T] C01** Arrivo L/N/PE verificato: Q1 (Gewiss 1P+N C10) collegato secondo marcature; linea di alimentazione e protezione a monte idonee, compresa la verifica del differenziale 30 mA esistente.
-- [ ] **[B] C02** X0: ponticelli L e N separati (gruppi 1–2 e 3–4); nessun ponte L–N o L–PE, nemmeno accidentalmente.
+- [ ] **[B] C02** Uscite di Q1 con puntalini doppi 2×1,5 ben crimpati (L verso T1 e A3, N verso T1 e A3); nessun ponte L–N o L–PE, nemmeno accidentalmente.
 - [ ] **[B] C03** Eastron SDM120 inserito sul percorso fase secondo morsetti reali IN/OUT; alimentazione T1 prelevata dal ramo protetto previsto; nessun errore tra L e N.
 - [ ] **[B] C04** Solo i contatti di potenza KM1–KM6 commutano la rete verso i carichi; i contatti K1–K6 della Waveshare portano **esclusivamente +12 V alle bobine**.
 - [ ] **[B] C05** X2: sei uscite di fase commutate correttamente attribuite; neutri dei carichi collegati soltanto alla distribuzione N prevista; nessuno scambio con PE.
@@ -58,7 +58,7 @@
 
 ## D. Terra di protezione e involucro metallico
 
-- [ ] **[B][T] D01** PE in arrivo X0 effettivamente collegato alla piastra, alle guide DIN e ai morsetti PE X2/X3 previsti; non confidare nella sola apparenza del contatto meccanico.
+- [ ] **[B][T] D01** PE in arrivo su X2 PE5 effettivamente collegato alla piastra, alle guide DIN e ai morsetti PE X2/X3 previsti; non confidare nella sola apparenza del contatto meccanico.
 - [ ] **[B][T] D02** Misurata e registrata la continuità PE delle masse metalliche: piastra, **ogni guida**, carcassa stufa e altre masse di classe I; metodo e limiti validati dal tecnico.
 - [ ] **[B] D03** PE e 0 V DC non confusi; eventuale collegamento funzionale della RS485 a PE verificato sul manuale della Waveshare, non presunto.
 - [ ] **[B] D04** Con Cat5e **UTP** nessuna schermatura FTP fittizia collegata ai morsetti di terra; eventuali morsetti PE ora liberi identificati correttamente.
@@ -67,7 +67,7 @@
 
 - [ ] **[B] E01** Mean Well HDR-60-12 collegato alla rete su L/N; uscita +V/−V identificata e cablata senza inversioni; nessun contatto fra rete e circuito 12 V.
 - [ ] **[B] E02** Su X3 ponticellati **solo** i gruppi previsti: B 1–3, A 4–6, 0 V 7–9, +12 V 10–12. Gruppi elettricamente distinti.
-- [ ] **[B] E03** Waveshare, display e catena COM dei relè alimentati dal +12 V **prima dei fusibili dei rami remoti**, affinché il guasto W3/W6 non spenga tutto il quadro.
+- [ ] **[B] E03** Waveshare e catena COM dei relè alimentati dal +12 V **prima dei fusibili dei rami remoti**, affinché il guasto W3/W6 non spenga tutto il quadro.
 - [ ] **[B] E04** F1 interrompe **solo il +12 V verso W3**; F2 interrompe **solo il +12 V verso W6**. Nessun ponticello può bypassare F1/F2; ingressi/uscite identificati anche fisicamente.
 - [ ] **[B] E05** Fusibili 5×20 mm e portafusibili UK5-HESI acquistati: verificati dati **del modello reale** (uso DC, tensione, potere d'interruzione, terminali, sezione minima, temperatura e accessori).
 - [ ] **[B] E06** Correnti nominali **F1/F2 approvate** con curva tempo-corrente, assorbimenti attesi/inrush, corrente limitata dell'alimentatore e caratteristiche del cavo. **Non montare automaticamente 1 A/0,25 A: sono candidati, non valori validati.**
@@ -82,11 +82,11 @@
 - [ ] **[B] F02** W3: blu/bianco-blu dedicati a RS485 A/B, arancio e verde +12 V, rispettivi bianchi 0 V, marroni isolati di riserva. **Verifica alle due estremità** prima di collegare le schede.
 - [ ] **[B] F03** X6: Wago 221 adatti a conduttore **rigido 24 AWG**, lunghezza di spelatura secondo modello, rame inserito fino in fondo, nessun reimpiego di trefoli o piegatura improvvisata del singolo filo.
 - [ ] **[B] F04** In X6 ben distinti +12 V, 0 V, 3,3 V, RS485 A/B e segnali: nessun +12 V sui GPIO XIAO, HX711 o DS18B20; massa e alimentazione dei sensori come schema.
-- [ ] **[B] F05** W5 da X6 a X4: +12 V/0 V alla coppia ventole; PWM condiviso; TACH M5, M6 e M7 separati e riferiti alla stessa massa; pinout ventole e MOSFET verificato sul componente reale.
+- [ ] **[B] F05** W5 da X6 a X4: +12 V/0 V alle ventole e al modulo MOSFET A2 (in X4); comando D7 su verde con massa su bianco-verde; PWM condiviso da OUT− di A2; TACH M5, M6 e M7 separati e riferiti alla stessa massa; pinout ventole e MOSFET verificato sul componente reale.
 - [ ] **[B] F06** Polarità 12 V della breakout Seeed RS485, della sonda B1 e della sonda B5 corretta; nessun collegamento di alimentazione sui morsetti A/B RS485.
 - [ ] **[B] F07** Scatole X6 e X4 asciutte, passacavi serrati, cavi fermati, guaine di sensori e cella protette, nessun contatto che possa creare corti con condensa o vibrazioni.
 - [ ] **[C] F08** Resistenza terminazione bus RS485 prevista solo alle due estremità designate; indirizzi previsti B1=1, A3=2, B5=3, XIAO=4, baud rate 9600 (configurazione e comunicazione effettive da provare **dopo** accensione).
-- [ ] **[C] F09** Ruolo del display D1 sul bus RS485 chiarito: niente secondo master Modbus concorrente con A1; se non pronto, lasciarlo scollegato dal bus fino al collaudo.
+- [ ] **[C] F09** Display D1 rimandato (30/10/2026): sul bus RS485 nessun dispositivo oltre a quelli previsti, nessun secondo master Modbus concorrente con A1; se in futuro si aggiunge, lasciarlo scollegato dal bus fino al collaudo.
 
 ## G. Prove strumentali A QUADRO DISALIMENTATO
 
@@ -98,7 +98,7 @@
 - [ ] **[B] G04** Continuità e identificazione puntuale dei cavi W1/W3/W5/W6: prova da una estremità all'altra, esclusa inversione fra +12 V/0 V/RS485/PE e fase/neutro.
 - [ ] **[B] G05** Controllo elettrico dei rami F1/F2: con fusibile **rimosso**, l'uscita verso il relativo cavo deve risultare isolata dal +12 V non protetto; con fusibile inserito, continuità solo lungo il percorso previsto (test prima del collegamento dei dispositivi elettronici).
 - [ ] **[B] G06** Nessun corto anomalo fra +12 V e 0 V nei cablaggi; risultati interpretati considerando condensatori d'ingresso, convertitori e carichi eventualmente connessi.
-- [ ] **[C] G07** Serraggi ricontrollati secondo indicazioni dei componenti, incluse viti di PE, X0/X2/X3, SDM120, alimentatore, contattori, portafusibili e pressacavi.
+- [ ] **[C] G07** Serraggi ricontrollati secondo indicazioni dei componenti, incluse viti di PE, X2/X3/X5, SDM120, alimentatore, contattori, portafusibili e pressacavi.
 
 ## H. Autorizzazione alla prima messa in tensione (STOP / GO)
 
@@ -127,7 +127,7 @@
 
 - `documentazione/schema-quadro.html` — reti, ponticelli, carichi e bobine (revisione GitHub accessibile il 27/10/2026).
 - `documentazione/scatola-x6.html` — reti X6, ventole, sensori, GPIO e Wago.
-- `documentazione/distinta_base.md` — componenti T1, Q1, A3, D1, KM1–KM6 e cablaggi.
-- `documentazione/prompt_schema_qelectrotech.md` — dettagli X0, X2, X3 e stufa.
+- `documentazione/distinta_base.md` — componenti T1, Q1, A3, KM1–KM6 e cablaggi.
+- `documentazione/prompt_schema_qelectrotech.md` — dettagli X2, X3, X5 e stufa.
 - `documentazione/specifiche_firmware.md`; `esphome/salumi-nodo.yaml`, `esphome/salumi-camera.yaml` — stati attuatori e indirizzi Modbus.
 - Discussione di progetto e revisione `revisione-alimentazione-12V.md` del 27/10/2026 (Claude Code).
