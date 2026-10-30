@@ -28,8 +28,8 @@ negozio di materiale elettrico.
 | -F1, -F2 | 1 | **Fusibili 5×20 in vetro, valori da confermare**: candidati F1 **1 A rapido (F)**, F2 **0,25 A ritardato (T)**, con un paio di scorte ciascuno. Da comprare dopo aver misurato le correnti (vedi sotto) | negozio di elettronica | — | F |
 | — | 1 | Pinza a cricchetto Preciva con 1200 puntalini, anche doppi (2×0,5 · 2×0,75 · 2×1 · 2×1,5 mm²): già in possesso | [B0CRCVMNQZ](https://www.amazon.it/dp/B0CRCVMNQZ) | — | P |
 | — | 1 | Spelafili (già in possesso): fili da 0,2 mm² in su, lunghezza di spelatura 11 mm per i Wago | — | — | P |
-| — | 1 | Cavo 1,5 mm² marrone, blu, giallo-verde, 10 m (cablaggio 230 V) | [Electraline 25139, B00IJCW374](https://www.amazon.it/dp/B00IJCW374) | da verificare | C |
-| — | 10 m | Cavo H05V-K 0,75 mm² rosso e nero (12 V: COM dei relè, bobine) | [ManoMano](https://www.manomano.it/cat/cavo+unipolare+rosso) | da verificare | C/F |
+| — | 8 m | Cavo H07V-K 1,5 mm² (cablaggio 230 V nel quadro): **marrone 4 m**, **blu 2 m**, **giallo-verde 2 m** (nello schema ~2,2 / 1,2 / 1,3 m, più margine per canaline e morsetti; in matassine da 5 m: 5 m per colore) | negozio di materiale elettrico; in alternativa [Electraline 25139, B00IJCW374](https://www.amazon.it/dp/B00IJCW374) | da verificare | F |
+| — | 11 m | Cavo H05V-K 0,75 mm² (12 V nel quadro): **rosso 7 m** (+12 V, COM dei relè, bobine dei contattori), **nero 4 m** (0 V) (nello schema ~4 / ~2 m, più margine; in matassine: 10 m rosso e 5 m nero) | negozio di materiale elettrico; in alternativa [ManoMano](https://www.manomano.it/cat/cavo+unipolare+rosso) | da verificare | F |
 | — | 5 | Valvole anticondensa (di compensazione) in nylon, M12×1,5, IP68: una per il quadro, X6 e X4, due di scorta (verificare dado e guarnizione) | [SHINEOFI, B0HG57QS4F](https://www.amazon.it/dp/B0HG57QS4F) | 19,09 € | C |
 | — | 1 | Pressacavi M20 IP68 (quadro) | [B0GYRDCC9Z](https://www.amazon.it/dp/B0GYRDCC9Z) (26 pz) | 7,99 € | C |
 | — | 1 | Morsetti Wago 221 assortiti (2, 3, 5 vie): giunzioni in X6 e nelle scatole | [B06XRJHTS3](https://www.amazon.it/dp/B06XRJHTS3) (40 pz) | 21,96 € | C/F |
@@ -45,7 +45,7 @@ negozio di materiale elettrico.
 | -X6 | 1 | Scatola stagna IP65 150×110×70 con pressacavi (A6, A4, A2, Wago, resistenze), in alto sopra la bilancia | [B0F6YGYR7K](https://www.amazon.it/dp/B0F6YGYR7K) | 13,49 € | C |
 | -R3 | 1 | Resistenza 4,7 kΩ (pull-up 1-Wire) | [B0FPX6T6SC](https://www.amazon.it/dp/B0FPX6T6SC) | 9,99 € | C/F |
 | — | 1 | Pin maschi a passo 2,54 mm in strip (2 file da 7 da saldare sulla breakout) | negozio di elettronica | — | F |
-| — | 1 | Kit Dupont 2,54 mm SeKi 17422 (gusci, pin maschi e femmina a crimpare, pinza): pin femmina sui cavetti C1–C3 verso la XIAO, due gusci 1×6 sulle file della XIAO e tappi da 1 su D6 e 5V | — | — | P |
+| — | 1 | Kit Dupont 2,54 mm SeKi 17422 (gusci, pin maschi e femmina a crimpare, pinza): pin femmina sui cavetti C1–C3 verso la XIAO, due gusci 1×6 sulle file della XIAO, un guscio da 1 su D6 (giri M7) e un tappo da 1 sul 5V | — | — | P |
 | — | 1 | Vernice protettiva acrilica per circuiti stampati, spray 400 ml (morsetti e connettori esclusi) | [Electrolube APL (RS)](https://it.rs-online.com/web/p/rivestimenti/4090956) | 26,30 € + IVA | C |
 | | | **Subtotale** (prezzi noti, IVA compresa) | | **≈ 65 €** | |
 
@@ -69,8 +69,8 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 |---|---:|---|---|---:|:-:|
 | -E1 | 1 | Stufa a 3 lampade IR, 1200 W, con antiribaltamento | — | — | P |
 | -M2, -M3 | 2 | Umidificatori a ultrasuoni, a spina | — | — | P |
-| -M5, -M6 | 3 | **Ventole ARCTIC P12 Slim PWM PST** 120 mm, 12 V, 4 fili, 200–2100 giri/min (confezione da 3, una di scorta). PWM collegato direttamente alla scheda tramite il transistor Q1, giri letti dalla scheda | [B09RWTCXRR](https://www.amazon.it/dp/B09RWTCXRR) | 19,22 € | C |
-| — | 1 | Prolunghe 4 pin PWM (6 pz): 2 da tagliare per collegare le ventole in X4 senza toccarle, 2 tagliate a metà per i cavetti C1 (HX711), C2 (sensori) e C3 (ventole) in X6, 2 di scorta | [B09SKYRB3V](https://www.amazon.it/dp/B09SKYRB3V) | 6,99 € | C |
+| -M5, -M6, -M7 | 3 | **Ventole ARCTIC P12 Slim PWM PST** 120 mm, 12 V, 4 fili, 200–2100 giri/min (confezione da 3, tutte e tre in fila: nessuna di scorta). PWM collegato direttamente alla scheda tramite il transistor Q1, giri letti dalla scheda | [B09RWTCXRR](https://www.amazon.it/dp/B09RWTCXRR) | 19,22 € | C |
+| — | 1 | Prolunghe 4 pin PWM (6 pz): 3 da tagliare per collegare le ventole in X4 senza toccarle, 2 tagliate a metà per i cavetti C1 (HX711), C2 (sensori) e C3 (ventole) in X6, 1 di scorta | [B09SKYRB3V](https://www.amazon.it/dp/B09SKYRB3V) | 6,99 € | C |
 | -M4 | 1 | **Estrattore, consigliato: Vents TT-100**, in linea a flusso misto, 145/187 m³/h, 21/33 W, collegato alla velocità bassa; **senza spina** (aggiungere una spina Schuko) | [B01LZQA9U9](https://www.amazon.it/dp/B01LZQA9U9) | 40,55 € | C |
 | -M4 (alt.) | 1 | Estrattore assiale Airope, 107 m³/h a bocca libera, 14 W, con spina: più economico, ma con 3 m di tubo e la valvola perde molta portata | [B08QFYMFJL](https://www.amazon.it/dp/B08QFYMFJL) | 22,90 € | in alternativa |
 | -Y1 | 1 | Valvola antiritorno a molla Ø 100, neverest RKI (uscita, lato cantina) | [B08LNS7TCV](https://www.amazon.it/dp/B08LNS7TCV) | 15,99 € | C |

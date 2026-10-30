@@ -160,7 +160,7 @@ da sopra), insieme al tubo dell'estrattore.
 | -T1 | **Mean Well HDR-60-12** (B072DXXRW3) | 230 VAC → 12 V DC 4,5 A, guida DIN 3 moduli (dimensionato per scheda + 6 bobine + ventole) |
 | -KM1…-KM6 | **Contattore modulare HCH8s-25Z**, bobina **12 V DC**, 25 A, 2 NA (B0BKWQ2P32) | ~1 modulo ciascuno (da verificare). Usato un solo contatto NA (1→2), il secondo (3→4) resta libero. KM1–KM3 lampade 1–3, KM4 umidificatore 1, KM5 umidificatore 2, KM6 estrattore. Bobina A1/A2, contatto di potenza 1→2 |
 | -F1, -F2 | **Portafusibili UK5-HESI** su guida DIN, fusibili **5×20** (B0FGD7CXSN, compatibili Phoenix, non originali) | sulla guida 3, a destra. F1 = +12 V del ramo camera (W3 → X6, ventole comprese); F2 = +12 V del ramo cantina (W6 → B5). Valori **da confermare** (candidati: F1 1 A rapido, F2 0,25 A ritardato): scriverli nello schema come "1 A F (da conf.)" e "0,25 A T (da conf.)". Lo 0 V non passa dai fusibili. Nessun diodo sulle bobine: gli HCH8s-25Z hanno la soppressione integrata |
-| -A2 | **Modulo MOSFET dual** a morsetti (B0GL1NWZQH, PWM fino a 20 kHz, ingresso 3,3 V) | **nella scatola X6 in camera**; usato come interruttore verso massa (collettore aperto) sul filo PWM delle ventole: protegge il GPIO della XIAO dal pull-up interno della ventola (fino a 5 V). PWM a 20 kHz, invertito nel firmware. Nessuna saldatura |
+| -A2 | **Modulo MOSFET dual** a morsetti (B0GL1NWZQH, ingresso 3,3 V; a 20 kHz troppo lento a spegnersi) | **nella scatola X6 in camera**; usato come interruttore verso massa (collettore aperto) sul filo PWM delle ventole: protegge il GPIO della XIAO dal pull-up interno della ventola (fino a 5 V). PWM a 1 kHz, invertito nel firmware. Nessuna saldatura |
 | -A6 | **Nodo in camera: Seeed XIAO ESP32C3** (102010633) **+ Seeed XIAO RS485 Breakout** (113991354) | nella scatola X6. La breakout ha il ricetrasmettitore RS485 (direzione su D2) e accetta 12 V con il suo step-down. Pin: RS485 TX D4 / RX D5 / DE D2; HX711 DOUT D1, SCK D3; DS18B20 D10; PWM ventole D7 → A2; TACH M5 D0, TACH M6 D8; liberi D6, D9. Due file di pin maschi da 7 saldate nei fori accanto alle prese della breakout (pin verso l'alto): da lì cavetti Dupont femmina verso Wago e HX711. Morsettiere della breakout: bus A / B / GND e alimentazione INT / 5V / 12V (ordine da verificare sulla serigrafia); interruttori 120R su ON e 5V su OUT. Modbus indirizzo 4, 9600 baud. È la XIAO della sonda attuale (sonda-th), riusata |
 | -X6 | **Scatola stagna IP65** in policarbonato/ABS (~150×110×70 mm o più grande se serve) con **valvola anticondensa M12** in basso | dentro la camera, **in alto sulla parete della porta, sopra la bilancia** (zona più calda e asciutta, lontana dal getto della nebbia e dal fascio della stufa). Pressacavi tutti verso il basso con ansa di gocciolamento. Contiene A6, A4, A2, i Wago di giunzione e le resistenze R1–R4. Schede trattate con vernice protettiva (conformal coating), morsetti esclusi |
 | -R1, -R2 | **Resistenze 120 Ω** | terminazioni del bus RS485 ai due estremi: R1 nel quadro (o il ponticello di terminazione della scheda A1), in X6 la terminazione è l'interruttore 120R della breakout su ON (niente resistenza R2). Solo due in tutto il bus |
@@ -178,10 +178,10 @@ da sopra), insieme al tubo dell'estrattore.
 | -M4 | **Estrattore in linea Ø 100 mm Vents TT-100** (B01LZQA9U9), in alternativa Airope (B08QFYMFJL) | flusso misto, 145/187 m³/h, 21/33 W, 230 V, collegato alla velocità bassa, con spina Schuko aggiunta su XS3; montato nella botola, tubo flessibile Ø 100 fino all'angolo opposto alla porta |
 | -Y2 | **Griglia d'ingresso Ø 100 con valvola antiritorno magnetica** (B0F52BLHQ4) | sulla porta della camera, in basso, si apre verso la camera: ingresso dell'aria della cantina durante il ricambio |
 | -Y1 | **Valvola antiritorno a molla Ø 100 mm** neverest RKI (B08LNS7TCV) | subito dopo l'estrattore, lato cantina: chiude la botola quando l'estrattore è fermo |
-| -M5, -M6 | **Ventole ARCTIC P12 Slim PWM PST** 120 mm (confezione da 3, B09RWTCXRR; una di scorta) | 12 V, 4 fili (GND, +12 V, TACH, PWM), 200–2100 giri/min, 15 mm di spessore; collegate in X4 con prolunghe 4 pin tagliate (B09SKYRB3V), così la ventola resta integra |
+| -M5, -M6, -M7 | **Ventole ARCTIC P12 Slim PWM PST** 120 mm (confezione da 3, B09RWTCXRR; tutte e tre in fila, nessuna di scorta) | 12 V, 4 fili (GND, +12 V, TACH, PWM), 200–2100 giri/min, 15 mm di spessore; collegate in X4 con prolunghe 4 pin tagliate (B09SKYRB3V), così la ventola resta integra |
 | -XS1, -XS2 | Prese Schuko IP44/IP55 **fuori dalla camera**, accanto al quadro e a XS3 | umidificatore 1 (KM4) e umidificatore 2 (KM5); ognuna con L, N e PE propri dal quadro |
 | -XS3 | Presa Schuko IP44/IP55 **fuori dalla camera**, accanto al quadro | estrattore (il suo cavo esce dalla botola) |
-| -X4 | Scatolina IP65 di derivazione ventole, con **valvola anticondensa M12** in basso | in alto sulla parete destra, tra le due ventole; da W5 si divide verso M5 e M6 (+12 V, 0 V e PWM in parallelo, TACH separati) |
+| -X4 | Scatolina IP65 di derivazione ventole, con **valvola anticondensa M12** in basso | in alto sulla parete destra, accanto alla fila delle tre ventole; da W5 si divide verso M5, M6 e M7 (+12 V, 0 V e PWM in parallelo, TACH separati) |
 | -B3 | **Sonda DS18B20** impermeabile (parete) | incollata/fissata a una piastrella in basso, cavo da 3 m fino a X6 |
 | -B4 | **Sonda DS18B20** impermeabile (pavimento) | uguale a B3, fissata a una piastrella del pavimento vicino al muro; in parallelo a B3 sullo stesso bus 1-Wire (A6 D10) |
 | -B5 | **Sonda Seeed S-TH-01** (101990881), seconda unità | in **cantina**, fuori dalla camera, vicino alla griglia d'ingresso dell'aria; RS485 in parallelo, **indirizzo 3**, con lo spezzone W6 dal quadro (breve derivazione: a 9600 baud non dà problemi); alimentata a 12 V dal Mean Well |
@@ -190,7 +190,7 @@ da sopra), insieme al tubo dell'estrattore.
 | -W1 | Cavo **FG16OR16 5G1,5** quadro → stufa, diretto (pressacavo sulla stufa) | L1, L2, L3, N, PE |
 | -W2a, -W2b, -W7 | Spezzoni **FROR 3G1,5** quadro → prese accanto al quadro, ~1 m | W2a: L4 (KM4), N, PE → XS1 · W2b: L5 (KM5), N, PE → XS2 · W7: L6 (KM6), N, PE → XS3 |
 | -W3 | Cavo **Cat5e UTP** (rame pieno, non CCA, già in possesso) quadro → scatola X6 in camera, ~10 m | coppia 1 (blu): A = blu / B = bianco-blu; coppia 2 (arancio): +12 V = arancio / 0 V = bianco-arancio; coppia 3 (verde): +12 V = verde / 0 V = bianco-verde (in parallelo alla 2); coppia 4 (marrone) di riserva; non schermato. 24 AWG (~0,2 mm²). Nel quadro: A/B su X3, +12 V su X5:2 e X5:3 (dopo F1), 0 V su X5:4 e X5:5, un conduttore per morsetto. Carico ~0,3 A: caduta ~0,25 V; posarlo a qualche cm dai cavi 230 V |
-| -W5 | Spezzone **Cat5e UTP** X6 → X4 ventole, ~2,5 m | coppia 1 (blu): +12 V = blu / 0 V = bianco-blu (0,2 A per due ventole: basta una coppia); coppia 2 (arancio) di riserva; coppia 3 (verde): PWM = verde, bianco-verde di riserva; coppia 4 (marrone): TACH M5 = marrone / TACH M6 = bianco-marrone |
+| -W5 | Spezzone **Cat5e UTP** X6 → X4 ventole, ~2,5 m | coppia 1 (blu): +12 V = blu / 0 V = bianco-blu (~0,3 A per tre ventole: basta una coppia); coppia 2 (arancio): TACH M7 = arancio, bianco-arancio di riserva; coppia 3 (verde): PWM = verde, bianco-verde di riserva; coppia 4 (marrone): TACH M5 = marrone / TACH M6 = bianco-marrone |
 | -W6 | Spezzone **Cat5e UTP** quadro → sonda cantina B5, ~2 m | coppia 1: A / B (X3:5 / X3:2); coppia 2: +12 V / 0 V (X5:1 dopo F2 / X5:6) |
 | — | Filo silicone 18 AWG (B07TT68455) | collegamenti interni alla stufa (zona calda) |
 | — | Quadro **BOXEXPERT Fleet 600×400×200 mm**, ABS, IP65, sportello trasparente, **piastra di fondo** in lamiera zincata (B07C84YMZN, interno 548×341×189); 4 guide DIN 35 mm da ~25 cm avvitate alla piastra; **canaline asolate 25×40** sopra e sotto ogni guida e sui due lati; morsetti UK2.5B su guida con fermi; valvola anticondensa M12; pressacavi M20 (B0GYRDCC9Z) | meccanica |
@@ -348,17 +348,17 @@ fine di ogni morsettiera.
 - B3 DS18B20 parete e B4 pavimento in parallelo: DATA → A6 **D10**, VDD → A6
   3V3, GND → GND; **R3 4,7 kΩ** tra D10 e 3V3.
 - PWM: A6 **D7** → ingresso segnale di A2; uscita di A2 (lato massa, OUT−) →
-  W5 coppia 3 → X4 → PWM di M5 e M6 in parallelo (il pull-up è interno alle
+  W5 coppia 3 → X4 → PWM di M5, M6 e M7 in parallelo (il pull-up è interno alle
   ventole).
-- W5 coppia 1 (blu) → X4 → +12 V e GND di M5 e M6 in parallelo.
+- W5 coppia 1 (blu) → X4 → +12 V e GND di M5, M6 e M7 in parallelo.
 - TACH M5 → X4 → W5 coppia 4 → A6 **D0**; TACH M6 → X4 → W5 coppia 4 → A6
-  **D8**, con le pull-up interne della XIAO attive nel firmware (niente resistenze).
+  **D8**; TACH M7 → X4 → W5 arancio → A6 **D6**; pull-up interne della XIAO attive nel firmware (niente resistenze).
 - **Dentro X4**: il cavo di ciascuna ventola entra da un pressacavo con la sua
   spina 4 pin; la spina si innesta nella presa di una prolunga tagliata, i cui
-  4 fili vanno sui Wago insieme ai conduttori di W5 (Wago +12 V: W5 blu + M5 + M6;
-  Wago 0 V: W5 bianco-blu + M5 + M6; Wago PWM: W5 verde + M5 + M6; TACH M5 e TACH M6 con un Wago a 2 vie ciascuno verso W5 coppia 4).
-  Tutte le giunzioni restano nella scatola. Il TACH della seconda ventola è
-  separato: non usare la catena PST tra le due ventole.
+  4 fili vanno sui Wago insieme ai conduttori di W5 (Wago +12 V: W5 blu + M5 + M6 + M7;
+  Wago 0 V: W5 bianco-blu + M5 + M6 + M7; Wago PWM: W5 verde + M5 + M6 + M7, Wago da 5; TACH M5, M6 e M7 con un Wago a 2 vie ciascuno verso W5 marrone, bianco-marrone e arancio).
+  Tutte le giunzioni restano nella scatola. I TACH sono
+  separati: non usare la catena PST tra le ventole.
 - **Dentro X6** (rev. 4.8, disegno `scatola-x6.drawio`): Wago liberi nella scatola.
   +12 V: Wago da 5 + Wago da 3 uniti da un ponticello (W3 arancio e verde,
   12V della breakout, B1 +, A2 DC+, W5 blu). 0 V: due Wago da 5 uniti
@@ -366,8 +366,8 @@ fine di ogni morsettiera.
   A2 GND del segnale, W5 bianco-blu; un foro libero). RS485 A e B: Wago da 3 ciascuno (W3, breakout, B1). GND
   sensori: Wago da 5 (pin GND della XIAO, HX711 GND, B3 e B4 nero; un foro libero).
   3,3 V: Wago da 5 (pin 3V3, HX711 VCC, B3 e B4 rosso, R3). 1-Wire: Wago da 5
-  (D10, B3 e B4 giallo, R3). Giri: Wago da 2 per D0 + W5 marrone e per D8 + W5
-  bianco-marrone. Diretti: HX711 DT → D1 e SCK → D3 (cavetti da prolunghe ventola: C1 HX711 con connettore sull'HX711, C2 GND/3V3/D10, C3 D0/D8/D7; pin Dupont femmina crimpati, sulla XIAO due gusci 1×6, D0–D5 e GND–D7, tappi da 1 su D6 e 5V),
+  (D10, B3 e B4 giallo, R3). Giri: Wago da 2 per D0 + W5 marrone, per D8 + W5
+  bianco-marrone e per D6 + W5 arancio. Diretti: HX711 DT → D1 e SCK → D3 (cavetti da prolunghe ventola: C1 HX711 con connettore sull'HX711, C2 GND/3V3/D10, C3 D0/D8/D7/D6; pin Dupont femmina crimpati, sulla XIAO due gusci 1×6, D0–D5 e GND–D7, più un guscio da 1 su D6 e un tappo da 1 sul 5V),
   D7 → PWM di A2, OUT− di A2 → W5 verde, cella → HX711 (E+ rosso, E− nero,
   A− bianco, A+ verde). W3 e W5 in Cat5e UTP: niente schermi.
 - A5 Pico-RTC-DS3231 innestato sul connettore H1/H2 di A1: SDA = **GPIO4**
@@ -431,11 +431,11 @@ muro; lato corto 160; altezza 210). Disegnarla semplice (rettangoli, testo, frec
 - **Porta** sul lato lungo "in basso", apre verso l'interno. **Quadro** fuori, a
   muro **a destra della porta**.
 - **Salami**: metà destra della camera (~130 × 150), appesi a una struttura.
-- **Parete corta destra**: in alto le due ventole M5 e M6, che soffiano
+- **Parete corta destra**: in alto le tre ventole M5, M6 e M7 in fila, che soffiano
   orizzontali sopra i salami verso la parete opposta, con accanto le uscite dei
   tubi PVC della nebbia; più in basso gli umidificatori M2 e M3 rialzati da terra;
   al centro la stufa E1, puntata contro il muro (W1 entra direttamente nella stufa). Sopra la
-  stufa niente salami. Scatolina ventole X4 in alto tra le ventole, fuori dal getto di nebbia.
+  stufa niente salami. Scatolina ventole X4 in alto accanto alle ventole, fuori dal getto di nebbia.
   I cavi degli umidificatori salgono alla botola senza giunzioni in camera.
 - **Botola** sul soffitto, 32 × 45, vicino alla porta: estrattore M4 + valvola Y1;
   tubo flessibile Ø 100 fino all'**angolo opposto alla porta** (dietro i salami).
