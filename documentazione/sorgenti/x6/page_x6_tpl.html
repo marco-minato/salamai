@@ -142,13 +142,13 @@ svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
       <li>Schede in scala; i Wago sono disegnati in fila per leggere i collegamenti: nella scatola (150×110×70) stanno liberi.</li>
       <li>Scheda RS485: salda le due file di pin maschi da 7 nei fori accanto alle prese, pin verso l'alto. Interruttore 120R su ON (fine del bus), 5V su OUT.</li>
       <li>Ordine dei poli delle due morsettiere della scheda RS485 da verificare sulla serigrafia.</li>
-      <li>Collegamenti verso XIAO e HX711 con 3 cavetti ricavati da 2 prolunghe ventola tagliate a metà (4 fili flessibili; il filo con la riga è il n. 1). C1 HX711: connettore femmina della prolunga sui 4 pin dell'HX711; DT → D1, SCK → D3, GND e VCC ai Wago. C2 sensori: GND, 3V3, D10 ai Wago; filo 4 di riserva. C3 ventole: D0, D8 e D6 ai Wago dei giri M5, M6 e M7, D7 al PWM del MOSFET.</li>
-      <li>Capi sulla XIAO: pin femmina crimpati (kit Dupont SeKi). Capi nei Wago: puntalino da 0,25–0,5 mm². Nel MOSFET: filo spellato nel morsetto a vite.</li>
+      <li>Collegamenti verso XIAO e HX711 con 3 cavetti ricavati da 2 prolunghe ventola tagliate a metà (4 fili flessibili; il filo con la riga è il n. 1). C1 HX711: connettore femmina della prolunga sui 4 pin dell'HX711; DT → D1, SCK → D3, GND e VCC ai Wago. C2 sensori: GND, 3V3, D10 ai Wago; filo 4 di riserva. C3 ventole: D0, D8 e D6 ai Wago dei giri M5, M6 e M7, D7 su W5 verde verso il modulo MOSFET in X4.</li>
+      <li>Capi sulla XIAO: pin femmina crimpati (kit Dupont SeKi). Capi nei Wago: puntalino da 0,25–0,5 mm². Il modulo MOSFET A2 non è in X6: sta nella scatola X4 delle ventole.</li>
       <li>Pin della XIAO: un guscio 1×6 per fila (tratteggio arancio). Sinistra D0–D5: D0 giri M5, D1 HX711 DT, D3 HX711 SCK; D2, D4, D5 vuoti. Destra GND–D7: GND, 3V3, D10, D8 giri M6, D7 PWM; D9 vuoto. D6 giri M7 in un guscio da 1. Tappo vuoto da 1 (grigio) sul 5V: così il guscio destro entra solo nella posizione giusta.</li>
       <li>Ordine dei pin da confermare sulla serigrafia della scheda RS485 prima di crimpare.</li>
       <li>Cat5e (rame pieno, ~0,2 mm²) direttamente nei Wago, senza puntalino: spela 11 mm e spingi fino in fondo. Colori secondo T568B: coppia blu, arancio, verde, marrone.</li>
       <li>Giri ventole con le pull-up interne della XIAO: niente resistenze da 10 kΩ.</li>
-      <li>Modulo MOSFET: posizione dei morsetti indicativa, controlla le scritte sul modulo.</li>
+      <li>W5 verde porta il comando D7 al modulo MOSFET in X4; bianco-verde è la sua massa (nel Wago 0 V). In X4: verde → PWM del modulo, bianco-verde → GND di segnale, OUT− → filo PWM delle tre ventole.</li>
     </ul>
   </div>
 </section>
@@ -251,7 +251,7 @@ const NOTE={P12:"Due Wago (da 5 e da 3) uniti da un ponticello di filo: tutti i 
   OW:"Le due sonde DS18B20 in parallelo sullo stesso filo. R3 da 4,7 kΩ verso il 3,3 V tiene il filo alto.",
   HX:"Cavetto C1 (prolunga ventola): connettore sull'HX711, pin femmina crimpati sulla XIAO.",
   CELL:"Colori più comuni della cella: rosso E+, nero E−, bianco A−, verde A+. Se i colori sono diversi, controlla il foglietto della cella.",
-  PWM:"La XIAO comanda il MOSFET; l'uscita OUT− tira a massa il filo PWM delle ventole (comando invertito nel firmware).",
+  PWM:"D7 della XIAO va su W5 verde fino al modulo MOSFET nella scatola X4; lì l'uscita OUT− tira a massa il filo PWM delle ventole (comando invertito nel firmware, 1 kHz).",
   TACH:"Il filo dei giri arriva da X4 e va al pin della XIAO, che ha la pull-up interna attiva nel firmware."};
 let cur=null;
 function select(id,zoom){cur=id;const n=NETS.get(id);svg.classList.add("sel");
@@ -301,11 +301,11 @@ const STEPS=[
   ["Segna col pennarello il lato USB di ogni guscio"]]],
  ["Scatola",[
   ["Fora il fondo: 6 pressacavi (W3, B1, B3, B4, W5, cella) e la valvola anticondensa"],
-  ["Fissa scheda RS485, HX711 e modulo MOSFET sul fondo (distanziali o biadesivo spesso)"],
+  ["Fissa scheda RS485 e HX711 sul fondo (distanziali o biadesivo spesso)"],
   ["Passa i cavi nei pressacavi; spella la guaina dei Cat5e per ~8 cm"]]],
  ["Alimentazione e bus",[
-  ["+12 V: W3 arancio e verde, scheda RS485 12V, sonda B1 +, MOSFET DC+, W5 blu; ponticello tra i due Wago","+12 V"],
-  ["0 V: W3 bianco-arancio e bianco-verde, scheda RS485 GND, sonda B1 −, MOSFET DC− e GND del segnale, W5 bianco-blu; ponticello tra i due Wago (un foro resta libero)","0 V"],
+  ["+12 V: W3 arancio e verde, scheda RS485 12V, sonda B1 +, W5 blu (un solo Wago da 5)","+12 V"],
+  ["0 V: W3 bianco-arancio e bianco-verde, scheda RS485 GND, sonda B1 −, W5 bianco-blu e bianco-verde; Wago da 5 + Wago da 3 uniti da un ponticello","0 V"],
   ["RS485 A: W3 blu, scheda A, sonda B1 A","RS485 A"],
   ["RS485 B: W3 bianco-blu, scheda B, sonda B1 B","RS485 B"]]],
  ["Sensori a 3,3 V",[
@@ -315,10 +315,10 @@ const STEPS=[
   ["R3 4,7 kΩ: un piedino nel Wago 3,3 V, l'altro nel Wago 1-Wire","1-Wire sonde"],
   ["Innesta C1 sull'HX711: DT → D1, SCK → D3 (GND e VCC vanno ai Wago nei passi sopra)","HX711 DT"]]],
  ["Ventole",[
-  ["C3·3 (D7) → morsetto PWM del modulo MOSFET","PWM ventole (comando)"],
-  ["MOSFET OUT− → W5 verde","PWM ventole (uscita)"],
+  ["C3·3 (D7) e W5 verde in un Wago da 2 (il modulo MOSFET è in X4)","PWM ventole (comando)"],
+  ["W5 bianco-verde (massa del comando) nel Wago 0 V (2°)","0 V"],
   ["Giri: C3·1 (D0) con W5 marrone, C3·2 (D8) con W5 bianco-marrone, C3·4 (D6) con W5 arancio","Giri ventola M5"],
-  ["W5 bianco-arancio e bianco-verde: di riserva, isolali"]]],
+  ["W5 bianco-arancio: di riserva, isolalo"]]],
  ["Controlli",[
   ["Tester, tutto spento: nessun corto tra +12 V e 0 V, né tra 3,3 V e GND"],
   ["Strattone leggero a ogni filo nei Wago e nei morsetti"],

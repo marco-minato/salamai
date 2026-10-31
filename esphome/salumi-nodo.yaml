@@ -236,18 +236,17 @@ sensor:
           window_size: 5
           send_every: 5
 
-  # Al primo avvio il log elenca le sonde trovate ("Found sensors: 0x...").
-  # Scaldarne una in mano per capire quale è quale e mettere qui gli
-  # indirizzi. Con i segnaposto le letture risultano non valide.
+  # Indirizzi letti al banco il 30/10/2026 (sonda scaldata in mano).
+  # Parete: cavo segnato con il nastro "parete".
   - platform: dallas_temp
     id: t_parete
     name: "Temperatura parete"
-    address: 0x0000000000000001
+    address: 0x223C9AE381172528
     update_interval: 30s
   - platform: dallas_temp
     id: t_pavimento
     name: "Temperatura pavimento"
-    address: 0x0000000000000002
+    address: 0xCF3CC4E381C39528
     update_interval: 30s
 
   # Giri ventole (2 impulsi a giro: impulsi al minuto × 0,5 = giri/min)
