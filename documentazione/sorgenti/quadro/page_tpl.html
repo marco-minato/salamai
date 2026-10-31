@@ -71,12 +71,18 @@ main{flex:1;position:relative;min-height:0}
 .hit{fill:none;stroke:transparent;stroke-width:16px;vector-effect:non-scaling-stroke;cursor:pointer}
 .cab{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.5}
 svg.sel .w,svg.sel .cab{opacity:.12}
-svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
+svg.sel .w.on{opacity:1;stroke-width:4.4px!important}
 .catw{fill:none;stroke-linejoin:round;stroke-linecap:butt}
 svg.sel .catw{opacity:.12}
 svg.sel .catw.on{opacity:1}
 .pinmark{fill:#ffe14d;stroke:#1d2329;stroke-width:1.5px;vector-effect:non-scaling-stroke}
 .layer-off{display:none}
+.seg{flex:none;display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:var(--chip);padding:6px 11px;font-size:14px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+svg.f-int .wx,svg.f-ext .wi{display:none}
 .ck-sec{margin:14px 0 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .ck-sec:first-child{margin-top:0}
 .ck{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);background:var(--chip);border-radius:8px;margin-bottom:6px}
@@ -96,6 +102,11 @@ svg.sel .catw.on{opacity:1}
     <button class="chip" id="b-list" type="button">☰ Collegamenti</button>
     <button class="chip" id="b-230" type="button" aria-pressed="true"><span class="sw" style="background:#8B4513"></span>230 V</button>
     <button class="chip" id="b-bt" type="button" aria-pressed="true"><span class="sw" style="background:#E00000"></span>12 V e RS485</button>
+    <div class="seg" role="group" aria-label="Quali fili mostrare">
+      <button id="f-all" type="button" aria-pressed="true">Tutti</button>
+      <button id="f-int" type="button" aria-pressed="false" title="Fili che restano dentro il quadro">Interni</button>
+      <button id="f-ext" type="button" aria-pressed="false" title="Cavi che escono dal quadro e i loro fili fino ai morsetti">Esterni</button>
+    </div>
     <button class="chip" id="b-mon" type="button">✓ Montaggio <span id="mon-count" style="font-family:var(--f-mono);font-size:12px"></span></button>
     <button class="chip" id="b-leg" type="button">Legenda</button>
   </div>
@@ -131,14 +142,14 @@ svg.sel .catw.on{opacity:1}
       <span class="sw" style="background:#FF8C00"></span><span>RS485 A</span>
       <span class="sw" style="background:#8A2BE2"></span><span>RS485 B</span>
       <span class="sw" style="background:#999;height:8px"></span><span>Cavo con guaina (dal pressacavo)</span>
-      <span class="sw" style="height:6px;background:linear-gradient(90deg,#1565C0 0 25%,#EF6C00 25% 50%,#2E7D32 50% 75%,#6D4C41 75%);outline:1.5px solid #1d2329"></span><span>Cat5e W3 e W6: colori veri dei conduttori (T568B)</span>
+      <span class="sw" style="height:6px;background:linear-gradient(90deg,#1565C0 0 25%,#EF6C00 25% 50%,#2E7D32 50% 75%,#6D4C41 75%);outline:1.5px solid #1d2329"></span><span>Cat5e W3: colori veri dei conduttori (T568B)</span>
       <span class="sw" style="height:6px;background:repeating-linear-gradient(90deg,#1565C0 0 4px,#fff 4px 7px);outline:1.5px solid #1d2329"></span><span>Bianco-colore (es. bianco-blu): bianco con tratteggio</span>
       <span class="sw" style="background:#FF6A00;height:6px"></span><span>Ponticello tra morsetti</span>
       <span class="box" style="background:#f8cecc"></span><span>230 V</span>
       <span class="box" style="background:#dae8fc"></span><span>Bassa tensione 12 V</span>
       <span class="box" style="background:#fff2cc"></span><span>Contattori</span>
       <span class="box" style="background:#97d077"></span><span>Morsetti di terra (si serrano sulla guida)</span>
-      <span class="box" style="background:#e1d5e7"></span><span>Portafusibili F1, F2 (UK5-HESI, fusibili 5×20)</span>
+      <span class="box" style="background:#e1d5e7"></span><span>Portafusibile F1 (UK5-HESI, fusibile 5×20)</span>
       <span class="box" style="background:#4d4d4d;width:10px"></span><span>Fermo di fine morsettiera: blocca i morsetti sulla guida</span>
     </div>
     <ul class="notes">
@@ -149,10 +160,10 @@ svg.sel .catw.on{opacity:1}
       <li>Fase ai contattori in catena sul morsetto 1, con puntalini doppi. Contatore SDM120-M: in basso 1 = fase in ingresso, 2 = fase in uscita; in alto 3 e 4 = neutro (uniti dentro), 9 = B−, 10 = A+. Il neutro per le uscite parte dal morsetto 4.</li>
       <li>Contattori: bobina 12 V con diodo interno, + sopra, − sotto.</li>
       <li>Su X3 e X5 un solo filo per foro. Puntalini doppi solo sulle uscite di Q1, sui COM dei relè e sui contattori.</li>
-      <li>Ponticelli: X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 2-3, 4-6. <b>X5 1 resta da solo</b>: niente ponticello tra X5 1 e X5 2, né tra X5 e X3.</li>
-      <li>Fusibili sulla guida 2, a destra: F1 protegge il cavo della camera (W3, e in X6 e X4 anche le ventole), F2 quello della cantina (W6). Prendono il 12 V da X3 10 e X3 11 (fori sotto). Lo 0 V non passa dai fusibili. Waveshare e bobine restano sul 12 V non protetto.</li>
-      <li><b>Fusibili ritardati (T)</b>: F1 1 A, F2 0,25 A (misura al banco del 30/10/2026).</li>
-      <li>Cat5e: A e B su X3 (sotto), alimentazione su X5 (sopra). Un conduttore da 0,2 mm² per morsetto.</li>
+      <li>Ponticelli: X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 1-2. Nessun ponticello tra X5 e X3: il fusibile verrebbe aggirato.</li>
+      <li>Fusibile F1 sulla guida 3, subito a destra di X3: protegge il cavo della camera (W3, e in X6 e X4 anche le ventole). Prende il 12 V da X3 12 (foro sotto) con un filo corto ed esce in alto verso X5. Lo 0 V non passa dal fusibile. Waveshare e bobine restano sul 12 V non protetto. La cantina la misura lo Shelly H&T: niente sonda B5, niente cavo W6, niente F2.</li>
+      <li><b>Fusibile F1 1 A ritardato (T)</b> (misura al banco del 30/10/2026).</li>
+      <li>Cat5e camera (W3): tutto su G3, dal basso. A, B e 0 V su X3, +12 V su X5. Un conduttore da 0,2 mm² per morsetto.</li>
       <li>I fili relè → bobine passano nella canalina tra G1 e G2, insieme ai 230 V della catena dei contattori: H05V-K, isolamento 300/500 V.</li>
       <li>Posizione dei morsetti su alimentatore, Waveshare e contatore indicativa: controlla sul pezzo.</li>
     </ul>
@@ -201,25 +212,28 @@ for(const v of D.V){
 }
 const wireEls=[];
 D.wires.forEach((w,i)=>{
-  const g=HV.has(w.kind)?gW230:gWbt;
+  // esterni: i cavi con guaina e i fili che partono da un cavo (linea di casa, stufa, prese, Cat5e)
+  const isCab=e=>!!e&&/^(cavo|Cat5e)/.test(e);
+  const ext=w.kind==="C230"||w.kind==="CBT"||isCab(w.a)||isCab(w.b);
+  const g=el("g",{class:ext?"wx":"wi"},HV.has(w.kind)?gW230:gWbt);
   const pts=w.pts.map(p=>p.join(",")).join(" ");
   if(w.kind==="C230"||w.kind==="CBT"){el("polyline",{points:pts,class:"cab",stroke:COL[w.kind],"stroke-width":7},g);return}
   if(w.cond){  // conduttore di un Cat5e con il suo colore vero; bianco-colore = bianco con tratteggio
     const c=CAT[w.cond.split("-").pop()], st=w.cond.startsWith("bianco");
     // spessori in mm: crescono con lo zoom come i componenti (conduttore Cat5e ~0,9 mm con guaina)
-    wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#1d2329","stroke-width":1.25,"data-net":w.net},g));
-    if(st)wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#ffffff","stroke-width":0.85,"data-net":w.net},g));
-    const a={points:pts,class:"catw",stroke:c,"stroke-width":0.85,"data-net":w.net};
+    wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#1d2329","stroke-width":1.5,"data-net":w.net},g));
+    if(st)wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#ffffff","stroke-width":1.05,"data-net":w.net},g));
+    const a={points:pts,class:"catw",stroke:c,"stroke-width":1.05,"data-net":w.net};
     if(st)a["stroke-dasharray"]="1.6 1.4";
     wireEls.push(el("polyline",a,g));
     el("polyline",{points:pts,class:"hit","data-net":w.net},g);return}
-  const a={points:pts,class:"w",stroke:COL[w.kind],"stroke-width":1.8,"data-net":w.net};
+  const a={points:pts,class:"w",stroke:COL[w.kind],"stroke-width":2.6,"data-net":w.net};
   if(w.kind==="PE"||w.kind==="PEb")a["stroke-dasharray"]="1.6 0.7";
   const p=el("polyline",a,g); wireEls.push(p);
   el("polyline",{points:pts,class:"hit","data-net":w.net},g);
 });
-for(const d of D.dots) el("circle",{cx:d[0],cy:d[1],r:.9,fill:"#1d2329"},gWbt);
-for(const d of D.splits) el("circle",{cx:d[0],cy:d[1],r:1.6,fill:"#777",opacity:.7},gV);
+for(const d of D.dots) el("circle",{cx:d[0],cy:d[1],r:1.1,fill:"#1d2329"},gWbt);
+for(const d of D.splits) el("circle",{cx:d[0],cy:d[1],r:1.6,fill:"#777",opacity:.7,class:"wx"},gV);
 
 function setVB(){svg.setAttribute("viewBox",`${vb.x} ${vb.y} ${vb.w} ${vb.h}`)}
 function fit(){const r=svg.getBoundingClientRect();const s=Math.min(r.width/VB0.w,r.height/VB0.h);vb.w=r.width/s;vb.h=r.height/s;vb.x=VB0.x-(vb.w-VB0.w)/2;vb.y=VB0.y-(vb.h-VB0.h)/2;setVB()}
@@ -256,10 +270,10 @@ addEventListener("resize",()=>{if(cur===null)fit()});
 const NETS=new Map(D.nets.map(n=>[n.id,n]));
 const KD={L:"Fase",N:"Neutro",PE:"Terra",PEb:"Terra",P12:"+12 V",V0:"0 V",A:"RS485 A",B:"RS485 B",COIL:"Comando bobine"};
 const NOTE={PE:"Tutti i morsetti di terra si serrano sulla guida DIN e sono collegati tra loro anche attraverso le guide e la piastra.",
-  P12:"I morsetti dello stesso gruppo sono uniti dal ponticello: un filo entra in un morsetto qualsiasi del gruppo. Un solo filo per foro. I rami della camera (X5 2-3) e della cantina (X5 1) passano dai fusibili F1 e F2 e non vanno mai collegati al gruppo X3 10-12.",
-  V0:"Il ritorno delle bobine passa in catena sul morsetto − di tutti i contattori (puntalini doppi) e arriva in X3 9 sotto. X5 4-6 è collegato a X3 9 sopra con un filo: lo 0 V è comune e non passa dai fusibili.",
-  A:"Bus RS485: il contatore prende A da X3 6 sopra, la Waveshare da X3 4 sopra, i Cat5e entrano in X3 4 e 5 sotto (un filo per foro).",
-  B:"Bus RS485: il contatore prende B da X3 3 sopra, la Waveshare da X3 1 sopra, i Cat5e entrano in X3 1 e 2 sotto (un filo per foro).",
+  P12:"I morsetti dello stesso gruppo sono uniti dal ponticello: un filo entra in un morsetto qualsiasi del gruppo. Un solo filo per foro. Il ramo della camera (X5 1-2) passa dal fusibile F1 e non va mai collegato al gruppo X3 10-12.",
+  V0:"Il ritorno delle bobine passa in catena sul morsetto − di tutti i contattori (puntalini doppi) e arriva in X3 9 sotto. Lo 0 V del Cat5e camera entra direttamente in X3 7 e 8 sotto: non passa dal fusibile.",
+  A:"Bus RS485: il contatore prende A da X3 6 sopra, la Waveshare da X3 4 sopra, il Cat5e entra in X3 4 sotto (un filo per foro).",
+  B:"Bus RS485: il contatore prende B da X3 3 sopra, la Waveshare da X3 1 sopra, il Cat5e entra in X3 1 sotto (un filo per foro).",
   COIL:"Quando il relè si chiude, porta il +12 V alla bobina del contattore, che si chiude e dà corrente al carico."};
 let cur=null;
 function select(id,zoom){cur=id;const n=NETS.get(id);svg.classList.add("sel");
@@ -294,6 +308,13 @@ for(const n of D.nets){const k=KD[n.kind];if(k!==lastK){const h=document.createE
 function tog(btn,g){const on=btn.getAttribute("aria-pressed")!=="true";btn.setAttribute("aria-pressed",on);g.classList.toggle("layer-off",!on)}
 document.getElementById("b-230").onclick=e=>tog(e.currentTarget,gW230);
 document.getElementById("b-bt").onclick=e=>tog(e.currentTarget,gWbt);
+const FILT={"f-all":"","f-int":"f-int","f-ext":"f-ext"};
+for(const id in FILT)document.getElementById(id).onclick=()=>{
+  for(const k in FILT)document.getElementById(k).setAttribute("aria-pressed",k===id);
+  svg.classList.remove("f-int","f-ext"); if(FILT[id])svg.classList.add(FILT[id]);
+  try{localStorage.setItem("quadro-filtro-fili",id)}catch(e){}
+};
+try{const k=localStorage.getItem("quadro-filtro-fili");if(k&&FILT[k]!==undefined)document.getElementById(k).click()}catch(e){}
 // checklist di montaggio (spunte salvate solo su questo telefono)
 const STEPS=[
  ["Al banco",[
@@ -301,7 +322,7 @@ const STEPS=[
   ["Imposta indirizzo Modbus e velocità del contatore SDM120 dai tasti frontali (indirizzo 2, 9600 baud)"],
   ["Misura l'altezza della piastra: se non è 510, avvisa prima di forare"]]],
  ["Cassetta vuota",[
-  ["Fora il fondo: pressacavi 230 V a sinistra, Cat5e a destra, valvola anticondensa al centro"],
+  ["Fora il fondo: pressacavi 230 V a sinistra, Cat5e camera a destra, valvola anticondensa al centro"],
   ["Monta pressacavi e valvola"],
   ["Fissa la cassetta al muro"]]],
  ["Piastra fuori dalla cassetta",[
@@ -309,11 +330,11 @@ const STEPS=[
   ["Guide da 270 mm con l'asse a 93,5 (G1), 255 (G2) e 416,5 mm (G3) dal bordo alto. <b>G3 deve essere in acciaio</b>"]]],
  ["Componenti sulle guide",[
   ["<b>G1</b>: alimentatore, poi Waveshare con l'RTC innestato"],
-  ["<b>G2</b>: magnetotermico Q1, contatore A3, poi i 6 contattori con la bobina + in alto"],
-  ["<b>G2</b> a destra: fermo, portafusibili F1 e F2 (senza fusibile), X5 1–6, fermo. Controlla che lo sportellino dei fusibili si apra senza toccare le canaline"],
+  ["<b>G2</b>: magnetotermico Q1, contatore A3, poi i 6 contattori con la bobina + in alto (il resto della guida resta libero)"],
+  ["<b>G3</b> subito dopo X3: portafusibile F1 (senza fusibile, ingresso in basso), X5 1–2, fermo. Controlla che lo sportellino si apra senza toccare le canaline"],
   ["<b>G3</b> a sinistra: fermo, X2 L1–L6, N7–N10, PE1–PE5, fermo"],
-  ["<b>G3</b> a destra: fermo, X3 PE1–PE3 e 1–12, fermo"],
-  ["Taglia e inserisci i ponticelli: X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 2-3, 4-6 (X5 1 da solo)"],
+  ["<b>G3</b> a destra: fermo, X3 PE1–PE3 e 1–12, fermo (lascia ~3 cm per F1 e X5 dopo il fermo)"],
+  ["Taglia e inserisci i ponticelli: X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 1-2"],
   ["Etichette o marcafili sui morsetti"]]],
  ["Cablaggio 230 V (1,5 mm²)",[
   ["Terra: X2 PE5 sopra → vite della piastra; X3 PE3 → X2 PE4","Terra"],
@@ -329,25 +350,25 @@ const STEPS=[
   ["Ogni relè NA → + della bobina del suo contattore, nella canalina tra G1 e G2","Comando bobina K1"],
   ["− di tutti i contattori in catena → X3 9 sotto","0 V"],
   ["RS485 al contatore: X3 6 sopra → morsetto 10 (A+), X3 3 sopra → morsetto 9 (B−). Il morsetto 8 resta libero","RS485 A"],
-  ["Ingresso dei fusibili: X3 10 sotto → F1 in alto, X3 11 sotto → F2 in alto","+12 V"],
-  ["Uscita dei fusibili: F1 in basso → X5 2 sotto, F2 in basso → X5 1 sotto","+12 V camera (dopo F1)"],
-  ["0 V comune: X3 9 sopra → X5 4 sotto","0 V"]]],
+  ["Ingresso del fusibile: X3 12 sotto → F1 in basso (filo corto)","+12 V"],
+  ["Uscita del fusibile: F1 in alto → X5 1 sopra","+12 V camera (dopo F1)"],
+  ["0 V del Cat5e: niente filo verso X5, il bianco-arancio e il bianco-verde vanno su X3 7 e 8 sotto (passo nel Cat5e camera)","0 V"]]],
  ["Piastra nella cassetta",[
   ["Infila e avvita la piastra"],
-  ["Passa e collega i cavi esterni: stufa, prese, Cat5e camera e cantina; stringi i pressacavi"],
-  ["Cat5e camera (W3): blu → X3 4 sotto (A), bianco-blu → X3 1 sotto (B); arancio → X5 2 sopra, verde → X5 3 sopra (+12 V); bianco-arancio → X5 4 sopra, bianco-verde → X5 5 sopra (0 V); marrone e bianco-marrone isolati, di riserva","+12 V camera (dopo F1)"],
-  ["Cat5e cantina (W6): blu → X3 5 sotto (A), bianco-blu → X3 2 sotto (B); arancio → X5 1 sopra (+12 V), bianco-arancio → X5 6 sopra (0 V); verde e marrone isolati, di riserva","+12 V cantina (dopo F2)"],
+  ["Passa e collega i cavi esterni: stufa, prese, Cat5e camera; stringi i pressacavi"],
+  ["Cat5e camera (W3): blu → X3 4 sotto (A), bianco-blu → X3 1 sotto (B); arancio → X5 1 sotto, verde → X5 2 sotto (+12 V); bianco-arancio → X3 7 sotto, bianco-verde → X3 8 sotto (0 V); marrone e bianco-marrone isolati, di riserva","+12 V camera (dopo F1)"],
+  ["Niente cavo verso la cantina: l'aria della cantina la misura lo Shelly H&T in Home Assistant"],
   ["Terra della linea di casa → X2 PE5 sotto","Terra"],
   ["<span class=\"warn\">Con l'interruttore di casa spento</span>: collega L e N della linea di casa al magnetotermico","Fase dalla linea di casa"]]],
  ["Controlli col tester, tutto spento",[
   ["Nessun corto tra fase e neutro, fase e terra, +12 V e 0 V"],
-  ["Senza fusibili: nessuna continuità tra X3 10 e X5 2, tra X3 10 e X5 1, tra X5 1 e X5 2 (i fusibili non sono aggirati)","+12 V cantina (dopo F2)"],
-  ["Senza fusibili: tra X5 1 e 0 V e tra X5 2 e 0 V nessun corto (il tester non deve segnare quasi 0 Ω)","+12 V camera (dopo F1)"],
+  ["Senza fusibile: nessuna continuità tra X3 12 e X5 1 (il fusibile non è aggirato)","+12 V camera (dopo F1)"],
+  ["Senza fusibile: tra X5 1 e 0 V nessun corto (il tester non deve segnare quasi 0 Ω)","+12 V camera (dopo F1)"],
   ["Continuità: ogni morsetto di terra è collegato alla vite della piastra","Terra"],
   ["Strattone leggero a ogni filo: nessuno si sfila"]]],
  ["Prima accensione",[
-  ["Senza carichi e senza fusibili: 12 V su X3, Waveshare accesa, contatore che risponde sul bus"],
-  ["Metti i fusibili F1 1 A T e F2 0,25 A T: 12 V su X5 1 (cantina) e X5 2 (camera), nodo in camera e sonda cantina rispondono"],
+  ["Senza carichi e senza fusibile: 12 V su X3, Waveshare accesa, contatore che risponde sul bus"],
+  ["Metti il fusibile F1 1 A T: 12 V su X5 1, il nodo in camera risponde"],
   ["Un relè alla volta da Home Assistant: scatta il contattore giusto"],
   ["Un carico alla volta: il contatore mostra l'assorbimento previsto"]]]
 ];

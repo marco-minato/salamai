@@ -33,7 +33,6 @@ e collegamenti), `strategia_processo.md` (diagnosi e decisioni),
 | RS485 Modbus RTU, 9600 8N1 | UART GPIO17/18, direzione automatica |
 | — sonda S-TH-01 | indirizzo 1: T reg 0x0000 (×0,01), UR 0x0001 (×0,01), rugiada 0x0002 |
 | — contatore Eastron SDM120 Modbus (`sdm_meter`) | indirizzo 2 e 9600 baud (da impostare: esce a 1 e 2400): tensione, corrente, potenza, cos φ, energia degli attuatori |
-| — seconda sonda S-TH-01, **cantina** | indirizzo 3 (da impostare): T e UR dell'aria che entra col ricambio |
 | — nodo in camera (XIAO ESP32C3, `salumi-nodo.yaml`) | indirizzo 4: registri in §2 bis |
 | RTC Waveshare Pico-RTC-DS3231, innestato sul connettore Pico | SDA GPIO4, SCL GPIO5 |
 | Buzzer, LED RGB | GPIO21, GPIO38 |
@@ -161,13 +160,12 @@ Regolazione a gradini sull'errore `e = T_target − T`, con isteresi:
 ### 6.1 Umidità assoluta
 
 - **Camera**: da T e UR della sonda (formula di Magnus).
-- **Cantina**: dalla seconda sonda S-TH-01 sul bus RS485, letta
-  direttamente dall'ESP32 (stesso modello della sonda di camera: la
-  differenza di umidità assoluta, che decide i ricambi, non risente delle
-  differenze di taratura tra marche). L'aria della cantina cambia col tempo
-  esterno (più secca col sole, più umida con la nebbia): per questo si misura
-  in continuo e non si usa un valore fisso. Riserva: lo Shelly H&T via HA
-  (valido se ha meno di 3 h); senza nessuno dei due, ricambi a tempo.
+- **Cantina**: dallo **Shelly H&T Cantina** (a batteria, Wi-Fi), che arriva
+  alla Waveshare tramite Home Assistant (rev. 4.11: niente seconda sonda
+  RS485). L'aria della cantina cambia col tempo esterno (più secca col sole,
+  più umida con la nebbia): per questo si misura in continuo e non si usa un
+  valore fisso. Il dato vale se ha meno di 3 h; altrimenti, o se HA o il
+  Wi-Fi sono fermi, **nessun ricambio deciso su quel dato**: solo ricambi a tempo.
 - **Rugiada**: punto di rugiada dell'aria della camera, confrontato con la
   superficie più fredda: `T_fredda` = min(`T_parete`, `T_pavimento`). Se una
   delle due sonde manca si usa l'altra, con allarme.
@@ -290,11 +288,11 @@ Comportamento:
 | Contattore incollato, lampada bruciata, calore non comandato | Allarme (l'antiribaltamento resta l'unica sicurezza meccanica, per scelta) |
 | Conflitto di condensa (6.2 bis) | Ricambio fermo al limite di UR, allarme |
 | Margine di condensa < 0 °C per > 30 min | Allarme (la parete sta condensando) |
-| Ventola ferma (giri < 100 con PWM ≥ 20 % per > 1 min) | Allarme; l'umidificatore si blocca se sono ferme entrambe |
-| Sonda di cantina senza risposta | Riserva Shelly via HA, poi ricambio a tempo, allarme |
+| Ventola ferma (giri < 100 con PWM ≥ 20 % per > 1 min) | Allarme; l'umidificatore si blocca se sono ferme tutte e tre |
+| Dato della cantina (Shelly) assente o più vecchio di 3 h | Ricambi a tempo, allarme |
 | Sonda di parete o di pavimento senza risposta | Si usa l'altra, allarme |
 | Nodo in camera fermo (battito fermo da 60 s) | Allarme. Il ciclo continua; senza superfici l'umidificatore resta bloccato (§6.3), il peso non si registra. Ventole: il nodo le porta a `pwm_sicurezza` da solo |
-| HA non raggiungibile | Nessuna azione: il ciclo continua (la cantina è letta dall'ESP32) |
+| HA non raggiungibile | Il ciclo continua; senza il dato della cantina solo ricambi a tempo |
 
 Ogni allarme è una `binary_sensor` di diagnostica, più un evento HA
 `esphome.salumi_allarme` con codice e testo. HA lo inoltra via Pushover e lo
@@ -344,7 +342,7 @@ scrive nel diario.
 tara bilancia, test di ogni attuatore (solo a ciclo fermo).
 
 **Input da HA**: partenza programmata, programma scelto (Morganline o
-Zanotti), T e UR della cantina dallo Shelly solo come riserva.
+Zanotti), T e UR della cantina dallo Shelly H&T (unica fonte).
 
 ## 11. Migrazione da HA
 

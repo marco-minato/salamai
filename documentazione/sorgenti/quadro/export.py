@@ -40,8 +40,8 @@ for n,x,y in [("T1 L",g['T1L'],g['T1bot']),("T1 N",g['T1N'],g['T1bot']),("T1 +V"
               ("Waveshare 12V",g['A1P'],g['A1top']),("Waveshare GND",g['A1G'],g['A1top']),("Waveshare A",g['A1A'],g['A1top']),("Waveshare B",g['A1B'],g['A1top']),("Waveshare terra",g['A1E'],g['A1top']),
               ("Q1 L ingresso",g['Q1L'],g['Q1top']),("Q1 N ingresso",g['Q1N'],g['Q1top']),("Q1 L uscita",g['Q1L'],g['Q1bot']),("Q1 N uscita",g['Q1N'],g['Q1bot']),
               ("Contatore 1 L ingresso",g['A3Lin'],g['A3bot']),("Contatore 3 N",g['A3N'],g['A3top']),("Contatore 2 L uscita",g['A3Lout'],g['A3bot']),("Contatore 4 N",g['A3Nout'],g['A3top']),("Contatore 10 A+",g['A3A'],g['A3top']),("Contatore 9 B−",g['A3B'],g['A3top']),
-              ("F1 ingresso",g['FU']['F1'],g['FUtop']),("F1 uscita",g['FU']['F1'],g['FUbot']),
-              ("F2 ingresso",g['FU']['F2'],g['FUtop']),("F2 uscita",g['FU']['F2'],g['FUbot'])]:
+              ("F1 ingresso",g['FU']['F1'],g['FUin']),("F1 uscita",g['FU']['F1'],g['FUout']),
+              ]:
     pin(n,x,y)
 pin("Vite di terra piastra",*g['SCREW'])
 for k in range(6):
@@ -50,7 +50,7 @@ for k in range(6):
     pin(f"KM{k+1} bobina +",g['KMP'][k],g['KMtop']); pin(f"KM{k+1} bobina −",g['KMP'][k],g['KMbot'])
 
 # cavi (guaina): punto in cui il cavo si apre nei singoli fili
-GLN={"casa":"cavo linea di casa","stufa":"cavo stufa","u1":"cavo presa umidificatore 1","u2":"cavo presa umidificatore 2","estr":"cavo presa estrattore","cam":"Cat5e camera","can":"Cat5e cantina"}
+GLN={"casa":"cavo linea di casa","stufa":"cavo stufa","u1":"cavo presa umidificatore 1","u2":"cavo presa umidificatore 2","estr":"cavo presa estrattore","cam":"Cat5e camera"}
 CABLE={}
 RAW=g['RAW']
 wires=[]

@@ -84,30 +84,16 @@ T1x=x; rect(x,cy-45,52.5,90,"<b>T1</b><br>Mean Well<br>HDR-60-12<br>12 V 4,5 A<b
 A1x=x; rect(x,cy-45,145,90,"<b>A1</b> Waveshare ESP32-S3-Relay-6CH<br>con <b>A5</b> RTC innestato<br>relè K1–K6 → bobine KM1–KM6<br>RS485 · alimentazione 12 V<br>145 × 90 × 40 mm",LV); x+=145
 rect(x+3,cy-38,XL-x-3,76,"riserva<br>~65 mm",FREE)
 
-# ---------------- G2: generale, contatore, contattori; fusibili e X5 a destra
+# ---------------- G2: generale, contatore, contattori (solo potenza)
 cy=r2; x=X0p+1
 Q1x=x; rect(x,cy-42.5,17.5,85,"<b>Q1</b> magnetot. C10 Gewiss",HV+"horizontal=0;fontSize=9;"); x+=17.5+8   # spazio per il neutro verso il contatore
 A3x=x; rect(x,cy-45,18,90,"<b>A3</b> SDM120 contatore",HV+"horizontal=0;fontSize=9;"); x+=18+9   # spazio per la fase verso KM1
 KMx=[]
 for i,l in enumerate(["lampada 1","lampada 2","lampada 3","umidif. 1","umidif. 2","estrattore"],1):
     KMx.append(x); rect(x,cy-42.5,18,85,f"<b>KM{i}</b> {l}",KM); x+=18
-X5W=9.5*2+8.2*2+6*5.2
-rect(x+4,cy-38,XL-X5W-x-8,76,"libero<br>~35 mm",FREE)
-x=XL-X5W
-x=stop(x,cy-17.5)
-FUH=72.5; FU={}
-for nm,t in [("F1","F1 camera · 1 A T"),("F2","F2 cantina · 0,25 A T")]:
-    FU[nm]=x+4.1
-    rect(x,cy-FUH/2,8.2,FUH,t,"fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8;horizontal=0;html=1;verticalAlign=middle;whiteSpace=wrap;")
-    x+=8.2
-CUR[0]="X5_"
-for lab_,col in [("1 +12V F2","rosso"),("2 +12V F1","rosso"),("3 +12V F1","rosso"),("4 0V","nero"),("5 0V","nero"),("6 0V","nero")]:
-    x=term(x,cy-21,lab_,col)
-x=stop(x,cy-17.5)
-text(XL-X5W,cy-50,X5W,12,"<b>X5</b> 12 V protetti",9,"align=center;")
-FUtop,FUbot=cy-FUH/2,cy+FUH/2
+rect(x+16,cy-38,XL-x-20,76,"libero<br>~105 mm",FREE)
 
-# ---------------- G3: X2 uscite 230 V a sinistra, X3 bassa tensione a destra
+# ---------------- G3: X2 uscite 230 V a sinistra; X3, fusibile F1 e X5 a destra
 cy=r3; x=X0p+5
 x=stop(x,cy-17.5); xs=x
 CUR[0]="X2_"
@@ -116,28 +102,41 @@ for lab_,col in [("1 L1","grigio"),("2 L2","grigio"),("3 L3","grigio"),("4 L4","
     x=term(x,cy-21,lab_,col)
 x=stop(x,cy-17.5); X2end=x
 text(xs,cy-37,90,14,"<b>X2</b> uscite 230 V e terra",9)
-X3W=9.5*2+15*5.2
-rect(X2end+4,cy-30,XL-X3W-X2end-8,60,"libero<br>~70 mm",FREE)
-x=XL-X3W
+X3W=9.5*2+15*5.2; X5W=8.2+2*5.2+9.5     # X5: F1, due morsetti, fermo (a sinistra usa il fermo di X3)
+x0=XL-X3W-X5W
+rect(X2end+4,cy-30,x0-X2end-8,60,"libero<br>~40 mm",FREE)
+x=x0
 x=stop(x,cy-17.5)
 CUR[0]="X3_"
 for lab_,col in [("PE1","pe"),("PE2","pe"),("PE3","pe"),("1 B","viola"),("2 B","viola"),("3 B","viola"),("4 A","arancio"),("5 A","arancio"),("6 A","arancio"),
                  ("7 0V","nero"),("8 0V","nero"),("9 0V","nero"),("10 +12V","rosso"),("11 +12V","rosso"),("12 +12V","rosso")]:
     x=term(x,cy-21,lab_,col)
 x=stop(x,cy-17.5)
-text(XL-X3W,cy-37,X3W,14,"<b>X3</b> bassa tensione",9,"align=center;")
+text(x0,cy-37,X3W,14,"<b>X3</b> bassa tensione",9,"align=center;")
+FUH=72.5; FU={}; x5=x
+for nm,t in [("F1","F1 camera · 1 A T")]:
+    FU[nm]=x+4.1
+    rect(x,cy-FUH/2,8.2,FUH,t,"fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8;horizontal=0;html=1;verticalAlign=middle;whiteSpace=wrap;")
+    x+=8.2
+CUR[0]="X5_"
+for lab_,col in [("1 +12V F1","rosso"),("2 +12V F1","rosso")]:
+    x=term(x,cy-21,lab_,col)
+x=stop(x,cy-17.5)
+text(x5,cy-50,XL-x5,12,"<b>F1 · X5</b>",9,"align=center;")
+FUtop,FUbot=cy-FUH/2,cy+FUH/2
+FUin,FUout=FUbot,FUtop     # portafusibile montato con l'ingresso in basso
 
 # ---------------- pressacavi sul fondo
 gy=H-2
 def gland(x,l,col):
     rect(x-7,gy,14,14,"",f"ellipse;fillColor={col};strokeColor=#333333;")
     text(x-5,gy+16,12,70,l,8,"horizontal=0;align=right;verticalAlign=middle;")
-GL={"casa":50,"stufa":92,"u1":118,"u2":144,"estr":170,"valv":210,"cam":322,"can":350}
+GL={"casa":50,"stufa":92,"u1":118,"u2":144,"estr":170,"valv":210,"cam":330}
 for k,l in [("casa","linea casa"),("stufa","stufa 5G1,5"),("u1","presa umidif. 1"),("u2","presa umidif. 2"),("estr","presa estrattore")]:
     gland(GL[k],l,"#f8cecc")
 rect(GL["valv"]-6,gy,12,12,"","ellipse;fillColor=#ffffff;strokeColor=#333333;dashed=1;")
 text(GL["valv"]-4,gy+16,12,70,"valvola anticondensa",8,"horizontal=0;align=right;verticalAlign=middle;")
-gland(GL["cam"],"Cat5e camera","#dae8fc"); gland(GL["can"],"Cat5e cantina","#dae8fc")
+gland(GL["cam"],"Cat5e camera","#dae8fc")
 text(10,H+92,380,14,"pressacavi M20 sul fondo: 230 V a sinistra, bassa tensione a destra",9,"align=center;")
 
 # ================= punti di collegamento (posizioni indicative)
@@ -152,10 +151,10 @@ Q1L,Q1N=Q1x+4,Q1x+13; Q1top,Q1bot=r2-42.5,r2+42.5
 # SDM120-M: in basso 1 (L ingresso) e 2 (L uscita); in alto 3 e 4 (N, uniti dentro), 9 (B−) e 10 (A+)
 A3Lin,A3Lout,A3N,A3Nout,A3B,A3A=A3x+4,A3x+13,A3x+3.5,A3x+7.5,A3x+11.5,A3x+15
 A3top,A3bot=r2-45,r2+45
-Tt5,Tb5=r2-21,r2+21; Tt3,Tb3=r3-21,r3+21
+Tt3,Tb3=r3-21,r3+21
 SCREW=(X("X2_PE5")+6.5,412)
-RAILS={'X5':r2,'X2':r3,'X3':r3}
-BRIDGES=[["X3_1","X3_2","X3_3"],["X3_4","X3_5","X3_6"],["X3_7","X3_8","X3_9"],["X3_10","X3_11","X3_12"],["X5_2","X5_3"],["X5_4","X5_5","X5_6"],["X2_7","X2_8","X2_9","X2_10"]]
+RAILS={'X5':r3,'X2':r3,'X3':r3}
+BRIDGES=[["X3_1","X3_2","X3_3"],["X3_4","X3_5","X3_6"],["X3_7","X3_8","X3_9"],["X3_10","X3_11","X3_12"],["X5_1","X5_2"],["X2_7","X2_8","X2_9","X2_10"]]
 lab(T1L-5,T1bot-6,10,"L"); lab(T1N-5,T1bot-6,10,"N"); lab(T1P-5,T1top+1,10,"+V"); lab(T1M-5,T1top+1,10,"−V")
 for xx,t in [(A1P,"12V"),(A1G,"GND"),(A1A,"A"),(A1B,"B"),(A1E,"⏚")]: lab(xx-4,A1top+1,8,t)
 for k in range(6): lab(COM[k]-3,A1bot-6,13,f"K{k+1}",6)
@@ -163,7 +162,7 @@ lab(COM[0]-4,A1bot-11,30,"COM · NA",6)
 for k in range(6):
     lab(KM1[k]-4,KMtop+1,8,"1"); lab(KMP[k]-4,KMtop+1,8,"+")
     lab(KM1[k]-4,KMbot-6,8,"2"); lab(KMP[k]-4,KMbot-6,8,"−")
-for k in FU: lab(FU[k]-4,FUtop+1,8,"in",6); lab(FU[k]-4,FUbot-6,8,"out",6)
+for k in FU: lab(FU[k]-4,FUtop+1,8,"out",6); lab(FU[k]-4,FUbot-6,8,"in",6)
 for xx,t in [(Q1L,"L"),(Q1N,"N")]: lab(xx-4,Q1top+1,8,t); lab(xx-4,Q1bot-6,8,t)
 lab(A3N-2.5,A3top+1,5,"3",6); lab(A3Nout-2.5,A3top+1,5,"4",6); lab(A3B-2.5,A3top+1,5,"9",6); lab(A3A-2.5,A3top+1,5,"10",6)
 lab(A3x,A3top+5.5,18,"N · B− A+",5)
@@ -221,8 +220,8 @@ for k in range(6):
 # − delle bobine in catena; ritorno 0 V → X3 9 sotto (giù nello spazio libero di G3, poi canalina H4)
 for k in range(5):
     wire([(KMP[k]+0.8,KMbot),(KMP[k]+0.8,347),(KMP[k+1]-0.8,347),(KMP[k+1]-0.8,KMbot)],"V0",BT)
-xr=KMP[5]+0.8
-wire([(xr,KMbot),(xr,533.5),(X("X3_9"),533.5),(X("X3_9"),Tb3)],"V0",BT)
+xr=KMP[5]+0.8; xd3=X2end+23     # scende nello spazio libero di G3
+wire([(xr,KMbot),(xr,360),(xd3,360),(xd3,533.5),(X("X3_9"),533.5),(X("X3_9"),Tb3)],"V0",BT)
 # 12 V ai COM dei relè: X3 12 sopra → COM di K6 (puntalino doppio con la catena)
 wire([(X("X3_12"),Tt3),(X("X3_12"),384),(340.5,384),(340.5,190),(COM[5]+1.0,190),(COM[5]+1.0,A1bot)],"P12",BT)
 # X3 sopra → Waveshare, alimentatore, contatore (canalina H3 → canalina destra → H1 o H2)
@@ -239,17 +238,11 @@ for i,(t,dst,kd,dd) in enumerate(UP):
         wire([(X(t),Tt3),(X(t),y),(xd,y),(xd,y0),(dst,y0),(dst,A3top)],kd,BT)
 # terra: X3 PE3 sopra → X2 PE4 sopra
 wire([(X("X3_PE3"),Tt3),(X("X3_PE3"),388.5),(X("X2_PE4"),388.5),(X("X2_PE4"),Tt3)],"PEb",BT)
-# 0 V comune: X3 9 sopra → X5 4 sotto
-wire([(X("X3_9"),Tt3),(X("X3_9"),379),(X("X5_4"),379),(X("X5_4"),Tb5)],"V0",BT)
-# uscite dei fusibili → X5 sotto
-wire([(FU["F2"],FUbot),(FU["F2"],374.5),(X("X5_1"),374.5),(X("X5_1"),Tb5)],"P12",BT)
-wire([(FU["F1"],FUbot),(FU["F1"],376.5),(X("X5_2"),376.5),(X("X5_2"),Tb5)],"P12",BT)
-# ingressi dei fusibili: X3 10 e 11 sotto → canalina H4 → canalina destra → H2
-for t,f,yb,xd,yt in [("X3_10","F1",539.5,351.7,230.6),("X3_11","F2",536.9,352.6,231.6)]:
-    wire([(X(t),Tb3),(X(t),yb),(xd,yb),(xd,yt),(FU[f],yt),(FU[f],FUtop)],"P12",BT)
+# fusibile: ingresso in basso da X3 12 sotto (filo corto), uscita in alto → X5 1 sopra
+wire([(X("X3_12"),Tb3),(X("X3_12"),505),(FU["F1"],505),(FU["F1"],FUin)],"P12",BT)
+wire([(FU["F1"],FUout),(FU["F1"],420),(X("X5_1"),420),(X("X5_1"),Tt3)],"P12",BT)
 # cavi di rete dal fondo: salgono nella canalina destra; A e B a X3 sotto, alimentazione a X5 sopra
-for g,sp,ts in [("cam",(358,545),[("X3_1","B",552.5,"b","bianco-blu"),("X3_4","A",547.3,"b","blu"),("X5_2","P12",222.6,"t","arancio"),("X5_3","P12",223.8,"t","verde"),("X5_4","V0",225.0,"t","bianco-arancio"),("X5_5","V0",226.2,"t","bianco-verde")]),
-                ("can",(362,548),[("X3_2","B",549.9,"b","bianco-blu"),("X3_5","A",544.7,"b","blu"),("X5_1","P12",219.0,"t","arancio"),("X5_6","V0",220.2,"t","bianco-arancio")])]:
+for g,sp,ts in [("cam",(358,545),[("X3_1","B",552.5,"b","bianco-blu"),("X3_4","A",549.9,"b","blu"),("X3_7","V0",547.3,"b","bianco-arancio"),("X3_8","V0",544.7,"b","bianco-verde"),("X5_1","P12",542.1,"b","arancio"),("X5_2","P12",539.5,"b","verde")])]:
     gx=GL[g]
     wire([(gx,H),(gx,568 if g=="cam" else 571),(sp[0],568 if g=="cam" else 571),sp],"CBT",BT)
     for j,(t,kd,yl,side,cond) in enumerate(ts):
@@ -257,8 +250,8 @@ for g,sp,ts in [("cam",(358,545),[("X3_1","B",552.5,"b","bianco-blu"),("X3_4","A
             xe=sp[0]-3-0.9*j
             wire([sp,(xe,yl),(X(t),yl),(X(t),Tb3)],kd,BT,cond)
         else:
-            xe=sp[0]-1.6-0.9*(j-2)
-            wire([sp,(xe,sp[1]-6),(xe,yl),(X(t),yl),(X(t),Tt5)],kd,BT,cond)
+            xe=sp[0]-1.6-0.9*(j-4)
+            wire([sp,(xe,sp[1]-6),(xe,yl),(X(t),yl),(X(t),Tt3)],kd,BT,cond)
 
 # ================= quote (dal bordo alto e dal bordo sinistro della piastra)
 QC="fillColor=#555555;strokeColor=none;"
@@ -283,23 +276,23 @@ text(lx,0,240,330,
 "• Scala: 1 mm = 3 px. Misure in mm.<br>"
 "• Vano interno 341×548×189 (dato venditore). Piastra 330 di larghezza (guide da 270 mm); <b>altezza 510 stimata</b>: misurala, poi si ricalcolano le quote.<br>"
 "• 3 guide DIN da 270 mm tra le canaline laterali; 4 canaline orizzontali, fasce libere di ~137 mm.<br>"
-"• G1: T1 + Waveshare ≈ 200 mm · G2: Q1, contatore, 6 contattori ≈ 150 mm + X5 con F1, F2 ≈ 67 mm · G3: X2 ≈ 97 mm + X3 ≈ 97 mm.<br>"
-"• <b>G3 in acciaio</b>: i morsetti di terra di X2 e X3 si serrano sulla guida.<br>"
+"• G1: T1 + Waveshare ≈ 200 mm · G2: Q1, contatore, 6 contattori ≈ 150 mm · G3: X2 ≈ 97 mm, X3 ≈ 97 mm, F1 e X5 ≈ 28 mm.<br>"
+"• <b>G3 in acciaio</b>: i morsetti di terra di X2 e X3 si serrano sulla guida. Su G3 tutti i morsetti: il Cat5e arriva dal basso.<br>"
 "• Niente morsettiera X0: le uscite di Q1 vanno ad alimentatore e contatore con puntalini doppi 2×1,5.<br>"
 "• Profondità interna 189 mm: verificare che la Waveshare con RTC e la sua antenna non tocchino sportello e coperchio della canalina.<br>"
 "• Fase ai contattori in catena sul morsetto 1 con puntalini doppi.<br>"
 "• Morsetti UK2.5B larghi 5,2 mm; 1 modulo = 17,5 mm.<br>"
-"• Ponticelli: X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 2-3, 4-6 (X5 1 da solo).<br>"
-"• Fusibili 5×20 su portafusibili UK5-HESI: F1 → W3 camera (X5 2-3), F2 → W6 cantina (X5 1). F1 1 A T, F2 0,25 A T (ritardati).",10)
+"• Ponticelli: X2 7-10 · X3 1-3, 4-6, 7-9, 10-12 · X5 1-2.<br>"
+"• Fusibile 5×20 F1 1 A ritardato (T) su portafusibile UK5-HESI → W3 camera (X5 1-2). La cantina la misura lo Shelly H&T: niente sonda B5, niente cavo W6, niente F2.",10)
 text(lx,340,240,200,
 "<b>Fili</b> (livelli «Fili 230 V» e «Fili bassa tensione»)<br>"
 "<span style='color:#8B4513'>━━</span> fase L · <span style='color:#1E56C8'>━━</span> neutro N · <span style='color:#2E9B2E'>╍╍</span> terra<br>"
 "<span style='color:#E00000'>━━</span> +12 V · <span style='color:#000000'>━━</span> 0 V · <span style='color:#E0399A'>━━</span> relè → + bobina contattore<br>"
 "<span style='color:#FF8C00'>━━</span> RS485 A · <span style='color:#8A2BE2'>━━</span> RS485 B<br>"
 "<span style='color:#FF6A00'>━●━●</span> ponticello tra morsetti · <span style='color:#999999'>███</span> cavi con guaina<br>"
-"Cat5e (W3, W6): colori veri dei conduttori (T568B); tratteggio = bianco-colore<br><br>"
-"• X3 sopra: Waveshare, alimentatore, COM relè, contatore, 0 V verso X5, terra verso X2. X3 sotto: A e B dei Cat5e, ingressi di F1 e F2, ritorno bobine.<br>"
-"• X5 sopra: alimentazione dei Cat5e. X5 sotto: uscite di F1 e F2, 0 V da X3.<br>"
+"Cat5e W3: colori veri dei conduttori (T568B); tratteggio = bianco-colore<br><br>"
+"• X3 sopra: Waveshare, alimentatore, COM relè, contatore, 0 V verso X5, terra verso X2. X3 sotto: A, B e 0 V del Cat5e, ingresso di F1 (da X3 12), ritorno bobine.<br>"
+"• X5 (+12 V dopo F1) sopra: uscita di F1. X5 sotto: arancio e verde del Cat5e camera. Lo 0 V del Cat5e va su X3 7 e 8 sotto.<br>"
 "• Un solo filo per foro su X3. Puntalini doppi sulle uscite di Q1, sui COM dei relè e sui contattori (catene).<br>"
 "• Posizione dei morsetti su alimentatore, Waveshare e contatore indicativa.",9)
 

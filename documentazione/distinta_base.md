@@ -1,6 +1,6 @@
 # Camera salumi — distinta base definitiva
 
-Versione 4.11 del 30/10/2026: quadro su 3 guide DIN da 270 mm (Q1, contatore, contattori e fusibili sulla guida 2; X2 e X3 sulla guida 3, in acciaio), tolta la morsettiera X0 (puntalini doppi sulle uscite di Q1), display rimandato, modulo MOSFET nella scatola X4, terza ventola M7. Versione 4.10 del 27/10/2026: fusibili F1 (W3, camera) e F2 (W6, cantina) su portafusibili UK5-HESI (sulla guida 2 dalla rev. 4.11), con la nuova morsettiera X5 dei 12 V protetti (un conduttore del Cat5e per morsetto); tolti i diodi 1N4007 (soppressione integrata nei contattori) e presa e spina CEE della stufa (W1 arriva direttamente alla stufa). Versione 4.9 del 27/10/2026: Cat5e UTP già in possesso al posto del Cat6 FTP (niente schermi); guida DIN in acciaio zincato da negozio per le guide 2 e 4. Versione 4.8 del 26/10/2026: schema della scatola X6 (pin da saldare sulla breakout, niente resistenze dei giri e R2, una sola coppia di alimentazione in W5). Versione 4.7 del 26/10/2026: righe del quadro ridistribuite (stacco di ~9 mm tra canaline e componenti sulle guide 1 e 4, display attaccato, niente fascia libera in basso); Waveshare 145×90×40 mm. Versione 4.6 del 25/10/2026: cassetta più grande, BOXEXPERT Fleet 600×400×200 con 4 guide DIN; display D1 in versione con case, agganciato alla guida 2 con clip DIN (si legge attraverso lo sportello, si tocca aprendolo). Versione 4.5 del 25/10/2026: tolto il ripartitore X7, fase dei contattori di nuovo in catena con puntalini doppi; X3 con 12 morsetti + 3 di terra. Versione 4.4 del 25/10/2026: Waveshare e pinza con puntalini già in possesso. Versione 4.3 del 25/10/2026: ripartitore unipolare Elettrocanali (X7) per la fase dei contattori al posto della catena con puntalini doppi; 6 fili da 2,5 mm². Versione 4.2 del 24/10/2026: magnetotermico generale C10 (Q1) nel quadro, già in possesso. Versione 4.1 del 20/10/2026: morsetti ricontati; spelafili già in possesso; umidificatori a spina su prese fuori dalla camera, ognuna con terra propria. Versione 4 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo. Versione 3 del 18/10/2026 (ventole PWM a 12 V, tutto su guida DIN, nessuna saldatura). Le sigle sono quelle dello schema
+Versione 4.11 del 30/10/2026: tolti sonda cantina B5, cavo W6 e fusibile F2 (la cantina la misura lo Shelly H&T); quadro su 3 guide DIN da 270 mm (Q1, contatore e contattori sulla guida 2; X2, X3, fusibile F1 e X5 sulla guida 3, in acciaio), tolta la morsettiera X0 (puntalini doppi sulle uscite di Q1), display rimandato, modulo MOSFET nella scatola X4, terza ventola M7. Versione 4.10 del 27/10/2026: fusibili F1 (W3, camera) e F2 (W6, cantina) su portafusibili UK5-HESI (sulla guida 2 dalla rev. 4.11), con la nuova morsettiera X5 dei 12 V protetti (un conduttore del Cat5e per morsetto); tolti i diodi 1N4007 (soppressione integrata nei contattori) e presa e spina CEE della stufa (W1 arriva direttamente alla stufa). Versione 4.9 del 27/10/2026: Cat5e UTP già in possesso al posto del Cat6 FTP (niente schermi); guida DIN in acciaio zincato da negozio per le guide 2 e 4. Versione 4.8 del 26/10/2026: schema della scatola X6 (pin da saldare sulla breakout, niente resistenze dei giri e R2, una sola coppia di alimentazione in W5). Versione 4.7 del 26/10/2026: righe del quadro ridistribuite (stacco di ~9 mm tra canaline e componenti sulle guide 1 e 4, display attaccato, niente fascia libera in basso); Waveshare 145×90×40 mm. Versione 4.6 del 25/10/2026: cassetta più grande, BOXEXPERT Fleet 600×400×200 con 4 guide DIN; display D1 in versione con case, agganciato alla guida 2 con clip DIN (si legge attraverso lo sportello, si tocca aprendolo). Versione 4.5 del 25/10/2026: tolto il ripartitore X7, fase dei contattori di nuovo in catena con puntalini doppi; X3 con 12 morsetti + 3 di terra. Versione 4.4 del 25/10/2026: Waveshare e pinza con puntalini già in possesso. Versione 4.3 del 25/10/2026: ripartitore unipolare Elettrocanali (X7) per la fase dei contattori al posto della catena con puntalini doppi; 6 fili da 2,5 mm². Versione 4.2 del 24/10/2026: magnetotermico generale C10 (Q1) nel quadro, già in possesso. Versione 4.1 del 20/10/2026: morsetti ricontati; spelafili già in possesso; umidificatori a spina su prese fuori dalla camera, ognuna con terra propria. Versione 4 del 20/10/2026: nodo XIAO in camera, quadro con piastra di fondo. Versione 3 del 18/10/2026 (ventole PWM a 12 V, tutto su guida DIN, nessuna saldatura). Le sigle sono quelle dello schema
 (`prompt_schema_qelectrotech.md`). Prezzi Amazon.it rilevati tra il 17 e il
 18/10/2026, indicativi.
 
@@ -20,10 +20,10 @@ negozio di materiale elettrico.
 | — | 1 | **Quadro BOXEXPERT Fleet 600×400×200**, ABS, IP65, variante grigia con sportello trasparente, piastra di fondo zincata inclusa. Interno 548×341×189 mm (dato venditore); piastra da misurare (nel disegno stimata 300×510) | [B07C84YMZN](https://www.amazon.it/dp/B07C84YMZN) | 81,17 € | C |
 | — | 3 | Guide DIN 35×7,5 da 270 mm (rev. 4.11: tre guide, già montate). **La guida 3 deve essere in acciaio**: i morsetti di terra di X2 e X3 si serrano lì (verificare con una calamita) | negozio di materiale elettrico | — | P |
 | — | 2 | Canalina asolata 25×40 grigia con coperchio, barra da 2 m (servono ~2,3 m: 2 pezzi verticali da ~51 cm, 5 orizzontali da ~25 cm; misure da riprendere sulla piastra) | in negozio di materiale elettrico; riferimento [Elettrocanali ECA2540](https://www.comcavi.shop/prodotto/elettrocanali-eca2540-canale-asolato-25x40/) | da verificare | F |
-| -X2, -X3, -X5 | 2 | Kit morsetti su guida UK2.5B: per kit 20 morsetti (4 blu), 2 di terra, 2 ponticelli fissi, 5 fermi, 2 guide da 20 cm. In due kit: 40 morsetti (ne servono 28, di cui 4 blu per N: 22 su X2 e X3 e 6 su X5), 4 di terra, 4 ponticelli da tagliare a misura, 10 fermi (ne servono 6) | [JINXM, B08MKZ7FQ1](https://www.amazon.it/dp/B08MKZ7FQ1) (il kit HERKINDNESS B0857JK8PY non è più disponibile) | 2 × 23,89 € | C |
+| -X2, -X3, -X5 | 2 | Kit morsetti su guida UK2.5B: per kit 20 morsetti (4 blu), 2 di terra, 2 ponticelli fissi, 5 fermi, 2 guide da 20 cm. In due kit: 40 morsetti (ne servono 24, di cui 4 blu per N: 22 su X2 e X3 e 2 su X5), 4 di terra, 4 ponticelli da tagliare a misura, 10 fermi (ne servono 6) | [JINXM, B08MKZ7FQ1](https://www.amazon.it/dp/B08MKZ7FQ1) (il kit HERKINDNESS B0857JK8PY non è più disponibile) | 2 × 23,89 € | C |
 | -X2, -X3 | 5 | Morsetti di terra UK2.5 giallo-verdi a vite, si serrano sulla guida. Ne servono 8: 4 dai due kit + 5 di questa confezione = 9 | [B0DGX4DRB9](https://www.amazon.it/dp/B0DGX4DRB9) (i USLKG2.5 B0H8T4TXXR arrivano solo a metà novembre) | 14,99 € | C |
-| -F1, -F2 | 4 | **Portafusibili UK5-HESI** per guida DIN 35 mm, fusibili cilindrici 5×20 (marca Be Your Mind, compatibili Phoenix Contact ma non originali): 2 montati sulla guida 3 (F1 ramo camera W3, F2 ramo cantina W6), 2 di scorta. Dati dell'originale Phoenix: largo 8,2 mm, alto ~72,5 mm, 6,3 A, conduttori 0,2–4 mm²; da controllare sui pezzi | [B0FGD7CXSN](https://www.amazon.it/dp/B0FGD7CXSN) | — | P |
-| -F1, -F2 | 1 | **Fusibili 5×20 in vetro, ritardati (T)**: F1 **1 A T**, F2 **0,25 A T**, con un paio di scorte ciascuno. F1 scelto dopo la misura del 30/10/2026 (vedi sotto) | negozio di elettronica | — | F |
+| -F1 | 4 | **Portafusibili UK5-HESI** per guida DIN 35 mm, fusibili cilindrici 5×20 (marca Be Your Mind, compatibili Phoenix Contact ma non originali): 1 montato sulla guida 3 accanto a X3 (F1 ramo camera W3), 3 di scorta. Dati dell'originale Phoenix: largo 8,2 mm, alto ~72,5 mm, 6,3 A, conduttori 0,2–4 mm²; da controllare sui pezzi | [B0FGD7CXSN](https://www.amazon.it/dp/B0FGD7CXSN) | — | P |
+| -F1 | 1 | **Fusibili 5×20 in vetro, ritardati (T), 1 A**: uno montato e un paio di scorta. F1 scelto dopo la misura del 30/10/2026 (vedi sotto) | negozio di elettronica | — | F |
 | — | 1 | Pinza a cricchetto Preciva con 1200 puntalini, anche doppi (2×0,5 · 2×0,75 · 2×1 · 2×1,5 mm²): già in possesso | [B0CRCVMNQZ](https://www.amazon.it/dp/B0CRCVMNQZ) | — | P |
 | — | 1 | Spelafili (già in possesso): fili da 0,2 mm² in su, lunghezza di spelatura 11 mm per i Wago | — | — | P |
 | — | 8 m | Cavo H07V-K 1,5 mm² (cablaggio 230 V nel quadro): **marrone 4 m**, **blu 2 m**, **giallo-verde 2 m** (nello schema ~2,2 / 1,2 / 1,3 m, più margine per canaline e morsetti; in matassine da 5 m: 5 m per colore) | negozio di materiale elettrico; in alternativa [Electraline 25139, B00IJCW374](https://www.amazon.it/dp/B00IJCW374) | da verificare | F |
@@ -52,14 +52,13 @@ negozio di materiale elettrico.
 | Sigla | Q.tà | Componente | Codice / link | Prezzo | Stato |
 |---|---:|---|---|---:|:-:|
 | -B1 | 1 | Sonda Seeed S-TH-01 T/UR RS485, **camera**, indirizzo 1 | Seeed 101990881 | — | P (oggi sulla XIAO) |
-| -B5 | 1 | Sonda Seeed S-TH-01, **cantina**, indirizzo 3 (stesso modello di B1, per avere una differenza di umidità affidabile) | Seeed 101990881, stesso canale d'acquisto della prima | da verificare | **C** |
 | -B3, -B4 | 2 | DS18B20 impermeabile, cavo 3 m: **parete** e **pavimento** | [B07CZ1G29V](https://www.amazon.it/dp/B07CZ1G29V) (2 pz) | 18,26 € | C |
 | -A4, -B2 | 1 | HX711 + cella di carico 2 kg | — | — | P (oggi sulla XIAO, da calibrare) |
 | — | 1 | Termometro a infrarossi (test di preriscaldo: pavimento, angoli, pareti) | [TempPro TP30, B0BGGJH3G2](https://www.amazon.it/dp/B0BGGJH3G2) | 16,27 € | C |
-| | | **Subtotale** (senza B5) | | **34,53 €** | |
+| | | **Subtotale** | | **34,53 €** | |
 
 La XIAO ESP32-C3 con la scheda RS485 diventa il nodo in camera A6 (sezione 1 bis).
-Lo Shelly H&T Cantina resta come riserva della B5.
+La cantina la misura lo Shelly H&T Cantina (in Home Assistant): niente sonda B5.
 
 ## 3. Attuatori e circuito dell'aria
 
@@ -87,7 +86,7 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 |---|---:|---|---|---:|:-:|
 | -W1 | 10 m | FROR 5G1,5, quadro → stufa, diretto (niente presa e spina) | [B01FSZYO08](https://www.amazon.it/dp/B01FSZYO08) | 28,59 € | C |
 | -W2a, -W2b, -W7 | 25 m | FROR 3G1,5: spezzoni di ~1 m dal quadro alle prese XS1, XS2, XS3 e i due cavi allungati degli umidificatori (fino a ~10 m ciascuno, senza giunzioni in camera) | [B0DH3X2ZXS](https://www.amazon.it/dp/B0DH3X2ZXS) | 38,55 € | C |
-| -W3, -W5, -W6 | ~15 m | Cat5e UTP **rame pieno (non CCA)**, già in possesso, da tagliare: W3 quadro → X6 (~10 m: 12 V, 0 V, A, B), W5 X6 → X4 ventole (~2,5 m), W6 quadro → B5 cantina (~2 m). Non schermato: posarlo a qualche cm dai cavi 230 V | — | — | P |
+| -W3, -W5 | ~13 m | Cat5e UTP **rame pieno (non CCA)**, già in possesso, da tagliare: W3 quadro → X6 (~10 m: 12 V, 0 V, A, B), W5 X6 → X4 ventole (~2,5 m). Non schermato: posarlo a qualche cm dai cavi 230 V | — | — | P |
 | -XS1, -XS2, -XS3 | 3 | Contenitore Electraline FIXA con presa, fuori dalla camera accanto al quadro (umidificatore 1, umidificatore 2, estrattore) | [B0G71348W7](https://www.amazon.it/dp/B0G71348W7) | 3 × 4,90 € | C |
 | -X4 | 1 | Scatola IP65 150×110×70 con pressacavi (derivazione ventole e modulo MOSFET A2; valvola anticondensa dalla confezione del quadro) | [B0F6YGYR7K](https://www.amazon.it/dp/B0F6YGYR7K) | 13,49 € | C |
 | — | 1 | Kit 32 pressacavi M12–M25 (pannello botola, scatole) | [B0BFL3VQYQ](https://www.amazon.it/dp/B0BFL3VQYQ) | 10,24 € | C |
@@ -113,11 +112,11 @@ Lo Shelly H&T Cantina resta come riserva della B5.
 |---|---:|
 | Quadro e logica (prezzi noti, senza display) | ≈ 346 € |
 | Nodo in camera (prezzi noti) | ≈ 65 € |
-| Sensori (senza B5) | 34,53 € |
+| Sensori | 34,53 € |
 | Attuatori e aria (con Vents TT-100) | 123,25 € |
 | Cavi, prese e scatole (senza filo in silicone) | 149,46 € |
 | **Totale con i prezzi noti** | **≈ 718 €** |
-| + guide DIN, canaline, cavi 1,5 e 0,75 mm², sonda S-TH-01 B5, filo in silicone, fusibili, ferramenta | da aggiungere |
+| + guide DIN, canaline, cavi 1,5 e 0,75 mm², filo in silicone, fusibili, ferramenta | da aggiungere |
 
 Si possono togliere:
 - RTC: −20 €;
@@ -131,6 +130,7 @@ Si possono togliere:
 - Contattori Finder: si usano gli HCH8s-25Z, uno per carico.
 - Diodi 1N4007 sulle bobine (versioni fino alla 4.9): gli HCH8s-25Z hanno la soppressione integrata.
 - Presa e spina CEE 5 poli della stufa XS4/XP4 (versioni fino alla 4.9): W1 arriva direttamente alla stufa.
+- Sonda cantina B5 (S-TH-01), cavo W6 e fusibile F2 (tolti nella 4.11): la cantina la misura lo Shelly H&T, già in Home Assistant.
 - Display D1 Waveshare ESP32-S3-Touch-LCD-4.3B con case e clip DIN (rimandato il 30/10/2026): con il case è alto 79 mm e tra le canaline della guida 2 ce ne sono 80, senza spazio per i cavi. Non serve: tutto si legge da Home Assistant.
 - Ripartitore unipolare Elettrocanali X7 e cavo da 2,5 mm² (versioni 4.3–4.4): con le guide da ~25 cm non ci sta; la fase torna in catena sul morsetto 1 dei contattori con puntalini doppi.
 - Display su guida DIN Norvi IIOT: schermo da 0,96", 24 V.
@@ -149,12 +149,12 @@ Si possono togliere:
 
 ## 8. Da verificare all'arrivo
 
-- **Piastra di fondo: misure reali.** Il disegno usa 330×510 (larghezza dalle guide da 270 mm, altezza stimata), 3 guide. Guida 2: Q1, contatore, contattori ≈ 150 mm + X5 con F1, F2 ≈ 67 mm. Guida 3: X2 ≈ 97 mm + X3 ≈ 97 mm.
+- **Piastra di fondo: misure reali.** Il disegno usa 330×510 (larghezza dalle guide da 270 mm, altezza stimata), 3 guide. Guida 2: Q1, contatore, contattori ≈ 150 mm. Guida 3: X2 ≈ 97 mm, X3 ≈ 97 mm, F1 e X5 ≈ 28 mm.
 - Puntalino doppio 2×1,5 (TE1508) nel morsetto 1 dei contattori, per la catena della fase.
 - Profondità: interno 189 mm, circa 160 mm davanti alla guida. Waveshare 40 mm (misurata); il più sporgente è il magnetotermico (~70 mm). Margine ampio: resta da misurare solo di quanto è rialzata la piastra.
 - Contattori: larghezza effettiva in moduli (soppressione della bobina integrata: niente diodi esterni).
-- **Portafusibili UK5-HESI (B0FGD7CXSN), non originali Phoenix:** larghezza (8,2 mm?), altezza (~72,5 mm?: tra le canaline della guida 2 ci sono ~137 mm), profondità; serraggio di un filo da 0,75 mm² con puntalino; portata dichiarata; **senza LED** (se hanno la spia, una piccola corrente passa anche col fusibile bruciato e la sonda B5, che consuma pochi mA, potrebbe restare accesa: in quel caso toglierla o usare i due di scorta); da che lato si apre lo sportellino e se il lato aperto va chiuso con una piastrina; fusibile senza tensione quando lo sportellino è aperto.
-- **Fusibili:** misura al banco del 30/10/2026, tre ventole al massimo: 0,40 A a regime, 0,49 A all'accensione (lettura del tester); con scheda RS485, XIAO e sonda B1 ~0,5 A a regime e ~0,6 A all'accensione. **F1 1 A ritardato (T)**: il rapido rischierebbe di saltare sui picchi di accensione delle ventole. **F2 0,25 A ritardato (T)** (B5 consuma pochi mA). Preferire fusibili che dichiarano anche la tensione in continua. Comportamento dell'alimentatore HDR-60 in sovraccarico (limitazione o intermittenza) da leggere sul foglio Mean Well.
+- **Portafusibili UK5-HESI (B0FGD7CXSN), non originali Phoenix:** larghezza (8,2 mm?), altezza (~72,5 mm?: tra le canaline della guida 3 ci sono ~137 mm), profondità; serraggio di un filo da 0,75 mm² con puntalino; portata dichiarata; **senza LED** (se hanno la spia, una piccola corrente passa anche col fusibile tolto: in quel caso toglierla); da che lato si apre lo sportellino e se il lato aperto va chiuso con una piastrina; fusibile senza tensione quando lo sportellino è aperto.
+- **Fusibili:** misura al banco del 30/10/2026, tre ventole al massimo: 0,40 A a regime, 0,49 A all'accensione (lettura del tester); con scheda RS485, XIAO e sonda B1 ~0,5 A a regime e ~0,6 A all'accensione. **F1 1 A ritardato (T)**: il rapido rischierebbe di saltare sui picchi di accensione delle ventole. Preferire fusibili che dichiarano anche la tensione in continua. Comportamento dell'alimentatore HDR-60 in sovraccarico (limitazione o intermittenza) da leggere sul foglio Mean Well.
 - Morsetti UK2.5B: che serrino bene un solo conduttore rigido del Cat5e (0,2 mm²; prova a strappo).
 - Waveshare: spessore con l'RTC innestato (dato Waveshare 40 mm) e posizione sulla guida 1.
 - Ponticelli di terminazione 120 Ω: attivi solo sulla Waveshare e in X6 (interruttore 120R della breakout della XIAO); spenti sugli altri.
@@ -164,6 +164,5 @@ Si possono togliere:
 - Kit morsetti JINXM: che i ponticelli fissi siano FBI da 10 poli tagliabili (ne servono 9 pezzi da 2–4 poli, 22 poli in tutto).
 - Cavo degli umidificatori: se si allunga con una giunzione, farla fuori dalla camera (o sostituire il cavo per intero); la spina si monta dopo aver passato il cavo nel pressacavo della botola.
 - Vents TT-100: morsettiera e collegamento alla velocità bassa.
-- Contatore SDM120 e B5: indirizzo Modbus (SDM120 a 2 e 9600 baud dai tasti frontali; B5 a 3), uno alla volta, da soli sul bus.
+- Contatore SDM120: indirizzo Modbus 2 e 9600 baud dai tasti frontali, da solo sul bus.
 - Pico-RTC-DS3231: che il coperchio della scheda chiuda con il modulo innestato.
-- B5: alimentazione a 12 V (range 3,6–30 V).
