@@ -1,8 +1,8 @@
 import sys, json, re, html as H
 import xml.etree.ElementTree as ET
-sys.argv=['gen_6.py','q6.drawio']
+sys.argv=['gen_3.py','q6.drawio']
 g={}
-exec(open('gen_6.py').read(),g)
+exec(open('gen_3.py').read(),g)
 S,OX,OY=g['S'],g['OX'],g['OY']
 mm=lambda X,Y:((X-OX)/S,(Y-OY)/S)
 W,Hh=g['W'],g['H']
@@ -32,37 +32,36 @@ for c in root.iter('mxCell'):
 # ---------- named pins (mm)
 TP=g['TP']; P={}
 def pin(n,x,y,raw=False): P[n]=(x,y if raw else g["M"](y))
-rails={'X3':g['r2'],'X5':g['r3'],'X0':g['r4'],'X2':g['r4']}
+rails=g['RAILS']
 for k,x in TP.items():
     grp,num=k.split('_'); r=rails[grp]
     pin(f"{grp}:{num} sopra",x,r-21); pin(f"{grp}:{num} sotto",x,r+21)
 for n,x,y in [("T1 L",g['T1L'],g['T1bot']),("T1 N",g['T1N'],g['T1bot']),("T1 +V",g['T1P'],g['T1top']),("T1 −V",g['T1M'],g['T1top']),
               ("Waveshare 12V",g['A1P'],g['A1top']),("Waveshare GND",g['A1G'],g['A1top']),("Waveshare A",g['A1A'],g['A1top']),("Waveshare B",g['A1B'],g['A1top']),("Waveshare terra",g['A1E'],g['A1top']),
               ("Q1 L ingresso",g['Q1L'],g['Q1top']),("Q1 N ingresso",g['Q1N'],g['Q1top']),("Q1 L uscita",g['Q1L'],g['Q1bot']),("Q1 N uscita",g['Q1N'],g['Q1bot']),
-              ("Contatore L ingresso",g['A3Lin'],g['A3bot']),("Contatore N",g['A3N'],g['A3bot']),("Contatore L uscita",g['A3Lout'],g['A3top']),("Contatore A",g['A3A'],g['A3top']),("Contatore B",g['A3B'],g['A3top']),
-              ("Vite di terra piastra",TP['X0_PE'],None),
-              ("F1 ingresso",g['FU']['F1'],g['FUtop']),("F1 uscita",g['FU']['F1'],g['FUbot']),
-              ("F2 ingresso",g['FU']['F2'],g['FUtop']),("F2 uscita",g['FU']['F2'],g['FUbot'])]:
-    if y is None: pin(n,x,522.5,True)
-    else: pin(n,x,y)
+              ("Contatore 1 L ingresso",g['A3Lin'],g['A3bot']),("Contatore 3 N",g['A3N'],g['A3top']),("Contatore 2 L uscita",g['A3Lout'],g['A3bot']),("Contatore 4 N",g['A3Nout'],g['A3top']),("Contatore 10 A+",g['A3A'],g['A3top']),("Contatore 9 B−",g['A3B'],g['A3top']),
+              ("F1 ingresso",g['FU']['F1'],g['FUin']),("F1 uscita",g['FU']['F1'],g['FUout']),
+              ]:
+    pin(n,x,y)
+pin("Vite di terra piastra",*g['SCREW'])
 for k in range(6):
     pin(f"Relè K{k+1} COM",g['COM'][k],g['A1bot']); pin(f"Relè K{k+1} NA",g['NO'][k],g['A1bot'])
     pin(f"KM{k+1} morsetto 1",g['KM1'][k],g['KMtop']); pin(f"KM{k+1} morsetto 2",g['KM1'][k],g['KMbot'])
     pin(f"KM{k+1} bobina +",g['KMP'][k],g['KMtop']); pin(f"KM{k+1} bobina −",g['KMP'][k],g['KMbot'])
-DT=g['DT']
-for k,t in [("P12","+12 V"),("V0","0 V"),("A","A"),("B","B")]: pin(f"Display {t}",DT[k],g['Dbot'])
 
 # cavi (guaina): punto in cui il cavo si apre nei singoli fili
-GLN={"casa":"cavo linea di casa","stufa":"cavo stufa","u1":"cavo presa umidificatore 1","u2":"cavo presa umidificatore 2","estr":"cavo presa estrattore","cam":"Cat5e camera","can":"Cat5e cantina"}
+GLN={"casa":"cavo linea di casa","stufa":"cavo stufa","u1":"cavo presa umidificatore 1","u2":"cavo presa umidificatore 2","estr":"cavo presa estrattore","cam":"Cat5e camera"}
 CABLE={}
 RAW=g['RAW']
 wires=[]
-for i,(kind,pts) in enumerate(RAW):
+for i,(kind,pts,cond) in enumerate(RAW):
     q=[mm(*p) for p in pts]
     if kind in ('C230','CBT'):
         gx=round(q[0][0]); name=[v for k,v in GLN.items() if g['GL'][k]==gx]
         CABLE[(round(q[-1][0],1),round(q[-1][1],1))]=name[0] if name else 'cavo'
-    wires.append(dict(kind=kind,pts=[(round(a,2),round(b,2)) for a,b in q]))
+    w=dict(kind=kind,pts=[(round(a,2),round(b,2)) for a,b in q])
+    if cond: w['cond']=cond
+    wires.append(w)
 def name_of(pt):
     best=None;bd=1.2
     for n,(x,y) in P.items():
@@ -83,10 +82,11 @@ def f(a):
 def u(a,b): par[f(a)]=f(b)
 for k in TP:
     grp,num=k.split('_'); u(f"{grp}:{num} sopra",f"{grp}:{num} sotto")
-for ks in [["X3_1","X3_2","X3_3"],["X3_4","X3_5","X3_6"],["X3_7","X3_8","X3_9"],["X3_10","X3_11","X3_12"],["X5_2","X5_3"],["X5_4","X5_5","X5_6"],["X0_1","X0_2"],["X0_3","X0_4"],["X2_7","X2_8","X2_9","X2_10"]]:
+for ks in g['BRIDGES']:
     for a,b in zip(ks,ks[1:]): u(a.replace('_',':')+" sopra",b.replace('_',':')+" sopra")
 pes=[f"{k.replace('_',':')} sopra" for k in TP if 'PE' in k]+["Vite di terra piastra"]
 for a in pes[1:]: u(pes[0],a)
+u("Contatore 3 N","Contatore 4 N")   # nel contatore il neutro passa dentro
 cable_wire_end={}
 for i,w in enumerate(wires):
     if w['kind'] in ('C230','CBT'): w['net']=None; w['a']=w['b']=None; continue
@@ -133,7 +133,7 @@ for n,(r,ids) in enumerate(groups.items()):
     if kind=='L':
         km=[e for e in ends if 'morsetto 2' in e]
         if km: nm="Fase al carico da "+km[0].split()[0]
-        elif any('Contatore L uscita' in e for e in ends): nm="Fase ai contattori (dopo il contatore)"
+        elif any('Contatore 2 L uscita' in e for e in ends): nm="Fase ai contattori (dopo il contatore)"
         elif any('Q1 L ingresso' in e for e in ends): nm="Fase dalla linea di casa"
         else: nm="Fase dopo il magnetotermico"
     if kind=='P12':

@@ -10,7 +10,8 @@
 #   CH6 estrattore GPIO46 · RS485 GPIO17/18 · RTC SDA GPIO4 SCL GPIO5
 #
 # Bus RS485 (9600 8N1): sonda camera S-TH-01 = 1, contatore SDM120 = 2,
-# sonda cantina S-TH-01 = 3, nodo in camera (XIAO, salumi-nodo.yaml) = 4.
+# nodo in camera (XIAO, salumi-nodo.yaml) = 4. La cantina la misura lo
+# Shelly H&T, che arriva tramite Home Assistant (niente sonda sul bus).
 # Il nodo porta bilancia, sonde di parete e pavimento e ventole: la
 # temperatura della camera arriva invece direttamente dalla S-TH-01, così
 # la stufa non dipende dal nodo.
@@ -292,11 +293,6 @@ modbus_controller:
     modbus_id: modbus485
     address: 0x1
     update_interval: 30s
-  # Seconda S-TH-01 in cantina: togliere il commento quando ha indirizzo 3.
-  # - id: sth_cantina
-  #   modbus_id: modbus485
-  #   address: 0x3
-  #   update_interval: 60s
   - id: nodo
     modbus_id: modbus485
     address: 0x4

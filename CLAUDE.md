@@ -54,7 +54,7 @@ Il repo è clonato anche nell'add-on Claude Code di Home Assistant, in `/share/s
   - contattori con soppressione integrata, senza diodi;
   - stufa collegata direttamente, senza presa CEE;
   - Cat5e UTP senza schermi.
-- **Fusibili F1/F2:** valori ancora da confermare con le misure.
+- **Fusibile:** F1 1 A T (ritardato), dalla misura al banco del 30/10/2026. Niente sonda cantina B5 né F2: la cantina la misura lo Shelly H&T.
 - **Acquisti:** prima di proporli, controlla nella distinta cosa è "già in possesso" (P).
 - **Amazon:** blocca lo scraping con curl. Usa la ricerca web.
 - **Segreti:** `esphome/secrets.yaml` e `supervisione/stato/` non sono versionati.

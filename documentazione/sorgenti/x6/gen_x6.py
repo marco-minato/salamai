@@ -76,20 +76,14 @@ for k,nm in enumerate(["E+","E−","A−","A+","B−","B+"]):
     x=HX+2.5+k*3.2; PIN["HX711 "+nm]=(x,HY)
     lab(x-2,HY+1,4,nm,4.2)
 
-# A2: modulo MOSFET (posizione morsetti indicativa)
-MX,MY,MW,MH=128,10,40,22
-rect(MX,MY,MW,MH,"",LV)
-text(MX,MY+6,MW,10,"<b>A2</b> modulo MOSFET<br>(morsetti indicativi)",6,align="center")
-PIN["MOSFET PWM"]=(MX,MY+6); PIN["MOSFET GND segnale"]=(MX,MY+14)
-lab(MX+0.5,MY+4,8,"PWM",4.5,align="left"); lab(MX+0.5,MY+12,8,"GND",4.5,align="left")
-for nm,dx in [("DC+",7),("DC−",14),("OUT+",25),("OUT−",32)]:
-    PIN["MOSFET "+nm]=(MX+dx,MY+MH); lab(MX+dx-3,MY+MH-5,6,nm,4.5)
+# A2 modulo MOSFET: non è in X6, sta nella scatola X4 delle ventole (comando D7 su W5 verde)
+text(124,12,48,14,"<b>A2</b> modulo MOSFET: <b>non è qui</b>,<br>sta in X4 con le ventole.<br>D7 arriva su W5 verde.",5.5,align="center")
 
 # ---------------- Wago e canali dei cavi
 YW=112; WD=18.6
 def wago_w(n): return {2:13.1,3:18.9,5:29.9}[n]
-SEQ=[("cab","W3",6),("w","A",3),("w","B",3),("cab","B1",4),("w","12a",5),("w","12b",3),("w","0a",5),("w","0b",5),
-     ("cab","B3",3),("w","GND",5),("w","3V3",5),("w","1W",5),("cab","B4",3),("cab","W5",6),("w","T5",2),("w","T6",2),("w","T7",2),("cab","B2",4)]
+SEQ=[("cab","W3",6),("w","A",3),("w","B",3),("cab","B1",4),("w","12a",5),("w","0a",5),("w","0b",3),
+     ("cab","B3",3),("w","GND",5),("w","3V3",5),("w","1W",5),("cab","B4",3),("cab","W5",7),("w","T5",2),("w","T6",2),("w","T7",2),("cab","B2",4)]
 WAGO={}; CHAN={}
 x=30
 prev=None
@@ -151,7 +145,7 @@ def cab(c,i): return cab_start(c,i)
 CN={"W3":["blu (A)","bianco-blu (B)","arancio (+12 V)","bianco-arancio (0 V)","verde (+12 V)","bianco-verde (0 V)"],
     "B1":["+ (alimentazione)","− (alimentazione)","A","B"],
     "B3":["rosso (VDD)","nero (GND)","giallo (DATA)"],"B4":["rosso (VDD)","nero (GND)","giallo (DATA)"],
-    "W5":["blu (+12 V)","bianco-blu (0 V)","verde (PWM)","marrone (giri M5)","bianco-marrone (giri M6)","arancio (giri M7)"],
+    "W5":["blu (+12 V)","bianco-blu (0 V)","verde (comando PWM)","bianco-verde (0 V comando)","marrone (giri M5)","bianco-marrone (giri M6)","arancio (giri M7)"],
     "B2":["rosso (E+)","nero (E−)","bianco (A−)","verde (A+)"]}
 def cname(c,i): return f"{GLAB[c].split(' ')[0]} {CN[c][i]}"
 
@@ -167,18 +161,15 @@ route(cab("W3",2),sl("12a",0),"P12",cname("W3",2),sname("12a",0),"+12 V")
 route(cab("W3",4),sl("12a",1),"P12",cname("W3",4),sname("12a",1),"+12 V")
 route([PIN["RS485 alim. 12V"],(20,PIN["RS485 alim. 12V"][1])],sl("12a",2),"P12","Scheda RS485 morsetto 12V",sname("12a",2),"+12 V")
 route(cab("B1",0),sl("12a",3),"P12",cname("B1",0),sname("12a",3),"+12 V")
-route(sl("12a",4),sl("12b",0),"P12",sname("12a",4),sname("12b",0),"+12 V")
-route(pin("MOSFET DC+"),sl("12b",1),"P12","Modulo MOSFET DC+",sname("12b",1),"+12 V")
-route(cab("W5",0),sl("12b",2),"P12",cname("W5",0),sname("12b",2),"+12 V")
+route(cab("W5",0),sl("12a",4),"P12",cname("W5",0),sname("12a",4),"+12 V")
 # 0 V
 route(cab("W3",3),sl("0a",0),"V0",cname("W3",3),sname("0a",0),"0 V")
 route(cab("W3",5),sl("0a",1),"V0",cname("W3",5),sname("0a",1),"0 V")
 route([PIN["RS485 bus GND"],(53.5,PIN["RS485 bus GND"][1])],sl("0a",2),"V0","Scheda RS485 morsetto GND",sname("0a",2),"0 V")
 route(cab("B1",1),sl("0a",3),"V0",cname("B1",1),sname("0a",3),"0 V")
 route(sl("0a",4),sl("0b",0),"V0",sname("0a",4),sname("0b",0),"0 V")
-route(pin("MOSFET DC−"),sl("0b",1),"V0","Modulo MOSFET DC−",sname("0b",1),"0 V")
-route(cab("W5",1),sl("0b",2),"V0",cname("W5",1),sname("0b",2),"0 V")
-route([PIN["MOSFET GND segnale"],(122.6,PIN["MOSFET GND segnale"][1])],sl("0b",3),"V0","Modulo MOSFET GND segnale",sname("0b",3),"0 V")
+route(cab("W5",1),sl("0b",1),"V0",cname("W5",1),sname("0b",1),"0 V")
+route(cab("W5",3),sl("0b",2),"V0",cname("W5",3),sname("0b",2),"0 V")
 # GND sensori, 3,3 V, 1-Wire
 route(cab("B3",1),sl("GND",2),"G",cname("B3",1),sname("GND",2),"GND sensori")
 route(cab("B4",1),sl("GND",3),"G",cname("B4",1),sname("GND",3),"GND sensori")
@@ -194,12 +185,10 @@ text(RX-8,RY-6.5,16,4,"R3 4,7 kΩ",5,align="center")
 wire([(RX-3.5,RY),(s1[0],RY),(s1[0],YW)],"V33","R3 (4,7 kΩ) piedino 1",sname("3V3",4),"3,3 V")
 wire([(RX+3.5,RY),(s2[0],RY),(s2[0],YW)],"OW","R3 (4,7 kΩ) piedino 2",sname("1W",3),"1-Wire sonde")
 # giri ventole (pull-up interni della XIAO)
-route(cab("W5",3),sl("T5",1),"TACH",cname("W5",3),sname("T5",1),"Giri ventola M5")
-route(cab("W5",4),sl("T6",1),"TACH",cname("W5",4),sname("T6",1),"Giri ventola M6")
-route(cab("W5",5),sl("T7",1),"TACH",cname("W5",5),sname("T7",1),"Giri ventola M7")
+route(cab("W5",4),sl("T5",1),"TACH",cname("W5",4),sname("T5",1),"Giri ventola M5")
+route(cab("W5",5),sl("T6",1),"TACH",cname("W5",5),sname("T6",1),"Giri ventola M6")
+route(cab("W5",6),sl("T7",1),"TACH",cname("W5",6),sname("T7",1),"Giri ventola M7")
 # HX711 DT/SCK: cavetto C1 (prolunga ventola) dall'HX711 alla XIAO
-# PWM: D7 → ingresso del MOSFET (sopra le schede); OUT− → W5 verde
-route(cab("W5",2),pin("MOSFET OUT−"),"PWM",cname("W5",2),"Modulo MOSFET OUT−","PWM ventole (uscita)")
 # cella di carico → HX711 (sale a destra, entra dall'alto)
 for i,(pad) in enumerate(["E+","E−","A−","A+"]):
     cx=CHAN["B2"][i]; px,py=PIN["HX711 "+pad]; yy=4.2+0.9*i
@@ -211,7 +200,7 @@ def band(pts,label,lx,ly,lw=22,bw=3.6):
     WIRES.insert(0,dict(kind="PRL",bw=bw,pts=[(round(x,2),round(y,2)) for x,y in pts],a=None,b=None,net=None))
     if label: lab(lx,ly,lw,label,4.5,fc="#424242",align="left")
 # C3 ventole: D7, D8, D0 (corsie più basse del gruppo)
-y_d7=LANE[0]; route(xiao("D7"),[PIN["MOSFET PWM"],(124,PIN["MOSFET PWM"][1])],"PWM","XIAO D7 (pin)","Modulo MOSFET PWM","PWM ventole (comando)")
+y_d7=LANE[0]; route(xiao("D7"),cab("W5",2),"PWM","XIAO D7 (pin)",cname("W5",2),"PWM ventole (comando)")
 y_d8=LANE[0]; route(xiao("D8"),sl("T6",0),"TACH","XIAO D8 (pin)",sname("T6",0),"Giri ventola M6")
 y_d0=LANE[0]; route(xiao("D0"),sl("T5",0),"TACH","XIAO D0 (pin)",sname("T5",0),"Giri ventola M5")
 route(xiao("D6"),sl("T7",0),"TACH","XIAO D6 (pin)",sname("T7",0),"Giri ventola M7")
@@ -266,7 +255,7 @@ rect(x0-1.6,yb-2.2,x1-x0+3.2,4.4,"","fillColor=none;strokeColor=#ff9800;strokeWi
 
 # Riquadro di lettura dei cavetti, lontano dai percorsi.
 rect(180,10,W-210,37,"","fillColor=#ffffff;strokeColor=#999999;")
-text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1: femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2: 1 GND → GND f.1; 2 3V3 → 3,3 V f.1; 3 D10 → 1-Wire f.1.<br>C3: 1 D0 → giri M5 f.1; 2 D8 → giri M6 f.1; 3 D7 → MOSFET PWM; 4 D6 → giri M7 f.1.<br>C2: filo 4 isolato a entrambi i capi. Tutti neri; n.1 con riga.<br>Guscio sinistro D0–D5: C3·1 / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: C2·1 / C2·2 / C2·3 / vuoto / C3·2 / C3·3.<br>D6: guscio da 1, C3·4. Ordine dal lato USB. Tappo vuoto: 5V. Colori = funzione del filo.",6)
+text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1: femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2: 1 GND → GND f.1; 2 3V3 → 3,3 V f.1; 3 D10 → 1-Wire f.1.<br>C3: 1 D0 → giri M5 f.1; 2 D8 → giri M6 f.1; 3 D7 → W5 verde (modulo MOSFET in X4); 4 D6 → giri M7 f.1.<br>C2: filo 4 isolato a entrambi i capi. Tutti neri; n.1 con riga.<br>Guscio sinistro D0–D5: C3·1 / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: C2·1 / C2·2 / C2·3 / vuoto / C3·2 / C3·3.<br>D6: guscio da 1, C3·4. Ordine dal lato USB. Tappo vuoto: 5V. Colori = funzione del filo.",6)
 
 # ---------------- reti (union-find sui nomi dei capi)
 par={}
