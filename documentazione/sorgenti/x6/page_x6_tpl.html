@@ -74,6 +74,9 @@ main{flex:1;position:relative;min-height:0}
 svg.sel .w,svg.sel .cab,svg.sel .prl{opacity:.12}
 svg.sel .prl.on{opacity:1}
 svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
+.catw{fill:none;stroke-linejoin:round;stroke-linecap:butt;vector-effect:non-scaling-stroke}
+svg.sel .catw{opacity:.12}
+svg.sel .catw.on{opacity:1}
 .pinmark{fill:#ffe14d;stroke:#1d2329;stroke-width:1.5px;vector-effect:non-scaling-stroke}
 .layer-off{display:none}
 .ck-sec{margin:14px 0 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -121,7 +124,9 @@ svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
   <div class="sh-head"><h2>Legenda</h2><button class="x" id="g-close" type="button" aria-label="Chiudi">✕</button></div>
   <div class="sh-body">
     <div class="leg">
-      <span class="sw" style="background:#E00000"></span><span>+12 V</span>
+      <span class="sw" style="height:6px;background:linear-gradient(90deg,#1565C0 0 25%,#EF6C00 25% 50%,#2E7D32 50% 75%,#6D4C41 75%);outline:1.5px solid #1d2329"></span><span>Cat5e W3 e W5: colori veri dei conduttori (T568B), come nello schema del quadro</span>
+      <span class="sw" style="height:6px;background:repeating-linear-gradient(90deg,#1565C0 0 4px,#fff 4px 7px);outline:1.5px solid #1d2329"></span><span>Bianco-colore (es. bianco-blu): bianco con tratteggio</span>
+      <span class="sw" style="background:#E00000"></span><span>Altri fili, colore = collegamento: +12 V</span>
       <span class="sw" style="background:#000000;outline:1px solid #888"></span><span>0 V (alimentazione)</span>
       <span class="sw" style="background:repeating-linear-gradient(90deg,#555 0 6px,transparent 6px 9px)"></span><span>GND dei sensori (lo stesso 0 V, attraverso la scheda)</span>
       <span class="sw" style="background:#FF8C00"></span><span>RS485 A</span>
@@ -192,12 +197,21 @@ for(const v of D.V){
   const y0=(v.valign==="top"&&!v.rot)?cy:cy-lh*(lines.length-1)/2+fs*.35;
   lines.forEach((s,i)=>{const sp=el("tspan",{x:cx,y:(y0+i*lh).toFixed(2)},t);sp.textContent=s;if(i===0&&/^[A-Z]{1,2}\d/.test(s))sp.setAttribute("font-weight","600")});
 }
+const CAT={blu:"#1565C0",arancio:"#EF6C00",verde:"#2E7D32",marrone:"#6D4C41"};
 const wireEls=[];
 D.wires.forEach((w,i)=>{
   const g=HV.has(w.kind)?gW230:gWbt;
   const pts=w.pts.map(p=>p.join(",")).join(" ");
   if(w.kind==="CAB"){el("polyline",{points:pts,class:"cab",stroke:COL[w.kind],"stroke-width":7},g);return}
   if(w.kind==="PRL"){const p=el("polyline",{points:pts,class:"prl",stroke:"#424242","stroke-width":w.bw||2.4,"data-nets":(w.nets||[]).join(",")},g);wireEls.push(p);return}
+  if(w.cond){  // conduttore di un Cat5e con il suo colore vero; bianco-colore = bianco con tratteggio
+    const c=CAT[w.cond.split("-").pop()], st=w.cond.startsWith("bianco");
+    wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#1d2329","stroke-width":3,"data-net":w.net},g));
+    if(st)wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#ffffff","stroke-width":2,"data-net":w.net},g));
+    const a={points:pts,class:"catw",stroke:c,"stroke-width":2,"data-net":w.net};
+    if(st)a["stroke-dasharray"]="4 3";
+    wireEls.push(el("polyline",a,g));
+    el("polyline",{points:pts,class:"hit","data-net":w.net},g);return}
   for(const segment of (w.segments||[w.pts])){
   const a={points:segment.map(p=>p.join(",")).join(" "),class:"w",stroke:COL[w.kind],"stroke-width":1.8,"data-net":w.net};
   if(w.kind==="G")a["stroke-dasharray"]="1.6 0.7";

@@ -157,7 +157,7 @@ da sopra), insieme al tubo dell'estrattore.
 
 | Sigla | Componente | Note |
 |---|---|---|
-| -A1 | **Waveshare ESP32-S3-Relay-6CH** (Amazon B0CXPG4XGZ) | 6 relè 10 A 250 VAC, RS485 isolato con direzione automatica, alimentazione 7–36 V DC, custodia ABS per guida DIN (non a profilo modulare), 145 mm in larghezza × 90 mm in altezza × 40 mm di profondità (dato Waveshare; profondità misurata). Relè: CH1=GPIO1, CH2=GPIO2, CH3=GPIO41, CH4=GPIO42, CH5=GPIO45, CH6=GPIO46. RS485 interno su GPIO17/18. Buzzer GPIO21, LED RGB GPIO38. Uscite relè su morsetti a 3 poli COM/NA/NC. RS485 **isolato galvanicamente**, morsettiera a 3 poli A / B / Earth. Due connettori a 20 pin H1/H2 (piedinatura sotto, dallo schema elettrico ufficiale Waveshare) |
+| -A1 | **Waveshare ESP32-S3-Relay-6CH** (Amazon B0CXPG4XGZ) | 6 relè 10 A 250 VAC, RS485 isolato con direzione automatica, alimentazione 7–36 V DC, custodia ABS per guida DIN (non a profilo modulare), 145 mm in larghezza × 90 mm in altezza × 40 mm di profondità (dato Waveshare; profondità misurata). Relè: CH1=GPIO1, CH2=GPIO2, CH3=GPIO41, CH4=GPIO42, CH5=GPIO45, CH6=GPIO46. RS485 interno su GPIO17/18. Buzzer GPIO21, LED RGB GPIO38. Uscite relè su morsetti a 3 poli, guardando la scheda da davanti **da sinistra NC · COM · NA** (verificato col multimetro il 01/11/2026: a scheda spenta suona COM–NC). RS485 **isolato galvanicamente**, morsettiera a 3 poli A / B / Earth. Due connettori a 20 pin H1/H2 (piedinatura sotto, dallo schema elettrico ufficiale Waveshare) |
 | -T1 | **Mean Well HDR-60-12** (B072DXXRW3) | 230 VAC → 12 V DC 4,5 A, guida DIN 3 moduli (dimensionato per scheda + 6 bobine + ventole) |
 | -KM1…-KM6 | **Contattore modulare HCH8s-25Z**, bobina **12 V DC**, 25 A, 2 NA (B0BKWQ2P32) | ~1 modulo ciascuno (da verificare). Usato un solo contatto NA (1→2), il secondo (3→4) resta libero. KM1–KM3 lampade 1–3, KM4 umidificatore 1, KM5 umidificatore 2, KM6 estrattore. Bobina A1/A2, contatto di potenza 1→2 |
 | -F1 | **Portafusibile UK5-HESI** su guida DIN, fusibile **5×20** (B0FGD7CXSN, compatibili Phoenix, non originali) | sulla guida 3, subito dopo X3 (ingresso in basso). F1 = +12 V del ramo camera (W3 → X6 → X4, ventole comprese). Valore: **F1 1 A T** (ritardato; dalla misura al banco del 30/10/2026: ~0,5 A a regime, ~0,6 A all'accensione). Lo 0 V non passa dal fusibile. Gli altri portafusibili restano di scorta. Nessun diodo sulle bobine: gli HCH8s-25Z hanno la soppressione integrata |
@@ -166,7 +166,7 @@ da sopra), insieme al tubo dell'estrattore.
 | -X6 | **Scatola stagna IP65** in policarbonato/ABS (~150×110×70 mm o più grande se serve) con **valvola anticondensa M12** in basso | dentro la camera, **in alto sulla parete della porta, sopra la bilancia** (zona più calda e asciutta, lontana dal getto della nebbia e dal fascio della stufa). Pressacavi tutti verso il basso con ansa di gocciolamento. Contiene A6, A4, A2, i Wago di giunzione e le resistenze R1–R4. Schede trattate con vernice protettiva (conformal coating), morsetti esclusi |
 | -R1, -R2 | **Resistenze 120 Ω** | terminazioni del bus RS485 ai due estremi: R1 nel quadro (o il ponticello di terminazione della scheda A1), in X6 la terminazione è l'interruttore 120R della breakout su ON (niente resistenza R2). Solo due in tutto il bus |
 | -R3 | **Resistenza 4,7 kΩ** | pull-up del bus 1-Wire, tra DATA (D10) e 3V3, in X6 |
-| -Q1 | **Magnetotermico 1P+N C10**, 4,5 kA, Gewiss MTC45 GW90026 (già in possesso) | generale del quadro, primo a sinistra sulla guida 2 (1 modulo). La linea di casa entra direttamente nei suoi morsetti superiori L e N; le uscite inferiori, con puntalini doppi 2×1,5, vanno ad alimentatore T1 e contatore A3. C10 protegge tutti i cavi da 1,5 mm² a valle. La protezione differenziale 30 mA è quella del quadro di casa, a monte della linea |
+| -Q1 | **Magnetotermico 1P+N C10**, 4,5 kA, Gewiss MTC45 GW90026 (già in possesso) | generale del quadro, primo a sinistra sulla guida 2 (1 modulo). La linea di casa entra direttamente nei suoi morsetti superiori L e N; le uscite inferiori, con puntalini doppi 2×1,5: L verso alimentatore T1 e contatore A3, N verso T1 e X2:7. C10 protegge tutti i cavi da 1,5 mm² a valle. La protezione differenziale 30 mA è quella del quadro di casa, a monte della linea |
 | -A3 | **Contatore Eastron SDM120 Modbus** (B08X8SD1FD) | monofase a inserzione diretta 45 A, **1 modulo DIN**, RS485 Modbus RTU: tensione, corrente, potenza, cos φ, energia. Esce a indirizzo 1 e 2400 baud: **da impostare a indirizzo 2 e 9600 baud** dai tasti frontali |
 | -B1 | **Sonda Seeed S-TH-01** (101990881) | temperatura/umidità RS485 Modbus, indirizzo 1, 9600 baud, alimentazione **3,6–30 V DC** (dato Seeed), consumo 4 mA a 24 V: alimentata a 12 V dal Mean Well tramite W3. Il suo cavo entra in X6 e si collega sui Wago di A, B, 12 V e 0 V; la sonda resta nell'aria della camera |
 | -A4 | **Modulo HX711** | nella scatola X6, sopra la cella (agganciata alla struttura dei salami): cavo della cella corto |
@@ -188,7 +188,7 @@ da sopra), insieme al tubo dell'estrattore.
 | — | Morsetti **Wago 221** | giunzioni nella scatola X6 (12 V, 0 V, A, B, 3V3, 1-Wire) e nelle scatole in camera |
 | -W1 | Cavo **FG16OR16 5G1,5** quadro → stufa, diretto (pressacavo sulla stufa) | L1, L2, L3, N, PE |
 | -W2a, -W2b, -W7 | Spezzoni **FROR 3G1,5** quadro → prese accanto al quadro, ~1 m | W2a: L4 (KM4), N, PE → XS1 · W2b: L5 (KM5), N, PE → XS2 · W7: L6 (KM6), N, PE → XS3 |
-| -W3 | Cavo **Cat5e UTP** (rame pieno, non CCA, già in possesso) quadro → scatola X6 in camera, ~10 m | coppia 1 (blu): A = blu / B = bianco-blu; coppia 2 (arancio): +12 V = arancio / 0 V = bianco-arancio; coppia 3 (verde): +12 V = verde / 0 V = bianco-verde (in parallelo alla 2); coppia 4 (marrone) di riserva; non schermato. 24 AWG (~0,2 mm²). Nel quadro: A/B su X3, +12 V su X5:2 e X5:3 (dopo F1), 0 V su X5:4 e X5:5, un conduttore per morsetto. Carico ~0,3 A: caduta ~0,25 V; posarlo a qualche cm dai cavi 230 V |
+| -W3 | Cavo **Cat5e UTP** (rame pieno, non CCA, già in possesso) quadro → scatola X6 in camera, ~10 m | coppia 1 (blu): A = blu / B = bianco-blu; coppia 2 (arancio): +12 V = arancio / 0 V = bianco-arancio; coppia 3 (verde): +12 V = verde / 0 V = bianco-verde (in parallelo alla 2); coppia 4 (marrone) di riserva; non schermato. 24 AWG (~0,2 mm²). Entra nel quadro dal **passaparete RJ45 -XS5** (IP67, filetto M20, sul fondo a destra) con spina **T568B** (1 bianco-arancio 0 V, 2 arancio +12 V, 3 bianco-verde 0 V, 4 blu A, 5 bianco-blu B, 6 verde +12 V, 7–8 marrone riserva); dentro, uno spezzone di Cat5e con spina T568B porta gli stessi colori ai morsetti. Nel quadro: A/B su X3, +12 V su X5:2 e X5:3 (dopo F1), 0 V su X5:4 e X5:5, un conduttore per morsetto. Carico ~0,3 A: caduta ~0,25 V; posarlo a qualche cm dai cavi 230 V |
 | -W5 | Spezzone **Cat5e UTP** X6 → X4 ventole, ~2,5 m | coppia 1 (blu): +12 V = blu / 0 V = bianco-blu (~0,4 A per tre ventole, misurati: basta una coppia); coppia 2 (arancio): TACH M7 = arancio, bianco-arancio di riserva; coppia 3 (verde): comando PWM da D7 = verde, sua massa = bianco-verde (verso il GND di segnale di A2 in X4); coppia 4 (marrone): TACH M5 = marrone / TACH M6 = bianco-marrone |
 | — | Filo silicone 18 AWG (B07TT68455) | collegamenti interni alla stufa (zona calda) |
 | — | Quadro **BOXEXPERT Fleet 600×400×200 mm**, ABS, IP65, sportello trasparente, **piastra di fondo** in lamiera zincata (B07C84YMZN, interno 548×341×189); 3 guide DIN 35 mm da 270 mm avvitate alla piastra (la 3 in acciaio); **canaline asolate 25×40** sopra e sotto ogni guida (4 orizzontali) e sui due lati; morsetti UK2.5B su guida con fermi; valvola anticondensa M12; pressacavi M20 (B0GYRDCC9Z) | meccanica |
@@ -245,32 +245,34 @@ doppi 2×1,5. Disegnare le tre morsettiere con questi numeri:
 | | 4 | L4 | KM4 morsetto 2 | W2a |
 | | 5 | L5 | KM5 morsetto 2 | W2b |
 | | 6 | L6 | KM6 morsetto 2 | W7 |
-| | 7–10 (ponte, blu) | N | filo dal morsetto N in uscita del contatore A3 (sul 7) | W1 · W2a · W2b · W7 |
-| | PE1–PE4 | PE | filo da X3 PE3 (su PE4) | W1 · W2a · W2b · W7 |
+| | 7–10 (ponte, blu) | N | filo dall'uscita N di Q1 (sul 7) | W1 · W2a · W2b · W7 |
+| | PE1–PE4 | PE | filo da X3 PE2 (su PE4) | W1 · W2a · W2b · W7 |
 | | PE5 | PE | filo verso la vite della piastra | linea di casa PE |
-| -X3 (guida 3, a destra) | PE1, PE2, PE3 | PE | Earth RS485 di A1 (PE1) · filo verso X2 PE4 (PE3) | PE2 libero (cavi Cat5e non schermati) |
-| | 1–3 (ponte) | B | A1 B (1) · A3 B (3) | W3 bianco-blu (1) · libero (2) · libero (3) |
-| | 4–6 (ponte) | A | A1 A (4) · A3 A (6) | W3 blu (4) · libero (5) · libero (6) |
-| | 7–9 (ponte) | 0 V | A1 GND (7) · T1 −V (8) · libero (9) | W3 bianco-arancio (7) · W3 bianco-verde (8) · ritorno delle bobine, − di KM1–KM6 in catena con puntalini doppi (9) |
-| | 10–12 (ponte) | +12 V **non protetto** | A1 12 V (10) · T1 +V (11) · COM dei relè (12) | libero (10) · libero (11) · ingresso di F1 (12) |
+| -X3 (guida 3, a destra) | PE1, PE2 | PE | Earth RS485 di A1 (PE1) · filo verso X2 PE4 (PE2) | liberi (cavo Cat5e non schermato) |
+| | 1–2 (ponte) | B | A1 B (1) · A3 B (2) | W3 bianco-blu (1) · libero (2) |
+| | 3–4 (ponte) | A | A1 A (3) · A3 A (4) | W3 blu (3) · libero (4) |
+| | 5–7 (ponte) | 0 V | A1 GND (5) · T1 −V (6) · libero (7) | W3 bianco-arancio (5) · W3 bianco-verde (6) · ritorno delle bobine, − di KM1–KM6 in catena con puntalini doppi (7) |
+| | 8–10 (ponte) | +12 V **non protetto** | A1 12 V (8) · T1 +V (9) · COM dei relè (10) | libero (8) · libero (9) · ingresso di F1 (10) |
 | -X5 (guida 3, dopo X3 e F1) | 1–2 (ponte) | +12 V camera (dopo F1) | uscita di F1 (1) · libero (2) | W3 arancio (1) · W3 verde (2) |
 
 Su G3 il Cat5e arriva tutto **dal basso** (A, B e 0 V su X3, +12 V su X5).
 Ordine sulla guida 3, a destra: fermo · X3 · fermo · F1 (ingresso in basso da
-X3:12, uscita in alto verso X5:1) · X5:1 · X5:2 · fermo. Lo 0 V del Cat5e non passa da X5: va su X3:7 e X3:8 sotto. Nessun morsetto di X5 è collegato al gruppo X3:10–12: altrimenti il
+X3:10, uscita in alto verso X5:1) · X5:1 · X5:2 · fermo. Lo 0 V del Cat5e non passa da X5: va su X3:5 e X3:6 sotto. Nessun morsetto di X5 è collegato al gruppo X3:8–10: altrimenti il
 fusibile sarebbe scavalcato.
 
-Totale: 24 morsetti di passaggio (4 blu per N; 2 su X5) e 8 di terra, 1 portafusibile, più i fermi a
+Totale: 22 morsetti di passaggio (4 blu per N; 2 su X5) e 7 di terra, 1 portafusibile, più i fermi a
 fine di ogni morsettiera.
 
 ### Folio 2 — 230 V
-- Linea **L / N** dal quadro di casa → **Q1** magnetotermico C10 (morsetti in alto) → uscite di Q1 (in basso), ciascuna con un **puntalino doppio** 2×1,5: un filo verso T1, uno verso A3. **PE** della linea direttamente su X2 PE5.
+- Linea **L / N** dal quadro di casa → **Q1** magnetotermico C10 (morsetti in alto) → uscite di Q1 (in basso), ciascuna con un **puntalino doppio** 2×1,5: L verso T1 e A3, N verso T1 e X2:7. **PE** della linea direttamente su X2 PE5.
 - **N** e **PE** distribuiti con morsetti a tutti gli utilizzatori.
 - **L** → T1 (Mean Well) ingresso L; N → T1 ingresso N (la serie HDR è in classe II: **nessun morsetto PE**).
 - Ordine sulla fase: uscita di Q1 → **derivazione per T1**
   (alimentatore 12 V) → A3 **SDM120-M** (morsetto 1 L ingresso → morsetto 2
-  L uscita, entrambi in basso, in serie; neutro sui morsetti 3 e 4 in alto,
-  uniti dentro: 3 da Q1, 4 → X2:7; RS485 9 = B−, 10 = A+, 8 libero) → linea "L-carichi" → morsetto **1** (ingresso potenza)
+  L uscita, entrambi in basso, in serie; neutro in alto sui morsetti 3 e 4,
+  uniti dentro: come nello schema del costruttore se ne usa uno solo, il 4,
+  con un filo dal morsetto N di T1; il neutro dei carichi va da Q1 a X2:7
+  senza passare dal contatore; RS485 9 = B−, 10 = A+, 8 libero) → linea "L-carichi" → morsetto **1** (ingresso potenza)
   di KM1, poi **in catena** sul morsetto 1 di KM2…KM6 con **puntalini
   doppi** 2×1,5 mm² (filo marrone 1,5 mm²); carico massimo ~6 A. Il contatore
   misura quindi **solo gli attuatori** (lampade, umidificatori, estrattore),
@@ -308,15 +310,15 @@ fine di ogni morsettiera.
 ### Folio 5 — Bassa tensione
 - T1 **+12 V / 0 V** → A1 morsetti alimentazione (7–36 V).
 - T1 +12 V / 0 V → morsettiera bassa tensione (-X3, +12 V non protetto) →
-  **X3:12 → F1 → X5:1–2** → W3 arancio e verde verso la scatola X6 in camera
+  **X3:10 → F1 → X5:1–2** → W3 arancio e verde verso la scatola X6 in camera
   (alimenta A6, B1, e in X4 A2 e le ventole). 0 V: W3 bianco-arancio e
-  bianco-verde direttamente su X3:7 e X3:8 sotto (comune, senza fusibile). Waveshare e bobine restano sul +12 V non protetto
+  bianco-verde direttamente su X3:5 e X3:6 sotto (comune, senza fusibile). Waveshare e bobine restano sul +12 V non protetto
   di X3. Fili interni H05V-K 0,75 mm² con puntalino.
-- X3:12 (+12 V) → **COM di K6** → ponticello → COM K5 → … → COM K1 (un solo
+- X3:10 (+12 V) → **COM di K6** → ponticello → COM K5 → … → COM K1 (un solo
   gruppo, tutto a 12 V; filo rosso 0,75–1 mm², puntalini doppi sui COM).
 - Su X3 **un solo filo per foro**: contatore, ritorno bobine e COM dei relè
   usano i fori liberi sopra dei gruppi ponticellati.
-- K*n* NA → morsetto **+** della bobina di KM*n* (n = 1…6); morsetti **−** di KM1–KM6 in catena (puntalini doppi) → X3:9 sopra (0 V); +V e −V di T1 indicati come +12 V e 0 V in tutto lo schema.
+- K*n* NA → morsetto **+** della bobina di KM*n* (n = 1…6); morsetti **−** di KM1–KM6 in catena (puntalini doppi) → X3:7 sotto (0 V); +V e −V di T1 indicati come +12 V e 0 V in tutto lo schema.
 - Nessun diodo sulle bobine: gli HCH8s-25Z hanno la soppressione integrata.
 - Morsetti NC di K1–K6: non collegati.
 - Masse 0 V di T1 e A1 in comune.
@@ -398,12 +400,12 @@ Se la piastra vera ha un'altezza diversa da 510, la differenza va divisa in part
 |---|---|
 | 1 (in alto) — bassa tensione | T1 Mean Well HDR-60 (3 mod) · A1 Waveshare con A5 innestato (145 × 90 × 40 mm) · ~65 mm liberi |
 | 2 — potenza | Q1 magnetotermico C10 (1 mod) · A3 SDM120 (1 mod) · KM1 … KM6 (~6 mod; bobina con diodo interno, + sopra e − sotto) · ~105 mm liberi |
-| 3 (in basso) — morsettiere, **acciaio** | a sinistra X2: L1, L2, L3 (stufa), L4, L5 (umidificatori), L6 (estrattore), 4 × N blu, 5 di terra (~97 mm con i fermi) · ~40 mm liberi · a destra X3: 3 di terra + B, A, 0 V, +12 V (12 morsetti, ~97 mm) · **F1** (UK5-HESI, 8,2 mm, alto ~72,5) · **X5** 1–2 · fermo |
+| 3 (in basso) — morsettiere, **acciaio** | a sinistra X2: L1, L2, L3 (stufa), L4, L5 (umidificatori), L6 (estrattore), 4 × N blu, 5 di terra (~97 mm con i fermi) · ~55 mm liberi · a destra X3: 2 di terra + B, A, 0 V, +12 V (10 morsetti, ~81 mm) · **F1** (UK5-HESI, 8,2 mm, alto ~72,5) · **X5** 1–2 · fermo |
 
 - X2 in basso perché i cavi W1, W2a, W2b e W7 escono dal basso; X3 a destra,
   vicino alla canalina della bassa tensione.
 - Pressacavi tutti sul fondo: a **sinistra** quelli a 230 V (linea, W1, W2a,
-  W2b, W7), a **destra** quelli a bassa tensione (W3). Canalina laterale
+  W2b, W7), a **destra** il passaparete RJ45 -XS5 del Cat5e W3 (filetto M20, stesso foro di un pressacavo). Canalina laterale
   sinistra per il 230 V, destra per la bassa tensione.
 - Valvola anticondensa M12 in nylon (di compensazione, IP68) sul fondo, al centro.
 - I fili relè → bobine (12 V) passano nella canalina tra le guide 1 e 2 insieme alla catena della fase dei contattori: isolamento 300/500 V (H05V-K).

@@ -249,6 +249,13 @@ for cable, start, end, members in HARNESS:
     WIRES.insert(0,trunk)
     OPENINGS.extend([start,end])
     lab((start[0]+end[0])/2-12,start[1]-4,24,cable+" · 4 fili",6,fc="#333333")
+# Conduttori dei Cat5e W3 e W5: colore vero (T568B), come nello schema del quadro.
+# I fili dei cavetti C1–C3 restano col colore della funzione (nella realtà sono neri).
+CAT={"blu":"#1565C0","arancio":"#EF6C00","verde":"#2E7D32","marrone":"#6D4C41"}
+for w in WIRES:
+    if w.get("cable") or not w["a"]: continue
+    for e in (w["a"],w["b"]):
+        if e.split(" ")[0] in ("W3","W5"): w["cond"]=e.split(" ")[1]
 # Riepilogo in uno spazio libero sopra le corsie; nessuna fascia sotto i fili.
 x0=PIN["HX711 GND"][0]; x1=PIN["HX711 VCC"][0]; yb=PIN["HX711 GND"][1]
 rect(x0-1.6,yb-2.2,x1-x0+3.2,4.4,"","fillColor=none;strokeColor=#ff9800;strokeWidth=1.5;")
@@ -305,6 +312,8 @@ for w in WIRES:
     mids=''.join(f'<mxPoint x="{x:.1f}" y="{y:.1f}"/>' for x,y in p[1:-1])
     st=ST[w["kind"]] if w["kind"]!="PRL" else f"strokeColor={COL['PRL']};strokeWidth={w['bw']*S:.0f};opacity=100;"
     if w["kind"]=="G": st+="dashed=1;dashPattern=4 2;"
+    if w.get("cond"):
+        st=f"strokeColor={CAT[w['cond'].split('-')[-1]]};strokeWidth=3;"+("dashed=1;dashPattern=3 2;" if w["cond"].startswith("bianco") else "")
     cells.append(f'<mxCell id="{nid()}" value="" style="endArrow=none;html=1;rounded=0;jumpStyle=arc;jumpSize=4;{st}" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="{p[0][0]:.1f}" y="{p[0][1]:.1f}" as="sourcePoint"/><mxPoint x="{p[-1][0]:.1f}" y="{p[-1][1]:.1f}" as="targetPoint"/>'+(f'<Array as="points">{mids}</Array>' if mids else '')+'</mxGeometry></mxCell>')
 xml=('<mxfile host="app.diagrams.net"><diagram id="x6" name="Scatola X6"><mxGraphModel dx="1400" dy="1000" grid="0" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>'
      +''.join(cells)+'</root></mxGraphModel></diagram></mxfile>')
