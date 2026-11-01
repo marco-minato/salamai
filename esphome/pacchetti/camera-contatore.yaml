@@ -1,0 +1,24 @@
+# Contatore SDM120 (indirizzo Modbus 2) per salumi-camera.yaml.
+# Si attiva dal blocco packages di salumi-camera.yaml quando il contatore è
+# collegato al bus RS485, già portato a indirizzo 2 e 9600 baud dai tasti
+# frontali (di fabbrica è 1 e 2400 baud e si scontrerebbe con la sonda camera).
+
+sensor:
+  # Contatore SDM120 (indirizzo 2): consumo delle lampade e degli attuatori
+  - platform: sdm_meter
+    modbus_id: modbus485
+    address: 2
+    update_interval: 30s
+    phase_a:
+      voltage:
+        name: "Tensione"
+      current:
+        name: "Corrente attuatori"
+      active_power:
+        name: "Potenza attuatori"
+      power_factor:
+        name: "Fattore di potenza"
+    total_power:
+      name: "Potenza totale"
+    import_active_energy:
+      name: "Energia attuatori"
