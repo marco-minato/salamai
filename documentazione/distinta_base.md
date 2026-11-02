@@ -45,7 +45,7 @@ negozio di materiale elettrico.
 | -X6 | 1 | Scatola stagna IP65 150×110×70 con pressacavi (A6, A4, Wago, resistenza R3), in alto sopra la bilancia | [B0F6YGYR7K](https://www.amazon.it/dp/B0F6YGYR7K) | 13,49 € | C |
 | -R3 | 1 | Resistenza 4,7 kΩ (pull-up 1-Wire) | [B0FPX6T6SC](https://www.amazon.it/dp/B0FPX6T6SC) | 9,99 € | C/F |
 | — | 1 | Pin maschi a passo 2,54 mm in strip (2 file da 7 da saldare sulla breakout) | negozio di elettronica | — | F |
-| — | 1 | Kit Dupont 2,54 mm SeKi 17422 (gusci, pin maschi e femmina a crimpare, pinza): pin femmina sui cavetti C1–C3 verso la XIAO, due gusci 1×6 sulle file della XIAO, un guscio da 1 su D6 (giri M7) e un tappo da 1 sul 5V | — | — | P |
+| — | 1 | Kit Dupont 2,54 mm SeKi 17422 (gusci, pin maschi e femmina a crimpare, pinza): pin femmina sui cavetti C1 e C2 verso la XIAO, due gusci 1×6 sulle file della XIAO, un guscio da 1 su D6 (giri M7) e un tappo da 1 sul 5V | — | — | P |
 | — | 1 | Vernice protettiva acrilica per circuiti stampati, spray 400 ml (morsetti e connettori esclusi) | [Electrolube APL (RS)](https://it.rs-online.com/web/p/rivestimenti/4090956) | 26,30 € + IVA | C |
 | | | **Subtotale** (prezzi noti, IVA compresa) | | **≈ 65 €** | |
 
@@ -69,7 +69,7 @@ La cantina la misura lo Shelly H&T Cantina (in Home Assistant): niente sonda B5.
 | -E1 | 1 | Stufa a 3 lampade IR, 1200 W, con antiribaltamento | — | — | P |
 | -M2, -M3 | 2 | Umidificatori a ultrasuoni, a spina | — | — | P |
 | -M5, -M6, -M7 | 3 | **Ventole ARCTIC P12 Slim PWM PST** 120 mm, 12 V, 4 fili, 200–2100 giri/min (confezione da 3, tutte e tre in fila: nessuna di scorta). PWM collegato direttamente alla scheda tramite il transistor Q1, giri letti dalla scheda | [B09RWTCXRR](https://www.amazon.it/dp/B09RWTCXRR) | 19,22 € | C |
-| — | 1 | Prolunghe 4 pin PWM (6 pz): 3 da tagliare per collegare le ventole in X4 senza toccarle, 2 tagliate a metà per i cavetti C1 (HX711), C2 (sensori) e C3 (ventole) in X6, 1 di scorta | [B09SKYRB3V](https://www.amazon.it/dp/B09SKYRB3V) | 6,99 € | C |
+| — | 1 | Prolunghe 4 pin PWM (6 pz): 3 da tagliare per collegare le ventole in X4 senza toccarle, 1 tagliata a metà per il cavetto C1 (HX711) in X6, 2 di scorta. Il cavetto C2 (sensori e ventole, verso la XIAO) è uno spezzone di ~25 cm di Cat5e patch a trefoli | [B09SKYRB3V](https://www.amazon.it/dp/B09SKYRB3V) | 6,99 € | C |
 | -M4 | 1 | **Estrattore, consigliato: Vents TT-100**, in linea a flusso misto, 145/187 m³/h, 21/33 W, collegato alla velocità bassa; **senza spina** (aggiungere una spina Schuko) | [B01LZQA9U9](https://www.amazon.it/dp/B01LZQA9U9) | 40,55 € | C |
 | -M4 (alt.) | 1 | Estrattore assiale Airope, 107 m³/h a bocca libera, 14 W, con spina: più economico, ma con 3 m di tubo e la valvola perde molta portata | [B08QFYMFJL](https://www.amazon.it/dp/B08QFYMFJL) | 22,90 € | in alternativa |
 | -Y1 | 1 | Valvola antiritorno a molla Ø 100, neverest RKI (uscita, lato cantina) | [B08LNS7TCV](https://www.amazon.it/dp/B08LNS7TCV) | 15,99 € | C |

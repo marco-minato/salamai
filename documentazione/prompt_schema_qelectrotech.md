@@ -361,8 +361,8 @@ fine di ogni morsettiera.
   sensori: Wago da 5 (pin GND della XIAO, HX711 GND, B3 e B4 nero; un foro libero).
   3,3 V: Wago da 5 (pin 3V3, HX711 VCC, B3 e B4 rosso, R3). 1-Wire: Wago da 5
   (D10, B3 e B4 giallo, R3). Giri: Wago da 2 per D0 + W5 marrone, per D8 + W5
-  bianco-marrone e per D6 + W5 arancio. Diretti: HX711 DT → D1 e SCK → D3 (cavetti da prolunghe ventola: C1 HX711 con connettore sull'HX711, C2 GND/3V3/D10, C3 D0/D8/D7/D6; pin Dupont femmina crimpati, sulla XIAO due gusci 1×6, D0–D5 e GND–D7, più un guscio da 1 su D6 e un tappo da 1 sul 5V),
-  D7 (C3·3) → Wago da 2 → W5 verde, cella → HX711 (E+ rosso, E− nero,
+  bianco-marrone e per D6 + W5 arancio. Diretti: HX711 DT → D1 e SCK → D3 (cavetti da prolunghe ventola: C1 HX711 con connettore sull'HX711, C2 spezzone di Cat5e patch: blu 3V3, bianco-blu GND, bianco-verde D10, verde D7, marrone D0, bianco-marrone D8, arancio D6, bianco-arancio di riserva; pin Dupont femmina crimpati, sulla XIAO due gusci 1×6, D0–D5 e GND–D7, più un guscio da 1 su D6 e un tappo da 1 sul 5V),
+  D7 (C2 verde) → Wago da 2 → W5 verde, cella → HX711 (E+ rosso, E− nero,
   A− bianco, A+ verde). W3 e W5 in Cat5e UTP: niente schermi.
 - A5 Pico-RTC-DS3231 innestato sul connettore H1/H2 di A1: SDA = **GPIO4**
   (H1 pin 15), SCL = **GPIO5** (H1 pin 14), alimentato dal connettore.
