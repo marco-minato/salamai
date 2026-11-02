@@ -194,17 +194,17 @@ for i,(pad) in enumerate(["E+","E−","A−","A+"]):
     cx=CHAN["B2"][i]; px,py=PIN["HX711 "+pad]; yy=4.2+0.9*i
     wire(cab_start("B2",i)+[(cx,yy),(px,yy),(px,py)],"CELL",cname("B2",i),"HX711 "+pad,"Cella di carico "+pad)
 
-# cavetti dalle prolunghe ventola (C1, C2, C3): corsie vicine e fascia grigia sotto
+# cavetti: C1 da una prolunga ventola, C2 da uno spezzone di Cat5e patch (8 fili): corsie vicine e fascia grigia sotto
 def lanes_of(k): return len(WIRES)
 def band(pts,label,lx,ly,lw=22,bw=3.6):
     WIRES.insert(0,dict(kind="PRL",bw=bw,pts=[(round(x,2),round(y,2)) for x,y in pts],a=None,b=None,net=None))
     if label: lab(lx,ly,lw,label,4.5,fc="#424242",align="left")
-# C3 ventole: D7, D8, D0 (corsie più basse del gruppo)
+# C2 (Cat5e), fili delle ventole: D7, D8, D0, D6
 y_d7=LANE[0]; route(xiao("D7"),cab("W5",2),"PWM","XIAO D7 (pin)",cname("W5",2),"PWM ventole (comando)")
 y_d8=LANE[0]; route(xiao("D8"),sl("T6",0),"TACH","XIAO D8 (pin)",sname("T6",0),"Giri ventola M6")
 y_d0=LANE[0]; route(xiao("D0"),sl("T5",0),"TACH","XIAO D0 (pin)",sname("T5",0),"Giri ventola M5")
 route(xiao("D6"),sl("T7",0),"TACH","XIAO D6 (pin)",sname("T7",0),"Giri ventola M7")
-# C2 sensori: D10, 3V3, GND
+# C2 (Cat5e), fili dei sensori: D10, 3V3, GND
 y_10=LANE[0]; route(xiao("D10"),sl("1W",0),"OW","XIAO D10 (pin)",sname("1W",0),"1-Wire sonde")
 route(xiao("3V3"),sl("3V3",0),"V33","XIAO 3V3 (pin)",sname("3V3",0),"3,3 V")
 y_gn=LANE[0]; route(xiao("GND"),sl("GND",0),"G","XIAO GND (pin)",sname("GND",0),"GND sensori")
@@ -217,15 +217,15 @@ y_sc=LANE[0]; route([PIN["HX711 SCK"]],xiao("D3"),"HX","HX711 SCK","XIAO D3 (pin
 # mostrati solo fuori dalla guaina; i capi elettrici restano quelli originali.
 HARNESS = [
     ("C1", (76, 54), (110, 54), ["HX711 GND", "HX711 VCC", "HX711 DT", "HX711 SCK"]),
-    ("C2", (68, 59), (204, 59), ["XIAO D10 (pin)", "XIAO 3V3 (pin)", "XIAO GND (pin)"]),
-    ("C3", (71, 66), (176, 66), ["XIAO D7 (pin)", "XIAO D8 (pin)", "XIAO D0 (pin)", "XIAO D6 (pin)"]),
+    ("C2", (70, 62), (190, 62), ["XIAO D7 (pin)", "XIAO D8 (pin)", "XIAO D0 (pin)", "XIAO D6 (pin)",
+                                 "XIAO D10 (pin)", "XIAO 3V3 (pin)", "XIAO GND (pin)"]),
 ]
 OPENINGS=[]
 for cable, start, end, members in HARNESS:
     bundle=[]
     for w in WIRES:
         if w["a"] not in members: continue
-        # C1 parte dall'HX711; C2 e C3 dalla XIAO.
+        # C1 parte dall'HX711; C2 dalla XIAO.
         pa=w["pts"][0]; pb=w["pts"][-1]
         j=len(bundle); offset=(j-(len(members)-1)/2)*1.25
         sa=(start[0],start[1]+offset); sb=(end[0],end[1]+offset)
@@ -234,7 +234,7 @@ for cable, start, end, members in HARNESS:
         else:
             stub=xiao(w["a"].split()[1]); lead=stub+[(stub[-1][0],start[1]+offset),sa]
         # Apertura lato destinazioni: corsie distinte sotto i cavetti.
-        yy=68.6+j*2+(0 if cable=="C1" else 9 if cable=="C2" else 17)
+        yy=68.6+j*2+(0 if cable=="C1" else 9)
         if pb[1]<30 and pb[0]<65:  # DT e SCK al guscio sinistro
             stub=xiao(w["b"].split()[1]); tail=[sb,(end[0]+j*1.3,yy),(stub[-1][0],yy)]+stub[::-1]
         elif w["b"]=="Modulo MOSFET PWM":
@@ -248,11 +248,15 @@ for cable, start, end, members in HARNESS:
     trunk=dict(kind="PRL",bw=2.4,pts=[start,end],a=None,b=None,net=None,cable=cable)
     WIRES.insert(0,trunk)
     OPENINGS.extend([start,end])
-    lab((start[0]+end[0])/2-12,start[1]-4,24,cable+" · 4 fili",6,fc="#333333")
+    lab((start[0]+end[0])/2-12,start[1]-4,24,cable+(" · Cat5e 8 fili" if cable=="C2" else " · 4 fili"),6,fc="#333333")
 # Conduttori dei Cat5e W3 e W5: colore vero (T568B), come nello schema del quadro.
-# I fili dei cavetti C1–C3 restano col colore della funzione (nella realtà sono neri).
+# Anche lo spezzone C2 è Cat5e: coppia blu = alimentazione e fili delle ventole
+# con gli stessi colori del W5. I fili di C1 restano col colore della funzione.
 CAT={"blu":"#1565C0","arancio":"#EF6C00","verde":"#2E7D32","marrone":"#6D4C41"}
+C2COL={"XIAO 3V3 (pin)":"blu","XIAO GND (pin)":"bianco-blu","XIAO D10 (pin)":"bianco-verde","XIAO D7 (pin)":"verde",
+       "XIAO D0 (pin)":"marrone","XIAO D8 (pin)":"bianco-marrone","XIAO D6 (pin)":"arancio"}
 for w in WIRES:
+    if w.get("cable")=="C2" and w["a"]: w["cond"]=C2COL[w["a"]]; continue
     if w.get("cable") or not w["a"]: continue
     for e in (w["a"],w["b"]):
         if e.split(" ")[0] in ("W3","W5"): w["cond"]=e.split(" ")[1]
@@ -262,7 +266,7 @@ rect(x0-1.6,yb-2.2,x1-x0+3.2,4.4,"","fillColor=none;strokeColor=#ff9800;strokeWi
 
 # Riquadro di lettura dei cavetti, lontano dai percorsi.
 rect(180,10,W-210,37,"","fillColor=#ffffff;strokeColor=#999999;")
-text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1: femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2: 1 GND → GND f.1; 2 3V3 → 3,3 V f.1; 3 D10 → 1-Wire f.1.<br>C3: 1 D0 → giri M5 f.1; 2 D8 → giri M6 f.1; 3 D7 → W5 verde (modulo MOSFET in X4); 4 D6 → giri M7 f.1.<br>C2: filo 4 isolato a entrambi i capi. Tutti neri; n.1 con riga.<br>Guscio sinistro D0–D5: C3·1 / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: C2·1 / C2·2 / C2·3 / vuoto / C3·2 / C3·3.<br>D6: guscio da 1, C3·4. Ordine dal lato USB. Tappo vuoto: 5V. Colori = funzione del filo.",6)
+text(182,11,W-214,35,"<b>Cavetti · apertura ai due estremi del tratto spesso</b><br>C1 (prolunga ventola): femmina sui 4 pin HX711. GND → Wago GND f.2; VCC → 3,3 V f.2; DT → D1; SCK → D3.<br>C2 (Cat5e patch, 8 fili): blu 3V3 → 3,3 V f.1; bianco-blu GND → GND f.1; bianco-verde D10 → 1-Wire f.1.<br>C2: marrone D0 → giri M5 f.1; bianco-marrone D8 → giri M6 f.1; arancio D6 → giri M7 f.1; verde D7 → W5 verde. Bianco-arancio di riserva.<br>Guscio sinistro D0–D5: marrone / C1·DT / vuoto / C1·SCK / vuoto / vuoto.<br>Guscio destro GND–D7: bianco-blu / blu / bianco-verde / vuoto / bianco-marrone / verde.<br>D6: guscio da 1, arancio. Ordine dal lato USB. Tappo vuoto: 5V.",6)
 
 # ---------------- reti (union-find sui nomi dei capi)
 par={}
@@ -300,9 +304,21 @@ for w in WIRES:
         w["net"]=None
         if w.get("cable"):
             w["nets"]=sorted({v["net"] for v in WIRES if v.get("cable")==w["cable"] and v["a"]})
+# Cavi dai pressacavi (sonde, cella, Cat5e): toccando il pressacavo la pagina
+# mostra ogni conduttore del cavo e dove va.
+CABLES=[]
+for c in CHAN:
+    rows=[]
+    for i,w in enumerate(WIRES):
+        if not w["a"]: continue
+        for mine,other in ((w["a"],w["b"]),(w["b"],w["a"])):
+            if mine.startswith(c+" "):
+                rows.append(dict(c=mine[len(c)+1:],to=other,net=w["net"],w=i))
+    rows.sort(key=lambda r:CN[c].index(r["c"]))
+    CABLES.append(dict(id=c,title=GLAB[c],x=round(SPLIT[c],2),y0=YS,y1=YG+5,rows=rows))
 splits=[[SPLIT[c],YS] for c in CHAN]+OPENINGS
 json.dump(dict(W=W,H=H,V=[{**v,"x":round(v["x"],2),"y":round(v["y"],2),"w":round(v["w"],2),"h":round(v["h"],2)} for v in V],
-               wires=WIRES,nets=nets,dots=[],splits=splits),open(sys.argv[2],'w'),ensure_ascii=False)
+               wires=WIRES,nets=nets,dots=[],splits=splits,cables=CABLES),open(sys.argv[2],'w'),ensure_ascii=False)
 
 # drawio: fili
 ST={k:f"strokeColor={c};strokeWidth={ {'CAB':9,'PRL':12}.get(k,2)};"+("opacity=55;" if k=='CAB' else "opacity=45;" if k=='PRL' else "") for k,c in COL.items()}
