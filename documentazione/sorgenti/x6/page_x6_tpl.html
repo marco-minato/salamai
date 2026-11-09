@@ -113,7 +113,7 @@ svg.sel .cab.on{opacity:.9}
 <main>
   <svg id="view" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Collegamenti della scatola X6"></svg>
   <div class="zoom"><button id="zi" type="button" aria-label="Ingrandisci">+</button><button id="zo" type="button" aria-label="Riduci">−</button><button id="zr" type="button" aria-label="Vista intera">⤢</button></div>
-  <div class="hint" id="hint">Pizzica per lo zoom · tocca un filo o un pressacavo</div>
+  <div class="hint" id="hint">Pizzica per lo zoom · tocca un filo, un pressacavo o un cavetto</div>
 </main>
 
 <section class="sheet" id="s-net" aria-live="polite">
@@ -211,7 +211,7 @@ D.wires.forEach((w,i)=>{
   const g=HV.has(w.kind)?gW230:gWbt;
   const pts=w.pts.map(p=>p.join(",")).join(" ");
   if(w.kind==="CAB"){const cb=(D.cables||[]).find(c=>Math.abs(c.x-w.pts[0][0])<.01);el("polyline",{points:pts,class:"cab",stroke:COL[w.kind],"stroke-width":7,"data-cabline":cb?cb.id:""},g);return}
-  if(w.kind==="PRL"){const p=el("polyline",{points:pts,class:"prl",stroke:"#424242","stroke-width":w.bw||2.4,"data-nets":(w.nets||[]).join(",")},g);wireEls.push(p);return}
+  if(w.kind==="PRL"){const p=el("polyline",{points:pts,class:"prl",stroke:"#424242","stroke-width":w.bw||2.4,"data-nets":(w.nets||[]).join(","),"data-trunk":w.cable||""},g);wireEls.push(p);return}
   if(w.cond){  // conduttore di un Cat5e con il suo colore vero; bianco-colore = bianco con tratteggio
     const c=CAT[w.cond.split("-").pop()], st=w.cond.startsWith("bianco");
     for(const sg of (w.segments||[w.pts])){const pts=sg.map(p=>p.join(",")).join(" ");
@@ -234,8 +234,11 @@ for(const d of D.splits) el("circle",{cx:d[0],cy:d[1],r:1.6,fill:"#777",opacity:
 // zone da toccare sui cavi: pressacavo, guaina e scritta
 const gHit=el("g",{});
 const CABS=new Map((D.cables||[]).map(c=>[c.id,c]));
-for(const c of CABS.values()) el("rect",{x:c.x-8,y:c.y1-17,width:16,height:17,class:"cabhit","data-cab":c.id},gHit),
-  el("rect",{x:c.x-4,y:c.y0,width:8,height:c.y1-c.y0,class:"cabhit","data-cab":c.id},gHit);
+for(const c of CABS.values()){
+  if(c.harness){el("rect",{x:c.x0,y:c.y-3,width:c.x1-c.x0,height:6,class:"cabhit","data-cab":c.id},gHit);continue}
+  el("rect",{x:c.x-8,y:c.y1-17,width:16,height:17,class:"cabhit","data-cab":c.id},gHit);
+  el("rect",{x:c.x-4,y:c.y0,width:8,height:c.y1-c.y0,class:"cabhit","data-cab":c.id},gHit)}
+const cabBox=c=>c.harness?{x:c.x0-10,y:c.y-25,w:c.x1-c.x0+20,h:50}:{x:c.x-40,y:90,w:80,h:c.y1-90};
 
 function setVB(){svg.setAttribute("viewBox",`${vb.x} ${vb.y} ${vb.w} ${vb.h}`)}
 function fit(){const r=svg.getBoundingClientRect();const s=Math.min(r.width/VB0.w,r.height/VB0.h);vb.w=r.width/s;vb.h=r.height/s;vb.x=VB0.x-(vb.w-VB0.w)/2;vb.y=VB0.y-(vb.h-VB0.h)/2;setVB()}
@@ -305,15 +308,18 @@ const CNOTE={B1:"Sonda S-TH-01 sul bus RS485: alimentazione a 12 V e i due fili 
   B4:"DS18B20 di pavimento: rosso al 3,3 V, nero al GND sensori, giallo sul 1-Wire con l'altra sonda.",
   B2:"Colori più comuni della cella: se i tuoi sono diversi, controlla il foglietto della cella.",
   W3:"Cat5e dal quadro: alimentazione 12 V su due coppie e bus RS485 sulla coppia blu. Coppia marrone libera.",
-  W5:"Cat5e verso la scatola X4 delle ventole. Bianco-arancio di riserva, isolalo."};
+  W5:"Cat5e verso la scatola X4 delle ventole. Bianco-arancio di riserva, isolalo.",
+  C1:"Metà di una prolunga ventola: connettore femmina sui 4 pin dell'HX711 (il filo con la riga è il n. 1). Nella realtà i fili sono neri: qui sono colorati per funzione.",
+  C2:"Spezzone di Cat5e patch di ~25 cm: pin femmina crimpati sulla XIAO, puntalini nei Wago. Bianco-arancio di riserva, isolalo."};
 const condCol=s=>{const k=s.split(" ")[0],m={rosso:"#E00000",nero:"#000000",giallo:"#f2c200",bianco:"#ffffff",verde:"#2E7D32",blu:"#1565C0",arancio:"#EF6C00",marrone:"#6D4C41"};
   if(k.startsWith("bianco-"))return`repeating-linear-gradient(90deg,${m[k.slice(7)]} 0 4px,#fff 4px 7px)`;return m[k]||"#9e9e9e"};
 function selectCable(id){const c=CABS.get(id);cur=-1;svg.classList.add("sel");
   const ws=new Set(c.rows.map(r=>String(r.w)));
-  wireEls.forEach(p=>p.classList.toggle("on",ws.has(p.dataset.w)));
+  wireEls.forEach(p=>p.classList.toggle("on",ws.has(p.dataset.w)||p.dataset.trunk===id));
   svg.querySelectorAll(".cab").forEach(p=>p.classList.toggle("on",p.dataset.cabline===id));
   gMark.replaceChildren();
-  el("ellipse",{cx:c.x,cy:c.y1-2,rx:7.5,ry:4,class:"cabsel"},gMark);
+  if(c.harness)el("rect",{x:c.x0-1.5,y:c.y-4.5,width:c.x1-c.x0+3,height:9,rx:2,class:"cabsel"},gMark);
+  else el("ellipse",{cx:c.x,cy:c.y1-2,rx:7.5,ry:4,class:"cabsel"},gMark);
   c.rows.forEach(r=>{const w=D.wires[r.w];[w.pts[0],w.pts[w.pts.length-1]].forEach(p=>el("circle",{cx:p[0],cy:p[1],r:1.3,class:"pinmark"},gMark))});
   document.getElementById("n-title").textContent=c.title;
   document.getElementById("n-sw").style.background=COL.CAB;
@@ -321,7 +327,7 @@ function selectCable(id){const c=CABS.get(id);cur=-1;svg.classList.add("sel");
   document.getElementById("n-ends").hidden=true;
   document.getElementById("n-conds").replaceChildren(...c.rows.map(r=>{const b=document.createElement("button");b.type="button";b.className="cond";
     b.innerHTML=`<span class="sw"></span><span><span class="nm"></span><span class="ds"></span></span>`;
-    const sw=b.querySelector(".sw");sw.style.background=condCol(r.c);sw.style.outline="1px solid #888";
+    const sw=b.querySelector(".sw");sw.style.background=r.col||condCol(r.c);sw.style.outline="1px solid #888";
     b.querySelector(".nm").textContent=r.c;b.querySelector(".ds").textContent="→ "+r.to+(r.net!==null?" · "+NETS.get(r.net).name:"");
     b.onclick=()=>select(r.net,true);return b}));
   document.getElementById("n-note").textContent=CNOTE[id]||"";
@@ -336,11 +342,11 @@ document.getElementById("b-leg").onclick=()=>openSheet("s-leg");
 document.getElementById("b-list").onclick=()=>openSheet("s-list");
 // elenco
 const lb=document.getElementById("l-body");let lastK=null;
-{const h=document.createElement("div");h.className="grp";h.textContent="Cavi e sonde (pressacavi)";lb.appendChild(h);
+{const h=document.createElement("div");h.className="grp";h.textContent="Cavi, sonde e cavetti";lb.appendChild(h);
  for(const c of CABS.values()){const b=document.createElement("button");b.type="button";b.className="item";
   b.innerHTML=`<span class="sw" style="background:${COL.CAB};width:18px;height:8px;flex:none;opacity:.7"></span><span><span class="nm"></span><span class="ds"></span></span>`;
   b.querySelector(".nm").textContent=c.title;b.querySelector(".ds").textContent=c.rows.map(r=>r.c).join(" · ");
-  b.onclick=()=>{selectCable(c.id);zoomTo({x:c.x-40,y:90,w:80,h:c.y1-90})};lb.appendChild(b)}}
+  b.onclick=()=>{selectCable(c.id);zoomTo(cabBox(c))};lb.appendChild(b)}}
 for(const n of D.nets){const k=KD[n.kind];if(k!==lastK){const h=document.createElement("div");h.className="grp";h.textContent=k;lb.appendChild(h);lastK=k}
   const b=document.createElement("button");b.type="button";b.className="item";
   b.innerHTML=`<span class="sw" style="background:${COL[n.kind]};width:18px;height:5px;flex:none"></span><span><span class="nm"></span><span class="ds"></span></span>`;

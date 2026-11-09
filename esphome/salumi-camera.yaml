@@ -31,7 +31,7 @@ substitutions:
 # Senza, la scheda li interrogherebbe a vuoto rallentando la sonda camera.
 # Con uno solo collegato, lasciare "packages:" e solo la sua riga.
 packages:
-  # nodo: !include pacchetti/camera-nodo.yaml
+  nodo: !include pacchetti/camera-nodo.yaml
   contatore: !include pacchetti/camera-contatore.yaml
 
 esphome:

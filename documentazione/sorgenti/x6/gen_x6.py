@@ -316,6 +316,19 @@ for c in CHAN:
                 rows.append(dict(c=mine[len(c)+1:],to=other,net=w["net"],w=i))
     rows.sort(key=lambda r:CN[c].index(r["c"]))
     CABLES.append(dict(id=c,title=GLAB[c],x=round(SPLIT[c],2),y0=YS,y1=YG+5,rows=rows))
+# Cavetti interni C1 e C2: toccando la fascia grigia si vedono i loro fili.
+for cable,start,end,members in HARNESS:
+    rows=[]
+    for i,w in enumerate(WIRES):
+        if w.get("cable")!=cable or not w["a"]: continue
+        pin=w["a"].split(" ")[1]
+        c=f'{w["cond"]} ({pin})' if w.get("cond") else f'filo {pin}'
+        T568B=["bianco-arancio","arancio","bianco-verde","blu","bianco-blu","verde","bianco-marrone","marrone"]
+        o=T568B.index(w["cond"]) if w.get("cond") else members.index(w["a"])
+        rows.append(dict(c=c,to=w["b"],net=w["net"],w=i,col=None if w.get("cond") else COL[w["kind"]],_o=o))
+    rows.sort(key=lambda r:r.pop("_o"))
+    title=("C1 cavetto HX711 (prolunga ventola)" if cable=="C1" else "C2 spezzone Cat5e verso la XIAO")
+    CABLES.append(dict(id=cable,title=title,harness=True,x0=start[0],x1=end[0],y=start[1],rows=rows))
 splits=[[SPLIT[c],YS] for c in CHAN]+OPENINGS
 json.dump(dict(W=W,H=H,V=[{**v,"x":round(v["x"],2),"y":round(v["y"],2),"w":round(v["w"],2),"h":round(v["h"],2)} for v in V],
                wires=WIRES,nets=nets,dots=[],splits=splits,cables=CABLES),open(sys.argv[2],'w'),ensure_ascii=False)

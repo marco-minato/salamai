@@ -30,13 +30,14 @@ DB_PATHS = ("/config/home-assistant_v2.db", "/homeassistant/home-assistant_v2.db
 
 # Entità usate nel diario. Quelle che non esistono ancora (hardware non
 # installato) compaiono come "non disponibile".
-TEMP = "sensor.sonda_th_temperatura"
-UR = "sensor.sonda_th_umidita"
-STUFA = "switch.sonoff_1001f24fe4_2"
-UMIDIFICATORE = "switch.sonoff_1001f24fe4_1"
-ASPIRATORE = "switch.salumi_aspiratore"
-ENERGIA_STUFA = "sensor.salumi_energia_stufa"
-ENERGIA_UMIDIFICATORE = "sensor.salumi_energia_umidificatore"
+# Dal 07/11/2026 attuatori e consumi sono sulla Waveshare del quadro: un solo
+# contatore per tutti gli attuatori, quindi l'energia è un totale.
+TEMP = "sensor.cantina_camera_salumi_temperatura_camera"
+UR = "sensor.cantina_camera_salumi_umidita_camera"
+STUFA = "binary_sensor.salumi_stufa_accesa"
+UMIDIFICATORE = "switch.salumi_umidificatore"
+ASPIRATORE = "switch.cantina_camera_salumi_estrattore"
+ENERGIA = "sensor.cantina_camera_salumi_energia_attuatori"
 PESO = "sensor.salumi_peso"
 TEMP_CUORE = "sensor.salumi_temperatura_cuore"
 
@@ -195,21 +196,15 @@ def righe_statistiche(st, cartella, t0, t1, inizio_ciclo):
             riga = f"{nome + ':':<15}non disponibile"
         out.append(riga)
 
-    for nome, eid, eid_kwh in (
-        ("Stufa", STUFA, ENERGIA_STUFA),
-        ("Umidificatore", UMIDIFICATORE, ENERGIA_UMIDIFICATORE),
-        ("Aspiratore", ASPIRATORE, None),
-    ):
+    for nome, eid in (("Stufa", STUFA), ("Umidificatore", UMIDIFICATORE), ("Estrattore", ASPIRATORE)):
         a = st.accensioni(eid, t0, t1)
         if a is None:
             out.append(f"{nome + ':':<15}non disponibile")
             continue
-        riga = (f"{nome + ':':<15}acceso {durata(a['acceso'])} "
-                f"({round(100 * a['acceso'] / dur)}% del tempo, {a['n']} accensioni)")
-        kwh = energia(st, eid_kwh, t0, t1) if eid_kwh else None
-        if kwh is not None:
-            riga += f" – {num(kwh, 2)} kWh"
-        out.append(riga)
+        out.append(f"{nome + ':':<15}acceso {durata(a['acceso'])} "
+                   f"({round(100 * a['acceso'] / dur)}% del tempo, {a['n']} accensioni)")
+    kwh = energia(st, ENERGIA, t0, t1)
+    out.append(f"{'Energia:':<15}" + (f"{num(kwh, 2)} kWh (tutti gli attuatori)" if kwh is not None else "non disponibile"))
 
     p0, p1 = st.valore(PESO, t0), st.valore(PESO, t1)
     if p0 is not None and p1 is not None:

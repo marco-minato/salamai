@@ -205,6 +205,7 @@ sensor:
     accuracy_decimals: 0
     filters:
       - calibrate_linear:
-          # DA CALIBRARE: lettura grezza -> grammi
-          - 0 -> 0
-          - 100000 -> 1000
+          # Tarata il 06/11/2026 sulla XIAO (stesso HX711, guadagno 128):
+          # a vuoto col gancio e con 443 g appesi
+          - 6741 -> 0
+          - 439600 -> 443
