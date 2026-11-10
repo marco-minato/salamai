@@ -6,9 +6,8 @@
 # la Waveshare (salumi-camera.yaml) lo interroga e gli scrive la velocità
 # delle ventole. Non governa nulla da solo.
 #
-# DA FLASHARE SOLO ALLA MIGRAZIONE: oggi la stessa XIAO gira con
-# sonda-th.yaml e passa a HA le letture della S-TH-01. Con questo firmware
-# la S-TH-01 la legge direttamente la Waveshare.
+# Sostituisce sonda-th.yaml sulla stessa XIAO (dal 07/11/2026). La S-TH-01
+# la legge direttamente la Waveshare.
 #
 # Pin XIAO ESP32C3: D0=GPIO2 D1=GPIO3 D2=GPIO4 D3=GPIO5 D4=GPIO6 D5=GPIO7
 #                   D6=GPIO21 D7=GPIO20 D8=GPIO8 D9=GPIO9 D10=GPIO10
@@ -236,21 +235,37 @@ sensor:
           window_size: 5
           send_every: 5
 
-  # Indirizzi letti al banco il 30/10/2026 (sonda scaldata in mano).
-  # Parete: cavo segnato con il nastro "parete".
+  # Indirizzi letti al banco: parete il 30/10/2026 (sonda scaldata in mano,
+  # cavo segnato con il nastro "parete"); pavimento nuova il 03/11/2026.
   - platform: dallas_temp
     id: t_parete
     name: "Temperatura parete"
     address: 0x223C9AE381172528
-    update_interval: 30s
+    # una lettura ogni 10 s, ogni 30 s la media delle ultime 6 (un minuto):
+    # la DS18B20 misura a scalini di 0,06 °C, la media li smussa
+    update_interval: 10s
+    filters:
+      - sliding_window_moving_average:
+          window_size: 6
+          send_every: 3
   - platform: dallas_temp
     id: t_pavimento
     name: "Temperatura pavimento"
-    address: 0xCF3CC4E381C39528
-    update_interval: 30s
+    address: 0x623C43F6493EB828
+    # una lettura ogni 10 s, ogni 30 s la media delle ultime 6 (un minuto):
+    # la DS18B20 misura a scalini di 0,06 °C, la media li smussa
+    update_interval: 10s
+    filters:
+      - sliding_window_moving_average:
+          window_size: 6
+          send_every: 3
 
-  # Giri ventole (2 impulsi a giro: impulsi al minuto × 0,5 = giri/min)
-  - platform: pulse_counter
+  # Giri ventole (2 impulsi a giro). Misura il tempo tra un impulso e l'altro
+  # (pulse_meter) e prende la mediana di 9 misure: un impulso perso ogni tanto
+  # si scarta invece di abbassare il conto. Il pulse_counter (conteggio in 10 s,
+  # via interrupt: la C3 non ha il contatore hardware) leggeva ~30 % in meno
+  # della prova pubblicata della P12 Slim (09/11/2026). Ferma: 0 dopo ~15 s.
+  - platform: pulse_meter
     id: giri_m5
     name: "Giri ventola 1"
     pin:
@@ -261,10 +276,19 @@ sensor:
         pullup: true
     unit_of_measurement: "rpm"
     accuracy_decimals: 0
-    update_interval: 10s
+    internal_filter: 200us
+    internal_filter_mode: PULSE
+    timeout: 3s
     filters:
       - multiply: 0.5
-  - platform: pulse_counter
+      - median:
+          window_size: 9
+          send_every: 9
+      - throttle: 10s
+      - timeout:
+          timeout: 15s
+          value: 0
+  - platform: pulse_meter
     id: giri_m6
     name: "Giri ventola 2"
     pin:
@@ -275,10 +299,19 @@ sensor:
         pullup: true
     unit_of_measurement: "rpm"
     accuracy_decimals: 0
-    update_interval: 10s
+    internal_filter: 200us
+    internal_filter_mode: PULSE
+    timeout: 3s
     filters:
       - multiply: 0.5
-  - platform: pulse_counter
+      - median:
+          window_size: 9
+          send_every: 9
+      - throttle: 10s
+      - timeout:
+          timeout: 15s
+          value: 0
+  - platform: pulse_meter
     id: giri_m7
     name: "Giri ventola 3"
     pin:
@@ -288,9 +321,18 @@ sensor:
         pullup: true
     unit_of_measurement: "rpm"
     accuracy_decimals: 0
-    update_interval: 10s
+    internal_filter: 200us
+    internal_filter_mode: PULSE
+    timeout: 3s
     filters:
       - multiply: 0.5
+      - median:
+          window_size: 9
+          send_every: 9
+      - throttle: 10s
+      - timeout:
+          timeout: 15s
+          value: 0
 
   - platform: template
     name: "PWM ventole"

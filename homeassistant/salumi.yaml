@@ -1,11 +1,19 @@
 # =============================================================================
 # Camera di stufatura / asciugatura salumi
 #
-# Sensore:      Sonda RS485 S-TH-01 su ESPHome "Sonda TH" (dentro la camera)
+# Scheda:       Waveshare ESP32-S3-Relay-6CH "Camera salumi" (salumi-camera.yaml)
+# Sensore:      sonda RS485 S-TH-01, letta dalla Waveshare (dentro la camera)
 # Riferimento:  Shelly H&T Cantina (in cantina, fuori dalla camera)
-# Attuatori:    Sonoff DUALR3 "Stufa e Umidificatore"
-#               - switch.sonoff_1001f24fe4_2 = Stufa        (power_2)
-#               - switch.sonoff_1001f24fe4_1 = Umidificatore (power_1)
+# Stufa:        il termostato della Waveshare (climate.cantina_camera_salumi_stufa,
+#               lampade 1-3): HA imposta solo modo e obiettivo, il controllo è
+#               sulla scheda e continua anche senza HA.
+# Umidità:      igrostato di HA su switch.salumi_umidificatore, che accende
+#               l'umidificatore 1 o 2 scelto in input_select.salumi_umidificatore_in_uso.
+#               Quando quello in uso resta senz'acqua si passa all'altro da soli.
+# Consumi:      contatore SDM120 della Waveshare (tutti gli attuatori insieme).
+# Dal 07/11/2026; prima stufa e umidificatore erano su un Sonoff DUALR3.
+# Passo intermedio: la logica del ciclo resta qui finché non passa nel
+# firmware della Waveshare (specifiche_firmware.md §11).
 #
 # Il ciclo è calcolato dall'ora di inizio (input_datetime), quindi sopravvive
 # ai riavvii di HA. Avvio con script.salumi_avvia_ciclo.
@@ -28,6 +36,14 @@ input_boolean:
   salumi_cella_pronta:
     name: Salumi - cella pronta
     icon: mdi:check-circle
+  # Acceso quando l'umidificatore risulta senz'acqua; si spegne da solo quando
+  # riprende ad assorbire (gestiti dall'automazione "umidificatore vuoto")
+  salumi_umidificatore_1_vuoto:
+    name: Salumi - umidificatore 1 vuoto
+    icon: mdi:water-off
+  salumi_umidificatore_2_vuoto:
+    name: Salumi - umidificatore 2 vuoto
+    icon: mdi:water-off
 
 input_datetime:
   salumi_partenza_programmata:
@@ -74,6 +90,14 @@ input_select:
       - Morganline
       - Zanotti
     icon: mdi:table-clock
+  # Umidificatore comandato dall'igrostato (uno alla volta). Lo cambia da sola
+  # l'automazione "umidificatore vuoto": si usa lo stesso finché non si svuota.
+  salumi_umidificatore_in_uso:
+    name: Salumi - umidificatore in uso
+    options:
+      - "1"
+      - "2"
+    icon: mdi:air-humidifier
   salumi_supervisione:
     name: Salumi - supervisione Claude
     options:
@@ -147,16 +171,9 @@ input_number:
     step: 0.1
     unit_of_measurement: "%"
     mode: box
-  # Letture dei contatori di energia all'inizio del ciclo
-  salumi_energia_inizio_stufa:
-    name: Salumi - energia stufa a inizio ciclo
-    min: 0
-    max: 1000000
-    step: 0.001
-    unit_of_measurement: kWh
-    mode: box
-  salumi_energia_inizio_umidificatore:
-    name: Salumi - energia umidificatore a inizio ciclo
+  # Lettura del contatore della Waveshare all'inizio del ciclo
+  salumi_energia_inizio:
+    name: Salumi - energia a inizio ciclo
     min: 0
     max: 1000000
     step: 0.001
@@ -170,30 +187,15 @@ input_number:
     unit_of_measurement: °C
     mode: box
 
-climate:
-  - platform: generic_thermostat
-    name: Salumi Stufa
-    unique_id: salumi_stufa
-    heater: switch.sonoff_1001f24fe4_2
-    target_sensor: sensor.sonda_th_temperatura
-    min_temp: 5
-    max_temp: 30
-    target_temp: 12
-    cold_tolerance: 0.3
-    hot_tolerance: 0.3
-    min_cycle_duration:
-      minutes: 2
-    keep_alive:
-      minutes: 3
-    initial_hvac_mode: "off"
-    precision: 0.1
+# La stufa è il termostato della Waveshare (climate.cantina_camera_salumi_stufa):
+# niente generic_thermostat in HA.
 
 humidifier:
   - platform: generic_hygrostat
     name: Salumi Umidità
     unique_id: salumi_umidita
-    humidifier: switch.sonoff_1001f24fe4_1
-    target_sensor: sensor.sonda_th_umidita
+    humidifier: switch.salumi_umidificatore
+    target_sensor: sensor.cantina_camera_salumi_umidita_camera
     device_class: humidifier
     min_humidity: 40
     max_humidity: 98
@@ -209,28 +211,6 @@ humidifier:
       minutes: 30
     initial_state: false
 
-# Contatori di energia calcolati in locale dalla potenza del DUALR3
-# (i sensori energia dell'integrazione Sonoff dipendono dal cloud)
-sensor:
-  - platform: integration
-    name: Salumi energia stufa
-    unique_id: salumi_energia_stufa
-    source: sensor.sonoff_1001f24fe4_power_2
-    unit_prefix: k
-    round: 3
-    method: left
-    max_sub_interval:
-      minutes: 1
-  - platform: integration
-    name: Salumi energia umidificatore
-    unique_id: salumi_energia_umidificatore
-    source: sensor.sonoff_1001f24fe4_power_1
-    unit_prefix: k
-    round: 3
-    method: left
-    max_sub_interval:
-      minutes: 1
-
 template:
   - sensor:
       # Umidità assoluta (g/m³) dentro la camera e in cantina: serve a capire
@@ -240,10 +220,10 @@ template:
         unit_of_measurement: g/m³
         state_class: measurement
         icon: mdi:water
-        availability: "{{ has_value('sensor.sonda_th_temperatura') and has_value('sensor.sonda_th_umidita') }}"
+        availability: "{{ has_value('sensor.cantina_camera_salumi_temperatura_camera') and has_value('sensor.cantina_camera_salumi_umidita_camera') }}"
         state: >
-          {% set t = states('sensor.sonda_th_temperatura') | float %}
-          {% set rh = states('sensor.sonda_th_umidita') | float %}
+          {% set t = states('sensor.cantina_camera_salumi_temperatura_camera') | float %}
+          {% set rh = states('sensor.cantina_camera_salumi_umidita_camera') | float %}
           {{ (6.112 * e ** (17.67 * t / (t + 243.5)) * rh * 2.1674 / (273.15 + t)) | round(2) }}
       - name: Salumi umidità assoluta cantina
         unique_id: salumi_umidita_assoluta_cantina
@@ -256,15 +236,15 @@ template:
           {% set rh = states('sensor.shelly_h_t_cantina_humidity') | float %}
           {{ (6.112 * e ** (17.67 * t / (t + 243.5)) * rh * 2.1674 / (273.15 + t)) | round(2) }}
       # --- Calo peso -----------------------------------------------------------
-      # Peso del salame campione dalla bilancia HX711 della Sonda TH.
+      # Peso del salame campione: bilancia HX711 sul nodo in camera, in grammi dalla Waveshare.
       - name: Salumi peso
         unique_id: salumi_peso
         unit_of_measurement: g
         device_class: weight
         state_class: measurement
         icon: mdi:scale
-        availability: "{{ has_value('sensor.cantina_sonda_th_peso') }}"
-        state: "{{ states('sensor.cantina_sonda_th_peso') | float }}"
+        availability: "{{ has_value('sensor.cantina_camera_salumi_peso') }}"
+        state: "{{ states('sensor.cantina_camera_salumi_peso') | float }}"
       - name: Salumi calo reale
         unique_id: salumi_calo_reale
         unit_of_measurement: "%"
@@ -307,30 +287,79 @@ template:
           {% set ore = (as_timestamp(now()) - state_attr('input_datetime.salumi_inizio_ciclo', 'timestamp') | float(0)) / 3600 %}
           {% set g = [[ore / states('input_number.salumi_ore_per_giorno') | float(24), 0] | max, 15.5] | min %}
           {{ (4.56 * g ** 0.544) | round(1) }}
-      - name: Salumi energia ciclo stufa
-        unique_id: salumi_energia_ciclo_stufa
-        unit_of_measurement: kWh
-        device_class: energy
-        icon: mdi:radiator
-        state: >
-          {{ [states('sensor.salumi_energia_stufa') | float(0)
-              - states('input_number.salumi_energia_inizio_stufa') | float(0), 0] | max | round(2) }}
-      - name: Salumi energia ciclo umidificatore
-        unique_id: salumi_energia_ciclo_umidificatore
-        unit_of_measurement: kWh
-        device_class: energy
-        icon: mdi:air-humidifier
-        state: >
-          {{ [states('sensor.salumi_energia_umidificatore') | float(0)
-              - states('input_number.salumi_energia_inizio_umidificatore') | float(0), 0] | max | round(2) }}
+      # Energia del ciclo: contatore della Waveshare meno la lettura di inizio ciclo
       - name: Salumi energia ciclo totale
         unique_id: salumi_energia_ciclo_totale
         unit_of_measurement: kWh
         device_class: energy
         icon: mdi:lightning-bolt
+        availability: "{{ has_value('sensor.cantina_camera_salumi_energia_attuatori') }}"
         state: >
-          {{ (states('sensor.salumi_energia_ciclo_stufa') | float(0)
-              + states('sensor.salumi_energia_ciclo_umidificatore') | float(0)) | round(2) }}
+          {{ [states('sensor.cantina_camera_salumi_energia_attuatori') | float(0)
+              - states('input_number.salumi_energia_inizio') | float(0), 0] | max | round(2) }}
+
+  # Stufa accesa = almeno una lampada della Waveshare accesa
+  - binary_sensor:
+      - name: Salumi stufa accesa
+        unique_id: salumi_stufa_accesa
+        icon: mdi:heat-wave
+        availability: "{{ has_value('switch.cantina_camera_salumi_lampada_1') }}"
+        state: >
+          {{ ['switch.cantina_camera_salumi_lampada_1', 'switch.cantina_camera_salumi_lampada_2',
+              'switch.cantina_camera_salumi_lampada_3'] | select('is_state', 'on') | list | count > 0 }}
+        attributes:
+          lampade_accese: >
+            {{ ['switch.cantina_camera_salumi_lampada_1', 'switch.cantina_camera_salumi_lampada_2',
+                'switch.cantina_camera_salumi_lampada_3'] | select('is_state', 'on') | list | count }}
+
+  # Umidificatore dell'igrostato: accende quello scelto in "umidificatore in uso",
+  # spegne sempre tutti e due. Sulla Waveshare un umidificatore spegne l'estrattore.
+  - switch:
+      - name: Salumi umidificatore
+        unique_id: salumi_umidificatore
+        icon: mdi:air-humidifier
+        availability: "{{ has_value('switch.cantina_camera_salumi_umidificatore_1') }}"
+        state: >
+          {{ is_state('switch.cantina_camera_salumi_umidificatore_1', 'on')
+             or is_state('switch.cantina_camera_salumi_umidificatore_2', 'on') }}
+        turn_on:
+          - action: switch.turn_off
+            target:
+              entity_id: >
+                {{ 'switch.cantina_camera_salumi_umidificatore_'
+                   ~ ('1' if is_state('input_select.salumi_umidificatore_in_uso', '2') else '2') }}
+          - action: switch.turn_on
+            target:
+              entity_id: >
+                {{ 'switch.cantina_camera_salumi_umidificatore_'
+                   ~ ('2' if is_state('input_select.salumi_umidificatore_in_uso', '2') else '1') }}
+        turn_off:
+          - action: switch.turn_off
+            target:
+              entity_id:
+                - switch.cantina_camera_salumi_umidificatore_1
+                - switch.cantina_camera_salumi_umidificatore_2
+
+  # Potenza riportata a 230 V: le lampade seguono la tensione (P ~ V^1,6) e la
+  # rete salta anche di 4-6 V tra due letture (~25 W su 1000 W). Serve a vedere
+  # i ~22 W dell'umidificatore con la stufa accesa.
+  - triggers:
+      - trigger: state
+        entity_id:
+          - sensor.cantina_camera_salumi_potenza_attuatori
+          - sensor.cantina_camera_salumi_tensione
+    sensor:
+      - name: Salumi potenza a 230 V
+        unique_id: salumi_potenza_230v
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: >
+          {{ has_value('sensor.cantina_camera_salumi_potenza_attuatori')
+             and states('sensor.cantina_camera_salumi_tensione') | float(0) > 150 }}
+        state: >
+          {{ (states('sensor.cantina_camera_salumi_potenza_attuatori') | float(0)
+              * (230 / states('sensor.cantina_camera_salumi_tensione') | float(230)) ** 1.6) | round(1) }}
 
   - triggers:
       - trigger: time_pattern
@@ -585,7 +614,7 @@ script:
         then:
           - if: >
               {% set ns = namespace(ok=true) %}
-              {% for e in ['sensor.sonda_th_temperatura', 'sensor.sonda_th_umidita'] %}
+              {% for e in ['sensor.cantina_camera_salumi_temperatura_camera', 'sensor.cantina_camera_salumi_umidita_camera'] %}
                 {% set s = states[e] %}
                 {% if s is none or s.state in ['unavailable', 'unknown']
                       or (now() - s.last_reported).total_seconds() >= 120 %}
@@ -608,7 +637,7 @@ script:
           # Preparazione: solo stufa, umidificatore spento
           - action: climate.set_temperature
             target:
-              entity_id: climate.salumi_stufa
+              entity_id: climate.cantina_camera_salumi_stufa
             data:
               hvac_mode: heat
               temperature: "{{ t }}"
@@ -619,7 +648,7 @@ script:
         then:
           - action: climate.set_temperature
             target:
-              entity_id: climate.salumi_stufa
+              entity_id: climate.cantina_camera_salumi_stufa
             data:
               hvac_mode: heat
               temperature: "{{ t }}"
@@ -635,7 +664,7 @@ script:
         then:
           - action: climate.set_hvac_mode
             target:
-              entity_id: climate.salumi_stufa
+              entity_id: climate.cantina_camera_salumi_stufa
             data:
               hvac_mode: "off"
           - action: humidifier.turn_off
@@ -663,14 +692,9 @@ script:
     sequence:
       - action: input_number.set_value
         target:
-          entity_id: input_number.salumi_energia_inizio_stufa
+          entity_id: input_number.salumi_energia_inizio
         data:
-          value: "{{ states('sensor.salumi_energia_stufa') | float(0) }}"
-      - action: input_number.set_value
-        target:
-          entity_id: input_number.salumi_energia_inizio_umidificatore
-        data:
-          value: "{{ states('sensor.salumi_energia_umidificatore') | float(0) }}"
+          value: "{{ states('sensor.cantina_camera_salumi_energia_attuatori') | float(0) }}"
 
   salumi_avvia_ciclo:
     alias: Salumi - partenza ciclo
@@ -836,7 +860,7 @@ automation:
                 data:
                   titolo: "Salumi: cella pronta"
                   messaggio: >
-                    Raggiunti {{ states('sensor.sonda_th_temperatura') }} °C.
+                    Raggiunti {{ states('sensor.cantina_camera_salumi_temperatura_camera') }} °C.
                     Inserisci i salumi e premi "Partenza ciclo". La cella resta a {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C in attesa.
                   priorita: 1
           - conditions: "{{ trigger.to_state.state == 'Preparazione cella' }}"
@@ -950,16 +974,16 @@ automation:
     mode: queued
     triggers:
       - trigger: state
-        entity_id: switch.sonoff_1001f24fe4_1
+        entity_id: switch.salumi_umidificatore
         to: "on"
         id: acceso
       - trigger: state
-        entity_id: switch.sonoff_1001f24fe4_1
+        entity_id: switch.salumi_umidificatore
         to: "on"
         for: "00:05:00"
         id: dopo_5
       - trigger: state
-        entity_id: switch.sonoff_1001f24fe4_1
+        entity_id: switch.salumi_umidificatore
         to: "on"
         for: "00:15:00"
         id: dopo_15
@@ -968,7 +992,7 @@ automation:
         value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
     actions:
       - variables:
-          ur: "{{ states('sensor.sonda_th_umidita') | float(-1) }}"
+          ur: "{{ states('sensor.cantina_camera_salumi_umidita_camera') | float(-1) }}"
           ur0: "{{ states('input_number.salumi_ur_accensione_umidificatore') | float(0) }}"
       - choose:
           - conditions: "{{ trigger.id == 'acceso' and ur >= 0 }}"
@@ -999,11 +1023,11 @@ automation:
     mode: queued
     triggers:
       - trigger: state
-        entity_id: switch.sonoff_1001f24fe4_2
+        entity_id: binary_sensor.salumi_stufa_accesa
         to: "on"
         id: accesa
       - trigger: state
-        entity_id: switch.sonoff_1001f24fe4_2
+        entity_id: binary_sensor.salumi_stufa_accesa
         to: "on"
         for: "00:15:00"
         id: dopo_15
@@ -1012,7 +1036,7 @@ automation:
         value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
     actions:
       - variables:
-          t: "{{ states('sensor.sonda_th_temperatura') | float(-99) }}"
+          t: "{{ states('sensor.cantina_camera_salumi_temperatura_camera') | float(-99) }}"
           t0: "{{ states('input_number.salumi_temp_accensione_stufa') | float(0) }}"
       - choose:
           - conditions: "{{ trigger.id == 'accesa' and t > -99 }}"
@@ -1034,23 +1058,24 @@ automation:
   - id: salumi_controllo_assorbimento
     alias: Salumi - controllo assorbimento
     mode: queued
+    # Un solo contatore per tutti gli attuatori (lampade ~400 W l'una, estrattore ~14 W)
     triggers:
       - trigger: template
-        value_template: "{{ is_state('switch.sonoff_1001f24fe4_2', 'on') and states('sensor.sonoff_1001f24fe4_power_2') | float(999) < 50 }}"
+        value_template: "{{ is_state('binary_sensor.salumi_stufa_accesa', 'on') and states('sensor.cantina_camera_salumi_potenza_attuatori') | float(999) < 50 }}"
         for: "00:03:00"
         id: stufa_non_assorbe
       - trigger: template
-        value_template: "{{ is_state('switch.sonoff_1001f24fe4_2', 'off') and states('sensor.sonoff_1001f24fe4_power_2') | float(0) > 20 }}"
+        value_template: >
+          {{ states('sensor.cantina_camera_salumi_potenza_attuatori') | float(999) >= 50
+             and states('sensor.cantina_camera_salumi_potenza_attuatori') | float(999) < 250 * state_attr('binary_sensor.salumi_stufa_accesa', 'lampade_accese') | int(0) }}
         for: "00:03:00"
-        id: stufa_bloccata
+        id: lampada_spenta
       - trigger: template
-        value_template: "{{ is_state('switch.sonoff_1001f24fe4_1', 'on') and states('sensor.sonoff_1001f24fe4_power_1') | float(999) < 3 }}"
+        value_template: >
+          {{ is_state('binary_sensor.salumi_stufa_accesa', 'off') and is_state('switch.salumi_umidificatore', 'off')
+             and is_state('switch.cantina_camera_salumi_estrattore', 'off') and states('sensor.cantina_camera_salumi_potenza_attuatori') | float(0) > 10 }}
         for: "00:03:00"
-        id: umidificatore_non_assorbe
-      - trigger: template
-        value_template: "{{ is_state('switch.sonoff_1001f24fe4_1', 'off') and states('sensor.sonoff_1001f24fe4_power_1') | float(0) > 10 }}"
-        for: "00:03:00"
-        id: umidificatore_bloccato
+        id: rele_bloccato
     conditions:
       - condition: template
         value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
@@ -1059,11 +1084,200 @@ automation:
         data:
           titolo: "Salumi: anomalia assorbimento"
           messaggio: >
-            {{ {'stufa_non_assorbe': 'Stufa accesa ma non assorbe corrente (termostato interno, spina o guasto?)',
-                'stufa_bloccata': 'Stufa spenta ma assorbe ancora corrente: relè bloccato?',
-                'umidificatore_non_assorbe': 'Umidificatore acceso ma non assorbe corrente (acqua finita o guasto?)',
-                'umidificatore_bloccato': 'Umidificatore spento ma assorbe ancora corrente: relè bloccato?'}[trigger.id] }}
+            {{ {'stufa_non_assorbe': 'Stufa accesa ma non assorbe corrente (lampade, contattori o guasto?)',
+                'lampada_spenta': 'Stufa accesa ma assorbe meno del previsto (' ~ states('sensor.cantina_camera_salumi_potenza_attuatori') ~ ' W con ' ~ state_attr('binary_sensor.salumi_stufa_accesa', 'lampade_accese') ~ ' lampade): una lampada bruciata?',
+                'rele_bloccato': 'Tutto spento ma il quadro assorbe ancora ' ~ states('sensor.cantina_camera_salumi_potenza_attuatori') ~ ' W: relè o contattore bloccato?'}[trigger.id] }}
           priorita: 1
+
+  # --- Umidificatore vuoto: passa all'altro -------------------------------------
+  # Con l'acqua assorbe ~22 W, a secco 0 W (misura 08/11/2026). A stufa spenta
+  # basta il valore (< 3 W per 3 min); a stufa accesa lo dicono le due automazioni
+  # "rileva" più sotto, con l'evento salumi_umidificatore_non_assorbe.
+  # L'utente riempie e basta: quello riempito si riprova quando si svuota l'altro.
+  # Se anche quello risulta vuoto entro un'ora dal cambio, sono vuoti tutti e due:
+  # avviso urgente e nuovo tentativo ogni 15 min alternandoli.
+  - id: salumi_umidificatore_vuoto
+    alias: Salumi - umidificatore vuoto
+    mode: queued
+    triggers:
+      - trigger: template
+        value_template: >
+          {{ is_state('switch.salumi_umidificatore', 'on') and is_state('binary_sensor.salumi_stufa_accesa', 'off')
+             and states('sensor.cantina_camera_salumi_potenza_attuatori') | float(999) < 3 }}
+        for: "00:03:00"
+        id: vuoto
+      - trigger: template
+        value_template: >
+          {{ is_state('switch.salumi_umidificatore', 'on') and is_state('binary_sensor.salumi_stufa_accesa', 'off')
+             and states('sensor.cantina_camera_salumi_potenza_attuatori') | float(0) > 10 }}
+        for: "00:01:00"
+        id: assorbe
+      - trigger: event
+        event_type: salumi_umidificatore_non_assorbe
+        id: vuoto
+      - trigger: time_pattern
+        minutes: "/15"
+        id: riprova
+      - trigger: state
+        entity_id: input_select.salumi_umidificatore_in_uso
+        id: cambiato
+    variables:
+      n: "{{ states('input_select.salumi_umidificatore_in_uso') }}"
+      altro: "{{ '1' if n == '2' else '2' }}"
+      vuoto_n: "input_boolean.salumi_umidificatore_{{ n }}_vuoto"
+      vuoto_altro: "input_boolean.salumi_umidificatore_{{ altro }}_vuoto"
+      tutti_vuoti: "{{ is_state(vuoto_n, 'on') and is_state(vuoto_altro, 'on') }}"
+    actions:
+      - choose:
+          # Durante i tentativi con tutti e due vuoti (segnato già vuoto) non fa niente
+          - conditions: "{{ trigger.id == 'vuoto' and is_state(vuoto_n, 'off') }}"
+            sequence:
+              - action: input_boolean.turn_on
+                target:
+                  entity_id: "{{ vuoto_n }}"
+              - if: >
+                  {{ is_state(vuoto_altro, 'on')
+                     and now() - states[vuoto_altro].last_changed < timedelta(hours=1) }}
+                then:
+                  - action: script.salumi_avviso
+                    data:
+                      titolo: "Salumi: umidificatori vuoti"
+                      messaggio: >
+                        Gli umidificatori 1 e 2 non assorbono corrente: sono vuoti (o guasti).
+                        L'umidità non è più controllata. Riempili: ripartono da soli.
+                      priorita: 1
+                else:
+                  # L'altro si era svuotato tempo fa: si suppone riempito e si riprova
+                  - action: input_boolean.turn_off
+                    target:
+                      entity_id: "{{ vuoto_altro }}"
+                  - action: input_select.select_option
+                    target:
+                      entity_id: input_select.salumi_umidificatore_in_uso
+                    data:
+                      option: "{{ altro }}"
+                  - action: script.salumi_avviso
+                    data:
+                      titolo: "Salumi: umidificatore {{ n }} vuoto"
+                      messaggio: >
+                        L'umidificatore {{ n }} non assorbe più corrente (acqua finita o guasto).
+                        Sono passato all'umidificatore {{ altro }}. Riempi il {{ n }}: lo userò
+                        quando si svuoterà il {{ altro }}.
+                      priorita: 0
+          - conditions: "{{ trigger.id == 'assorbe' and is_state(vuoto_n, 'on') }}"
+            sequence:
+              - if: "{{ tutti_vuoti }}"
+                then:
+                  - action: script.salumi_avviso
+                    data:
+                      titolo: "Salumi: umidificatore {{ n }} ripartito"
+                      messaggio: "L'umidificatore {{ n }} è stato riempito e funziona di nuovo."
+                      priorita: 0
+              - action: input_boolean.turn_off
+                target:
+                  entity_id: "{{ vuoto_n }}"
+          # Tutti e due vuoti: prova l'altro, nel caso sia stato riempito quello
+          - conditions: >
+              {{ trigger.id == 'riprova' and tutti_vuoti and is_state('switch.salumi_umidificatore', 'on')
+                 and is_state('binary_sensor.salumi_stufa_accesa', 'off')
+                 and states('sensor.cantina_camera_salumi_potenza_attuatori') | float(999) < 3 }}
+            sequence:
+              - action: input_select.select_option
+                target:
+                  entity_id: input_select.salumi_umidificatore_in_uso
+                data:
+                  option: "{{ altro }}"
+          # Cambio di umidificatore con l'igrostato acceso: spegne il vecchio e accende il nuovo
+          - conditions: "{{ trigger.id == 'cambiato' and is_state('switch.salumi_umidificatore', 'on') }}"
+            sequence:
+              - action: switch.turn_on
+                target:
+                  entity_id: switch.salumi_umidificatore
+
+  # --- Umidificatore vuoto con la stufa accesa ---------------------------------
+  # Guarda i salti della potenza a 230 V, non il valore: le lampade a regime
+  # stanno ferme entro ~2 W tra due letture, l'umidificatore vale ~22 W.
+  # - accensione: se entro ~75 s la potenza non sale di 10 W, è vuoto;
+  # - in funzione: il galleggiante fa andare e venire i 22 W per qualche minuto;
+  #   è vuoto quando cala di 12-40 W e non risale per 5 min.
+  # Se un relè cambia nel frattempo non conclude niente (ci riprova dopo).
+  # Segnala con l'evento salumi_umidificatore_non_assorbe.
+  - id: salumi_umidificatore_rileva_accensione
+    alias: Salumi - umidificatore vuoto all'accensione (stufa accesa)
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: switch.salumi_umidificatore
+        from: "off"
+        to: "on"
+    variables:
+      p0: "{{ states('sensor.salumi_potenza_a_230_v') | float(0) }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.salumi_stufa_accesa
+        state: "on"
+      # Lampade ed estrattore fermi da 3 min (le lampade appena accese calano scaldandosi)
+      - >
+        {{ (now() - (expand('switch.cantina_camera_salumi_lampada_1', 'switch.cantina_camera_salumi_lampada_2',
+                            'switch.cantina_camera_salumi_lampada_3', 'switch.cantina_camera_salumi_estrattore')
+                     | map(attribute='last_changed') | max)).total_seconds() > 180 }}
+    actions:
+      - wait_for_trigger:
+          - trigger: state
+            entity_id:
+              - switch.cantina_camera_salumi_lampada_1
+              - switch.cantina_camera_salumi_lampada_2
+              - switch.cantina_camera_salumi_lampada_3
+              - switch.cantina_camera_salumi_estrattore
+              - switch.salumi_umidificatore
+        timeout: "00:01:15"
+      - if: >
+          {{ wait.trigger is none and is_state('switch.salumi_umidificatore', 'on')
+             and states('sensor.salumi_potenza_a_230_v') | float(0) - p0 < 10 }}
+        then:
+          - event: salumi_umidificatore_non_assorbe
+
+  # Riparte (restart) a ogni nuovo calo: durante l'intermittenza del galleggiante
+  # la potenza risale e l'attesa dei 5 min ricomincia.
+  - id: salumi_umidificatore_rileva_calo
+    alias: Salumi - umidificatore vuoto in funzione (stufa accesa)
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: sensor.salumi_potenza_a_230_v
+    conditions:
+      - condition: state
+        entity_id: switch.salumi_umidificatore
+        state: "on"
+      - "{{ (now() - states.switch.salumi_umidificatore.last_changed).total_seconds() > 120 }}"
+      - >
+        {% set da = trigger.from_state.state | float(none) if trigger.from_state else none %}
+        {% set a = trigger.to_state.state | float(none) if trigger.to_state else none %}
+        {{ da is not none and a is not none and 12 <= da - a <= 40 }}
+      - condition: state
+        entity_id: binary_sensor.salumi_stufa_accesa
+        state: "on"
+      - >
+        {{ (now() - (expand('switch.cantina_camera_salumi_lampada_1', 'switch.cantina_camera_salumi_lampada_2',
+                            'switch.cantina_camera_salumi_lampada_3', 'switch.cantina_camera_salumi_estrattore')
+                     | map(attribute='last_changed') | max)).total_seconds() > 180 }}
+    variables:
+      basso: "{{ trigger.to_state.state | float(0) }}"
+    actions:
+      - wait_for_trigger:
+          - trigger: template
+            value_template: "{{ states('sensor.salumi_potenza_a_230_v') | float(0) - basso >= 12 }}"
+          - trigger: state
+            entity_id:
+              - switch.cantina_camera_salumi_lampada_1
+              - switch.cantina_camera_salumi_lampada_2
+              - switch.cantina_camera_salumi_lampada_3
+              - switch.cantina_camera_salumi_estrattore
+              - switch.salumi_umidificatore
+        timeout: "00:05:00"
+      - if: "{{ wait.trigger is none and is_state('switch.salumi_umidificatore', 'on') }}"
+        then:
+          - event: salumi_umidificatore_non_assorbe
 
   # --- Valori fuori range prolungati -------------------------------------------
   - id: salumi_fuori_range
@@ -1074,27 +1288,27 @@ automation:
         value_template: >
           {% set tt = state_attr('sensor.salumi_fase', 'temp_target') %}
           {{ tt is not none and state_attr('sensor.salumi_fase', 'step') | int(-1) >= 0
-             and states('sensor.sonda_th_temperatura') | float(99) < tt - 1.5 }}
+             and states('sensor.cantina_camera_salumi_temperatura_camera') | float(99) < tt - 1.5 }}
         for: "01:30:00"
         id: temp_bassa
       - trigger: template
         value_template: >
           {% set tt = state_attr('sensor.salumi_fase', 'temp_target') %}
           {{ tt is not none and state_attr('sensor.salumi_fase', 'step') | int(-1) >= 0
-             and states('sensor.sonda_th_temperatura') | float(-99) > tt + 2 }}
+             and states('sensor.cantina_camera_salumi_temperatura_camera') | float(-99) > tt + 2 }}
         for: "02:00:00"
         id: temp_alta
       - trigger: template
         value_template: >
           {% set ht = state_attr('sensor.salumi_fase', 'ur_target') %}
-          {{ ht is not none and states('sensor.sonda_th_umidita') | float(999) < ht - 5 }}
+          {{ ht is not none and states('sensor.cantina_camera_salumi_umidita_camera') | float(999) < ht - 5 }}
         for: "01:00:00"
         id: ur_bassa
       - trigger: template
         value_template: >
           {% set ht = state_attr('sensor.salumi_fase', 'ur_target') %}
           {{ ht is not none and state_attr('sensor.salumi_fase', 'step') | int(0) >= 1
-             and states('sensor.sonda_th_umidita') | float(-1) > ht + 5 }}
+             and states('sensor.cantina_camera_salumi_umidita_camera') | float(-1) > ht + 5 }}
         for: "03:00:00"
         id: ur_alta
     conditions:
@@ -1109,7 +1323,7 @@ automation:
                 'temp_alta': 'Temperatura troppo alta da 2h',
                 'ur_bassa': 'Umidità troppo bassa da 1h',
                 'ur_alta': 'Umidità troppo alta da 3h (serve ricambio d\'aria?)'}[trigger.id] }}:
-            {{ states('sensor.sonda_th_temperatura') }} °C / {{ states('sensor.sonda_th_umidita') }}% UR,
+            {{ states('sensor.cantina_camera_salumi_temperatura_camera') }} °C / {{ states('sensor.cantina_camera_salumi_umidita_camera') }}% UR,
             obiettivo {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C / {{ state_attr('sensor.salumi_fase', 'ur_target') }}% UR
             ({{ states('sensor.salumi_fase') }}).
 
@@ -1118,7 +1332,7 @@ automation:
     alias: Salumi - surriscaldamento
     triggers:
       - trigger: numeric_state
-        entity_id: sensor.sonda_th_temperatura
+        entity_id: sensor.cantina_camera_salumi_temperatura_camera
         above: 28
         for: "00:02:00"
     conditions:
@@ -1127,17 +1341,20 @@ automation:
     actions:
       - action: climate.set_hvac_mode
         target:
-          entity_id: climate.salumi_stufa
+          entity_id: climate.cantina_camera_salumi_stufa
         data:
           hvac_mode: "off"
       - action: switch.turn_off
         target:
-          entity_id: switch.sonoff_1001f24fe4_2
+          entity_id:
+            - switch.cantina_camera_salumi_lampada_1
+            - switch.cantina_camera_salumi_lampada_2
+            - switch.cantina_camera_salumi_lampada_3
       - action: script.salumi_avviso
         data:
           titolo: "Salumi: SURRISCALDAMENTO"
           messaggio: >
-            Temperatura {{ states('sensor.sonda_th_temperatura') }} °C: stufa spenta per sicurezza.
+            Temperatura {{ states('sensor.cantina_camera_salumi_temperatura_camera') }} °C: stufa spenta per sicurezza.
             Verrà riattivata al prossimo cambio fase o eseguendo "Salumi - applica setpoint".
           priorita: 1
 
@@ -1150,7 +1367,7 @@ automation:
       - trigger: template
         value_template: >
           {% set ns = namespace(fermo=false) %}
-          {% for e in ['sensor.sonda_th_temperatura', 'sensor.sonda_th_umidita'] %}
+          {% for e in ['sensor.cantina_camera_salumi_temperatura_camera', 'sensor.cantina_camera_salumi_umidita_camera'] %}
             {% set s = states[e] %}
             {% if s is none or s.state in ['unavailable', 'unknown']
                   or (now() - s.last_reported).total_seconds() > 600 %}
@@ -1165,7 +1382,7 @@ automation:
       - trigger: template
         value_template: >
           {% set ns = namespace(ok=true) %}
-          {% for e in ['sensor.sonda_th_temperatura', 'sensor.sonda_th_umidita'] %}
+          {% for e in ['sensor.cantina_camera_salumi_temperatura_camera', 'sensor.cantina_camera_salumi_umidita_camera'] %}
             {% set s = states[e] %}
             {% if s is none or s.state in ['unavailable', 'unknown']
                   or (now() - s.last_reported).total_seconds() >= 120 %}
@@ -1187,7 +1404,7 @@ automation:
                   entity_id: input_boolean.salumi_sensore_fermo
               - action: climate.set_hvac_mode
                 target:
-                  entity_id: climate.salumi_stufa
+                  entity_id: climate.cantina_camera_salumi_stufa
                 data:
                   hvac_mode: "off"
               - action: humidifier.turn_off
@@ -1221,20 +1438,32 @@ automation:
     mode: queued
     triggers:
       - trigger: state
-        entity_id:
-          - switch.sonoff_1001f24fe4_1
-          - switch.sonoff_1001f24fe4_2
+        entity_id: climate.cantina_camera_salumi_stufa
         to: unavailable
         for: "00:05:00"
+        id: offline
+      # La scheda torna: riapplico i setpoint (dopo un riavvio parte con tutto spento)
+      - trigger: state
+        entity_id: climate.cantina_camera_salumi_stufa
+        from: unavailable
+        for: "00:00:30"
+        id: online
     conditions:
       - condition: template
         value_template: "{{ is_state('input_boolean.salumi_ciclo_attivo', 'on') or is_state('input_boolean.salumi_preparazione', 'on') }}"
     actions:
-      - action: script.salumi_avviso
-        data:
-          titolo: "Salumi: attuatore non raggiungibile"
-          messaggio: "{{ trigger.to_state.name }} non raggiungibile da 5 min."
-          priorita: 1
+      - choose:
+          - conditions: "{{ trigger.id == 'offline' }}"
+            sequence:
+              - action: script.salumi_avviso
+                data:
+                  titolo: "Salumi: scheda del quadro non raggiungibile"
+                  messaggio: >
+                    La Waveshare non risponde da 5 min. Il termostato della stufa continua da solo,
+                    l'umidificatore resta com'era finché la scheda non torna.
+                  priorita: 1
+        default:
+          - action: script.salumi_applica_setpoint
 
   # --- Preparazione cella: al raggiungimento della temperatura la cella è pronta
   - id: salumi_fine_preparazione
@@ -1245,7 +1474,7 @@ automation:
         value_template: >
           {{ is_state('input_boolean.salumi_preparazione', 'on')
              and is_state('input_boolean.salumi_cella_pronta', 'off')
-             and states('sensor.sonda_th_temperatura') | float(-99) >= state_attr('sensor.salumi_fase', 'temp_target') | float(22) - 0.3 }}
+             and states('sensor.cantina_camera_salumi_temperatura_camera') | float(-99) >= state_attr('sensor.salumi_fase', 'temp_target') | float(22) - 0.3 }}
         for: "00:02:00"
         id: pronta
       - trigger: state
@@ -1267,7 +1496,7 @@ automation:
                   titolo: "Salumi: preparazione troppo lunga"
                   messaggio: >
                     Cella in preparazione da 6 ore ma la temperatura è ancora
-                    {{ states('sensor.sonda_th_temperatura') }} °C (obiettivo {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C).
+                    {{ states('sensor.cantina_camera_salumi_temperatura_camera') }} °C (obiettivo {{ state_attr('sensor.salumi_fase', 'temp_target') }} °C).
                   priorita: 1
 
   # --- Archivio: letture ogni 5 minuti ------------------------------------------
@@ -1287,19 +1516,20 @@ automation:
             fase: "{{ states('sensor.salumi_fase') }}"
             temp_obiettivo: "{{ state_attr('sensor.salumi_fase', 'temp_target') }}"
             ur_obiettivo: "{{ state_attr('sensor.salumi_fase', 'ur_target') }}"
-            temperatura: "{{ states('sensor.sonda_th_temperatura') }}"
-            umidita: "{{ states('sensor.sonda_th_umidita') }}"
+            temperatura: "{{ states('sensor.cantina_camera_salumi_temperatura_camera') }}"
+            umidita: "{{ states('sensor.cantina_camera_salumi_umidita_camera') }}"
             temperatura_cantina: "{{ states('sensor.shelly_h_t_cantina_temperature') }}"
             umidita_cantina: "{{ states('sensor.shelly_h_t_cantina_humidity') }}"
             peso_g: "{{ states('sensor.salumi_peso') }}"
             calo_reale_pct: "{{ states('sensor.salumi_calo_reale') }}"
             calo_atteso_pct: "{{ states('sensor.salumi_calo_atteso') }}"
-            stufa: "{{ states('switch.sonoff_1001f24fe4_2') }}"
-            umidificatore: "{{ states('switch.sonoff_1001f24fe4_1') }}"
-            potenza_stufa_w: "{{ states('sensor.sonoff_1001f24fe4_power_2') }}"
-            potenza_umidificatore_w: "{{ states('sensor.sonoff_1001f24fe4_power_1') }}"
-            energia_ciclo_stufa_kwh: "{{ states('sensor.salumi_energia_ciclo_stufa') }}"
-            energia_ciclo_umidificatore_kwh: "{{ states('sensor.salumi_energia_ciclo_umidificatore') }}"
+            stufa: "{{ states('binary_sensor.salumi_stufa_accesa') }}"
+            lampade_accese: "{{ state_attr('binary_sensor.salumi_stufa_accesa', 'lampade_accese') }}"
+            umidificatore: "{{ states('switch.salumi_umidificatore') }}"
+            umidificatore_in_uso: "{{ states('input_select.salumi_umidificatore_in_uso') }}"
+            estrattore: "{{ states('switch.cantina_camera_salumi_estrattore') }}"
+            potenza_w: "{{ states('sensor.cantina_camera_salumi_potenza_attuatori') }}"
+            energia_ciclo_kwh: "{{ states('sensor.salumi_energia_ciclo_totale') }}"
 
   # --- Archivio: diario, una voce a ogni cambio fase -----------------------------
   - id: salumi_archivio_diario

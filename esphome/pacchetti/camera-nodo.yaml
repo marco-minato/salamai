@@ -1,0 +1,211 @@
+# Nodo in camera (XIAO, salumi-nodo.yaml, indirizzo Modbus 4) per salumi-camera.yaml.
+# Bilancia, sonde di parete e pavimento, ventole di ricircolo.
+# Si attiva dal blocco packages di salumi-camera.yaml quando il nodo è
+# collegato al bus RS485. Senza nodo resta disattivato: la stufa e la sonda
+# camera non ne dipendono.
+
+globals:
+  # battito del nodo in camera: ultimo valore letto e quando è cambiato
+  - id: battito_nodo
+    type: int
+    initial_value: "-1"
+  - id: battito_nodo_cambiato
+    type: uint32_t
+    initial_value: "0"
+
+interval:
+  # Velocità delle ventole riscritta al nodo ogni 30 s: se il nodo si è
+  # riavviato la riprende, e la scrittura gli fa da segnale di vita (senza
+  # scritture per 90 s il nodo porta le ventole al valore di sicurezza).
+  - interval: 30s
+    then:
+      - lambda: |-
+          id(pwm_nodo).set_level(id(ventole).state ? id(ventole).speed / 100.0f : 0.0f);
+
+# --- Ventole di ricircolo (sul nodo in camera, via Modbus) --------------------
+# Il valore va al registro 0x0010 del nodo in % (0–100); l'inversione per il
+# modulo MOSFET la fa il nodo.
+output:
+  - platform: modbus_controller
+    id: pwm_nodo
+    modbus_controller_id: nodo
+    address: 0x0010
+    register_type: holding
+    value_type: U_WORD
+    multiply: 100
+
+fan:
+  - platform: speed
+    id: ventole
+    name: "Ventole ricircolo"
+    output: pwm_nodo
+    restore_mode: RESTORE_DEFAULT_OFF
+
+modbus_controller:
+  - id: nodo
+    modbus_id: modbus485
+    address: 0x4
+    update_interval: 15s
+    # se non risponde, riprova ogni 8 giri (~2 min) invece che a ogni giro
+    offline_skip_updates: 8
+
+binary_sensor:
+  # Nodo fermo: il battito non cambia da 60 s (o non è mai arrivato).
+  # Peso, superfici e giri non sono più validi; stufa e sonda camera no.
+  - platform: template
+    name: "Nodo camera non risponde"
+    device_class: problem
+    lambda: |-
+      return id(battito_nodo) < 0 || millis() - id(battito_nodo_cambiato) > 60000;
+  - platform: template
+    name: "Ventole in sicurezza"
+    device_class: problem
+    lambda: |-
+      float s = id(stato_nodo).state;
+      return !isnan(s) && (int(s) & 1) != 0;
+
+sensor:
+  # Nodo in camera (indirizzo 4): mappa dei registri in salumi-nodo.yaml.
+  # I valori non validi arrivano come −32768 (o INT32_MIN per il peso) e
+  # diventano "non disponibile".
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: battito_nodo_reg
+    name: "Battito nodo"
+    entity_category: diagnostic
+    internal: true
+    force_update: true
+    register_type: holding
+    address: 0x0001
+    value_type: U_WORD
+    on_value:
+      - lambda: |-
+          int b = (int) x;
+          if (b != id(battito_nodo)) {
+            id(battito_nodo) = b;
+            id(battito_nodo_cambiato) = millis();
+          }
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: peso_grezzo
+    name: "Peso grezzo"
+    entity_category: diagnostic
+    register_type: holding
+    address: 0x0002
+    value_type: S_DWORD
+    accuracy_decimals: 0
+    filters:
+      - lambda: |-
+          if (x <= -2147483648.0f) return {};
+          return x;
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: t_parete
+    name: "Temperatura parete"
+    register_type: holding
+    address: 0x0004
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - lambda: |-
+          if (x == -32768) return {};
+          return x * 0.01f;
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: t_pavimento
+    name: "Temperatura pavimento"
+    register_type: holding
+    address: 0x0005
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - lambda: |-
+          if (x == -32768) return {};
+          return x * 0.01f;
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "Giri ventola 1"
+    register_type: holding
+    address: 0x0006
+    value_type: U_WORD
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "Giri ventola 2"
+    register_type: holding
+    address: 0x0007
+    value_type: U_WORD
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "Giri ventola 3"
+    register_type: holding
+    address: 0x000A
+    value_type: U_WORD
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    name: "PWM ventole applicato"
+    register_type: holding
+    address: 0x0008
+    value_type: U_WORD
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+  - platform: modbus_controller
+    modbus_controller_id: nodo
+    id: stato_nodo
+    name: "Stato nodo"
+    entity_category: diagnostic
+    internal: true
+    register_type: holding
+    address: 0x0009
+    value_type: U_WORD
+
+  # Superfici: la più fredda tra parete e pavimento, confrontata con il
+  # punto di rugiada dell'aria (specifiche_firmware.md §6.1).
+  - platform: template
+    id: t_fredda
+    name: "Superficie più fredda"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 30s
+    lambda: |-
+      float a = id(t_parete).state, b = id(t_pavimento).state;
+      if (isnan(a)) return b;
+      if (isnan(b)) return a;
+      return std::min(a, b);
+  - platform: template
+    name: "Margine di condensa"
+    unit_of_measurement: "°C"
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 30s
+    lambda: |-
+      return id(t_fredda).state - id(rugiada_camera).state;
+
+  # Bilancia: "Peso grezzo" (dal nodo) serve a calibrare. Leggerlo a vuoto
+  # (gancio compreso) e con un peso noto, poi mettere i due valori qui.
+  - platform: copy
+    source_id: peso_grezzo
+    name: "Peso"
+    unit_of_measurement: g
+    device_class: weight
+    state_class: measurement
+    accuracy_decimals: 0
+    filters:
+      - calibrate_linear:
+          # Tarata il 06/11/2026 sulla XIAO (stesso HX711, guadagno 128):
+          # a vuoto col gancio e con 443 g appesi
+          - 6741 -> 0
+          - 439600 -> 443

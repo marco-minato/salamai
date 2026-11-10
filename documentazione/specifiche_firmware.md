@@ -92,7 +92,8 @@ perché una ventola che gira lo porterebbe basso all'avvio (modalità download).
   Waveshare, che conosce la fase: il nodo accetta 0–100.
 - **Peso**: il nodo manda la lettura grezza, la conversione in grammi (tara e
   fattore, §7) la fa la Waveshare. Così la taratura non richiede di
-  ricompilare il nodo.
+  ricompilare il nodo. Taratura al banco del 06/11/2026 (cella col gancio,
+  sulla XIAO): grezzo 6741 = 0 g, 439600 = 443 g (circa 977 punti per grammo).
 - **Nodo fermo**: se il battito non cambia per 60 s la Waveshare alza
   "Nodo camera non risponde". Peso, superfici e giri diventano non validi;
   il ciclo continua (§9).
@@ -246,6 +247,25 @@ Comportamento:
 - **Giri**: le ventole vanno da 200 a 2100 giri/min; il tetto si tara in giri
   (test con l'incenso) e il firmware espone i giri reali. Sotto ~5 % di PWM le
   ventole si fermano: la pausa si fa a PWM 0.
+- **Misura delle ventole, 09/11/2026** (banco, ventole in X4, 45 s per
+  passo, giri letti dal nodo; seconda serie con `pulse_meter` al posto di
+  `pulse_counter`):
+
+  | PWM | V1 counter | V2 counter | V3 counter | V1 meter | V2 meter | V3 meter |
+  |---|---|---|---|---|---|---|
+  | 100 % | 1524 | 1440 | 1467 | 1586 | 1472 | 1454 |
+  | 75 % | 1308 | 1230 | 1251 | 1358 | 1260 | 1267 |
+  | 50 % | 990 | 933 | 945 | 1023 | 978 | 960 |
+  | 25 % | 552 | 504 | 501 | 577 | 535 | 516 |
+  | 15 % | 315 | 276 | 252 | 334 | 293 | 255 |
+  | 10 % | 201 | 171 | 141 | 219 | 182 | 143 |
+  | 5 % | 0 | 0 | 0 | 0 | 0 | 0 |
+
+  Le due letture coincidono entro ~4 %: la lettura è giusta, le ventole
+  fanno davvero ~1500 giri al 100 % invece dei 2100 di targa. Staccare il
+  filo PWM non cambia nulla, quindi la velocità la decide il MOSFET del
+  modulo A2 sull'alimentazione. Accettato così (09/11/2026): al 100 %
+  l'aria è già fin troppo forte, il tetto `ventole_pwm_max` resta basso.
 - **Preriscaldo** (camera vuota): ventole **sempre accese** a
   `ventole_pwm_preriscaldo` (default 100 %), senza il tetto
   `ventole_pwm_max` perché non ci sono salami. Servono a scaldare prima pareti
@@ -267,7 +287,31 @@ Comportamento:
 ## 8. Consumi e diagnosi (contatore SDM120)
 
 - **Potenze di riferimento** come parametri, misurate nei test a vuoto:
-  lampada ~400 W, umidificatore in funzione / a vuoto, estrattore ~14 W.
+  lampada ~370 W, umidificatore ~22 W con acqua e 0 W a secco (misure sotto),
+  estrattore ~14 W.
+- **Misura delle lampade, 08/11/2026** (banco, lampade fuori dalla camera,
+  SDM120, valori a regime dopo 60–90 s, fattore di potenza 0,999):
+
+  | Carico | Potenza | Corrente | Tensione |
+  |---|---|---|---|
+  | Lampada 1 (CH1) | 370 W | 1,61 A | 229 V |
+  | Lampada 2 (CH2) | 370 W | 1,62 A | 229 V |
+  | Lampada 3 (CH3) | 375 W | 1,64 A | 228 V |
+  | Tutte e tre | 1068 W | 4,80 A | 223 V |
+  | Tutto spento | 0 W | 0 A | 231 V |
+
+  Appena accese assorbono qualche watt in più (fino a 388 W) e calano
+  scaldandosi. Con tutte e tre la tensione scende di ~7 V e ogni lampada
+  rende ~356 W.
+- **Misura dell'umidificatore 1, 08/11/2026** (banco, SDM120):
+
+  | Stato | Potenza | Corrente | Fattore di potenza |
+  |---|---|---|---|
+  | Con acqua, dopo 20–90 s | 22,3–22,5 W | 0,17–0,18 A | 0,55 |
+  | A secco (galleggiante, solo il LED) | 0 W | 0 A | — |
+
+  A secco il consumo del LED è sotto la soglia dell'SDM120, che segna 0 W:
+  la soglia di 3 W per l'avviso "acqua finita" lo distingue bene dai 22 W.
 - **A ogni manovra**: dopo 5 s la variazione di potenza deve stare entro
   ±30 % di quella attesa. Altrimenti allarme "lampada bruciata" o "carico che
   non si accende".
@@ -346,7 +390,8 @@ Zanotti), T e UR della cantina dallo Shelly H&T (unica fonte).
 
 ## 11. Migrazione da HA
 
-- Il controllo (`climate.salumi_stufa`, `humidifier.salumi_umidita`,
+- Il controllo (`climate.cantina_camera_salumi_stufa`, già sulla Waveshare dal
+  07/11/2026, `humidifier.salumi_umidita`,
   `script.salumi_applica_setpoint`) passa all'ESP32.
 - Il pacchetto `salumi.yaml` resta per dashboard, archivio (`salumi_log.py`),
   notifiche, calo atteso e stima dell'estrattore.

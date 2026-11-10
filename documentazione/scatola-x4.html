@@ -1,0 +1,386 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style></head><body><title>Scatola X4 ventole</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: app a tutto schermo; barra in alto, foglio dello schema che si zooma, pannelli che salgono dal basso */
+:root{
+  --bg:#e9ecef; --panel:#ffffff; --fg:#1d2329; --muted:#5d6873; --line:#c9d0d6;
+  --accent:#0f6e8c; --accent-fg:#ffffff; --chip:#f3f5f7; --shadow:0 -6px 24px rgba(20,30,40,.18);
+  --sheet:#f7f8f6;
+  --f-ui:"IBM Plex Sans Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#151a1f; --panel:#1f262d; --fg:#e6ebef; --muted:#9aa6b1; --line:#36414b;
+  --accent:#4fb3d3; --accent-fg:#06222c; --chip:#28313a; --shadow:0 -6px 24px rgba(0,0,0,.5); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151a1f; --panel:#1f262d; --fg:#e6ebef; --muted:#9aa6b1; --line:#36414b;
+  --accent:#4fb3d3; --accent-fg:#06222c; --chip:#28313a; --shadow:0 -6px 24px rgba(0,0,0,.5); color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:15px;overflow:hidden;
+  display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+header{background:var(--panel);border-bottom:1px solid var(--line);
+  padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:6px;flex:none;z-index:5}
+.top{display:flex;align-items:baseline;gap:10px;min-width:0}
+h1{font-size:18px;font-weight:600;margin:0;text-wrap:balance;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-family:var(--f-mono);font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.bar{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.bar::-webkit-scrollbar{display:none}
+button{font:inherit;color:inherit}
+.chip{flex:none;border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:6px 12px;font-size:14px;
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.chip:focus-visible,.item:focus-visible,.x:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sw{width:14px;height:4px;border-radius:2px;display:inline-block}
+main{flex:1;position:relative;min-height:0}
+#view{position:absolute;inset:0;width:100%;height:100%;touch-action:none;background:var(--bg);cursor:grab;display:block}
+#view.drag{cursor:grabbing}
+.zoom{position:absolute;right:calc(10px + env(safe-area-inset-right,0px));top:10px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.zoom button{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--panel);
+  border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--muted);z-index:2;white-space:nowrap;pointer-events:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:62%;background:var(--panel);box-shadow:var(--shadow);border-radius:16px 16px 0 0;
+  z-index:8;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .22s ease;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet.open{transform:none}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sh-head{display:flex;align-items:center;gap:10px;padding-block:12px 8px;border-bottom:1px solid var(--line)}
+.sh-head h2{font-size:17px;margin:0;flex:1;min-width:0;text-wrap:balance}
+.x{border:0;background:var(--chip);border-radius:8px;width:34px;height:34px;font-size:18px;cursor:pointer;flex:none}
+.sh-body{overflow-y:auto;padding-block:10px 16px;min-height:0}
+.ends{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.ends li{font-family:var(--f-mono);font-size:13px;padding:6px 8px;background:var(--chip);border-radius:6px}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0;max-width:65ch}
+.grp{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.grp:first-child{margin-top:0}
+.item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:var(--chip);
+  border-radius:8px;padding:8px 10px;cursor:pointer;margin-bottom:6px}
+.item .nm{font-weight:500}
+.item .ds{font-size:12px;color:var(--muted);font-family:var(--f-mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item>span:last-child{min-width:0;display:flex;flex-direction:column}
+.leg{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;font-size:14px}
+.leg .sw{width:26px;height:5px}
+.box{width:26px;height:14px;border-radius:3px;border:1px solid #888;display:inline-block}
+.notes{margin:12px 0 0;padding-left:18px;font-size:13.5px;max-width:65ch;display:grid;gap:4px}
+/* foglio (colori fissi: è il disegno) */
+#view text{font-family:var(--f-ui);fill:#1d2329}
+.w{fill:none;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.hit{fill:none;stroke:transparent;stroke-width:16px;vector-effect:non-scaling-stroke;cursor:pointer}
+.cab{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.5}
+.prl{fill:none;stroke-linejoin:round;opacity:1}
+svg.sel .w,svg.sel .cab,svg.sel .prl{opacity:.12}
+svg.sel .prl.on{opacity:1}
+svg.sel .w.on{opacity:1;stroke-width:3.4px!important}
+.catw{fill:none;stroke-linejoin:round;stroke-linecap:butt;vector-effect:non-scaling-stroke}
+svg.sel .catw{opacity:.12}
+svg.sel .catw.on{opacity:1}
+.pinmark{fill:#ffe14d;stroke:#1d2329;stroke-width:1.5px;vector-effect:non-scaling-stroke;pointer-events:none}
+.cabhit{fill:transparent;cursor:pointer}
+svg.sel .cab.on{opacity:.9}
+.cabsel{fill:none;stroke:#ffe14d;stroke-width:2.5px;vector-effect:non-scaling-stroke;pointer-events:none}
+.cond{display:flex;gap:10px;align-items:center;width:100%;text-align:left;font:inherit;color:inherit;border:1px solid var(--line);background:var(--chip);border-radius:8px;padding:7px 10px;cursor:pointer;margin-bottom:6px}
+.cond .sw{width:18px;height:6px;flex:none;border-radius:2px}
+.cond .nm{font-weight:500}
+.cond .ds{display:block;font-size:12.5px;color:var(--muted);font-family:var(--f-mono)}
+.cond>span:last-child{min-width:0}
+.layer-off{display:none}
+.ck-sec{margin:14px 0 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ck-sec:first-child{margin-top:0}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);background:var(--chip);border-radius:8px;margin-bottom:6px}
+.ck input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:var(--accent)}
+.ck label{flex:1;min-width:0;font-size:14.5px;line-height:1.35;cursor:pointer}
+.ck.done label{color:var(--muted);text-decoration:line-through}
+.ck .go{flex:none;border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:3px 8px;font-size:12.5px;cursor:pointer}
+.ck b{font-weight:600}
+.warn{color:#b3261e}
+.ck-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--muted)}
+.ck-foot button{border:1px solid var(--line);background:var(--chip);border-radius:6px;padding:5px 10px;cursor:pointer}
+</style>
+
+<header>
+  <div class="top"><h1>Scatola X4 · ventole</h1><span class="sub">modulo MOSFET A2 · rev 4.12</span></div>
+  <div class="bar" role="toolbar" aria-label="Strumenti">
+    <button class="chip" id="b-list" type="button">☰ Collegamenti</button>
+    <button class="chip" id="b-230" type="button" aria-pressed="true"><span class="sw" style="background:#E00000"></span>12 V</button>
+    <button class="chip" id="b-bt" type="button" aria-pressed="true"><span class="sw" style="background:#E0399A"></span>Comando e giri</button>
+    <button class="chip" id="b-mon" type="button">✓ Montaggio <span id="mon-count" style="font-family:var(--f-mono);font-size:12px"></span></button>
+    <button class="chip" id="b-leg" type="button">Legenda</button>
+  </div>
+</header>
+<main>
+  <svg id="view" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Collegamenti della scatola X4"></svg>
+  <div class="zoom"><button id="zi" type="button" aria-label="Ingrandisci">+</button><button id="zo" type="button" aria-label="Riduci">−</button><button id="zr" type="button" aria-label="Vista intera">⤢</button></div>
+  <div class="hint" id="hint">Pizzica per lo zoom · tocca un filo o un pressacavo</div>
+</main>
+
+<section class="sheet" id="s-net" aria-live="polite">
+  <div class="sh-head"><span class="sw" id="n-sw" style="width:22px;height:6px"></span><h2 id="n-title">—</h2><button class="x" id="n-close" type="button" aria-label="Chiudi">✕</button></div>
+  <div class="sh-body"><div class="grp" id="n-grp">Collega</div><ul class="ends" id="n-ends"></ul><div id="n-conds"></div><p class="note" id="n-note"></p></div>
+</section>
+<section class="sheet" id="s-list">
+  <div class="sh-head"><h2>Collegamenti</h2><button class="x" id="l-close" type="button" aria-label="Chiudi">✕</button></div>
+  <div class="sh-body" id="l-body"></div>
+</section>
+<section class="sheet" id="s-mon">
+  <div class="sh-head"><h2>Montaggio passo per passo</h2><button class="x" id="m-close" type="button" aria-label="Chiudi">✕</button></div>
+  <div class="sh-body" id="m-body"></div>
+</section>
+<section class="sheet" id="s-leg">
+  <div class="sh-head"><h2>Legenda</h2><button class="x" id="g-close" type="button" aria-label="Chiudi">✕</button></div>
+  <div class="sh-body">
+    <div class="leg">
+      <span class="sw" style="height:6px;background:linear-gradient(90deg,#1565C0 0 25%,#EF6C00 25% 50%,#2E7D32 50% 75%,#6D4C41 75%);outline:1.5px solid #1d2329"></span><span>Cat5e W5: colori veri dei conduttori (T568B), come nella scatola X6</span>
+      <span class="sw" style="height:6px;background:repeating-linear-gradient(90deg,#1565C0 0 4px,#fff 4px 7px);outline:1.5px solid #1d2329"></span><span>Bianco-colore (es. bianco-blu): bianco con tratteggio</span>
+      <span class="sw" style="background:#E00000"></span><span>Fili delle ventole, colore = collegamento: +12 V (nella realtà i fili delle prolunghe sono neri, il n. 1 ha la riga)</span>
+      <span class="sw" style="background:#000000;outline:1px solid #888"></span><span>0 V</span>
+      <span class="sw" style="background:#E0399A"></span><span>PWM: comando dalla XIAO e uscita del modulo verso le ventole</span>
+      <span class="sw" style="background:#00ACC1"></span><span>Giri ventole</span>
+      <span class="sw" style="background:#6c8ebf;height:8px;opacity:.6"></span><span>Cavo con guaina (dal pressacavo)</span>
+      <span class="box" style="background:#dae8fc"></span><span>Modulo MOSFET A2 (morsetti in verde)</span>
+      <span class="box" style="background:#f8b4b4"></span><span>Wago (colore = collegamento)</span>
+    </div>
+    <ul class="notes">
+      <li>I Wago sono disegnati in fila per leggere i collegamenti: nella scatola (150×110×70) stanno liberi. Il modulo A2 si fissa sul fondo (distanziali o biadesivo spesso).</li>
+      <li>Nomi e ordine dei morsetti di A2 sono indicativi: controllali sulla serigrafia del modulo. Ingresso di comando (PWM e GND) da una parte, alimentazione e uscita (DC+, DC−, OUT+, OUT−) dall'altra. OUT+ resta libero.</li>
+      <li>Come funziona: la ventola tiene alto da sola il suo filo PWM. A2 lo tira a massa quando D7 della XIAO è alto, quindi il comando è invertito nel firmware (1 kHz). Così la XIAO non vede mai i 5 V della ventola.</li>
+      <li>Ventole collegate con 3 prolunghe 4 pin tagliate: in X4 resta la metà in cui si innesta il connettore della ventola, così la ventola non si tocca. Fili neri, il n. 1 ha la riga: 1 GND, 2 +12 V, 3 giri, 4 PWM. Controlla col tester prima di serrare.</li>
+      <li>Fili a trefoli delle prolunghe nei Wago con puntalino da 0,25–0,5 mm². Cat5e (rame pieno) direttamente nei Wago e nei morsetti di A2: spela 11 mm per i Wago.</li>
+      <li>Pressacavi M20 per le prolunghe: se il cavo è sottile, spessoralo con il nastro autoagglomerante. Pressacavi verso il basso, valvola anticondensa in basso.</li>
+      <li>W5 bianco-arancio è di riserva: isolalo. Nel Wago PWM resta un foro libero.</li>
+      <li>Bassa priorità (issue #5): R4 33 kΩ e R5 10 kΩ sul morsetto PWM di A2 per avere le ventole ferme a XIAO spenta. Non sono disegnate.</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+const D={"W": 210, "H": 160, "V": [{"x": 2, "y": 2, "w": 206, "h": 154, "fill": "#f5f5f5", "stroke": "#666666", "text": false, "ell": false, "dash": true, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 2.0, "label": ""}, {"x": 4, "y": -24, "w": 260, "h": 20, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 11, "fc": "#222222", "align": "left", "valign": "top", "hatch": false, "sw": 1.0, "label": "Scatola X4 – derivazione ventole\nschema dei collegamenti · Wago in fila (nella scatola stanno liberi) · scatola vera 150×110×70"}, {"x": 64, "y": 10, "w": 48, "h": 28, "fill": "#dae8fc", "stroke": "#6c8ebf", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 72, "y": 15, "w": 38, "h": 12, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5.5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "A2 modulo MOSFET\nmorsetti indicativi:\nnomi sulla serigrafia"}, {"x": 64, "y": 15, "w": 7, "h": 15, "fill": "#7fc97f", "stroke": "#2e7d32", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 64.6, "y": 17, "w": 6, "h": 4, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.3, "fc": "#222222", "align": "left", "valign": "middle", "hatch": false, "sw": 1.0, "label": "PWM"}, {"x": 64.6, "y": 24, "w": 6, "h": 4, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.3, "fc": "#222222", "align": "left", "valign": "middle", "hatch": false, "sw": 1.0, "label": "GND"}, {"x": 68, "y": 31, "w": 40, "h": 7, "fill": "#7fc97f", "stroke": "#2e7d32", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 69, "y": 32, "w": 8, "h": 4, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.3, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": "DC+"}, {"x": 79, "y": 32, "w": 8, "h": 4, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.3, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": "DC−"}, {"x": 89, "y": 32, "w": 8, "h": 4, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.3, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": "OUT+"}, {"x": 99, "y": 32, "w": 8, "h": 4, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.3, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": "OUT−"}, {"x": 80, "y": 38.5, "w": 30, "h": 5, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 4.5, "fc": "#666666", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "OUT+ libero"}, {"x": 28.4, "y": 84, "w": 29.9, "h": 18.6, "fill": "#f8b4b4", "stroke": "#555555", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 29.55, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 30.15, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 35.35, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 35.95, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 41.15, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 41.75, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 46.95, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 47.55, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 52.75, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 53.35, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 28.4, "y": 103.6, "w": 29.9, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "Wago 5\n+12 V"}, {"x": 61.3, "y": 84, "w": 29.9, "h": 18.6, "fill": "#cfcfcf", "stroke": "#555555", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 62.45, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 63.05, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 68.25, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 68.85, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 74.05, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 74.65, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 79.85, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 80.45, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 85.65, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 86.25, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 61.3, "y": 103.6, "w": 29.9, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "Wago 5\n0 V"}, {"x": 94.2, "y": 84, "w": 29.9, "h": 18.6, "fill": "#f7c6e0", "stroke": "#555555", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 95.35, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 95.95, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 101.15, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 101.75, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 106.95, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 107.55, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 112.75, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 113.35, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 118.55, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 119.15, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 94.2, "y": 103.6, "w": 29.9, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "Wago 5\nPWM ventole"}, {"x": 136.3, "y": 84, "w": 13.1, "h": 18.6, "fill": "#b2ebf2", "stroke": "#555555", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 137.75, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 138.35, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 143.55, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 144.15, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 136.3, "y": 103.6, "w": 13.1, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "Wago 2\ngiri M5"}, {"x": 161.6, "y": 84, "w": 13.1, "h": 18.6, "fill": "#b2ebf2", "stroke": "#555555", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 163.05, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 163.65, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 168.85, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 169.45, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 161.6, "y": 103.6, "w": 13.1, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "Wago 2\ngiri M6"}, {"x": 186.9, "y": 84, "w": 13.1, "h": 18.6, "fill": "#b2ebf2", "stroke": "#555555", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 188.35, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 188.95, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 194.15, "y": 84.6, "w": 4.4, "h": 3, "fill": "#ffffff", "stroke": "#888888", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 194.75, "y": 92, "w": 3.2, "h": 8, "fill": "#ff9800", "stroke": "#b26a00", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 186.9, "y": 103.6, "w": 13.1, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "Wago 2\ngiri M7"}, {"x": 13.2, "y": 155, "w": 12, "h": 6, "fill": "#dae8fc", "stroke": "#333333", "text": false, "ell": true, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 5.2, "y": 144, "w": 28, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5.5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "W5 Cat5e da X6"}, {"x": 123.2, "y": 155, "w": 12, "h": 6, "fill": "#dae8fc", "stroke": "#333333", "text": false, "ell": true, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 115.2, "y": 144, "w": 28, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5.5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "M5 ventola"}, {"x": 148.5, "y": 155, "w": 12, "h": 6, "fill": "#dae8fc", "stroke": "#333333", "text": false, "ell": true, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 140.5, "y": 144, "w": 28, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5.5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "M6 ventola"}, {"x": 173.8, "y": 155, "w": 12, "h": 6, "fill": "#dae8fc", "stroke": "#333333", "text": false, "ell": true, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 165.8, "y": 144, "w": 28, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5.5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "M7 ventola"}, {"x": 191, "y": 155, "w": 10, "h": 5, "fill": "#ffffff", "stroke": "#333333", "text": false, "ell": true, "dash": true, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 184, "y": 144, "w": 22, "h": 8, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5, "fc": "#222222", "align": "center", "valign": "top", "hatch": false, "sw": 1.0, "label": "valvola anticondensa"}, {"x": 120, "y": 8, "w": 84, "h": 40, "fill": "#ffffff", "stroke": "#999999", "text": false, "ell": false, "dash": false, "rot": false, "fs": 9, "fc": "#222222", "align": "center", "valign": "middle", "hatch": false, "sw": 1.0, "label": ""}, {"x": 122, "y": 9, "w": 80, "h": 38, "fill": "none", "stroke": "none", "text": true, "ell": false, "dash": false, "rot": false, "fs": 5.5, "fc": "#222222", "align": "left", "valign": "top", "hatch": false, "sw": 1.0, "label": "Come si legge\nW5 verde → A2 PWM; bianco-verde → A2 GND (morsetti a vite, niente Wago).\nA2 OUT− → Wago PWM: tira a massa il filo PWM delle 3 ventole.\nProlunghe ventole (fili neri, il n. 1 ha la riga): 1 GND → 0 V; 2 → +12 V; 3 giri → Wago giri; 4 → Wago PWM.\nW5 bianco-arancio: di riserva, isolalo. Wago PWM: foro 5 libero."}], "wires": [{"kind": "CAB", "pts": [[19.2, 156], [19.2, 128]], "a": null, "b": null, "net": null}, {"kind": "CAB", "pts": [[129.2, 156], [129.2, 128]], "a": null, "b": null, "net": null}, {"kind": "CAB", "pts": [[154.5, 156], [154.5, 128]], "a": null, "b": null, "net": null}, {"kind": "CAB", "pts": [[179.8, 156], [179.8, 128]], "a": null, "b": null, "net": null}, {"kind": "PWM", "pts": [[19.2, 128], [17.8, 124], [17.8, 68.5], [58, 68.5], [58, 19], [64, 19]], "a": "W5 verde (comando PWM)", "b": "A2 morsetto PWM", "net": 3, "cond": "verde"}, {"kind": "V0", "pts": [[19.2, 128], [19.2, 124], [19.2, 67.25], [60, 67.25], [60, 26], [64, 26]], "a": "W5 bianco-verde (0 V comando)", "b": "A2 morsetto GND", "net": 2, "cond": "bianco-verde"}, {"kind": "P12", "pts": [[19.2, 128], [15.0, 124], [15.0, 72.25], [31.75, 72.25], [31.75, 84]], "a": "W5 blu (+12 V)", "b": "Wago +12 V foro 1", "net": 0, "cond": "blu"}, {"kind": "P12", "pts": [[73, 38], [73, 69.75], [37.55, 69.75], [37.55, 84]], "a": "A2 morsetto DC+", "b": "Wago +12 V foro 2", "net": 0}, {"kind": "V0", "pts": [[19.2, 128], [16.4, 124], [16.4, 64.75], [64.65, 64.75], [64.65, 84]], "a": "W5 bianco-blu (0 V)", "b": "Wago 0 V foro 1", "net": 1, "cond": "bianco-blu"}, {"kind": "V0", "pts": [[83, 38], [83, 77.25], [70.45, 77.25], [70.45, 84]], "a": "A2 morsetto DC−", "b": "Wago 0 V foro 2", "net": 1}, {"kind": "PWM", "pts": [[103, 38], [103, 78.5], [97.55, 78.5], [97.55, 84]], "a": "A2 morsetto OUT−", "b": "Wago PWM ventole foro 1", "net": 4}, {"kind": "TACH", "pts": [[19.2, 128], [20.6, 124], [20.6, 56.0], [139.95, 56.0], [139.95, 84]], "a": "W5 marrone (giri M5)", "b": "Wago giri M5 foro 1", "net": 5, "cond": "marrone"}, {"kind": "TACH", "pts": [[19.2, 128], [22.0, 124], [22.0, 53.5], [165.25, 53.5], [165.25, 84]], "a": "W5 bianco-marrone (giri M6)", "b": "Wago giri M6 foro 1", "net": 6, "cond": "bianco-marrone"}, {"kind": "TACH", "pts": [[19.2, 128], [23.4, 124], [23.4, 52.25], [190.55, 52.25], [190.55, 84]], "a": "W5 arancio (giri M7)", "b": "Wago giri M7 foro 1", "net": 7, "cond": "arancio"}, {"kind": "P12", "pts": [[129.2, 128], [128.5, 124], [128.5, 59.75], [43.35, 59.75], [43.35, 84]], "a": "M5 filo 2 (+12 V)", "b": "Wago +12 V foro 3", "net": 0}, {"kind": "V0", "pts": [[129.2, 128], [127.1, 124], [127.1, 63.5], [76.25, 63.5], [76.25, 84]], "a": "M5 filo 1 con la riga (GND)", "b": "Wago 0 V foro 3", "net": 1}, {"kind": "PWM", "pts": [[129.2, 128], [131.3, 124], [131.3, 71.0], [103.35, 71.0], [103.35, 84]], "a": "M5 filo 4 (PWM)", "b": "Wago PWM ventole foro 2", "net": 4}, {"kind": "TACH", "pts": [[129.2, 128], [129.9, 124], [129.9, 76.0], [145.75, 76.0], [145.75, 84]], "a": "M5 filo 3 (giri)", "b": "Wago giri M5 foro 2", "net": 5}, {"kind": "P12", "pts": [[154.5, 128], [153.8, 124], [153.8, 57.25], [49.15, 57.25], [49.15, 84]], "a": "M6 filo 2 (+12 V)", "b": "Wago +12 V foro 4", "net": 0}, {"kind": "V0", "pts": [[154.5, 128], [152.4, 124], [152.4, 61.0], [82.05, 61.0], [82.05, 84]], "a": "M6 filo 1 con la riga (GND)", "b": "Wago 0 V foro 4", "net": 1}, {"kind": "PWM", "pts": [[154.5, 128], [156.6, 124], [156.6, 66.0], [109.15, 66.0], [109.15, 84]], "a": "M6 filo 4 (PWM)", "b": "Wago PWM ventole foro 3", "net": 4}, {"kind": "TACH", "pts": [[154.5, 128], [155.2, 124], [155.2, 74.75], [171.05, 74.75], [171.05, 84]], "a": "M6 filo 3 (giri)", "b": "Wago giri M6 foro 2", "net": 6}, {"kind": "P12", "pts": [[179.8, 128], [179.1, 124], [179.1, 54.75], [54.95, 54.75], [54.95, 84]], "a": "M7 filo 2 (+12 V)", "b": "Wago +12 V foro 5", "net": 0}, {"kind": "V0", "pts": [[179.8, 128], [177.7, 124], [177.7, 58.5], [87.85, 58.5], [87.85, 84]], "a": "M7 filo 1 con la riga (GND)", "b": "Wago 0 V foro 5", "net": 1}, {"kind": "PWM", "pts": [[179.8, 128], [181.9, 124], [181.9, 62.25], [114.95, 62.25], [114.95, 84]], "a": "M7 filo 4 (PWM)", "b": "Wago PWM ventole foro 4", "net": 4}, {"kind": "TACH", "pts": [[179.8, 128], [180.5, 124], [180.5, 73.5], [196.35, 73.5], [196.35, 84]], "a": "M7 filo 3 (giri)", "b": "Wago giri M7 foro 2", "net": 7}], "nets": [{"name": "+12 V", "kind": "P12", "ends": ["A2 morsetto DC+", "M5 filo 2 (+12 V)", "M6 filo 2 (+12 V)", "M7 filo 2 (+12 V)", "W5 blu (+12 V)", "Wago +12 V"], "wires": [6, 7, 14, 18, 22], "id": 0}, {"name": "0 V", "kind": "V0", "ends": ["A2 morsetto DC−", "M5 filo 1 con la riga (GND)", "M6 filo 1 con la riga (GND)", "M7 filo 1 con la riga (GND)", "W5 bianco-blu (0 V)", "Wago 0 V"], "wires": [8, 9, 15, 19, 23], "id": 1}, {"name": "0 V comando", "kind": "V0", "ends": ["A2 morsetto GND", "W5 bianco-verde (0 V comando)"], "wires": [5], "id": 2}, {"name": "PWM ventole (comando)", "kind": "PWM", "ends": ["A2 morsetto PWM", "W5 verde (comando PWM)"], "wires": [4], "id": 3}, {"name": "PWM ventole (uscita A2)", "kind": "PWM", "ends": ["A2 morsetto OUT−", "M5 filo 4 (PWM)", "M6 filo 4 (PWM)", "M7 filo 4 (PWM)", "Wago PWM ventole"], "wires": [10, 16, 20, 24], "id": 4}, {"name": "Giri ventola M5", "kind": "TACH", "ends": ["M5 filo 3 (giri)", "W5 marrone (giri M5)", "Wago giri M5"], "wires": [11, 17], "id": 5}, {"name": "Giri ventola M6", "kind": "TACH", "ends": ["M6 filo 3 (giri)", "W5 bianco-marrone (giri M6)", "Wago giri M6"], "wires": [12, 21], "id": 6}, {"name": "Giri ventola M7", "kind": "TACH", "ends": ["M7 filo 3 (giri)", "W5 arancio (giri M7)", "Wago giri M7"], "wires": [13, 25], "id": 7}], "dots": [], "splits": [[19.2, 128], [129.2, 128], [154.49999999999997, 128], [179.79999999999995, 128]], "cables": [{"id": "W5", "title": "W5 Cat5e da X6", "x": 19.2, "y0": 128, "y1": 161, "rows": [{"c": "blu (+12 V)", "to": "Wago +12 V foro 1", "net": 0, "w": 6}, {"c": "bianco-blu (0 V)", "to": "Wago 0 V foro 1", "net": 1, "w": 8}, {"c": "verde (comando PWM)", "to": "A2 morsetto PWM", "net": 3, "w": 4}, {"c": "bianco-verde (0 V comando)", "to": "A2 morsetto GND", "net": 2, "w": 5}, {"c": "marrone (giri M5)", "to": "Wago giri M5 foro 1", "net": 5, "w": 11}, {"c": "bianco-marrone (giri M6)", "to": "Wago giri M6 foro 1", "net": 6, "w": 12}, {"c": "arancio (giri M7)", "to": "Wago giri M7 foro 1", "net": 7, "w": 13}]}, {"id": "M5", "title": "M5 ventola", "x": 129.2, "y0": 128, "y1": 161, "rows": [{"c": "filo 1 con la riga (GND)", "to": "Wago 0 V foro 3", "net": 1, "w": 15}, {"c": "filo 2 (+12 V)", "to": "Wago +12 V foro 3", "net": 0, "w": 14}, {"c": "filo 3 (giri)", "to": "Wago giri M5 foro 2", "net": 5, "w": 17}, {"c": "filo 4 (PWM)", "to": "Wago PWM ventole foro 2", "net": 4, "w": 16}]}, {"id": "M6", "title": "M6 ventola", "x": 154.5, "y0": 128, "y1": 161, "rows": [{"c": "filo 1 con la riga (GND)", "to": "Wago 0 V foro 4", "net": 1, "w": 19}, {"c": "filo 2 (+12 V)", "to": "Wago +12 V foro 4", "net": 0, "w": 18}, {"c": "filo 3 (giri)", "to": "Wago giri M6 foro 2", "net": 6, "w": 21}, {"c": "filo 4 (PWM)", "to": "Wago PWM ventole foro 3", "net": 4, "w": 20}]}, {"id": "M7", "title": "M7 ventola", "x": 179.8, "y0": 128, "y1": 161, "rows": [{"c": "filo 1 con la riga (GND)", "to": "Wago 0 V foro 5", "net": 1, "w": 23}, {"c": "filo 2 (+12 V)", "to": "Wago +12 V foro 5", "net": 0, "w": 22}, {"c": "filo 3 (giri)", "to": "Wago giri M7 foro 2", "net": 7, "w": 25}, {"c": "filo 4 (PWM)", "to": "Wago PWM ventole foro 4", "net": 4, "w": 24}]}]};
+const NS="http://www.w3.org/2000/svg";
+const COL={P12:"#E00000",V0:"#000000",G:"#555555",A:"#FF8C00",B:"#8A2BE2",V33:"#C99700",OW:"#00897B",PWM:"#E0399A",TACH:"#00ACC1",HX:"#7CB342",CELL:"#8D6E63",CAB:"#6c8ebf",PRL:"#9e9e9e"};
+const HV=new Set(["P12","V0","CAB"]);
+const svg=document.getElementById("view");
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e};
+const M=20, VB0={x:-M,y:-M-6,w:D.W+2*M,h:D.H+2*M+40};
+let vb={...VB0};
+const gV=el("g",{}), gW230=el("g",{}), gWbt=el("g",{}), gMark=el("g",{});
+el("rect",{x:-2000,y:-2000,width:5000,height:5000,fill:"#00000000"},gV);
+el("rect",{x:-M+4,y:-M,width:D.W+2*M-8,height:D.H+2*M+40,fill:"#f7f8f6",stroke:"#c9d0d6",rx:4},gV);
+// hatch per le canaline
+const defs=el("defs",{});
+const pat=el("pattern",{id:"hatch",width:3,height:3,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
+el("rect",{width:3,height:3,fill:"#d6d9dc"},pat);el("line",{x1:0,y1:0,x2:0,y2:3,stroke:"#b4b9be","stroke-width":.8},pat);
+
+for(const v of D.V){
+  if(!v.text){
+    const a={x:v.x,y:v.y,width:v.w,height:v.h,fill:v.hatch?"url(#hatch)":(v.fill==="none"?"none":v.fill),stroke:v.stroke==="none"?"none":v.stroke,"stroke-width":Math.max(.25,v.sw*.25)};
+    if(v.dash)a["stroke-dasharray"]="2 1.5";
+    if(v.ell) el("ellipse",{cx:v.x+v.w/2,cy:v.y+v.h/2,rx:v.w/2,ry:v.h/2,fill:a.fill,stroke:a.stroke,"stroke-width":a["stroke-width"],...(v.dash?{"stroke-dasharray":"1.5 1"}:{})},gV);
+    else el("rect",a,gV);
+  }
+  if(!v.label) continue;
+  const fs=v.fs/3, lines=v.label.split("\n"), lh=fs*1.18;
+  const t=el("text",{"font-size":fs.toFixed(2)},gV);
+  t.style.fill=v.fc;
+  let cx,cy,anchor="middle";
+  if(v.rot){cx=v.x+v.w/2;cy=v.y+v.h/2;t.setAttribute("transform",`rotate(-90 ${cx} ${cy})`);}
+  else{
+    cx=v.align==="left"?v.x+1:v.align==="right"?v.x+v.w-1:v.x+v.w/2;
+    anchor=v.align==="left"?"start":v.align==="right"?"end":"middle";
+    cy=v.valign==="top"?v.y+fs:v.valign==="bottom"?v.y+v.h-lh*(lines.length-1)-1:v.y+v.h/2;
+  }
+  t.setAttribute("text-anchor",anchor);
+  const y0=(v.valign==="top"&&!v.rot)?cy:cy-lh*(lines.length-1)/2+fs*.35;
+  lines.forEach((s,i)=>{const sp=el("tspan",{x:cx,y:(y0+i*lh).toFixed(2)},t);sp.textContent=s;if(i===0&&/^[A-Z]{1,2}\d/.test(s))sp.setAttribute("font-weight","600")});
+}
+const CAT={blu:"#1565C0",arancio:"#EF6C00",verde:"#2E7D32",marrone:"#6D4C41"};
+const wireEls=[];
+D.wires.forEach((w,i)=>{
+  const g=HV.has(w.kind)?gW230:gWbt;
+  const pts=w.pts.map(p=>p.join(",")).join(" ");
+  if(w.kind==="CAB"){const cb=(D.cables||[]).find(c=>Math.abs(c.x-w.pts[0][0])<.01);el("polyline",{points:pts,class:"cab",stroke:COL[w.kind],"stroke-width":7,"data-cabline":cb?cb.id:""},g);return}
+  if(w.kind==="PRL"){const p=el("polyline",{points:pts,class:"prl",stroke:"#424242","stroke-width":w.bw||2.4,"data-nets":(w.nets||[]).join(",")},g);wireEls.push(p);return}
+  if(w.cond){  // conduttore di un Cat5e con il suo colore vero; bianco-colore = bianco con tratteggio
+    const c=CAT[w.cond.split("-").pop()], st=w.cond.startsWith("bianco");
+    for(const sg of (w.segments||[w.pts])){const pts=sg.map(p=>p.join(",")).join(" ");
+    wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#1d2329","stroke-width":3,"data-net":w.net,"data-w":i},g));
+    if(st)wireEls.push(el("polyline",{points:pts,class:"catw",stroke:"#ffffff","stroke-width":2,"data-net":w.net,"data-w":i},g));
+    const a={points:pts,class:"catw",stroke:c,"stroke-width":2,"data-net":w.net,"data-w":i};
+    if(st)a["stroke-dasharray"]="4 3";
+    wireEls.push(el("polyline",a,g));
+    el("polyline",{points:pts,class:"hit","data-net":w.net},g);}
+    return}
+  for(const segment of (w.segments||[w.pts])){
+  const a={points:segment.map(p=>p.join(",")).join(" "),class:"w",stroke:COL[w.kind],"stroke-width":1.8,"data-net":w.net,"data-w":i};
+  if(w.kind==="G")a["stroke-dasharray"]="1.6 0.7";
+  const p=el("polyline",a,g); wireEls.push(p);
+  el("polyline",{points:a.points,class:"hit","data-net":w.net},g);
+  }
+});
+for(const d of D.dots) el("circle",{cx:d[0],cy:d[1],r:.9,fill:"#1d2329"},gWbt);
+for(const d of D.splits) el("circle",{cx:d[0],cy:d[1],r:1.6,fill:"#777",opacity:.7},gV);
+// zone da toccare sui cavi: pressacavo, guaina e scritta
+const gHit=el("g",{});
+const CABS=new Map((D.cables||[]).map(c=>[c.id,c]));
+for(const c of CABS.values()) el("rect",{x:c.x-8,y:c.y1-17,width:16,height:17,class:"cabhit","data-cab":c.id},gHit),
+  el("rect",{x:c.x-4,y:c.y0,width:8,height:c.y1-c.y0,class:"cabhit","data-cab":c.id},gHit);
+
+function setVB(){svg.setAttribute("viewBox",`${vb.x} ${vb.y} ${vb.w} ${vb.h}`)}
+function fit(){const r=svg.getBoundingClientRect();const s=Math.min(r.width/VB0.w,r.height/VB0.h);vb.w=r.width/s;vb.h=r.height/s;vb.x=VB0.x-(vb.w-VB0.w)/2;vb.y=VB0.y-(vb.h-VB0.h)/2;setVB()}
+function zoomAt(f,cxp,cyp){const r=svg.getBoundingClientRect();const minW=25,maxW=VB0.w*2.5;let nw=Math.min(maxW,Math.max(minW,vb.w/f));f=vb.w/nw;
+  const px=vb.x+(cxp-r.left)/r.width*vb.w, py=vb.y+(cyp-r.top)/r.height*vb.h;
+  vb.x=px-(px-vb.x)/f; vb.y=py-(py-vb.y)/f; vb.w/=f; vb.h/=f; setVB()}
+function zoomTo(b){const r=svg.getBoundingClientRect();const pad=14;const w=Math.max(b.w+2*pad,60),h=Math.max(b.h+2*pad,60);
+  const sheetH=document.querySelector(".sheet.open")?r.height*.45:0;const avH=r.height-sheetH;
+  const s=Math.min(r.width/w,avH/h);vb.w=r.width/s;vb.h=r.height/s;vb.x=b.x+b.w/2-vb.w/2;vb.y=b.y+b.h/2-(avH/2)/s;setVB()}
+// gesti: trascina, pizzica, rotella, doppio tocco
+const ptr=new Map();let last=null,moved=0,lastTap=0,pinch=null;
+svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;
+  if(ptr.size===2){const [a,b]=[...ptr.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y)}}svg.classList.add("drag")});
+svg.addEventListener("pointermove",e=>{if(!ptr.has(e.pointerId))return;const p=ptr.get(e.pointerId);const r=svg.getBoundingClientRect();
+  if(ptr.size===1){const dx=e.clientX-p.x,dy=e.clientY-p.y;moved+=Math.abs(dx)+Math.abs(dy);vb.x-=dx/r.width*vb.w;vb.y-=dy/r.height*vb.h;setVB()}
+  p.x=e.clientX;p.y=e.clientY;
+  if(ptr.size===2&&pinch){const [a,b]=[...ptr.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);moved+=99;zoomAt(d/pinch.d,(a.x+b.x)/2,(a.y+b.y)/2);pinch.d=d}});
+function up(e){if(!ptr.has(e.pointerId))return;ptr.delete(e.pointerId);if(ptr.size<2)pinch=null;if(ptr.size===0)svg.classList.remove("drag");
+  if(moved<8&&ptr.size===0){const now=Date.now();
+    const t=document.elementFromPoint(e.clientX,e.clientY);
+    if(t&&t.dataset&&t.dataset.cab){selectCable(t.dataset.cab)}
+    else if(t&&t.dataset&&t.dataset.net!==undefined){select(+t.dataset.net,false)}
+    else if(now-lastTap<320){zoomAt(2,e.clientX,e.clientY)}
+    else if(cur!==null){clearSel()}
+    lastTap=now}}
+svg.addEventListener("pointerup",up);svg.addEventListener("pointercancel",up);
+svg.addEventListener("wheel",e=>{e.preventDefault();zoomAt(Math.exp(-e.deltaY*.0018),e.clientX,e.clientY)},{passive:false});
+const mid=()=>{const r=svg.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2]};
+document.getElementById("zi").onclick=()=>zoomAt(1.6,...mid());
+document.getElementById("zo").onclick=()=>zoomAt(1/1.6,...mid());
+document.getElementById("zr").onclick=fit;
+addEventListener("resize",()=>{if(cur===null)fit()});
+
+// selezione di un collegamento
+const NETS=new Map(D.nets.map(n=>[n.id,n]));
+const KD={P12:"+12 V",V0:"0 V",PWM:"PWM ventole",TACH:"Giri ventole"};
+const NOTE={P12:"+12 V dal W5 blu: alimenta le tre ventole e il modulo A2.",
+  V0:"0 V: lo stesso della scatola X6. Il bianco-verde (massa del comando) va al morsetto GND di A2; in X6 è nello stesso Wago 0 V.",
+  PWM:"D7 della XIAO arriva su W5 verde al morsetto PWM di A2. L'uscita OUT− tira a massa il filo PWM delle tre ventole insieme (comando invertito nel firmware, 1 kHz).",
+  TACH:"Ogni ventola ha il suo filo dei giri, fino al pin della XIAO in X6 (pull-up interna). Stesso colore del W5 da tutte e due le parti."};
+let cur=null;
+function select(id,zoom){cur=id;const n=NETS.get(id);svg.classList.add("sel");
+  wireEls.forEach(p=>p.classList.toggle("on",p.dataset.nets?p.dataset.nets.split(",").includes(String(id)):+p.dataset.net===id));
+  svg.querySelectorAll(".cab").forEach(p=>p.classList.remove("on"));
+  document.getElementById("n-grp").textContent="Collega";document.getElementById("n-ends").hidden=false;document.getElementById("n-conds").replaceChildren();
+  gMark.replaceChildren();
+  let bx=[1e9,1e9,-1e9,-1e9];
+  n.wires.forEach(i=>{for(const [x,y] of D.wires[i].pts){bx=[Math.min(bx[0],x),Math.min(bx[1],y),Math.max(bx[2],x),Math.max(bx[3],y)]}
+    const w=D.wires[i];[w.pts[0],w.pts[w.pts.length-1]].forEach(p=>el("circle",{cx:p[0],cy:p[1],r:1.3,class:"pinmark"},gMark))});
+  document.getElementById("n-title").textContent=n.name;
+  document.getElementById("n-sw").style.background=COL[n.kind];
+  const ul=document.getElementById("n-ends");ul.replaceChildren(...n.ends.map(s=>{const li=document.createElement("li");li.textContent=s;return li}));
+  document.getElementById("n-note").textContent=NOTE[n.kind]||"";
+  openSheet("s-net");
+  if(zoom) zoomTo({x:bx[0],y:bx[1],w:bx[2]-bx[0],h:bx[3]-bx[1]});
+  document.getElementById("hint").hidden=true;}
+// selezione di un cavo (sonda, cella, Cat5e): tutti i suoi conduttori
+const CNOTE={W5:"Cat5e dalla scatola X6. Bianco-arancio di riserva, isolalo.",
+  M5:"Metà di una prolunga 4 pin: la ventola si innesta sul connettore fuori dalla scatola. Fili neri, il n. 1 ha la riga.",
+  M6:"Metà di una prolunga 4 pin: la ventola si innesta sul connettore fuori dalla scatola. Fili neri, il n. 1 ha la riga.",
+  M7:"Metà di una prolunga 4 pin: la ventola si innesta sul connettore fuori dalla scatola. Fili neri, il n. 1 ha la riga."};
+const condCol=s=>{const k=s.startsWith("filo")?"nero":s.split(" ")[0],m={rosso:"#E00000",nero:"#000000",giallo:"#f2c200",bianco:"#ffffff",verde:"#2E7D32",blu:"#1565C0",arancio:"#EF6C00",marrone:"#6D4C41"};
+  if(k.startsWith("bianco-"))return`repeating-linear-gradient(90deg,${m[k.slice(7)]} 0 4px,#fff 4px 7px)`;return m[k]||"#9e9e9e"};
+function selectCable(id){const c=CABS.get(id);cur=-1;svg.classList.add("sel");
+  const ws=new Set(c.rows.map(r=>String(r.w)));
+  wireEls.forEach(p=>p.classList.toggle("on",ws.has(p.dataset.w)));
+  svg.querySelectorAll(".cab").forEach(p=>p.classList.toggle("on",p.dataset.cabline===id));
+  gMark.replaceChildren();
+  el("ellipse",{cx:c.x,cy:c.y1-2,rx:7.5,ry:4,class:"cabsel"},gMark);
+  c.rows.forEach(r=>{const w=D.wires[r.w];[w.pts[0],w.pts[w.pts.length-1]].forEach(p=>el("circle",{cx:p[0],cy:p[1],r:1.3,class:"pinmark"},gMark))});
+  document.getElementById("n-title").textContent=c.title;
+  document.getElementById("n-sw").style.background=COL.CAB;
+  document.getElementById("n-grp").textContent="Conduttori · tocca per vedere il collegamento";
+  document.getElementById("n-ends").hidden=true;
+  document.getElementById("n-conds").replaceChildren(...c.rows.map(r=>{const b=document.createElement("button");b.type="button";b.className="cond";
+    b.innerHTML=`<span class="sw"></span><span><span class="nm"></span><span class="ds"></span></span>`;
+    const sw=b.querySelector(".sw");sw.style.background=condCol(r.c);sw.style.outline="1px solid #888";
+    b.querySelector(".nm").textContent=r.c;b.querySelector(".ds").textContent="→ "+r.to+(r.net!==null?" · "+NETS.get(r.net).name:"");
+    b.onclick=()=>select(r.net,true);return b}));
+  document.getElementById("n-note").textContent=CNOTE[id]||"";
+  openSheet("s-net");document.getElementById("hint").hidden=true}
+function clearSel(){cur=null;svg.classList.remove("sel");wireEls.forEach(p=>p.classList.remove("on"));svg.querySelectorAll(".cab").forEach(p=>p.classList.remove("on"));gMark.replaceChildren();closeSheets()}
+function openSheet(id){document.querySelectorAll(".sheet").forEach(s=>s.classList.toggle("open",s.id===id))}
+function closeSheets(){document.querySelectorAll(".sheet").forEach(s=>s.classList.remove("open"))}
+document.getElementById("n-close").onclick=closeSheets;
+document.getElementById("l-close").onclick=closeSheets;
+document.getElementById("g-close").onclick=closeSheets;
+document.getElementById("b-leg").onclick=()=>openSheet("s-leg");
+document.getElementById("b-list").onclick=()=>openSheet("s-list");
+// elenco
+const lb=document.getElementById("l-body");let lastK=null;
+{const h=document.createElement("div");h.className="grp";h.textContent="Cavi e sonde (pressacavi)";lb.appendChild(h);
+ for(const c of CABS.values()){const b=document.createElement("button");b.type="button";b.className="item";
+  b.innerHTML=`<span class="sw" style="background:${COL.CAB};width:18px;height:8px;flex:none;opacity:.7"></span><span><span class="nm"></span><span class="ds"></span></span>`;
+  b.querySelector(".nm").textContent=c.title;b.querySelector(".ds").textContent=c.rows.map(r=>r.c).join(" · ");
+  b.onclick=()=>{selectCable(c.id);zoomTo({x:c.x-40,y:90,w:80,h:c.y1-90})};lb.appendChild(b)}}
+for(const n of D.nets){const k=KD[n.kind];if(k!==lastK){const h=document.createElement("div");h.className="grp";h.textContent=k;lb.appendChild(h);lastK=k}
+  const b=document.createElement("button");b.type="button";b.className="item";
+  b.innerHTML=`<span class="sw" style="background:${COL[n.kind]};width:18px;height:5px;flex:none"></span><span><span class="nm"></span><span class="ds"></span></span>`;
+  b.querySelector(".nm").textContent=n.name;b.querySelector(".ds").textContent=n.ends.join(" · ");
+  b.onclick=()=>select(n.id,true);lb.appendChild(b)}
+// livelli
+function tog(btn,g){const on=btn.getAttribute("aria-pressed")!=="true";btn.setAttribute("aria-pressed",on);g.classList.toggle("layer-off",!on)}
+document.getElementById("b-230").onclick=e=>tog(e.currentTarget,gW230);
+document.getElementById("b-bt").onclick=e=>tog(e.currentTarget,gWbt);
+// checklist di montaggio (spunte salvate solo su questo telefono)
+const STEPS=[
+ ["Al banco",[
+  ["Taglia 3 prolunghe 4 pin: tieni la metà in cui si innesta il connettore della ventola, lunga quanto serve dalla ventola alla scatola"],
+  ["Prova ogni prolunga col tester: il n. 1 (riga) va al GND della ventola, il 4 al PWM. Numera i fili 1–4 al capo spelato"],
+  ["Puntalini da 0,25–0,5 mm² sui fili delle prolunghe"],
+  ["Leggi sulla serigrafia di A2 i nomi dei morsetti: PWM e GND (comando), DC+, DC−, OUT+, OUT−"]]],
+ ["Scatola",[
+  ["Fora il fondo: 4 pressacavi (W5, M5, M6, M7) e la valvola anticondensa"],
+  ["Fissa il modulo A2 sul fondo (distanziali o biadesivo spesso)"],
+  ["Passa W5 e le tre prolunghe nei pressacavi; spella la guaina del Cat5e per ~8 cm"]]],
+ ["Modulo MOSFET A2",[
+  ["W5 verde nel morsetto PWM di A2","PWM ventole (comando)"],
+  ["W5 bianco-verde nel morsetto GND di A2","0 V comando"],
+  ["DC+ di A2 al Wago +12 V, DC− al Wago 0 V; OUT+ libero","+12 V"],
+  ["OUT− di A2 al Wago PWM","PWM ventole (uscita A2)"]]],
+ ["Ventole",[
+  ["+12 V: W5 blu e il filo 2 delle tre prolunghe (Wago da 5, con DC+)","+12 V"],
+  ["0 V: W5 bianco-blu e il filo 1 (riga) delle tre prolunghe (Wago da 5, con DC−)","0 V"],
+  ["PWM: il filo 4 delle tre prolunghe nel Wago PWM (con OUT−, un foro libero)","PWM ventole (uscita A2)"],
+  ["Giri M5: W5 marrone con il filo 3 della prolunga M5 (Wago da 2)","Giri ventola M5"],
+  ["Giri M6: W5 bianco-marrone con il filo 3 della prolunga M6 (Wago da 2)","Giri ventola M6"],
+  ["Giri M7: W5 arancio con il filo 3 della prolunga M7 (Wago da 2)","Giri ventola M7"],
+  ["W5 bianco-arancio: di riserva, isolalo"]]],
+ ["Controlli",[
+  ["Tester, tutto spento: nessun corto tra +12 V e 0 V, né tra PWM e +12 V"],
+  ["Strattone leggero a ogni filo nei Wago e nei morsetti"],
+  ["Acceso: le tre ventole girano e rallentano quando abbassi il PWM da Home Assistant"],
+  ["Da Home Assistant: giri di M5, M6 e M7 leggibili, ognuno della ventola giusta (fermane una con un dito)"],
+  ["Stringi i pressacavi e chiudi il coperchio"]]]
+];
+const CK_KEY="x4-salumi-montaggio";
+let ckState={};try{ckState=JSON.parse(localStorage.getItem(CK_KEY)||"{}")}catch(e){ckState={}}
+const mb=document.getElementById("m-body");let ckN=0;
+function ckCount(){const t=document.querySelectorAll("#m-body input").length,d=document.querySelectorAll("#m-body input:checked").length;
+  document.getElementById("mon-count").textContent=`${d}/${t}`;const f=document.getElementById("ck-done");if(f)f.textContent=`${d} di ${t} fatti`}
+STEPS.forEach(([sec,items])=>{const h=document.createElement("div");h.className="ck-sec";h.textContent=sec;mb.appendChild(h);
+  items.forEach(([txt,net])=>{const id="ck"+(ckN++);const row=document.createElement("div");row.className="ck";
+    row.innerHTML=`<input type="checkbox" id="${id}"><label for="${id}">${txt}</label>`;
+    const cb=row.querySelector("input");cb.checked=!!ckState[id];row.classList.toggle("done",cb.checked);
+    cb.addEventListener("change",()=>{ckState[id]=cb.checked;row.classList.toggle("done",cb.checked);try{localStorage.setItem(CK_KEY,JSON.stringify(ckState))}catch(e){};ckCount()});
+    if(net){const n=D.nets.find(x=>x.name===net);if(n){const b=document.createElement("button");b.type="button";b.className="go";b.textContent="Mostra";
+      b.onclick=()=>select(n.id,true);row.appendChild(b)}}
+    mb.appendChild(row)})});
+const foot=document.createElement("div");foot.className="ck-foot";foot.innerHTML=`<span id="ck-done"></span><button type="button" id="ck-reset">Azzera spunte</button>`;mb.appendChild(foot);
+let rsArm=false;document.getElementById("ck-reset").onclick=e=>{const b=e.currentTarget;if(!rsArm){rsArm=true;b.textContent="Tocca ancora per azzerare";setTimeout(()=>{rsArm=false;b.textContent="Azzera spunte"},3000);return}
+  ckState={};try{localStorage.removeItem(CK_KEY)}catch(e){};mb.querySelectorAll("input").forEach(c=>{c.checked=false;c.closest(".ck").classList.remove("done")});rsArm=false;b.textContent="Azzera spunte";ckCount()};
+ckCount();
+document.getElementById("b-mon").onclick=()=>openSheet("s-mon");
+document.getElementById("m-close").onclick=closeSheets;
+setTimeout(()=>{const h=document.getElementById("hint");if(h)h.hidden=true},6000);
+requestAnimationFrame(fit);
+</script>
+</body></html>

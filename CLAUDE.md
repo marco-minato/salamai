@@ -40,8 +40,9 @@ Il repo è clonato anche nell'add-on Claude Code di Home Assistant, in `/share/s
 ## Firmware
 
 - **ESPHome:** si valida e si flasha solo dal Device Builder di HA. Non si compila nell'add-on.
-- **`sonda-th.yaml`:** attivo oggi.
-- **`salumi-nodo.yaml`:** si flasha solo alla migrazione. Registri Modbus in `documentazione/specifiche_firmware.md`.
+- **`salumi-camera.yaml`:** Waveshare nel quadro, attiva dal 07/11/2026 (stufa, relè, contatore, sonda S-TH-01, nodo).
+- **`salumi-nodo.yaml`:** XIAO nella X6, attiva dal 07/11/2026 (server Modbus 4). Registri Modbus in `documentazione/specifiche_firmware.md`.
+- **`sonda-th.yaml`:** vecchio firmware della XIAO, non più in uso.
 
 ## Vincoli dell'utente
 

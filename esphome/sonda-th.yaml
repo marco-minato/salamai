@@ -1,4 +1,5 @@
-# Sonda Seeed S-TH-01 (101990881) su XIAO ESP32C3 + RS485 Breakout (113991354)
+# XIAO ESP32C3 + RS485 Breakout (113991354) nella scatola X6: bilancia, sonde
+# DS18B20 e ventole. La sonda S-TH-01 non è più letta da qui (vedi RS485).
 #
 # Pin XIAO ESP32C3: D0=GPIO2 D1=GPIO3 D2=GPIO4 D3=GPIO5 D4=GPIO6 D5=GPIO7
 #                   D6=GPIO21 D7=GPIO20 D8=GPIO8 D9=GPIO9 D10=GPIO10
@@ -49,60 +50,17 @@ text_sensor:
     reset_reason:
       name: "Motivo ultimo riavvio"
 
-uart:
-  rx_pin: GPIO7   # D5
-  tx_pin: GPIO6   # D4
-  baud_rate: 9600
-
-modbus:
-  flow_control_pin: GPIO4   # D2, HIGH = trasmissione
-
-modbus_controller:
-  - id: sth01
-    address: 0x1
-    update_interval: 30s
+# RS485: dal 07/11/2026 la S-TH-01 la legge solo la Waveshare del quadro
+# (stesso bus, tramite il Cat5e). La XIAO non interroga più nessuno: D2 resta
+# basso, così la breakout RS485 sta in ricezione e non disturba il bus.
+switch:
+  - platform: gpio
+    id: rs485_ricezione
+    pin: GPIO4   # D2, HIGH = trasmissione
+    restore_mode: ALWAYS_OFF
+    internal: true
 
 sensor:
-  - platform: modbus_controller
-    modbus_controller_id: sth01
-    name: "Temperatura"
-    # invia anche valori uguali: il controllo "sensore fermo" di HA guarda l'ultima lettura
-    force_update: true
-    register_type: holding
-    address: 0x0000
-    value_type: S_WORD
-    unit_of_measurement: "°C"
-    device_class: temperature
-    state_class: measurement
-    accuracy_decimals: 2
-    filters:
-      - multiply: 0.01
-  - platform: modbus_controller
-    modbus_controller_id: sth01
-    name: "Umidità"
-    # invia anche valori uguali: il controllo "sensore fermo" di HA guarda l'ultima lettura
-    force_update: true
-    register_type: holding
-    address: 0x0001
-    value_type: U_WORD
-    unit_of_measurement: "%"
-    device_class: humidity
-    state_class: measurement
-    accuracy_decimals: 1
-    filters:
-      - multiply: 0.01
-  - platform: modbus_controller
-    modbus_controller_id: sth01
-    name: "Dew point"
-    register_type: holding
-    address: 0x0002
-    value_type: S_WORD
-    unit_of_measurement: "°C"
-    device_class: temperature
-    state_class: measurement
-    accuracy_decimals: 2
-    filters:
-      - multiply: 0.01
   - platform: wifi_signal
     name: "Segnale WiFi"
     update_interval: 60s
@@ -136,9 +94,9 @@ sensor:
     accuracy_decimals: 0
     filters:
       - calibrate_linear:
-          # DA CALIBRARE: lettura grezza -> grammi
-          - 0 -> 0
-          - 100000 -> 1000
+          # Tarata il 06/11/2026: a vuoto (gancio compreso) e con 443 g appesi
+          - 6741 -> 0
+          - 439600 -> 443
 
 # --- Hardware futuro: togliere il commento quando collegato --------------
 #

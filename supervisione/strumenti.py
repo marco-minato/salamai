@@ -124,17 +124,20 @@ def fine_turno(esito):
 
 ENTITA_STATO = {
     "fase": "sensor.salumi_fase",
-    "temperatura": "sensor.sonda_th_temperatura",
-    "umidita": "sensor.sonda_th_umidita",
-    "rugiada": "sensor.sonda_th_dew_point",
+    "temperatura": "sensor.cantina_camera_salumi_temperatura_camera",
+    "umidita": "sensor.cantina_camera_salumi_umidita_camera",
+    "rugiada": "sensor.cantina_camera_salumi_punto_di_rugiada_camera",
     "ah_camera": "sensor.salumi_umidita_assoluta_camera",
     "ah_cantina": "sensor.salumi_umidita_assoluta_cantina",
     "t_cantina": "sensor.shelly_h_t_cantina_temperature",
     "ur_cantina": "sensor.shelly_h_t_cantina_humidity",
-    "stufa": "climate.salumi_stufa",
+    "stufa": "climate.cantina_camera_salumi_stufa",
     "umidificatore": "humidifier.salumi_umidita",
-    "rele_stufa": "switch.sonoff_1001f24fe4_2",
-    "rele_umidificatore": "switch.sonoff_1001f24fe4_1",
+    "rele_stufa": "binary_sensor.salumi_stufa_accesa",
+    "rele_umidificatore": "switch.salumi_umidificatore",
+    "umidificatore_in_uso": "input_select.salumi_umidificatore_in_uso",
+    "estrattore": "switch.cantina_camera_salumi_estrattore",
+    "potenza": "sensor.cantina_camera_salumi_potenza_attuatori",
     "peso": "sensor.salumi_peso",
     "peso_iniziale": "input_number.salumi_peso_iniziale",
     "calo_reale": "sensor.salumi_calo_reale",
@@ -178,13 +181,14 @@ def storia(ore, passo=15):
     ore, passo = float(ore), int(passo)
     fine = datetime.now(timezone.utc)
     inizio = fine - timedelta(hours=ore)
-    numeriche = {"T": "sensor.sonda_th_temperatura", "UR": "sensor.sonda_th_umidita",
+    numeriche = {"T": "sensor.cantina_camera_salumi_temperatura_camera", "UR": "sensor.cantina_camera_salumi_umidita_camera",
                  "T_cantina": "sensor.shelly_h_t_cantina_temperature",
                  "UR_cantina": "sensor.shelly_h_t_cantina_humidity",
                  "AH_camera": "sensor.salumi_umidita_assoluta_camera",
                  "AH_cantina": "sensor.salumi_umidita_assoluta_cantina",
                  "peso": "sensor.salumi_peso"}
-    onoff = {"stufa_on": "switch.sonoff_1001f24fe4_2", "umid_on": "switch.sonoff_1001f24fe4_1"}
+    onoff = {"stufa_on": "binary_sensor.salumi_stufa_accesa", "umid_on": "switch.salumi_umidificatore",
+             "estrattore_on": "switch.cantina_camera_salumi_estrattore"}
     ids = ",".join(list(numeriche.values()) + list(onoff.values()) + ["sensor.salumi_fase"])
     q = urllib.parse.urlencode({"filter_entity_id": ids, "end_time": fine.isoformat()})
     dati = api(f"/history/period/{urllib.parse.quote(inizio.isoformat())}?{q}")
